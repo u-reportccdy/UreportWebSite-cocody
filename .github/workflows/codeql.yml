@@ -1,5 +1,8 @@
 name: CodeQL Analysis
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   push:
     branches: [dev]
@@ -19,21 +22,19 @@ jobs:
     strategy:
       matrix:
         language: [javascript, typescript]
-        node-version: [20.x]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Initialise CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          node-version: 24.x
 
       - name: Install dependencies (frontend)
         working-directory: ./frontend
@@ -44,6 +45,6 @@ jobs:
         run: npm ci
 
       - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
         with:
           category: "${{ matrix.language }}"
