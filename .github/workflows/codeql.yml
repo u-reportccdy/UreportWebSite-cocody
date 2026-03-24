@@ -26,6 +26,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Generate root lockfile
+        run: npm install --package-lock-only
+
       - name: Initialise CodeQL
         uses: github/codeql-action/init@v3
         with:
@@ -38,11 +41,11 @@ jobs:
 
       - name: Install dependencies (frontend)
         working-directory: ./frontend
-        run: npm ci
+        run: npm install
 
       - name: Install dependencies (backend)
         working-directory: ./backend
-        run: npm ci
+        run: npm install
 
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v3
