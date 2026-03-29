@@ -12,6 +12,7 @@ const initialPartners = [
 
 export function Partners() {
   const [partners, setPartners] = useState(initialPartners);
+  const [logoErrors, setLogoErrors] = useState<Record<number, boolean>>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPartner, setEditingPartner] = useState<any>(null);
   const [formData, setFormData] = useState({ name: '', type: 'Institutionnel', website: '', logo: '' });
@@ -25,6 +26,20 @@ export function Partners() {
       setFormData({ name: '', type: 'Institutionnel', website: '', logo: '' });
     }
     setIsModalOpen(true);
+  };
+
+  const sanitizeUrl = (url: string) => {
+    if (!url) return '#';
+    const trimmed = url.trim();
+    // Empêcher les protocoles dangereux
+    if (trimmed.toLowerCase().startsWith('javascript:') || trimmed.toLowerCase().startsWith('data:')) {
+      return '#';
+    }
+    return trimmed.startsWith('http') ? trimmed : `https://${trimmed}`;
+  };
+
+  const handleLogoError = (id: number) => {
+    setLogoErrors(prev => ({ ...prev, [id]: true }));
   };
 
   const handleDelete = (id: number) => {
@@ -59,11 +74,21 @@ export function Partners() {
         {partners.map((partner) => (
           <div key={partner.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center group hover:shadow-md transition-shadow">
             <div className="w-24 h-24 rounded-full border-4 border-gray-50 mb-4 overflow-hidden bg-white shadow-sm flex items-center justify-center">
-              <img src={partner.logo} alt={partner.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/200x200/CCC/FFF?text=IMG'; }} />
+              <img 
+                src={logoErrors[partner.id] ? `https://placehold.co/200x200/CCC/FFF?text=${partner.name.substring(0, 1)}` : partner.logo} 
+                alt={`${partner.name} logo`} 
+                className="w-full h-full object-cover" 
+                onError={() => handleLogoError(partner.id)} 
+              />
             </div>
             <h3 className="font-bold text-[#1E293B] mb-1">{partner.name}</h3>
             <span className="text-xs font-medium text-[#0099DC] bg-blue-50 px-2 py-1 rounded-md mb-4">{partner.type}</span>
-            <a href={partner.website.startsWith('http') ? partner.website : `https://${partner.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-sm text-[#64748B] hover:text-[#0099DC] transition-colors mb-6 break-all">
+            <a 
+              href={sanitizeUrl(partner.website)} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex items-center text-sm text-[#64748B] hover:text-[#0099DC] transition-colors mb-6 break-all"
+            >
               {partner.website} <ExternalLinkIcon className="w-3 h-3 ml-1 shrink-0" />
             </a>
 
