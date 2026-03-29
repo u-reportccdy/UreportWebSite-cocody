@@ -30,11 +30,17 @@ export function Partners() {
 
   const sanitizeUrl = (url: string) => {
     if (!url) return '#';
-    const trimmed = url.trim();
-    // Bloquer les protocoles dangereux (javascript, vbscript, data) avec Regex insensible à la casse
-    if (/^(javascript|vbscript|data):/i.test(trimmed)) {
-      return '#';
+    try {
+      // Décodage pour détecter les tentatives d'obfuscation (ex: %6a%61%76...)
+      const decoded = decodeURI(url).trim().toLowerCase();
+      if (decoded.startsWith('javascript:') || decoded.startsWith('data:') || decoded.startsWith('vbscript:')) {
+        return '#';
+      }
+    } catch (e) {
+      // En cas d'erreur de décodage, on reste prudent
     }
+    
+    const trimmed = url.trim();
     return trimmed.startsWith('http') ? trimmed : `https://${trimmed}`;
   };
 
