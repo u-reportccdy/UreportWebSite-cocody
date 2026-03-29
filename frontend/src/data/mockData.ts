@@ -15,10 +15,10 @@ export const events = [
   image:
   'https://images.unsplash.com/photo-1544027993-37dbfe43562a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
   description:
-  "Rejoignez-nous pour sensibiliser les élèves aux bonnes pratiques d'hygiène en milieu scolaire. Une initiative pour un environnement d'apprentissage plus sain.",
+  "<p>Rejoignez-nous pour sensibiliser les élèves aux bonnes pratiques d'hygiène en milieu scolaire.</p><h3>Programme :</h3><ul><li>Ateliers de lavage des mains</li><li>Distribution de kits d'hygiène</li><li>Conférence sur la santé environnementale</li></ul>",
   status: 'upcoming',
   category: 'Santé',
-  spots: 50,
+  capacity: 50,
   registered: 32
 },
 {
@@ -30,10 +30,10 @@ export const events = [
   image:
   'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
   description:
-  'Atelier intensif sur le leadership, la prise de parole en public et la gestion de projets communautaires pour les jeunes leaders de demain.',
+  "<p>Atelier intensif sur le leadership et la gestion de projets. Nous aborderons les thèmes suivants :</p><ul><li>Prise de parole en public</li><li>Confiance en soi</li><li>Méthodologie de projet communautaire</li></ul>",
   status: 'upcoming',
   category: 'Formation',
-  spots: 30,
+  capacity: 30,
   registered: 28
 },
 {
@@ -96,26 +96,42 @@ export const articles = [
 
 
 export const partners = [
-{
-  id: 1,
-  name: "UNICEF Côte d'Ivoire",
-  logo: 'https://placehold.co/200x200/0099DC/FFFFFF?text=UNICEF'
-},
-{
-  id: 2,
-  name: 'Mairie de Cocody',
-  logo: 'https://placehold.co/200x200/0099DC/FFFFFF?text=ALPHA'
-},
-{
-  id: 3,
-  name: 'Ministère de la Jeunesse',
-  logo: 'https://placehold.co/200x200/F5A623/FFFFFF?text=MAIRIE'
-},
-{
-  id: 4,
-  name: 'Croix-Rouge CI',
-  logo: 'https://placehold.co/200x200/1E293B/FFFFFF?text=MINISTERE'
-}];
+  {
+    id: 1,
+    name: "UNICEF Côte d'Ivoire",
+    type: 'Institutionnel',
+    website: 'unicef.org/cotedivoire',
+    logo: '/images/logo-unicef.jpg'
+  },
+  {
+    id: 2,
+    name: 'Mairie de Cocody',
+    type: 'Gouvernemental',
+    website: 'mairiecocody.ci',
+    logo: '/images/mairie-cocody.jpg'
+  },
+  {
+    id: 3,
+    name: 'Ministère de la Jeunesse',
+    type: 'Gouvernemental',
+    website: 'jeunesse.gouv.ci',
+    logo: '/images/ministere-jeunesse.jpg'
+  },
+  {
+    id: 5,
+    name: 'Orange CI',
+    type: 'Sponsor Privé',
+    website: 'orange.ci',
+    logo: '/images/orange-ci.jpg'
+  },
+  {
+    id: 6,
+    name: 'Université FHB',
+    type: 'Académique',
+    website: 'univ-fhb.edu.ci',
+    logo: '/images/ufhb.jpg'
+  }
+];
 
 
 export const testimonials = [

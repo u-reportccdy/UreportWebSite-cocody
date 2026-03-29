@@ -1,8 +1,14 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { PATHS } from '../routes/paths';
 
 export function AdminLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    localStorage.removeItem('admin_session');
+    navigate('/');
+  };
   
   const getPageTitle = () => {
     const path = location.pathname;
@@ -43,11 +49,16 @@ export function AdminLayout() {
           <h2 className="text-xl font-semibold text-[#1E293B]">{getPageTitle()}</h2>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-600 font-medium">Admin connecté</span>
-            <button className="text-sm bg-red-50 text-red-600 px-3 py-1.5 rounded-md hover:bg-red-100 transition font-medium">Déconnexion</button>
+            <button 
+              onClick={handleLogout}
+              className="text-sm bg-red-50 text-red-600 px-3 py-1.5 rounded-md hover:bg-red-100 transition font-medium"
+            >
+              Déconnexion
+            </button>
           </div>
         </header>
 
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-6" translate="no">
           <Outlet />
         </main>
       </div>

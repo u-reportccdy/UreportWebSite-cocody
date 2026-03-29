@@ -83,7 +83,7 @@ export function RecentEvents() {
         <h2 className="text-lg font-bold text-[#1E293B]">
           Événements Récents & À Venir
         </h2>
-        <Link to="/admin/events" className="text-sm font-medium text-[#0099DC] hover:text-[#007bb5] transition-colors">
+        <Link to="/admin/events" className="text-xs font-bold text-[#0099DC] hover:text-white hover:bg-[#0099DC] transition-all px-3 py-1 rounded-full border border-[#0099DC]/20">
           Voir tout
         </Link>
       </div>

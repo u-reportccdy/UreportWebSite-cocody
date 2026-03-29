@@ -28,7 +28,33 @@ export function Inscriptions() {
   };
 
   const handleExportCSV = () => {
-    alert("Fonctionnalité d'export CSV en cours de développement");
+    // Définition des colonnes
+    const headers = ['Nom', 'Email', 'Téléphone', 'Evénement', 'Date d\'inscription', 'Statut'];
+    
+    // Transformation des données en lignes CSV
+    const csvContent = inscriptions.map(user => [
+      `"${user.name}"`,
+      `"${user.email}"`,
+      `"${user.phone}"`,
+      `"${user.event}"`,
+      `"${user.date}"`,
+      `"${user.status}"`
+    ].join(',')).join('\n');
+
+    // Ajout du BOM UTF-8 pour le support des accents dans Excel
+    const fullContent = '\uFEFF' + headers.join(',') + '\n' + csvContent;
+    
+    // Création du lien de téléchargement
+    const blob = new Blob([fullContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `inscriptions_ureport_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (

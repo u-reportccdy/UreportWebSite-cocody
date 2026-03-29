@@ -14,12 +14,12 @@ export function Events() {
   const filteredEvents = events.filter((event) => {
     const matchesFilter = filter === 'all' || event.status === filter;
     const matchesSearch =
-    event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    event.location.toLowerCase().includes(searchQuery.toLowerCase());
+      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.location.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-20" translate="no">
       {/* Header */}
       <div className="bg-ureport-dark text-white py-20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
@@ -44,19 +44,19 @@ export function Events() {
             <button
               onClick={() => setFilter('upcoming')}
               className={`flex-1 md:flex-none px-6 py-2 rounded-lg text-sm font-semibold transition-all ${filter === 'upcoming' ? 'bg-white text-ureport-blue shadow-sm' : 'text-gray-600 hover:text-ureport-dark'}`}>
-              
+
               À venir
             </button>
             <button
               onClick={() => setFilter('past')}
               className={`flex-1 md:flex-none px-6 py-2 rounded-lg text-sm font-semibold transition-all ${filter === 'past' ? 'bg-white text-ureport-blue shadow-sm' : 'text-gray-600 hover:text-ureport-dark'}`}>
-              
+
               Passés
             </button>
             <button
               onClick={() => setFilter('all')}
               className={`flex-1 md:flex-none px-6 py-2 rounded-lg text-sm font-semibold transition-all ${filter === 'all' ? 'bg-white text-ureport-blue shadow-sm' : 'text-gray-600 hover:text-ureport-dark'}`}>
-              
+
               Tous
             </button>
           </div>
@@ -71,53 +71,53 @@ export function Events() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-gray-900 placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent" />
-            
+
           </div>
         </Card>
 
         {/* Events Grid */}
         {filteredEvents.length > 0 ?
-        <motion.div
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          
-            {filteredEvents.map((event) =>
           <motion.div
-            key={event.id}
             layout
-            initial={{
-              opacity: 0,
-              scale: 0.9
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1
-            }}
-            exit={{
-              opacity: 0,
-              scale: 0.9
-            }}
-            transition={{
-              duration: 0.3
-            }}>
-            
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {filteredEvents.map((event) =>
+              <motion.div
+                key={event.id}
+                layout
+                initial={{
+                  opacity: 0,
+                  scale: 0.9
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.9
+                }}
+                transition={{
+                  duration: 0.3
+                }}>
+
                 <Card hover className="h-full flex flex-col">
                   <div className="relative h-56 overflow-hidden">
                     <img
-                  src={event.image}
-                  alt={event.title}
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
-                
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+
                     <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-ureport-blue">
                       {event.category}
                     </div>
                     {event.status === 'past' &&
-                <div className="absolute inset-0 bg-gray-900/40 flex items-center justify-center backdrop-blur-[2px]">
+                      <div className="absolute inset-0 bg-gray-900/40 flex items-center justify-center backdrop-blur-[2px]">
                         <span className="bg-gray-900/80 text-white px-4 py-2 rounded-full font-bold tracking-widest uppercase text-sm">
                           Terminé
                         </span>
                       </div>
-                }
+                    }
                   </div>
                   <div className="p-6 flex-grow flex flex-col">
                     <h3 className="text-xl font-heading font-bold text-ureport-dark mb-4 line-clamp-2">
@@ -130,11 +130,11 @@ export function Events() {
                         <div>
                           <p className="font-semibold text-gray-900">
                             {new Date(event.date).toLocaleDateString('fr-FR', {
-                          weekday: 'long',
-                          day: 'numeric',
-                          month: 'long',
-                          year: 'numeric'
-                        })}
+                              weekday: 'long',
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric'
+                            })}
                           </p>
                           <p>{event.time}</p>
                         </div>
@@ -146,7 +146,7 @@ export function Events() {
                       <div className="flex items-center">
                         <Users className="w-5 h-5 mr-3 text-green-500 shrink-0" />
                         <p>
-                          {event.registered} / {event.spots} inscrits
+                          {event.registered} / {event.capacity} inscrits
                         </p>
                       </div>
                     </div>
@@ -166,10 +166,10 @@ export function Events() {
                   </div>
                 </Card>
               </motion.div>
-          )}
+            )}
           </motion.div> :
 
-        <div className="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
+          <div className="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
             <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-gray-900 mb-2">
               Aucun événement trouvé
@@ -178,23 +178,23 @@ export function Events() {
               Essayez de modifier vos filtres ou votre recherche.
             </p>
             <Button
-            variant="outline"
-            className="mt-6"
-            onClick={() => {
-              setFilter('all');
-              setSearchQuery('');
-            }}>
-            
+              variant="outline"
+              className="mt-6"
+              onClick={() => {
+                setFilter('all');
+                setSearchQuery('');
+              }}>
+
               Réinitialiser les filtres
             </Button>
           </div>
         }
       </div>
 
-      <RegistrationModal 
-        isOpen={!!selectedEvent} 
-        onClose={() => setSelectedEvent(null)} 
-        eventTitle={selectedEvent?.title || ''} 
+      <RegistrationModal
+        isOpen={!!selectedEvent}
+        onClose={() => setSelectedEvent(null)}
+        eventTitle={selectedEvent?.title || ''}
       />
     </div>);
 

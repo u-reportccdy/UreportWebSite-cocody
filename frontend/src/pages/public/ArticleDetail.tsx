@@ -81,36 +81,14 @@ export function ArticleDetail() {
       {/* Content */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="prose prose-lg prose-blue max-w-none">
-          <p className="text-xl text-gray-600 font-medium leading-relaxed mb-8">
+          <p className="text-xl text-gray-600 font-medium leading-relaxed mb-8 border-l-4 border-ureport-blue pl-6 py-2 bg-ureport-light/30 rounded-r-xl">
             {article.excerpt}
           </p>
 
-          <div className="text-gray-800 leading-relaxed space-y-6">
-            {/* Split content by paragraphs for better rendering if it was real HTML, here we just render the string */}
-            <p>{article.content}</p>
-
-            <p>
-              L'engagement des jeunes est au cœur de la stratégie de
-              développement local. En participant activement aux décisions qui
-              les concernent, ils deviennent les véritables acteurs du
-              changement.
-            </p>
-
-            <blockquote className="border-l-4 border-ureport-gold pl-6 py-2 my-8 bg-orange-50/50 rounded-r-xl italic text-xl text-gray-700">
-              "Nous ne sommes pas seulement les leaders de demain, nous sommes
-              les acteurs d'aujourd'hui. Chaque petite action compte pour
-              transformer notre commune."
-            </blockquote>
-
-            <h3 className="text-2xl font-heading font-bold text-ureport-dark mt-10 mb-4">
-              Comment s'impliquer ?
-            </h3>
-            <p>
-              Si cet article vous a inspiré, sachez qu'il est très facile de
-              rejoindre le mouvement. Consultez notre page d'événements pour
-              voir les prochaines actions prévues dans votre quartier.
-            </p>
-          </div>
+          <div 
+            className="text-gray-800 leading-relaxed quill-content space-y-4"
+            dangerouslySetInnerHTML={{ __html: article.content }}
+          />
         </div>
 
         {/* Tags */}

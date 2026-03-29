@@ -7,3 +7,39 @@
   --color-ureport-light: #F0F9FF;
   --font-heading: 'Inter', sans-serif;
 }
+
+/* Styles pour le rendu du contenu des articles (Public & Admin) */
+blockquote {
+  border-left: 4px solid var(--color-ureport-gold);
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #4B5563; /* text-gray-600 */
+  background-color: #FFFBEB; /* bg-yellow-50 */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+/* Personnalisation de l'éditeur ReactQuill */
+.article-editor .ql-container {
+  font-family: inherit;
+  font-size: 1rem;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.article-editor .ql-toolbar {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.article-editor .ql-editor blockquote {
+  border-left: 4px solid #F5A623;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.article-editor .ql-editor {
+  min-height: 200px;
+}

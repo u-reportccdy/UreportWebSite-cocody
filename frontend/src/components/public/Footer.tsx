@@ -14,13 +14,18 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 bg-white/95 p-3 rounded-2xl w-fit shadow-sm">
-                <div className="flex items-baseline select-none">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-ureport-blue from-50% to-black to-50% font-black text-4xl tracking-tighter">
-                    U
-                  </span>
-                  <span className="text-black font-bold text-3xl ml-1 tracking-tight">
-                    Report
+            <div className="flex items-center gap-2 bg-white/95 p-3 rounded-2xl w-fit shadow-sm" translate="no">
+                <div className="flex flex-col items-start select-none">
+                  <div className="flex items-baseline">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-ureport-blue from-50% to-black to-50% font-black text-3xl tracking-tighter leading-none">
+                      U
+                    </span>
+                    <span className="text-black font-bold text-2xl ml-0.5 tracking-tight leading-none">
+                      Report
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.25em] text-ureport-blue mt-0.5 leading-none self-end mr-0.5">
+                    Cocody
                   </span>
                 </div>
             </div>

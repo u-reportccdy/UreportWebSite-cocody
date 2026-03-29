@@ -24,6 +24,9 @@ import { Partners as AdminPartners } from '../pages/admin/Partners';
 import { Testimonials as AdminTestimonials } from '../pages/admin/Testimonials';
 import { Newsletter as AdminNewsletter } from '../pages/admin/Newsletter';
 
+import { Login as AdminLogin } from '../pages/admin/Login';
+import { AdminGuard } from './AdminGuard';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -39,18 +42,27 @@ const router = createBrowserRouter([
     ]
   },
   {
+    path: '/admin/login',
+    element: <AdminLogin />
+  },
+  {
     path: '/admin',
-    element: <AdminLayout />,
+    element: <AdminGuard />,
     children: [
-      { index: true, element: <Dashboard /> },
-      { path: PATHS.ADMIN.ARTICLES, element: <AdminArticles /> },
-      { path: PATHS.ADMIN.EVENTS, element: <AdminEvents /> },
-      { path: PATHS.ADMIN.INSCRIPTIONS, element: <AdminInscriptions /> },
-      { path: '/admin/stats', element: <Stats /> },
-      { path: '/admin/gallery', element: <AdminGallery /> },
-      { path: '/admin/partners', element: <AdminPartners /> },
-      { path: '/admin/testimonials', element: <AdminTestimonials /> },
-      { path: '/admin/newsletter', element: <AdminNewsletter /> },
+      {
+        element: <AdminLayout />,
+        children: [
+          { index: true, element: <Dashboard /> },
+          { path: PATHS.ADMIN.ARTICLES, element: <AdminArticles /> },
+          { path: PATHS.ADMIN.EVENTS, element: <AdminEvents /> },
+          { path: PATHS.ADMIN.INSCRIPTIONS, element: <AdminInscriptions /> },
+          { path: '/admin/stats', element: <Stats /> },
+          { path: '/admin/gallery', element: <AdminGallery /> },
+          { path: '/admin/partners', element: <AdminPartners /> },
+          { path: '/admin/testimonials', element: <AdminTestimonials /> },
+          { path: '/admin/newsletter', element: <AdminNewsletter /> },
+        ]
+      }
     ]
   },
   {

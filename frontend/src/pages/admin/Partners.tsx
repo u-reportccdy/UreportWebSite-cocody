@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlusIcon, ExternalLinkIcon, Edit2Icon, Trash2Icon, XIcon } from 'lucide-react';
-
-const initialPartners = [
-  { id: 1, name: "UNICEF Côte d'Ivoire", type: 'Institutionnel', website: 'unicef.org/cotedivoire', logo: 'https://placehold.co/200x200/0099DC/FFFFFF?text=UNICEF' },
-  { id: 2, name: 'Mairie de Cocody', type: 'Gouvernemental', website: 'mairiecocody.ci', logo: 'https://placehold.co/200x200/6CC24A/FFFFFF?text=MAIRIE' },
-  { id: 3, name: 'Orange CI', type: 'Sponsor Privé', website: 'orange.ci', logo: 'https://placehold.co/200x200/FF7900/FFFFFF?text=ORANGE' },
-  { id: 4, name: 'Croix-Rouge CI', type: 'ONG', website: 'croixrouge-ci.org', logo: 'https://placehold.co/200x200/ef4444/FFFFFF?text=CROIXROUGE' },
-  { id: 5, name: 'Université FHB', type: 'Académique', website: 'univ-fhb.edu.ci', logo: 'https://placehold.co/200x200/1E293B/FFFFFF?text=UFHB' }
-];
+import { partners as initialPartners } from '../../data/mockData';
 
 export function Partners() {
   const [partners, setPartners] = useState(initialPartners);
@@ -71,7 +64,7 @@ export function Partners() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6" translate="no">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold text-[#1E293B]">Réseau de Partenaires</h2>
         <button onClick={() => handleOpenModal()} className="flex items-center space-x-2 bg-[#0099DC] text-white px-4 py-2 rounded-lg hover:bg-[#007bb5] transition-colors">

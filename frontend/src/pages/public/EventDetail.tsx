@@ -40,7 +40,7 @@ export function EventDetail() {
     }, 1500);
   };
   const isUpcoming = event.status === 'upcoming';
-  const isFull = event.registered >= event.spots;
+  const isFull = event.registered >= (event.capacity || 0);
   return (
     <div className="bg-gray-50 min-h-screen pb-20">
       {/* Hero Image */}
@@ -82,23 +82,10 @@ export function EventDetail() {
               </h1>
 
               <div className="prose prose-lg max-w-none text-gray-600">
-                <p className="text-xl leading-relaxed mb-6">
-                  {event.description}
-                </p>
-                <p>
-                  Rejoignez-nous pour cette activité essentielle pour notre
-                  communauté. Votre participation fait la différence. N'oubliez
-                  pas d'apporter votre t-shirt U-Report si vous en avez un !
-                </p>
-                <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">
-                  Programme de la journée
-                </h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>Accueil et installation des participants</li>
-                  <li>Mot de bienvenue et briefing sur les objectifs</li>
-                  <li>Déploiement sur le terrain en équipes</li>
-                  <li>Débriefing et rafraîchissements</li>
-                </ul>
+                <div 
+                  className="text-gray-800 leading-relaxed quill-content space-y-4"
+                  dangerouslySetInnerHTML={{ __html: event.description || 'Aucune description disponible pour cet événement.' }}
+                />
               </div>
             </Card>
 
@@ -186,13 +173,13 @@ export function EventDetail() {
                     </p>
                     <div className="flex justify-between text-sm text-gray-600 mb-1 mt-1">
                       <span>{event.registered} inscrits</span>
-                      <span>{event.spots} total</span>
+                      <span>{event.capacity} total</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
                         className={`h-2 rounded-full ${isFull ? 'bg-red-500' : 'bg-green-500'}`}
                         style={{
-                          width: `${event.registered / event.spots * 100}%`
+                          width: `${(event.registered / (event.capacity || 1)) * 100}%`
                         }}>
                       </div>
                     </div>

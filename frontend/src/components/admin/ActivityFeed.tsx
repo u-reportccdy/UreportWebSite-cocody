@@ -90,7 +90,7 @@ export function ActivityFeed() {
 
         })}
       </div>
-      <Link to="/admin" className="w-full mt-6 py-2 text-sm font-medium text-[#0099DC] hover:text-[#007bb5] transition-colors block text-center">
+      <Link to="/admin/stats" className="w-full mt-6 py-2 text-sm font-medium text-[#0099DC] hover:text-[#007bb5] transition-colors block text-center border border-[#0099DC]/10 rounded-lg hover:bg-blue-50">
         Voir tout l'historique
       </Link>
     </motion.div>);

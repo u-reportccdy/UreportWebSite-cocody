@@ -13,6 +13,7 @@ import {
   testimonials } from
 '../../data/mockData';
 import { RegistrationModal } from '../../components/public/RegistrationModal';
+import { JoinModal } from '../../components/public/JoinModal';
 const containerVariants: Variants = {
   hidden: {
     opacity: 0
@@ -41,6 +42,7 @@ const itemVariants: Variants = {
 };
 export function Home() {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
 
   const upcomingEvents = events.
   filter((e) => e.status === 'upcoming').
@@ -88,18 +90,16 @@ export function Home() {
               notre commune.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
+              <Button size="lg" className="w-full sm:w-auto text-lg px-8" onClick={() => setIsJoinModalOpen(true)}>
+                Nous rejoindre maintenant
+              </Button>
               <Link href="/events">
-                <Button size="lg" className="w-full sm:w-auto text-lg px-8">
-                  Découvrir les actions
-                </Button>
-              </Link>
-              <Link href="/about">
                 <Button
                   variant="outline"
                   size="lg"
                   className="w-full sm:w-auto text-lg px-8 bg-white/10 text-white border-white/30 hover:bg-white/20">
                   
-                  En savoir plus
+                  Découvrir les actions
                 </Button>
               </Link>
             </div>
@@ -313,7 +313,7 @@ export function Home() {
               
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10">
                 <img
-                  src="/photo.jpg"
+                  src="/images/photo.jpg"
                   alt="Communauté U-Report"
                   className="w-full h-auto" />
                 
@@ -444,6 +444,11 @@ export function Home() {
         isOpen={!!selectedEvent} 
         onClose={() => setSelectedEvent(null)} 
         eventTitle={selectedEvent?.title || ''} 
+      />
+
+      <JoinModal 
+        isOpen={isJoinModalOpen} 
+        onClose={() => setIsJoinModalOpen(false)} 
       />
     </div>);
 
