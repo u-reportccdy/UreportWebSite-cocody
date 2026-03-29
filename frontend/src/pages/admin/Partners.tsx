@@ -81,7 +81,7 @@ export function Partners() {
           <div key={partner.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center group hover:shadow-md transition-shadow">
             <div className="w-24 h-24 rounded-full border-4 border-gray-50 mb-4 overflow-hidden bg-white shadow-sm flex items-center justify-center">
               <img 
-                src={logoErrors[partner.id] ? `https://placehold.co/200x200/CCC/FFF?text=${partner.name.substring(0, 1)}` : partner.logo} 
+                src={logoErrors[partner.id] ? `https://placehold.co/200x200/CCC/FFF?text=${encodeURIComponent(partner.name.substring(0, 1))}` : sanitizeUrl(partner.logo)} 
                 alt={`${partner.name} logo`} 
                 className="w-full h-full object-cover" 
                 onError={() => handleLogoError(partner.id)} 
