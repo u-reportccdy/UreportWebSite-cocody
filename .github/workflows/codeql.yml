@@ -23,21 +23,18 @@ jobs:
       matrix:
         language: [javascript, typescript]
     steps:
-      - name: Checkout repository
+      - name: "Checkout repository"
         uses: actions/checkout@v4
 
-      - name: Generate root lockfile
-        run: npm install --package-lock-only
-
-      - name: Initialise CodeQL
+      - name: "Initialise CodeQL"
         uses: github/codeql-action/init@v3
         with:
-          languages: ${{ matrix.language }}
+          languages: "${{ matrix.language }}"
 
-      - name: Setup Node.js
+      - name: "Setup Node.js"
         uses: actions/setup-node@v4
         with:
-          node-version: 24.x
+          node-version: "24.x"
 
       - name: Install dependencies (frontend)
         working-directory: ./frontend
