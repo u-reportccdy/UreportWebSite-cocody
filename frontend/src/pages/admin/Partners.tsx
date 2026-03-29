@@ -31,8 +31,8 @@ export function Partners() {
   const sanitizeUrl = (url: string) => {
     if (!url) return '#';
     const trimmed = url.trim();
-    // Empêcher les protocoles dangereux
-    if (trimmed.toLowerCase().startsWith('javascript:') || trimmed.toLowerCase().startsWith('data:')) {
+    // Bloquer les protocoles dangereux (javascript, vbscript, data) avec Regex insensible à la casse
+    if (/^(javascript|vbscript|data):/i.test(trimmed)) {
       return '#';
     }
     return trimmed.startsWith('http') ? trimmed : `https://${trimmed}`;
