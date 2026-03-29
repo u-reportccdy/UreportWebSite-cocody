@@ -6,41 +6,45 @@ on:
   pull_request:
     branches: [dev, main]
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ["24.x"]
+
     steps:
-      - name: Checkout repository
+      - name: "📦 Checkout du code"
         uses: actions/checkout@v4
 
-      - name: "Setup Node.js"
+      - name: "⚙️ Configuration de Node.js (v18)"
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: |
+            frontend/package-lock.json
+            backend/package-lock.json
 
-      - name: Install frontend dependencies
+      # --- FRONTEND ---
+      - name: "🎨 Installation des dépendances (Frontend)"
         working-directory: ./frontend
-        run: npm ci
+        run: npm install
 
-      - name: Build frontend
+      - name: "🏗️ Build du Frontend"
         working-directory: ./frontend
         run: npm run build
 
-      - name: Install backend dependencies
+      # --- BACKEND ---
+      - name: "🔌 Installation des dépendances (Backend)"
         working-directory: ./backend
-        run: npm ci
+        run: npm install
 
-      - name: Build backend (if script exists)
+      - name: "🚀 Vérification de démarrage (Backend)"
         working-directory: ./backend
         run: |
-          if npm run | grep -q "build"; then
-            npm run build
+          # On vérifie si index.js existe ou si un script start est présent
+          if [ -f "index.js" ]; then
+            node index.js & sleep 5 && kill $!
+          elif npm run | grep -q "start"; then
+            npm run start & sleep 5 && kill $!
           else
-            echo "No backend build script – skipping"
+            echo "Avertissement : Aucun point d'entrée trouvé pour tester le démarrage."
           fi
