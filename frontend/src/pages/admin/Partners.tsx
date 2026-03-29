@@ -30,18 +30,22 @@ export function Partners() {
 
   const sanitizeUrl = (url: string) => {
     if (!url) return '#';
+    const trimmed = url.trim();
+
     try {
-      // Décodage pour détecter les tentatives d'obfuscation (ex: %6a%61%76...)
-      const decoded = decodeURI(url).trim().toLowerCase();
-      if (decoded.startsWith('javascript:') || decoded.startsWith('data:') || decoded.startsWith('vbscript:')) {
-        return '#';
+      const parsed = new URL(trimmed);
+      // Whitelist : on n'accepte que http et https
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        return trimmed;
       }
     } catch (e) {
-      // En cas d'erreur de décodage, on reste prudent
+      // Si ce n'est pas une URL absolue, on accepte uniquement les chemins relatifs sûrs
+      if (trimmed.startsWith('/') || trimmed.startsWith('./')) {
+        return trimmed;
+      }
     }
-    
-    const trimmed = url.trim();
-    return trimmed.startsWith('http') ? trimmed : `https://${trimmed}`;
+
+    return '#';
   };
 
   const handleLogoError = (id: number) => {
@@ -81,7 +85,7 @@ export function Partners() {
           <div key={partner.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center group hover:shadow-md transition-shadow">
             <div className="w-24 h-24 rounded-full border-4 border-gray-50 mb-4 overflow-hidden bg-white shadow-sm flex items-center justify-center">
               <img 
-                src={logoErrors[partner.id] ? `https://placehold.co/200x200/CCC/FFF?text=${encodeURIComponent(partner.name.substring(0, 1))}` : sanitizeUrl(partner.logo)} 
+                src={logoErrors[partner.id] ? 'https://placehold.co/200x200/CCC/FFF?text=LOGO' : sanitizeUrl(partner.logo)} 
                 alt={`${partner.name} logo`} 
                 className="w-full h-full object-cover" 
                 onError={() => handleLogoError(partner.id)} 
