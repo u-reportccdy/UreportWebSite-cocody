@@ -1,16 +1,11 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import articleRoutes from './article.routes';
+import eventRoutes from './event.routes';
 
 const router = Router();
 
-// Route exemple
-router.get('/articles', (req: Request, res: Response) => {
-  res.json({
-    status: 'success',
-    data: [
-      { id: 1, title: 'Article 1 from Backend' },
-      { id: 2, title: 'Article 2 from Backend' }
-    ]
-  });
-});
+// Routes principales de l'API
+router.use('/articles', articleRoutes);
+router.use('/events', eventRoutes);
 
 export default router;
