@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [dev, main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "📦 Checkout du code"
+        uses: actions/checkout@v4
+
+      - name: "⚙️ Configuration de Node.js (v24)"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+          cache-dependency-path: |
+            frontend/package-lock.json
+            backend/package-lock.json
+
+      # --- FRONTEND ---
+      - name: "🎨 Installation des dépendances (Frontend)"
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: "🏗️ Build du Frontend"
+        working-directory: ./frontend
+        run: npm run build
+
+      # --- BACKEND ---
+      - name: "🔌 Installation des dépendances (Backend)"
+        working-directory: ./backend
+        run: npm ci
+
+      - name: "🏗️ Build du Backend"
+        working-directory: ./backend
+        run: |
+          if npm run | grep -q "build"; then
+            npm run build
+          fi
+
+      - name: "🚀 Vérification de démarrage (Backend)"
+        working-directory: ./backend
+        run: |
+          # Vérification de démarrage sécurisée
+          if [ -f "index.js" ]; then
+            node index.js & sleep 5 && kill $!
+          elif npm run | grep -q "start"; then
+            npm run start & sleep 5 && kill $!
+          else
+            echo "Avertissement : Aucun point d'entrée trouvé."
+          fi
