@@ -9,6 +9,11 @@ interface RecentInscriptionsProps {
 
 export function RecentInscriptions({ members }: RecentInscriptionsProps) {
   const list = members || [];
+  const statusLabel: Record<string, string> = {
+    aspirant: 'Aspirant',
+    ureporter: 'U-Reporter',
+    mentor: 'Mentor',
+  };
 
   return (
     <motion.div
@@ -60,7 +65,7 @@ export function RecentInscriptions({ members }: RecentInscriptionsProps) {
                       {user.full_name}
                     </p>
                     <p className="text-xs text-[#64748B] capitalize">
-                      Profil : {user.profile_type || 'Aspirant'}
+                      Profil : {statusLabel[String(user.status || '').toLowerCase()] || user.status || 'Aspirant'}
                     </p>
                   </div>
                 </div>

@@ -90,17 +90,23 @@ export function Inscriptions() {
   };
 
   const handleExportCSV = () => {
+    const escapeCsv = (value: any) => `"${String(value ?? '').replace(/"/g, '""')}"`;
+    const rowsToExport = filteredRegistrations;
+    if (rowsToExport.length === 0) {
+      setError("Aucune donnée à exporter pour cette activité.");
+      return;
+    }
     const headers = ['Nom', 'Email', 'Telephone', 'Statut membre', 'Presence', 'Date inscription'];
-    const csvContent = registrations.map(user => [
-      `"${user.full_name || ''}"`,
-      `"${user.email || ''}"`,
-      `"${user.phone || ''}"`,
-      `"${user.member_status || ''}"`,
-      `"${user.attended ? 'Present' : 'Absent'}"`,
-      `"${user.created_at || ''}"`,
-    ].join(',')).join('\n');
+    const csvContent = rowsToExport.map(user => [
+      escapeCsv(user.full_name || user.name || ''),
+      escapeCsv(user.email || ''),
+      escapeCsv(user.phone || user.telephone || ''),
+      escapeCsv(user.member_status || user.status || ''),
+      escapeCsv(user.attended ? 'Present' : 'Absent'),
+      escapeCsv(user.created_at || user.date_inscription || ''),
+    ].join(';')).join('\r\n');
 
-    const fullContent = '\uFEFF' + headers.join(',') + '\n' + csvContent;
+    const fullContent = '\uFEFF' + 'sep=;\r\n' + headers.join(';') + '\r\n' + csvContent;
     const blob = new Blob([fullContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');

@@ -37,6 +37,7 @@ export function RecentArticles({ articles }: RecentArticlesProps) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {list.map((article) => {
+              const articleImage = article.image || article.image_url;
               const formattedDate = new Date(article.date || article.created_at).toLocaleDateString('fr-FR', {
                 day: 'numeric',
                 month: 'short',
@@ -49,9 +50,9 @@ export function RecentArticles({ articles }: RecentArticlesProps) {
                   className="group cursor-pointer border border-gray-100 rounded-xl overflow-hidden hover:shadow-md transition-all"
                 >
                   <div className="h-32 w-full overflow-hidden relative bg-gray-100">
-                    {article.image ? (
+                    {articleImage ? (
                       <img
-                        src={article.image}
+                        src={articleImage}
                         alt={article.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                       />

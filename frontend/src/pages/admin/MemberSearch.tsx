@@ -7,6 +7,7 @@ const memberStatusLabel: Record<string, string> = {
   ureporter: 'U-Reporter',
   mentor: 'Mentor',
 };
+const MAX_RESULTS = 20;
 
 export function MemberSearch() {
   const [query, setQuery] = useState('');
@@ -17,6 +18,8 @@ export function MemberSearch() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+  const [historyMode, setHistoryMode] = useState<'participated' | 'registrations'>('registrations');
   const [form, setForm] = useState({
     full_name: '',
     phone: '',
@@ -40,7 +43,8 @@ export function MemberSearch() {
     load();
   }, [query]);
 
-  const list = useMemo(() => members, [members]);
+  const list = useMemo(() => members.slice(0, MAX_RESULTS), [members]);
+  const hasMoreResults = members.length > MAX_RESULTS;
 
   const openProfile = async (member: any) => {
     setSelected(member);
@@ -85,6 +89,14 @@ export function MemberSearch() {
     }
   };
 
+  const openHistoryModal = (mode: 'participated' | 'registrations') => {
+    setHistoryMode(mode);
+    setIsHistoryModalOpen(true);
+  };
+
+  const activities = profile?.activities || [];
+  const participatedActivities = activities.filter((a: any) => a.attended);
+
   return (
     <div className="space-y-6">
       <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
@@ -105,6 +117,11 @@ export function MemberSearch() {
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 text-sm font-bold text-[#1E293B]">Résultats</div>
           <div className="max-h-[65vh] overflow-y-auto">
+            {!isLoading && hasMoreResults && (
+              <div className="px-5 py-3 text-xs font-semibold text-amber-700 bg-amber-50 border-b border-amber-100">
+                {members.length} membres trouvés. Affichage limité à {MAX_RESULTS}. Veuillez affiner la recherche.
+              </div>
+            )}
             {list.map(member => (
               <button
                 key={member.id}
@@ -182,23 +199,47 @@ export function MemberSearch() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-lg border border-gray-200 p-3"><p className="text-xs text-gray-500">Date de naissance</p><p className="font-bold text-[#1E293B]">{profile?.summary?.birth_date || '-'}</p></div>
                 <div className="rounded-lg border border-gray-200 p-3"><p className="text-xs text-gray-500">Age</p><p className="font-bold text-[#1E293B]">{profile?.summary?.age ?? '-'}</p></div>
-                <div className="rounded-lg border border-gray-200 p-3"><p className="text-xs text-gray-500">Activités participées</p><p className="font-bold text-[#1E293B]">{profile?.summary?.activities_participated || 0}</p></div>
-                <div className="rounded-lg border border-gray-200 p-3"><p className="text-xs text-gray-500">Inscriptions totales</p><p className="font-bold text-[#1E293B]">{profile?.summary?.registrations_total || 0}</p></div>
-              </div>
-              <div className="border border-gray-100 rounded-lg max-h-64 overflow-y-auto">
-                {(profile?.activities || []).map((a: any) => (
-                  <div key={a.id} className="px-3 py-2 border-b border-gray-100">
-                    <div className="text-sm font-semibold text-[#1E293B]">{a.event_title || 'Activité'}</div>
-                    <div className="text-xs text-[#64748B]">{a.event_date || '-'} - {a.event_location || '-'}</div>
-                    <div className="text-xs font-bold mt-1">{a.attended ? 'Présent' : 'Absent'}</div>
-                  </div>
-                ))}
-                {(profile?.activities || []).length === 0 && <div className="px-3 py-4 text-xs text-[#64748B]">Aucune activité.</div>}
+                <button type="button" onClick={() => openHistoryModal('participated')} className="rounded-lg border border-gray-200 p-3 text-left hover:bg-gray-50 transition-colors">
+                  <p className="text-xs text-gray-500">Activités participées</p>
+                  <p className="font-bold text-[#1E293B]">{profile?.summary?.activities_participated || 0}</p>
+                </button>
+                <button type="button" onClick={() => openHistoryModal('registrations')} className="rounded-lg border border-gray-200 p-3 text-left hover:bg-gray-50 transition-colors">
+                  <p className="text-xs text-gray-500">Inscriptions totales</p>
+                  <p className="font-bold text-[#1E293B]">{profile?.summary?.registrations_total || 0}</p>
+                </button>
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {isHistoryModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-2xl rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+            <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-[#1E293B]">
+                {historyMode === 'participated' ? 'Historique des activités participées' : "Historique des inscriptions"}
+              </h3>
+              <button onClick={() => setIsHistoryModalOpen(false)} className="px-3 py-1.5 text-xs font-semibold rounded-md border border-gray-200 hover:bg-gray-50">
+                Fermer
+              </button>
+            </div>
+            <div className="max-h-[60vh] overflow-y-auto p-4">
+              {(historyMode === 'participated' ? participatedActivities : activities).length === 0 ? (
+                <div className="text-sm text-[#64748B]">Aucune donnée disponible.</div>
+              ) : (
+                (historyMode === 'participated' ? participatedActivities : activities).map((a: any) => (
+                  <div key={a.id} className="px-3 py-3 border-b border-gray-100">
+                    <div className="text-sm font-semibold text-[#1E293B]">{a.event_title || 'Activité'}</div>
+                    <div className="text-xs text-[#64748B] mt-1">{a.event_date || '-'} - {a.event_location || '-'}</div>
+                    <div className="text-xs font-bold mt-1">{a.attended ? 'Présent' : 'Inscrit (absence/non marqué)'}</div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

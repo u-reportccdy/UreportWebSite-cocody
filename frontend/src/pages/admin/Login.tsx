@@ -44,7 +44,7 @@ export function Login() {
           </span>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-6" autoComplete="off">
           {error && (
             <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm text-center font-medium border border-red-100">
               {error}
@@ -56,6 +56,8 @@ export function Login() {
             <input
               required
               type="email"
+              name="admin_email_no_autofill"
+              autoComplete="off"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@ureport.ci"
@@ -69,6 +71,8 @@ export function Login() {
               <input
                 required
                 type={showPassword ? 'text' : 'password'}
+                name="admin_password_no_autofill"
+                autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"

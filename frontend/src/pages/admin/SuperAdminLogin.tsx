@@ -38,16 +38,16 @@ export function SuperAdminLogin() {
             Super Admin
           </span>
         </div>
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-6" autoComplete="off">
           {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm text-center font-medium border border-red-100">{error}</div>}
           <div className="space-y-1.5">
             <label className="text-sm font-semibold text-gray-700 ml-1">Adresse Email</label>
-            <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
+            <input required type="email" name="superadmin_email_no_autofill" autoComplete="off" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
           </div>
           <div className="space-y-1.5">
             <label className="text-sm font-semibold text-gray-700 ml-1">Mot de passe</label>
             <div className="relative">
-              <input required type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-3 pr-11 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
+              <input required type={showPassword ? 'text' : 'password'} name="superadmin_password_no_autofill" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-3 pr-11 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
               <button
                 type="button"
                 onClick={() => setShowPassword(v => !v)}

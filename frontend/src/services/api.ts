@@ -12,9 +12,9 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = sessionStorage.getItem('admin_token');
-  const path = window.location.pathname || '';
-  const isBackofficeRoute = path.startsWith('/admin') || path.startsWith('/superadmin');
-  if (token && isBackofficeRoute) {
+  const url = config.url || '';
+  const isAuthLoginEndpoint = url.includes('/auth/admin/login') || url.includes('/auth/superadmin/login');
+  if (token && !isAuthLoginEndpoint) {
     config.headers = config.headers || {};
     config.headers.Authorization = `Bearer ${token}`;
   }

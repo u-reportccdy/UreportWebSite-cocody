@@ -71,7 +71,6 @@ export function Home() {
           { id: 'members', label: 'U-Reporters Actifs', value: `${statsData.ureporters_active || 0}+` },
           { id: 'events', label: 'Actions organisées', value: `${statsData.events_organized || 0}+` },
           { id: 'partners', label: 'Partenaires locaux', value: `${statsData.partners_local || 0}+` },
-          { id: 'attendance', label: 'Participations', value: `${statsData.attendance_total || 0}+` },
         ]);
         
         setEvents(eventsData.map((event: any) => ({
@@ -249,7 +248,7 @@ export function Home() {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="absolute -bottom-16 left-0 right-0 z-20 px-4"
         >
-          <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-8 grid grid-cols-2 md:grid-cols-4 gap-8 border border-gray-100">
+          <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-8 grid grid-cols-2 md:grid-cols-3 gap-8 border border-gray-100">
             {stats.map((stat) => (
               <div key={stat.id} className="text-center">
                 <div className="text-3xl md:text-4xl font-heading font-bold text-ureport-blue mb-2">

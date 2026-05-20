@@ -165,29 +165,30 @@ export function Settings() {
   };
 
   const handleSaveSecurity = async () => {
+    if (adminRole !== 'superadmin') {
+      await confirm({
+        title: 'Accès refusé',
+        message: 'Seul le superadmin peut modifier les accès admin.',
+        confirmText: 'Compris',
+        cancelText: 'Fermer',
+      });
+      return;
+    }
+
     setIsSavingSecurity(true);
     try {
-      if (adminRole === 'superadmin') {
-        if (securityForm.admin_email || securityForm.admin_new_password) {
-          await changeAdminCredentials({
-            target_role: 'admin',
-            target_email: (securityForm.admin_email || '').trim(),
-            new_password: (securityForm.admin_new_password || '').trim() || undefined,
-          });
-        }
-        if (securityForm.superadmin_email || securityForm.superadmin_new_password) {
-          await changeAdminCredentials({
-            target_role: 'superadmin',
-            target_email: (securityForm.superadmin_email || '').trim(),
-            new_password: (securityForm.superadmin_new_password || '').trim() || undefined,
-          });
-        }
-      } else {
+      if (securityForm.admin_email || securityForm.admin_new_password) {
         await changeAdminCredentials({
           target_role: 'admin',
           target_email: (securityForm.admin_email || '').trim(),
-          current_password: securityForm.current_password,
-          new_password: (securityForm.admin_new_password || '').trim(),
+          new_password: (securityForm.admin_new_password || '').trim() || undefined,
+        });
+      }
+      if (securityForm.superadmin_email || securityForm.superadmin_new_password) {
+        await changeAdminCredentials({
+          target_role: 'superadmin',
+          target_email: (securityForm.superadmin_email || '').trim(),
+          new_password: (securityForm.superadmin_new_password || '').trim() || undefined,
         });
       }
 
@@ -521,6 +522,7 @@ export function Settings() {
 
           <hr className="border-gray-100 my-6" />
 
+          {adminRole === 'superadmin' && (
           <div className="space-y-4">
             <h4 className="text-sm font-bold uppercase tracking-wider text-[#0099DC]">
               Sécurité des comptes admin
@@ -548,41 +550,27 @@ export function Settings() {
                 </div>
               </div>
 
-              {adminRole === 'superadmin' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Email Superadmin</label>
-                    <input
-                      type="email"
-                      value={securityForm.superadmin_email}
-                      onChange={e => setSecurityForm({ ...securityForm, superadmin_email: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Nouveau mot de passe Superadmin</label>
-                    <input
-                      type="password"
-                      value={securityForm.superadmin_new_password}
-                      onChange={e => setSecurityForm({ ...securityForm, superadmin_new_password: e.target.value })}
-                      placeholder="Minimum 10 caractères"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {adminRole !== 'superadmin' && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Mot de passe actuel (Admin)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email Superadmin</label>
                   <input
-                    type="password"
-                    value={securityForm.current_password}
-                    onChange={e => setSecurityForm({ ...securityForm, current_password: e.target.value })}
+                    type="email"
+                    value={securityForm.superadmin_email}
+                    onChange={e => setSecurityForm({ ...securityForm, superadmin_email: e.target.value })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent"
                   />
                 </div>
-              )}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nouveau mot de passe Superadmin</label>
+                  <input
+                    type="password"
+                    value={securityForm.superadmin_new_password}
+                    onChange={e => setSecurityForm({ ...securityForm, superadmin_new_password: e.target.value })}
+                    placeholder="Minimum 10 caractères"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent"
+                  />
+                </div>
+              </div>
 
               <div className="flex justify-end">
                 <button
@@ -596,6 +584,7 @@ export function Settings() {
               </div>
             </div>
           </div>
+          )}
 
           <hr className="border-gray-100 my-6" />
 
