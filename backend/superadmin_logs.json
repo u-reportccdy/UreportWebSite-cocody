@@ -1,0 +1,119 @@
+[
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "admin_updated",
+    "target": "admin@votre-domaine.com",
+    "details": {
+      "admin_id": "1d153c55-751a-41b7-84f7-27973e3766a4"
+    },
+    "created_at": "2026-05-20T00:11:23.396964+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "admin_updated",
+    "target": "admin@votre-domaine.com",
+    "details": {
+      "admin_id": "1d153c55-751a-41b7-84f7-27973e3766a4"
+    },
+    "created_at": "2026-05-20T00:11:13.726306+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "maintenance_updated",
+    "target": "site",
+    "details": {
+      "site_under_maintenance": false,
+      "maintenance_message": "Le site est actuellement en maintenance. Veuillez revenir plus tard."
+    },
+    "created_at": "2026-05-19T23:39:13.933136+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "maintenance_updated",
+    "target": "site",
+    "details": {
+      "site_under_maintenance": true,
+      "maintenance_message": "Le site est actuellement en maintenance. Veuillez revenir plus tard."
+    },
+    "created_at": "2026-05-19T23:38:02.271004+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "maintenance_updated",
+    "target": "site",
+    "details": {
+      "site_under_maintenance": true,
+      "maintenance_message": "Le site est actuellement en maintenance. Veuillez revenir plus tard."
+    },
+    "created_at": "2026-05-19T23:34:11.339470+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "maintenance_updated",
+    "target": "site",
+    "details": {
+      "site_under_maintenance": true,
+      "maintenance_message": "Le site est actuellement en maintenance. Veuillez revenir plus tard."
+    },
+    "created_at": "2026-05-19T23:28:45.063337+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "maintenance_updated",
+    "target": "site",
+    "details": {
+      "site_under_maintenance": true,
+      "maintenance_message": "Le site est actuellement en maintenance. Veuillez revenir plus tard."
+    },
+    "created_at": "2026-05-19T23:25:25.856531+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "maintenance_updated",
+    "target": "site",
+    "details": {
+      "site_under_maintenance": true,
+      "maintenance_message": "Le site est actuellement en maintenance. Veuillez revenir plus tard."
+    },
+    "created_at": "2026-05-19T23:10:43.001366+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "maintenance_updated",
+    "target": "site",
+    "details": {
+      "site_under_maintenance": true,
+      "maintenance_message": "Le site est actuellement en maintenance. Veuillez revenir plus tard."
+    },
+    "created_at": "2026-05-19T23:00:42.631924+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "maintenance_updated",
+    "target": "site",
+    "details": {
+      "site_under_maintenance": true,
+      "maintenance_message": "Le site est actuellement en maintenance. Veuillez revenir plus tard."
+    },
+    "created_at": "2026-05-19T22:53:41.943138+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "maintenance_updated",
+    "target": "site",
+    "details": {
+      "site_under_maintenance": true,
+      "maintenance_message": "Le site est actuellement en maintenance. Veuillez revenir plus tard."
+    },
+    "created_at": "2026-05-19T22:53:23.587426+00:00"
+  },
+  {
+    "actor_email": "superadmin@votre-domaine.com",
+    "action": "admin_created",
+    "target": "superadmin@votre-domaine.com",
+    "details": {
+      "admin_id": "707d27a3-d335-48e4-8eeb-b4784f281143"
+    },
+    "created_at": "2026-05-19T22:52:51.826700+00:00"
+  }
+]
