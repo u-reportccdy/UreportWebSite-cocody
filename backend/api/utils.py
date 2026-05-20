@@ -72,6 +72,10 @@ def parse_admin_token(auth_header: str | None) -> dict[str, Any] | None:
 
 
 def _is_admin_request(path: str, method: str) -> bool:
+    # Public team members listing/details for website About page
+    if method == "GET" and (path == "/api/team-members" or path.startswith("/api/team-members/")):
+        return False
+
     # Public GET pages/lists remain open
     if method == "GET":
         if path in {"/api/articles", "/api/events", "/api/partners", "/api/testimonials", "/api/gallery/albums", "/api/gallery/photos", "/api/stats", "/api/settings"}:
@@ -85,12 +89,14 @@ def _is_admin_request(path: str, method: str) -> bool:
             return False
         if path == "/api/newsletter/subscribers":
             return True
+        if path == "/api/members":
+            return False
         if path.startswith("/api/members"):
             return True
         if path.startswith("/api/contributions"):
             return True
         if path.startswith("/api/team-members"):
-            return True
+            return False
         if path.startswith("/api/settings"):
             return False
         return False

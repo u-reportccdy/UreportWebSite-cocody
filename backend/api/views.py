@@ -257,23 +257,16 @@ def admin_change_credentials(request):
         return error_response("Unauthorized", 401)
 
     caller_role = token_data.get("role")
-    caller_email = _normalize_email(token_data.get("email"))
+    if caller_role != "superadmin":
+        return error_response("Accès réservé au superadmin.", 403)
+
     payload = body_json(request)
     target_role = str(payload.get("target_role") or "").strip().lower()
     target_email = _normalize_email(payload.get("target_email"))
-    current_password = payload.get("current_password") or ""
     new_password = payload.get("new_password") or ""
 
     if target_role not in {"admin", "superadmin"}:
         return error_response("target_role invalide.", 422)
-
-    if caller_role == "admin":
-        if target_role != "admin":
-            return error_response("Un admin ne peut modifier que son propre compte.", 403)
-        if target_email and target_email != caller_email:
-            return error_response("Un admin ne peut modifier que son propre compte.", 403)
-    elif caller_role != "superadmin":
-        return error_response("Unauthorized", 401)
 
     if not target_email:
         return error_response("L'email cible est requis.", 422)
@@ -302,12 +295,6 @@ def admin_change_credentials(request):
 
     current_email_stored = _normalize_email(target_user.get("email"))
     current_hash = target_user.get("password_hash") or ""
-
-    if caller_role == "admin":
-        if caller_email != current_email_stored:
-            return error_response("Session invalide. Reconnectez-vous.", 401)
-        if not current_password or not current_hash or not check_password(current_password, current_hash):
-            return error_response("Mot de passe actuel incorrect.", 403)
 
     target_user["email"] = target_email
     if new_password:
@@ -487,6 +474,10 @@ def superadmin_logs(request):
 def members(request):
     if request.method == "GET":
         q = (request.GET.get("q") or "").strip()
+        if not q:
+            token_data = parse_admin_token(request.headers.get("Authorization"))
+            if not token_data or token_data.get("role") not in {"admin", "superadmin"}:
+                return error_response("Unauthorized", 401)
         rows = supabase.select("members", "select=*&order=created_at.desc")
         if not q:
             return data_response(rows)
