@@ -1,4 +1,4 @@
-import { useState } from 'react';
+ï»¿import { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { ShieldCheck, LogOut, Settings, Home, Menu, X } from 'lucide-react';
 
@@ -54,7 +54,7 @@ export function SuperAdminLayout() {
             className="w-full flex items-center justify-center gap-2 text-sm bg-red-50 text-red-600 px-3 py-2 rounded-xl hover:bg-red-100 transition-all font-semibold"
           >
             <LogOut className="w-4 h-4" />
-            Déconnexion
+            DÃ©connexion
           </button>
         </div>
       </aside>
@@ -72,7 +72,7 @@ export function SuperAdminLayout() {
           </div>
           <span className="inline-flex items-center gap-2 text-sm text-[#1E293B] font-semibold">
             <Settings className="w-4 h-4 text-[#0099DC]" />
-            <span className="hidden sm:inline">Accès sensible</span>
+            <span className="hidden sm:inline">AccÃ¨s sensible</span>
           </span>
         </header>
         <main className="flex-1 p-4 md:p-6 overflow-y-auto" translate="no">
