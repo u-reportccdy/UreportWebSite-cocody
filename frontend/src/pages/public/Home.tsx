@@ -248,7 +248,7 @@ export function Home() {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="absolute -bottom-16 left-0 right-0 z-20 px-4"
         >
-          <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-8 grid grid-cols-2 md:grid-cols-3 gap-8 border border-gray-100">
+          <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-6 sm:p-8 grid grid-cols-3 gap-4 sm:gap-8 border border-gray-100">
             {stats.map((stat) => (
               <div key={stat.id} className="text-center">
                 <div className="text-3xl md:text-4xl font-heading font-bold text-ureport-blue mb-2">
