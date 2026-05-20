@@ -7,7 +7,7 @@ export function SuperAdminLayout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="h-screen w-screen flex bg-gray-100 text-gray-900 font-sans overflow-hidden relative">
+    <div className="h-screen w-full flex bg-gray-100 text-gray-900 font-sans overflow-hidden relative">
       {isMobileMenuOpen && (
         <div
           className="fixed inset-0 bg-gray-900/50 z-40 md:hidden backdrop-blur-sm"
@@ -82,3 +82,4 @@ export function SuperAdminLayout() {
     </div>
   );
 }
+

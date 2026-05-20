@@ -1,4 +1,10 @@
-﻿@import "tailwindcss";
+﻿html, body, #root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@import "tailwindcss";
 
 @theme {
   --color-ureport-blue: #0099DC;
@@ -105,5 +111,6 @@ blockquote {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.6);
 }
+
 
 

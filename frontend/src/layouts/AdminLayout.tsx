@@ -65,7 +65,7 @@ export function AdminLayout() {
   };
 
   return (
-    <div className="h-screen w-screen flex bg-gray-100 text-gray-900 font-sans overflow-hidden relative">
+    <div className="h-screen w-full flex bg-gray-100 text-gray-900 font-sans overflow-hidden relative">
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div 
@@ -208,4 +208,5 @@ export function AdminLayout() {
     </div>
   );
 }
+
 
