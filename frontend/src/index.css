@@ -112,5 +112,32 @@ blockquote {
   background: rgba(148, 163, 184, 0.6);
 }
 
+@keyframes partners-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.partners-marquee {
+  animation: partners-marquee 25s linear infinite;
+  will-change: transform;
+}
+
+.partners-marquee:hover {
+  animation-play-state: paused;
+}
+
+.team-marquee {
+  animation: partners-marquee 25s linear infinite;
+  will-change: transform;
+}
+
+.team-marquee:hover {
+  animation-play-state: paused;
+}
+
 
 

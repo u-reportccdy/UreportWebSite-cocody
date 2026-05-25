@@ -541,12 +541,13 @@ export function Home() {
               Ils nous font confiance
             </p>
           </div>
-          
-          <div className="relative w-full overflow-hidden flex justify-center">
-            {partners.length < 5 ? (
+
+          <div className="relative w-full overflow-hidden">
+            {partners.length < 3 ? (
               <div className="flex flex-wrap items-center justify-center gap-12 md:gap-20 px-8 opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-500">
                 {partners.map((partner) => {
                   const href = formatPartnerWebsite(partner.website);
+
                   const content = (
                     <div className="w-32 h-12 md:h-16 flex items-center justify-center shrink-0 cursor-pointer hover:scale-105 transition-transform duration-300">
                       <img
@@ -556,8 +557,15 @@ export function Home() {
                       />
                     </div>
                   );
+
                   return href ? (
-                    <a key={partner.id} href={href} target="_blank" rel="noopener noreferrer" title={`Visiter le site de ${partner.name}`}>
+                    <a
+                      key={partner.id}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`Visiter le site de ${partner.name}`}
+                    >
                       {content}
                     </a>
                   ) : (
@@ -566,19 +574,12 @@ export function Home() {
                 })}
               </div>
             ) : (
-              <motion.div
-                animate={{ x: ["0%", "-50%"] }}
-                transition={{
-                  repeat: Infinity,
-                  ease: "linear",
-                  duration: 20
-                }}
-                className="flex items-center gap-16 md:gap-32 px-8 w-max opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-500"
-              >
-                {[...partners, ...partners, ...partners].map((partner, index) => {
+              <div className="partners-marquee flex items-center w-max gap-12 md:gap-20 py-2 opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-500">
+                {[...partners, ...partners].map((partner, index) => {
                   const href = formatPartnerWebsite(partner.website);
+
                   const content = (
-                    <div className="w-32 h-12 md:h-16 flex items-center justify-center shrink-0 cursor-pointer hover:scale-105 transition-transform duration-300">
+                    <div className="w-32 h-16 flex items-center justify-center shrink-0 cursor-pointer hover:scale-105 transition-transform duration-300">
                       <img
                         src={partner.logo}
                         alt={partner.name}
@@ -586,15 +587,25 @@ export function Home() {
                       />
                     </div>
                   );
+
                   return href ? (
-                    <a key={`${partner.id}-${index}`} href={href} target="_blank" rel="noopener noreferrer" title={`Visiter le site de ${partner.name}`}>
+                    <a
+                      key={`${partner.id}-${index}`}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`Visiter le site de ${partner.name}`}
+                      className="shrink-0"
+                    >
                       {content}
                     </a>
                   ) : (
-                    <div key={`${partner.id}-${index}`}>{content}</div>
+                    <div key={`${partner.id}-${index}`} className="shrink-0">
+                      {content}
+                    </div>
                   );
                 })}
-              </motion.div>
+              </div>
             )}
           </div>
         </section>

@@ -13,6 +13,8 @@ export function About() {
 
   const bureau = useMemo(() => team.filter(member => member.team_type === 'bureau' && member.active), [team]);
   const devs = useMemo(() => team.filter(member => member.team_type === 'developer' && member.active), [team]);
+  const shouldCarouselMobile = (count: number) => count >= 3;
+  const shouldCarouselDesktop = (count: number) => count >= 4;
 
   return (
     <div className="min-h-screen bg-white pb-20">
@@ -64,32 +66,56 @@ export function About() {
         <section>
           <h2 className="text-3xl font-heading font-bold text-ureport-dark mb-6">Notre Bureau</h2>
           {bureau.length === 0 && <p className="text-sm text-gray-500">Aucun membre du bureau publié.</p>}
-          {bureau.length > 0 && bureau.length < 5 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {bureau.length > 0 && shouldCarouselMobile(bureau.length) && (
+            <div className="lg:hidden relative w-full overflow-hidden flex justify-center">
+              <div className="team-marquee flex items-center gap-6 w-max py-2">
+                {[...bureau, ...bureau].map((member, index) => (
+                  <div key={`${member.id}-${index}`} className="w-[200px] sm:w-[230px] shrink-0 text-center py-3">
+                    <img src={member.photo_url || 'https://placehold.co/200x200'} alt={member.full_name} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mx-auto mb-2.5 sm:mb-3" />
+                    <h3 className="font-bold text-base sm:text-lg text-[#1E293B]">{member.full_name}</h3>
+                    <p className="text-sm text-[#0099DC] font-semibold">{member.role}</p>
+                    {member.bio && <p className="text-xs sm:text-sm text-gray-600 mt-2">{member.bio}</p>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {bureau.length > 0 && !shouldCarouselMobile(bureau.length) && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:hidden">
               {bureau.map(member => (
-                <Card key={member.id} className="p-6 text-center">
+                <div key={member.id} className="text-center py-3">
+                  <img src={member.photo_url || 'https://placehold.co/200x200'} alt={member.full_name} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mx-auto mb-2.5 sm:mb-3" />
+                  <h3 className="font-bold text-base sm:text-lg text-[#1E293B]">{member.full_name}</h3>
+                  <p className="text-sm text-[#0099DC] font-semibold">{member.role}</p>
+                  {member.bio && <p className="text-xs sm:text-sm text-gray-600 mt-2">{member.bio}</p>}
+                </div>
+              ))}
+            </div>
+          )}
+          {bureau.length > 0 && shouldCarouselDesktop(bureau.length) && (
+            <div className="hidden lg:flex relative w-full overflow-hidden justify-center">
+              <div className="team-marquee flex items-center gap-8 w-max py-2">
+                {[...bureau, ...bureau].map((member, index) => (
+                  <div key={`${member.id}-${index}`} className="w-[250px] shrink-0 text-center py-3">
+                    <img src={member.photo_url || 'https://placehold.co/200x200'} alt={member.full_name} className="w-24 h-24 rounded-full object-cover mx-auto mb-3" />
+                    <h3 className="font-bold text-lg text-[#1E293B]">{member.full_name}</h3>
+                    <p className="text-sm text-[#0099DC] font-semibold">{member.role}</p>
+                    {member.bio && <p className="text-sm text-gray-600 mt-2">{member.bio}</p>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {bureau.length > 0 && !shouldCarouselDesktop(bureau.length) && (
+            <div className="hidden lg:grid grid-cols-3 gap-5">
+              {bureau.map(member => (
+                <div key={member.id} className="text-center py-3">
                   <img src={member.photo_url || 'https://placehold.co/200x200'} alt={member.full_name} className="w-24 h-24 rounded-full object-cover mx-auto mb-3" />
                   <h3 className="font-bold text-lg text-[#1E293B]">{member.full_name}</h3>
                   <p className="text-sm text-[#0099DC] font-semibold">{member.role}</p>
                   {member.bio && <p className="text-sm text-gray-600 mt-2">{member.bio}</p>}
-                </Card>
+                </div>
               ))}
-            </div>
-          )}
-          {bureau.length >= 5 && (
-            <div className="overflow-hidden">
-              <motion.div
-                animate={{ x: ['0%', '-50%'] }}
-                transition={{ repeat: Infinity, ease: 'linear', duration: 28 }}
-                className="flex gap-6 w-max py-2">
-                {[...bureau, ...bureau].map((member, index) => (
-                  <Card key={`${member.id}-${index}`} className="p-6 text-center w-[280px] shrink-0">
-                    <img src={member.photo_url || 'https://placehold.co/200x200'} alt={member.full_name} className="w-24 h-24 rounded-full object-cover mx-auto mb-3" />
-                    <h3 className="font-bold text-lg text-[#1E293B]">{member.full_name}</h3>
-                    <p className="text-sm text-[#0099DC] font-semibold">{member.role}</p>
-                  </Card>
-                ))}
-              </motion.div>
             </div>
           )}
         </section>
@@ -97,32 +123,56 @@ export function About() {
         <section>
           <h2 className="text-3xl font-heading font-bold text-ureport-dark mb-6">Développement de l'application</h2>
           {devs.length === 0 && <p className="text-sm text-gray-500">Aucun développeur publié.</p>}
-          {devs.length > 0 && devs.length < 5 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {devs.length > 0 && shouldCarouselMobile(devs.length) && (
+            <div className="lg:hidden relative w-full overflow-hidden flex justify-center">
+              <div className="team-marquee flex items-center gap-6 w-max py-2">
+                {[...devs, ...devs].map((member, index) => (
+                  <div key={`${member.id}-${index}`} className="w-[200px] sm:w-[230px] shrink-0 text-center py-3">
+                    <img src={member.photo_url || 'https://placehold.co/200x200'} alt={member.full_name} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mx-auto mb-2.5 sm:mb-3" />
+                    <h3 className="font-bold text-base sm:text-lg text-[#1E293B]">{member.full_name}</h3>
+                    <p className="text-sm text-[#0099DC] font-semibold">{member.role}</p>
+                    {member.bio && <p className="text-xs sm:text-sm text-gray-600 mt-2">{member.bio}</p>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {devs.length > 0 && !shouldCarouselMobile(devs.length) && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:hidden">
               {devs.map(member => (
-                <Card key={member.id} className="p-6 text-center">
+                <div key={member.id} className="text-center py-3">
+                  <img src={member.photo_url || 'https://placehold.co/200x200'} alt={member.full_name} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mx-auto mb-2.5 sm:mb-3" />
+                  <h3 className="font-bold text-base sm:text-lg text-[#1E293B]">{member.full_name}</h3>
+                  <p className="text-sm text-[#0099DC] font-semibold">{member.role}</p>
+                  {member.bio && <p className="text-xs sm:text-sm text-gray-600 mt-2">{member.bio}</p>}
+                </div>
+              ))}
+            </div>
+          )}
+          {devs.length > 0 && shouldCarouselDesktop(devs.length) && (
+            <div className="hidden lg:flex relative w-full overflow-hidden justify-center">
+              <div className="team-marquee flex items-center gap-8 w-max py-2">
+                {[...devs, ...devs].map((member, index) => (
+                  <div key={`${member.id}-${index}`} className="w-[250px] shrink-0 text-center py-3">
+                    <img src={member.photo_url || 'https://placehold.co/200x200'} alt={member.full_name} className="w-24 h-24 rounded-full object-cover mx-auto mb-3" />
+                    <h3 className="font-bold text-lg text-[#1E293B]">{member.full_name}</h3>
+                    <p className="text-sm text-[#0099DC] font-semibold">{member.role}</p>
+                    {member.bio && <p className="text-sm text-gray-600 mt-2">{member.bio}</p>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {devs.length > 0 && !shouldCarouselDesktop(devs.length) && (
+            <div className="hidden lg:grid grid-cols-3 gap-5">
+              {devs.map(member => (
+                <div key={member.id} className="text-center py-3">
                   <img src={member.photo_url || 'https://placehold.co/200x200'} alt={member.full_name} className="w-24 h-24 rounded-full object-cover mx-auto mb-3" />
                   <h3 className="font-bold text-lg text-[#1E293B]">{member.full_name}</h3>
                   <p className="text-sm text-[#0099DC] font-semibold">{member.role}</p>
                   {member.bio && <p className="text-sm text-gray-600 mt-2">{member.bio}</p>}
-                </Card>
+                </div>
               ))}
-            </div>
-          )}
-          {devs.length >= 5 && (
-            <div className="overflow-hidden">
-              <motion.div
-                animate={{ x: ['0%', '-50%'] }}
-                transition={{ repeat: Infinity, ease: 'linear', duration: 28 }}
-                className="flex gap-6 w-max py-2">
-                {[...devs, ...devs].map((member, index) => (
-                  <Card key={`${member.id}-${index}`} className="p-6 text-center w-[280px] shrink-0">
-                    <img src={member.photo_url || 'https://placehold.co/200x200'} alt={member.full_name} className="w-24 h-24 rounded-full object-cover mx-auto mb-3" />
-                    <h3 className="font-bold text-lg text-[#1E293B]">{member.full_name}</h3>
-                    <p className="text-sm text-[#0099DC] font-semibold">{member.role}</p>
-                  </Card>
-                ))}
-              </motion.div>
             </div>
           )}
         </section>
