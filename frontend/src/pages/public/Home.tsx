@@ -157,7 +157,9 @@ export function Home() {
   }, [heroImages.length]);
 
   const upcomingEvents = events.filter((e) => e.status === 'upcoming').slice(0, 3);
+  const upcomingEventsMobile = upcomingEvents.slice(0, 1);
   const recentArticles = articles.slice(0, 3);
+  const recentArticlesMobile = recentArticles.slice(0, 1);
 
   const formatHeroTitle = (title: string) => {
     if (!title) return null;
@@ -300,7 +302,63 @@ export function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: '-100px' }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            className="grid grid-cols-1 gap-8 md:hidden"
+          >
+            {upcomingEventsMobile.map((event) => (
+              <motion.div key={event.id} variants={itemVariants}>
+                <Card hover className="h-full flex flex-col">
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" 
+                    />
+                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-ureport-blue">
+                      {event.category}
+                    </div>
+                  </div>
+                  <div className="p-6 flex-grow flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center text-sm text-gray-500 mb-3 gap-4">
+                        <span className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-1 text-ureport-gold" />
+                          {new Date(event.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
+                        </span>
+                        <span className="flex items-center">
+                          <Users className="w-4 h-4 mr-1 text-ureport-blue" />
+                          {event.registered || 0}/{event.spots}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-heading font-bold text-ureport-dark mb-3 line-clamp-2">
+                        {event.title}
+                      </h3>
+                      <p className="text-gray-600 mb-6 line-clamp-2 text-sm">
+                        {stripRichText(event.description || '')}
+                      </p>
+                    </div>
+                    <div className="flex gap-2 mt-auto">
+                      <Link href={`/events/${event.id}`} className="flex-1">
+                        <Button fullWidth variant="ghost" className="text-gray-500 hover:text-ureport-blue hover:bg-transparent px-0 font-medium">
+                          Détails
+                        </Button>
+                      </Link>
+                      <Button fullWidth variant="outline" className="group flex-[2]" onClick={() => setSelectedEvent(event)}>
+                        S'inscrire
+                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-100px' }}
+            className="hidden md:grid md:grid-cols-3 gap-8"
           >
             {upcomingEvents.map((event) => (
               <motion.div key={event.id} variants={itemVariants}>
@@ -500,7 +558,49 @@ export function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            className="grid grid-cols-1 gap-8 md:hidden"
+          >
+            {recentArticlesMobile.map((article) => (
+              <motion.div key={article.id} variants={itemVariants}>
+                <Link href={`/articles/${article.id}`} className="group block h-full">
+                  <Card hover className="h-full flex flex-col border-none shadow-md bg-gray-50 group-hover:bg-white transition-colors">
+                    <div className="h-48 overflow-hidden rounded-t-2xl">
+                      <img
+                        src={article.image}
+                        alt={article.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                      />
+                    </div>
+                    <div className="p-6 flex-grow flex flex-col justify-between">
+                      <div>
+                        <div className="text-sm text-ureport-blue font-bold mb-3">
+                          {article.category}
+                        </div>
+                        <h3 className="text-xl font-heading font-bold text-ureport-dark mb-3 group-hover:text-ureport-blue transition-colors">
+                          {article.title}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-3 text-sm">
+                          {stripRichText(article.excerpt || article.content)}
+                        </p>
+                      </div>
+                      <div className="flex items-center text-sm text-gray-500 pt-4 border-t border-gray-200 mt-auto">
+                        <span>{new Date(article.date).toLocaleDateString('fr-FR')}</span>
+                        <span className="mx-2">•</span>
+                        <span>Par {article.author || 'U-Report'}</span>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="hidden md:grid md:grid-cols-3 gap-8"
           >
             {recentArticles.map((article) => (
               <motion.div key={article.id} variants={itemVariants}>
