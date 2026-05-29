@@ -35,13 +35,20 @@ export function Events() {
     loadEvents();
   }, []);
 
-  const filteredEvents = events.filter((event) => {
-    const matchesFilter = filter === 'all' || event.status === filter;
-    const matchesSearch =
-      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.location.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
+  const filteredEvents = events
+    .filter((event) => {
+      const matchesFilter = filter === 'all' || event.status === filter;
+      const matchesSearch =
+        event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.location.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesFilter && matchesSearch;
+    })
+    .sort((a, b) => {
+      const aTime = new Date(a.date || 0).getTime();
+      const bTime = new Date(b.date || 0).getTime();
+      return bTime - aTime;
+    })
+    .slice(0, 10);
   return (
     <div className="min-h-screen bg-gray-50 pb-20" translate="no">
       {/* Header */}
@@ -84,8 +91,7 @@ export function Events() {
               Tous
             </button>
           </div>
-
-          <div className="relative w-full md:w-72">
+          <div className="relative w-full md:w-[360px]">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-gray-400" />
             </div>
@@ -94,7 +100,7 @@ export function Events() {
               placeholder="Rechercher un événement..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-gray-900 placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent" />
+              className="w-full pl-11 pr-4 py-2.5 rounded-2xl border border-gray-300 bg-gray-50 text-gray-900 placeholder:text-[#586A82] text-[15px] shadow-[0_2px_8px_rgba(15,23,42,0.08)] focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent" />
 
           </div>
         </Card>
@@ -204,7 +210,9 @@ export function Events() {
               Aucun événement trouvé
             </h3>
             <p className="text-gray-500">
-              Essayez de modifier vos filtres ou votre recherche.
+              {searchQuery.trim()
+                ? `Aucun résultat pour "${searchQuery}".`
+                : 'Essayez de modifier vos filtres ou votre recherche.'}
             </p>
             <Button
               variant="outline"

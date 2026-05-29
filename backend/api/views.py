@@ -7,6 +7,7 @@ from pathlib import Path
 from django.http import JsonResponse
 from django.conf import settings as django_settings
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.mail import send_mail
 from . import supabase
 from .utils import api_view, body_json, data_response, error_response, status_response, create_admin_token, parse_admin_token
 
@@ -724,7 +725,39 @@ def payment_link_detail(request, link_id):
 
 @api_view(["POST"])
 def newsletter_subscribe(request):
-    return data_response(supabase.insert("newsletter_subscribers", body_json(request)), 201)
+    payload = body_json(request)
+    email = str(payload.get("email") or "").strip().lower()
+    if not email or "@" not in email:
+        return error_response("Adresse email invalide.", 422)
+
+    created = supabase.insert("newsletter_subscribers", {"email": email})
+
+    receiver_email = ""
+    try:
+        rows = supabase.select("settings", "select=*")
+        if rows:
+            receiver_email = str(rows[0].get("newsletter_receiver_email") or "").strip()
+    except Exception:
+        local_settings = load_local_settings()
+        receiver_email = str(local_settings.get("newsletter_receiver_email") or "").strip()
+
+    if not receiver_email:
+        local_settings = load_local_settings()
+        receiver_email = str(local_settings.get("newsletter_receiver_email") or "").strip()
+
+    if receiver_email:
+        try:
+            send_mail(
+                subject="Nouvel abonnement newsletter",
+                message=f"Nouvel abonné newsletter: {email}",
+                from_email=None,
+                recipient_list=[receiver_email],
+                fail_silently=True,
+            )
+        except Exception:
+            pass
+
+    return data_response({"subscription": created, "receiver_email": receiver_email}, 201)
 
 
 @api_view(["GET"])
@@ -775,6 +808,7 @@ DEFAULT_SETTINGS = {
     "footer_newsletter_text": "Restez informÃ© de nos prochaines activitÃ©s et opportunitÃ©s d'engagement.",
     "footer_newsletter_placeholder": "Votre adresse email",
     "footer_newsletter_button": "S'abonner",
+    "newsletter_receiver_email": "contact@ureportcocody.ci",
     "site_under_maintenance": False,
     "maintenance_message": "Le site est temporairement en maintenance.",
     "maintenance_image_url": "/images/logo-512.png",
@@ -832,6 +866,7 @@ def site_settings(request):
         "footer_newsletter_text",
         "footer_newsletter_placeholder",
         "footer_newsletter_button",
+        "newsletter_receiver_email",
         "site_under_maintenance",
         "maintenance_message",
         "maintenance_image_url",

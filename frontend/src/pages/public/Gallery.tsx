@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Camera, ExternalLink } from 'lucide-react';
+import { Camera, ExternalLink, Search } from 'lucide-react';
 import { Card } from '../../components/ui/Card';
 import { fetchGalleryAlbums } from '../../services/content.service';
 import { useConfirm } from '../../components/ui/ConfirmDialog';
@@ -9,6 +9,7 @@ export function Gallery() {
   const confirm = useConfirm();
   const [albums, setAlbums] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const loadAlbums = async () => {
@@ -48,6 +49,22 @@ export function Gallery() {
     }
   };
 
+  const displayedAlbums = [...albums]
+    .filter((album) => {
+      const q = searchQuery.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        String(album.title || '').toLowerCase().includes(q) ||
+        String(album.date || '').toLowerCase().includes(q)
+      );
+    })
+    .sort((a, b) => {
+      const aTime = new Date(a.date || 0).getTime();
+      const bTime = new Date(b.date || 0).getTime();
+      return bTime - aTime;
+    })
+    .slice(0, 10);
+
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       <div className="bg-ureport-dark text-white py-16">
@@ -59,11 +76,30 @@ export function Gallery() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div className="flex justify-center mb-8">
+          <div className="relative w-full max-w-md">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Rechercher un album..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-2.5 rounded-2xl border border-gray-300 bg-gray-50 text-gray-900 placeholder:text-[#586A82] text-[15px] shadow-[0_2px_8px_rgba(15,23,42,0.08)] focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent"
+            />
+          </div>
+        </div>
         {isLoading && <div className="text-center py-20 text-gray-500">Chargement de la galerie...</div>}
         {!isLoading && albums.length === 0 && <div className="text-center py-20 text-gray-500">Aucun album disponible pour le moment.</div>}
+        {!isLoading && albums.length > 0 && displayedAlbums.length === 0 && (
+          <div className="text-center py-20 text-gray-500">
+            Aucun résultat pour "{searchQuery}".
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {albums.map((album, index) => (
+          {displayedAlbums.map((album, index) => (
             <motion.div key={album.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}>
               <div onClick={() => handleAlbumClick(album)} className="h-full block">
                 <Card hover className="group cursor-pointer h-full flex flex-col relative overflow-hidden">

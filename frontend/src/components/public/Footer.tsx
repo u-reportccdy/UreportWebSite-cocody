@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { fetchSiteSettings } from '../../services/content.service';
+import { fetchSiteSettings, subscribeNewsletter } from '../../services/content.service';
 import { Link } from './Link';
 
 export function Footer() {
@@ -17,6 +17,9 @@ export function Footer() {
     footer_newsletter_placeholder: 'Votre adresse email',
     footer_newsletter_button: "S'abonner",
   });
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState('');
+  const [isSubmittingNewsletter, setIsSubmittingNewsletter] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -42,6 +45,26 @@ export function Footer() {
 
     load();
   }, []);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const email = newsletterEmail.trim().toLowerCase();
+    if (!email || !email.includes('@')) {
+      setNewsletterStatus('Veuillez entrer une adresse email valide.');
+      return;
+    }
+    setIsSubmittingNewsletter(true);
+    setNewsletterStatus('');
+    try {
+      await subscribeNewsletter({ email });
+      setNewsletterEmail('');
+      setNewsletterStatus('Inscription réussie. Merci !');
+    } catch {
+      setNewsletterStatus("Impossible de s'abonner pour le moment.");
+    } finally {
+      setIsSubmittingNewsletter(false);
+    }
+  };
 
   return (
     <footer className="bg-ureport-dark text-white pt-16 pb-8">
@@ -97,9 +120,22 @@ export function Footer() {
           <div>
             <h3 className="font-heading font-bold text-lg mb-6 text-white">{footerSettings.footer_newsletter_title}</h3>
             <p className="text-gray-400 text-sm mb-4">{footerSettings.footer_newsletter_text}</p>
-            <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
-              <input type="email" placeholder={footerSettings.footer_newsletter_placeholder} className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/40 text-white placeholder-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent" />
-              <button type="submit" className="w-full px-4 py-3 rounded-xl bg-ureport-blue text-white font-semibold hover:bg-[#158bb8] transition-colors">{footerSettings.footer_newsletter_button}</button>
+            <form className="space-y-2" onSubmit={handleNewsletterSubmit}>
+              <input
+                type="email"
+                value={newsletterEmail}
+                onChange={e => setNewsletterEmail(e.target.value)}
+                placeholder={footerSettings.footer_newsletter_placeholder}
+                className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/40 text-white placeholder-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent"
+              />
+              <button
+                type="submit"
+                disabled={isSubmittingNewsletter}
+                className="w-full px-4 py-3 rounded-xl bg-ureport-blue text-white font-semibold hover:bg-[#158bb8] transition-colors disabled:opacity-70"
+              >
+                {isSubmittingNewsletter ? 'Envoi...' : footerSettings.footer_newsletter_button}
+              </button>
+              {newsletterStatus && <p className="text-xs text-gray-300">{newsletterStatus}</p>}
             </form>
           </div>
         </div>

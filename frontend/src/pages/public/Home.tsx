@@ -34,6 +34,7 @@ const itemVariants: Variants = {
 
 export function Home() {
   const [isLoading, setIsLoading] = useState(true);
+  const [hasMemberSession, setHasMemberSession] = useState<boolean>(() => !!localStorage.getItem('member_session'));
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [stats, setStats] = useState<any[]>([]);
@@ -111,6 +112,15 @@ export function Home() {
     };
 
     loadHomeData();
+  }, []);
+
+  useEffect(() => {
+    const onStorage = () => {
+      setHasMemberSession(!!localStorage.getItem('member_session'));
+    };
+    onStorage();
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
   }, []);
 
   useEffect(() => {
@@ -229,9 +239,11 @@ export function Home() {
               {siteSettings.hero_description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="w-full sm:w-auto text-lg px-8" onClick={() => setIsJoinModalOpen(true)}>
-                Nous rejoindre maintenant
-              </Button>
+              {!hasMemberSession && (
+                <Button size="lg" className="w-full sm:w-auto text-lg px-8" onClick={() => setIsJoinModalOpen(true)}>
+                  Nous rejoindre maintenant
+                </Button>
+              )}
               <Link href="/events">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto text-lg px-8 bg-white/10 text-white border-white/30 hover:bg-white/20">
                   Découvrir les actions
@@ -621,6 +633,9 @@ export function Home() {
       <JoinModal 
         isOpen={isJoinModalOpen} initialMode="register" 
         onClose={() => setIsJoinModalOpen(false)} 
+        onSuccess={() => {
+          setHasMemberSession(true);
+        }}
       />
     </div>
   );

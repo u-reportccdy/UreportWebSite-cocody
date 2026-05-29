@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Newspaper, RefreshCw } from 'lucide-react';
+import { ArrowRight, Newspaper, RefreshCw, Search } from 'lucide-react';
 import { Link } from '../../components/public/Link';
 import { Card } from '../../components/ui/Card';
 import { fetchArticles } from '../../services/article.service';
@@ -34,6 +34,7 @@ export function Articles() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeCategory, setActiveCategory] = useState('Tous');
+  const [searchQuery, setSearchQuery] = useState('');
 
   async function loadArticles() {
     setIsLoading(true);
@@ -57,9 +58,24 @@ export function Articles() {
     loadArticles();
   }, []);
 
-  const filteredArticles = activeCategory === 'Tous'
+  const filteredArticles = (activeCategory === 'Tous'
     ? articles
-    : articles.filter(article => normalizeCategory(article.category) === normalizeCategory(activeCategory));
+    : articles.filter(article => normalizeCategory(article.category) === normalizeCategory(activeCategory)))
+    .filter((article) => {
+      const q = searchQuery.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        String(article.title || '').toLowerCase().includes(q) ||
+        String(article.category || '').toLowerCase().includes(q) ||
+        String(stripRichText(article.excerpt || article.content || '')).toLowerCase().includes(q)
+      );
+    })
+    .sort((a, b) => {
+      const aTime = new Date(a.date || 0).getTime();
+      const bTime = new Date(b.date || 0).getTime();
+      return bTime - aTime;
+    })
+    .slice(0, 10);
   const featuredArticle = filteredArticles[0];
   const secondaryArticles = filteredArticles.slice(1);
 
@@ -78,6 +94,20 @@ export function Articles() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div className="flex justify-center mb-6">
+          <div className="relative w-full max-w-md">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Rechercher un article..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-2.5 rounded-2xl border border-gray-300 bg-gray-50 text-gray-900 placeholder:text-[#586A82] text-[15px] shadow-[0_2px_8px_rgba(15,23,42,0.08)] focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent"
+            />
+          </div>
+        </div>
         <div className="flex flex-wrap gap-2 mb-12 justify-center">
           {categories.map(cat => (
             <button
@@ -133,7 +163,11 @@ export function Articles() {
               <Newspaper className="w-7 h-7" />
             </div>
             <h2 className="text-xl font-heading font-bold text-ureport-dark mb-3">Aucun article trouve</h2>
-            <p className="text-gray-600 text-sm">Aucun article ne correspond a cette categorie pour le moment.</p>
+            <p className="text-gray-600 text-sm">
+              {searchQuery.trim()
+                ? `Aucun résultat pour "${searchQuery}".`
+                : 'Aucun article ne correspond a cette categorie pour le moment.'}
+            </p>
           </div>
         )}
 

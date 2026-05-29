@@ -29,6 +29,7 @@ export function Settings() {
     footer_newsletter_text: '',
     footer_newsletter_placeholder: '',
     footer_newsletter_button: '',
+    newsletter_receiver_email: '',
     site_under_maintenance: false,
     maintenance_message: '',
   });
@@ -90,6 +91,7 @@ export function Settings() {
             footer_newsletter_text: data.footer_newsletter_text || "Restez informé de nos prochaines activités et opportunités d'engagement.",
             footer_newsletter_placeholder: data.footer_newsletter_placeholder || 'Votre adresse email',
             footer_newsletter_button: data.footer_newsletter_button || "S'abonner",
+            newsletter_receiver_email: data.newsletter_receiver_email || data.footer_contact_email || 'contact@ureportcocody.ci',
             site_under_maintenance: !!data.site_under_maintenance,
             maintenance_message: data.maintenance_message || 'Le site est temporairement en maintenance.',
           });
@@ -473,6 +475,16 @@ export function Settings() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent"
                 />
               </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email de réception Newsletter</label>
+              <input
+                type="email"
+                value={formData.newsletter_receiver_email}
+                onChange={e => setFormData({ ...formData, newsletter_receiver_email: e.target.value })}
+                placeholder="Ex: newsletter@votredomaine.com"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent"
+              />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
