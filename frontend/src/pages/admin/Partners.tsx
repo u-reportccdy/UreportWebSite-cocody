@@ -21,8 +21,10 @@ export function Partners() {
     const trimmed = value.trim();
     if (!trimmed) return '';
 
-    // Keep image data URLs produced by trusted upload flow
-    if (trimmed.startsWith('data:image/')) return trimmed;
+    // Keep only safe raster image data URLs produced by trusted upload flow.
+    // Explicitly reject SVG to avoid scriptable payload risks in data URLs.
+    const safeDataImagePattern = /^data:image\/(?:png|jpeg|jpg|webp|gif);base64,[a-z0-9+/=\s]+$/i;
+    if (safeDataImagePattern.test(trimmed)) return trimmed;
 
     try {
       const url = new URL(trimmed, window.location.origin);
