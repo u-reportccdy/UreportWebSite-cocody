@@ -17,6 +17,10 @@ lerna-debug.log*
 SECURITY_HANDOVER.pdf
 backend/.env.secure.generated
 scripts/generate_security_handover_pdf.py
+backend/admin_auth.json
+backend/db.sqlite3
+backend/site_settings.json
+backend/superadmin_logs.json
 
 # IDEs
 .vscode/
