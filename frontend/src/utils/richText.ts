@@ -35,7 +35,13 @@ export function cleanRichHtml(input: string) {
   const decoded = decodeHtmlEntities(input || '');
   const normalized = decoded.replace(/\u00A0/g, ' ');
   if (typeof window === 'undefined' || typeof DOMParser === 'undefined') {
-    return normalized.replace(/<script\b[^>]*>[\s\S]*?<\/script(?:\s+[^>]*)?>/gi, '');
+    let value = normalized;
+    for (;;) {
+      const next = value.replace(/<script\b[^>]*>[\s\S]*?<\/script(?:\s+[^>]*)?>/gi, '');
+      if (next === value) break;
+      value = next;
+    }
+    return value;
   }
 
   const allowedTags = new Set([
