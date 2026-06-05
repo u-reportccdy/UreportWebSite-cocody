@@ -16,12 +16,24 @@ export const fillTemplate = (template: string, data: Record<string, string>) => 
 export const buildWhatsAppLink = (baseUrl: string, message: string) => {
   const url = (baseUrl || '').trim();
   if (!url) return '';
-  const encoded = encodeURIComponent(message);
 
-  if (url.includes('wa.me/') || url.includes('api.whatsapp.com/') || url.includes('whatsapp.com/send')) {
-    const separator = url.includes('?') ? '&' : '?';
-    return `${url}${separator}text=${encoded}`;
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    const path = parsed.pathname;
+
+    const isWaMe = host === 'wa.me';
+    const isApiWhatsApp = host === 'api.whatsapp.com';
+    const isWhatsAppSend = (host === 'whatsapp.com' || host === 'www.whatsapp.com') && path === '/send';
+
+    if (isWaMe || isApiWhatsApp || isWhatsAppSend) {
+      parsed.searchParams.set('text', message ?? '');
+      return parsed.toString();
+    }
+  } catch {
+    // Keep existing behavior for invalid URLs.
   }
+
   return url;
 };
 
