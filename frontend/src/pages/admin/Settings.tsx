@@ -7,6 +7,17 @@ import { readFileAsDataUrl } from '../../utils/imageResize';
 
 export function Settings() {
   const confirm = useConfirm();
+  const sanitizeImageUrl = (raw: string): string | null => {
+    const value = raw.trim();
+    if (!value) return null;
+    try {
+      const parsed = new URL(value);
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+      return parsed.toString();
+    } catch {
+      return null;
+    }
+  };
   const [formData, setFormData] = useState({
     hero_title: '',
     hero_subtitle: '',
@@ -336,7 +347,7 @@ export function Settings() {
                   <button
                     type="button"
                     onClick={() => {
-                      const v = heroUrlDraft.trim();
+                      const v = sanitizeImageUrl(heroUrlDraft);
                       if (!v) return;
                       setHeroImages(prev => {
                         const next = [...prev, v];
