@@ -13,7 +13,11 @@ const quillModules = { toolbar: [['bold', 'italic', 'underline'], [{ list: 'orde
 const sanitizeImageSrc = (value: string): string => {
   const trimmed = value.trim();
   if (!trimmed) return '';
-  if (trimmed.startsWith('data:image/')) return trimmed;
+
+  const allowedDataImagePattern =
+    /^data:image\/(?:png|jpe?g|webp|gif);base64,[a-z0-9+/=\s]+$/i;
+  if (allowedDataImagePattern.test(trimmed)) return trimmed;
+
   try {
     const parsed = new URL(trimmed);
     if (parsed.protocol === 'https:' || parsed.protocol === 'http:') return parsed.toString();
