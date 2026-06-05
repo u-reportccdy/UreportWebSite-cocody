@@ -21,6 +21,17 @@ export function Articles() {
   const [imageSize, setImageSize] = useState({ width: 1200, height: 675 });
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const sanitizeImageUrl = (raw: string): string => {
+    const value = raw.trim();
+    if (!value) return '';
+    if (value.startsWith('data:image/')) return value;
+    try {
+      const url = new URL(value);
+      return url.protocol === 'http:' || url.protocol === 'https:' ? value : '';
+    } catch {
+      return '';
+    }
+  };
   const [formData, setFormData] = useState({
     title: '',
     category: 'Actualites',
@@ -210,7 +221,7 @@ export function Articles() {
                 <input required type="text" placeholder="Titre" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
                 <div className="grid gap-3">
                   <input type="file" accept="image/*" onChange={async e => await handleImageUpload(e.target.files?.[0] ?? null)} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0099DC] file:text-white hover:file:bg-[#007bb5]" />
-                  <input type="url" placeholder="URL image (optionnel)" value={formData.image.startsWith('data:') ? '' : formData.image} onChange={e => { setFormData({ ...formData, image: e.target.value }); setImagePreview(e.target.value); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
+                  <input type="url" placeholder="URL image (optionnel)" value={formData.image.startsWith('data:') ? '' : formData.image} onChange={e => { const safeImageUrl = sanitizeImageUrl(e.target.value); setFormData({ ...formData, image: safeImageUrl }); setImagePreview(safeImageUrl); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
                 </div>
                 {imagePreview && (
                   <div className="mt-3 rounded-lg overflow-hidden border border-gray-200">
