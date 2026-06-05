@@ -12,6 +12,7 @@ import { fetchPartners, fetchTestimonials, fetchSiteSettings } from '../../servi
 import { RegistrationModal } from '../../components/public/RegistrationModal';
 import { JoinModal } from '../../components/public/JoinModal';
 import { stripRichText } from '../../utils/richText';
+import { loadMemberSession, subscribeMemberSessionChange } from '../../utils/memberSession';
 
 
 
@@ -34,7 +35,7 @@ const itemVariants: Variants = {
 
 export function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [hasMemberSession, setHasMemberSession] = useState<boolean>(() => !!localStorage.getItem('member_session'));
+  const [hasMemberSession, setHasMemberSession] = useState<boolean>(() => !!loadMemberSession());
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [stats, setStats] = useState<any[]>([]);
@@ -115,12 +116,11 @@ export function Home() {
   }, []);
 
   useEffect(() => {
-    const onStorage = () => {
-      setHasMemberSession(!!localStorage.getItem('member_session'));
+    const onSessionChange = () => {
+      setHasMemberSession(!!loadMemberSession());
     };
-    onStorage();
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    onSessionChange();
+    return subscribeMemberSessionChange(onSessionChange);
   }, []);
 
   useEffect(() => {
@@ -147,6 +147,10 @@ export function Home() {
   };
 
   const heroImages = parseHeroImages(siteSettings.hero_image_url);
+
+  useEffect(() => {
+    setActiveHeroIndex(0);
+  }, [siteSettings.hero_image_url]);
 
   useEffect(() => {
     if (heroImages.length <= 1) return;
@@ -211,8 +215,8 @@ export function Home() {
         <div className="absolute inset-0 z-0">
           <AnimatePresence initial={false}>
             <motion.img
-              key={heroImages[activeHeroIndex] || siteSettings.hero_image_url}
-              src={heroImages[activeHeroIndex] || siteSettings.hero_image_url}
+              key={heroImages[activeHeroIndex] || heroImages[0] || siteSettings.hero_image_url}
+              src={heroImages[activeHeroIndex] || heroImages[0] || siteSettings.hero_image_url}
               alt="Jeunes de Cocody"
               initial={{ opacity: 0, scale: 1.04, x: 12 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
@@ -222,6 +226,19 @@ export function Home() {
             />
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-r from-ureport-dark/90 via-ureport-dark/70 to-transparent" />
+          {heroImages.length > 1 && (
+            <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+              {heroImages.map((image, index) => (
+                <button
+                  key={`${image}-${index}`}
+                  type="button"
+                  onClick={() => setActiveHeroIndex(index)}
+                  className={`h-2.5 rounded-full transition-all ${index === activeHeroIndex ? 'w-8 bg-white' : 'w-2.5 bg-white/45 hover:bg-white/70'}`}
+                  aria-label={`Afficher l'image ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">

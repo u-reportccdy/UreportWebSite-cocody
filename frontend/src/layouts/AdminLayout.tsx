@@ -19,14 +19,19 @@ import {
   X
 } from 'lucide-react';
 import { PATHS } from '../routes/paths';
+import { logoutAdmin } from '../services/auth.service';
 
 export function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
-  const handleLogout = () => {
-    sessionStorage.removeItem('admin_token');
+  const handleLogout = async () => {
+    try {
+      await logoutAdmin();
+    } catch {
+      // Ignore logout API failures and clear client metadata anyway.
+    }
     sessionStorage.removeItem('admin_role');
     sessionStorage.removeItem('admin_email');
     navigate('/');
@@ -190,7 +195,7 @@ export function AdminLayout() {
               <span className="text-sm text-gray-700 font-bold">Administrateur</span>
             </div>
             <button 
-              onClick={handleLogout}
+              onClick={() => void handleLogout()}
               className="flex items-center space-x-1 text-sm bg-red-50 text-red-600 px-3 py-1.5 rounded-xl hover:bg-red-100 transition-all font-semibold"
               title="Déconnexion"
             >

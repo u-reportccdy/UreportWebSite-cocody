@@ -17,8 +17,7 @@ export function SuperAdminLogin() {
     try {
       const response = await api.post('/auth/superadmin/login', { email, password });
       const data = response.data?.data;
-      if (!data?.token) throw new Error('Invalid auth response');
-      sessionStorage.setItem('admin_token', data.token);
+      if (!data?.email) throw new Error('Invalid auth response');
       sessionStorage.setItem('admin_role', 'superadmin');
       sessionStorage.setItem('admin_email', data.email || email.trim().toLowerCase());
       navigate('/superadmin');

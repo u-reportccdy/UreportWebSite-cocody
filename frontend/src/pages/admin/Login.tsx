@@ -17,8 +17,7 @@ export function Login() {
     try {
       const response = await api.post('/auth/admin/login', { email, password });
       const data = response.data?.data;
-      if (!data?.token) throw new Error('Invalid auth response');
-      sessionStorage.setItem('admin_token', data.token);
+      if (!data?.role) throw new Error('Invalid auth response');
       sessionStorage.setItem('admin_role', data.role || 'admin');
       sessionStorage.setItem('admin_email', data.email || email.trim().toLowerCase());
       navigate((data.role || 'admin') === 'superadmin' ? '/superadmin' : '/admin');

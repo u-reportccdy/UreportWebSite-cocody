@@ -2,6 +2,7 @@
 import { Navigate } from 'react-router-dom';
 import { Construction } from 'lucide-react';
 import { PATHS } from '../../routes/paths';
+import { loadMemberSession } from '../../utils/memberSession';
 
 interface MemberSession {
   id: string;
@@ -11,15 +12,7 @@ interface MemberSession {
 }
 
 export function CotisationPayment() {
-  const session = useMemo<MemberSession | null>(() => {
-    const saved = localStorage.getItem('member_session');
-    if (!saved) return null;
-    try {
-      return JSON.parse(saved) as MemberSession;
-    } catch {
-      return null;
-    }
-  }, []);
+  const session = useMemo<MemberSession | null>(() => loadMemberSession(), []);
 
   if (!session) {
     return <Navigate to={PATHS.PUBLIC.HOME} replace />;

@@ -1,7 +1,7 @@
 ﻿import { Navigate, Outlet } from 'react-router-dom';
 
 export function AdminGuard() {
-  const isAuthenticated = !!sessionStorage.getItem('admin_token');
+  const isAuthenticated = !!sessionStorage.getItem('admin_role');
   const role = sessionStorage.getItem('admin_role');
 
   if (!isAuthenticated) {

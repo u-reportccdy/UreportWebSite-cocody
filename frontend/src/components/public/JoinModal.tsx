@@ -1,12 +1,13 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { XIcon, CheckCircle, User, Mail, Phone, MapPin, AlertCircle } from 'lucide-react';
+import { XIcon, User, Mail, Phone, MapPin, AlertCircle } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
-import { createMember, fetchMembers } from '../../services/member.service';
+import { createMember, loginMember } from '../../services/member.service';
 import { fetchSiteSettings } from '../../services/content.service';
 import { WhatsAppRedirectModal } from './WhatsAppRedirectModal';
 import { buildWhatsAppLink, fillTemplate, memberStatusLabel } from '../../utils/whatsapp';
+import { saveMemberSession } from '../../utils/memberSession';
 
 interface JoinModalProps {
   isOpen: boolean;
@@ -18,7 +19,6 @@ interface JoinModalProps {
 export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }: JoinModalProps) {
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
   const [siteSettings, setSiteSettings] = useState<any>(null);
   const [whatsAppPayload, setWhatsAppPayload] = useState<{ url: string; title: string; message: string; buttonLabel: string } | null>(null);
@@ -41,7 +41,6 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     if (isOpen) {
       setMode(initialMode);
       setError('');
-      setIsSuccess(false);
     }
   }, [isOpen, initialMode]);
 
@@ -49,55 +48,30 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     fetchSiteSettings().then(setSiteSettings).catch(() => null);
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setIsSubmitting(false);
+      setError('');
+    }
+  }, [isOpen]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError('');
 
     try {
-      const allMembers = await fetchMembers(formData.phone.trim());
-      const normalizedPhone = formData.phone.replace(/\D/g, '');
-
       if (mode === 'login') {
-        // --- LOGIN FLOW ---
-        // Look up member by phone number
-        const existingMember = allMembers.find((m: any) => {
-          if (!m.phone) return false;
-          const cleanDb = m.phone.replace(/\D/g, '');
-          return cleanDb === normalizedPhone || 
-                 (cleanDb.length >= 8 && normalizedPhone.endsWith(cleanDb)) ||
-                 (normalizedPhone.length >= 8 && cleanDb.endsWith(normalizedPhone));
+        const auth = await loginMember({
+          full_name: formData.fullName.trim(),
+          phone: formData.phone.trim(),
         });
-
-        if (existingMember) {
-          // Found! Save session and complete
-          localStorage.setItem('member_session', JSON.stringify(existingMember));
-          setIsSuccess(true);
-          if (onSuccess) {
-            onSuccess(existingMember);
-          }
-        } else {
-          // Not found! Ask them to join
-          setError("Ce numéro de téléphone n'est pas enregistré. Cliquez ci-dessous sur 'Rejoignez-nous ici !' pour vous inscrire !");
+        saveMemberSession(auth.member);
+        if (onSuccess) {
+          onSuccess(auth.member);
         }
+        onClose();
       } else {
-        // --- REGISTER FLOW ---
-        // Check if the phone number already exists
-        const duplicatePhone = allMembers.find((m: any) => {
-          if (!m.phone) return false;
-          const cleanDb = m.phone.replace(/\D/g, '');
-          return cleanDb === normalizedPhone || 
-                 (cleanDb.length >= 8 && normalizedPhone.endsWith(cleanDb)) ||
-                 (normalizedPhone.length >= 8 && cleanDb.endsWith(normalizedPhone));
-        });
-
-        if (duplicatePhone) {
-          setError(`Ce numéro de téléphone (${formData.phone}) est déjà enregistré chez un membre (${duplicatePhone.full_name}). Veuillez vous connecter ou utiliser un autre numéro.`);
-          setIsSubmitting(false);
-          return;
-        }
-
-        // Register new member in database
         const created = await createMember({
           full_name: `${formData.firstname} ${formData.name}`.trim(),
           email: formData.email,
@@ -109,18 +83,17 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
           integration_note: formData.motivation || 'Connexion directe',
         });
 
-        localStorage.setItem('member_session', JSON.stringify(created));
-        setIsSuccess(true);
-
-        const isAspirant = created?.status === 'aspirant';
+        saveMemberSession(created.member);
+        const member = created.member;
+        const isAspirant = member?.status === 'aspirant';
         const template = isAspirant
           ? (siteSettings?.whatsapp_message_aspirant || "Bonjour, je suis {name} ({status_label}) et je viens de m'inscrire sur la plateforme U-Report Cocody.")
           : (siteSettings?.whatsapp_message_advanced || "Bonjour, je suis {name} ({status_label}) et je viens de m'inscrire sur la plateforme U-Report Cocody.");
         const targetUrl = isAspirant ? siteSettings?.whatsapp_group_link : siteSettings?.whatsapp_manager_link;
         if (targetUrl) {
           const message = fillTemplate(template, {
-            name: created?.full_name || `${formData.firstname} ${formData.name}`.trim(),
-            status_label: memberStatusLabel(created?.status || formData.profile),
+            name: member?.full_name || `${formData.firstname} ${formData.name}`.trim(),
+            status_label: memberStatusLabel(member?.status || formData.profile),
             event_title: 'la plateforme U-Report Cocody',
           });
           setWhatsAppPayload({
@@ -131,69 +104,48 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
           });
         }
         if (onSuccess) {
-          onSuccess(created);
+          onSuccess(member);
         }
+        onClose();
       }
     } catch (err) {
       console.error('Erreur authentification:', err);
-      setError("Une erreur technique est survenue. Veuillez réessayer.");
+      setError((err as any)?.response?.data?.detail || "Une erreur technique est survenue. Veuillez réessayer.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen && !whatsAppPayload) return null;
 
   return (
     <AnimatePresence>
-      <div key="join-modal-content" className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-md">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9, y: 30 }} 
-          animate={{ opacity: 1, scale: 1, y: 0 }} 
-          exit={{ opacity: 0, scale: 0.9, y: 30 }} 
-          className="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-x-hidden overflow-y-hidden relative"
-        >
-          {/* Header avec dégradé U-Report */}
-          <div className="relative h-28 sm:h-32 bg-gradient-to-r from-ureport-blue to-[#007bb5] flex items-center justify-center text-white">
-            <div className="text-center">
-              <h3 className="text-xl sm:text-2xl font-bold">
-                {mode === 'login' ? 'Connexion U-Report' : 'Rejoindre la Communauté'}
-              </h3>
-              <p className="text-white/80 text-sm font-medium">
-                {mode === 'login' ? 'Accédez rapidement à votre espace membre' : 'Devenez acteur du changement à Cocody !'}
-              </p>
-            </div>
-            <button 
-              onClick={onClose} 
-              className="absolute top-4 right-4 p-2 text-white/60 hover:text-white rounded-full hover:bg-white/10 transition-colors"
-            >
-              <XIcon className="w-6 h-6" />
-            </button>
-          </div>
-          
-          <div className="p-5 sm:p-8 max-h-[76vh] sm:max-h-[70vh] overflow-y-auto overflow-x-hidden custom-scrollbar">
-            {isSuccess ? (
-              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-10">
-                <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8">
-                  <CheckCircle className="w-14 h-14 text-green-500" />
-                </div>
-                <h4 className="text-3xl font-extrabold text-gray-900 mb-4">
-                  {mode === 'login' ? "Ravi de vous revoir !" : "Inscription réussie !"}
-                </h4>
-                <p className="text-gray-600 mb-10 text-lg leading-relaxed">
-                  {mode === 'login' ? (
-                    <>
-                      Connexion réussie ! Vous êtes de nouveau connecté à votre profil U-Reporter. Vous pouvez désormais vous inscrire aux événements en un clic.
-                    </>
-                  ) : (
-                    <>
-                      Bienvenue au sein de U-Report Cocody ! Votre profil a été enregistré avec succès et transmis au responsable des adhésions.
-                    </>
-                  )}
+      {isOpen && (
+        <div key="join-modal-content" className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-md">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 30 }} 
+            animate={{ opacity: 1, scale: 1, y: 0 }} 
+            exit={{ opacity: 0, scale: 0.9, y: 30 }} 
+            className="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-x-hidden overflow-y-hidden relative"
+          >
+            <div className="relative h-28 sm:h-32 bg-gradient-to-r from-ureport-blue to-[#007bb5] flex items-center justify-center text-white">
+              <div className="text-center">
+                <h3 className="text-xl sm:text-2xl font-bold">
+                  {mode === 'login' ? 'Connexion U-Report' : 'Rejoindre la Communauté'}
+                </h3>
+                <p className="text-white/80 text-sm font-medium">
+                  {mode === 'login' ? 'Accédez rapidement à votre espace membre' : 'Devenez acteur du changement à Cocody !'}
                 </p>
-                <Button fullWidth size="lg" onClick={() => { setIsSuccess(false); onClose(); }}>Accéder à la plateforme</Button>
-              </motion.div>
-            ) : (
+              </div>
+              <button 
+                onClick={onClose} 
+                className="absolute top-4 right-4 p-2 text-white/60 hover:text-white rounded-full hover:bg-white/10 transition-colors"
+              >
+                <XIcon className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="p-5 sm:p-8 max-h-[76vh] sm:max-h-[70vh] overflow-y-auto overflow-x-hidden custom-scrollbar">
               <form onSubmit={handleSubmit} className="space-y-6">
                 {error && (
                   <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-600 flex items-start gap-2.5">
@@ -347,7 +299,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
 
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-gray-700">Motivation</label>
-                      <textarea 
+                      <textarea
                         required
                         rows={2}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent transition-all text-sm resize-none"
@@ -360,14 +312,14 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                 )}
 
                 <div className="pt-4 pb-2">
-                  <Button 
-                    type="submit" 
-                    fullWidth 
-                    size="lg" 
-                    loading={isSubmitting} 
+                  <Button
+                    type="submit"
+                    fullWidth
+                    size="lg"
+                    loading={isSubmitting}
                     className="h-14 text-lg font-bold"
                   >
-                    {mode === 'login' ? 'Se connecter' : 'Valider mon inscription'}
+                    {mode === 'login' ? 'Se connecter' : "Valider mon inscription"}
                   </Button>
                 </div>
 
@@ -375,9 +327,9 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                   {mode === 'login' ? (
                     <p className="text-sm text-gray-600">
                       Nouveau dans la communauté ?{' '}
-                      <button 
-                        type="button" 
-                        onClick={() => { setMode('register'); setError(''); }} 
+                      <button
+                        type="button"
+                        onClick={() => { setMode('register'); setError(''); }}
                         className="text-ureport-blue font-bold hover:underline"
                       >
                         Rejoignez-nous ici !
@@ -386,9 +338,9 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                   ) : (
                     <p className="text-sm text-gray-600">
                       Déjà membre ?{' '}
-                      <button 
-                        type="button" 
-                        onClick={() => { setMode('login'); setError(''); }} 
+                      <button
+                        type="button"
+                        onClick={() => { setMode('login'); setError(''); }}
                         className="text-ureport-blue font-bold hover:underline"
                       >
                         Connectez-vous ici !
@@ -397,10 +349,10 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                   )}
                 </div>
               </form>
-            )}
-          </div>
-        </motion.div>
-      </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
       <WhatsAppRedirectModal
         key="join-modal-whatsapp"
         isOpen={!!whatsAppPayload}

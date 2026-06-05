@@ -1,6 +1,7 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { ShieldCheck, LogOut, Settings, Home, Menu, X } from 'lucide-react';
+import { logoutAdmin } from '../services/auth.service';
 
 export function SuperAdminLayout() {
   const navigate = useNavigate();
@@ -45,8 +46,12 @@ export function SuperAdminLayout() {
 
         <div className="p-4 border-t border-gray-800">
           <button
-            onClick={() => {
-              sessionStorage.removeItem('admin_token');
+            onClick={async () => {
+              try {
+                await logoutAdmin();
+              } catch {
+                // Ignore logout API failures and clear client metadata anyway.
+              }
               sessionStorage.removeItem('admin_role');
               sessionStorage.removeItem('admin_email');
               navigate('/superadmin/login');
@@ -82,4 +87,3 @@ export function SuperAdminLayout() {
     </div>
   );
 }
-

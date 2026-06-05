@@ -48,6 +48,7 @@ export function Settings() {
     current_password: '',
   });
   const [isSavingSecurity, setIsSavingSecurity] = useState(false);
+  const isSuperadmin = adminRole === 'superadmin';
 
   const parseHeroImages = (raw: string | null | undefined): string[] => {
     if (!raw) return [];
@@ -150,7 +151,33 @@ export function Settings() {
     setSaveSuccess(false);
 
     try {
-      await updateSiteSettings(formData);
+      const payload = isSuperadmin
+        ? formData
+        : {
+            hero_title: formData.hero_title,
+            hero_subtitle: formData.hero_subtitle,
+            hero_description: formData.hero_description,
+            hero_image_url: formData.hero_image_url,
+            about_title: formData.about_title,
+            about_description: formData.about_description,
+            facebook_url: formData.facebook_url,
+            instagram_url: formData.instagram_url,
+            tiktok_url: formData.tiktok_url,
+            whatsapp_group_link: formData.whatsapp_group_link,
+            whatsapp_manager_link: formData.whatsapp_manager_link,
+            whatsapp_message_aspirant: formData.whatsapp_message_aspirant,
+            whatsapp_message_advanced: formData.whatsapp_message_advanced,
+            footer_contact_title: formData.footer_contact_title,
+            footer_contact_address: formData.footer_contact_address,
+            footer_contact_phone: formData.footer_contact_phone,
+            footer_contact_email: formData.footer_contact_email,
+            footer_newsletter_title: formData.footer_newsletter_title,
+            footer_newsletter_text: formData.footer_newsletter_text,
+            footer_newsletter_placeholder: formData.footer_newsletter_placeholder,
+            footer_newsletter_button: formData.footer_newsletter_button,
+            newsletter_receiver_email: formData.newsletter_receiver_email,
+          };
+      await updateSiteSettings(payload);
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (err) {
@@ -510,7 +537,7 @@ export function Settings() {
 
           <hr className="border-gray-100 my-6" />
 
-          {sessionStorage.getItem('admin_role') === 'superadmin' && (
+          {isSuperadmin && (
             <div className="space-y-4">
               <h4 className="text-sm font-bold uppercase tracking-wider text-red-600">
                 Mode Maintenance (Superadmin)
@@ -532,7 +559,7 @@ export function Settings() {
             </div>
           )}
 
-          <hr className="border-gray-100 my-6" />
+          {isSuperadmin && <hr className="border-gray-100 my-6" />}
 
           {adminRole === 'superadmin' && (
           <div className="space-y-4">
@@ -669,7 +696,7 @@ export function Settings() {
             <div>
               {saveSuccess && (
                 <span className="text-sm font-bold text-green-600 animate-pulse">
-                  œ“ Paramètres enregistrés avec succès !
+                  Paramètres enregistrés avec succès !
                 </span>
               )}
             </div>

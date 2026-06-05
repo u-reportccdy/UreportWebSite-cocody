@@ -7,6 +7,7 @@ import { fetchEvent, isRegisteredForEvent, registerForEvent } from '../../servic
 import { JoinModal } from './JoinModal';
 import { WhatsAppRedirectModal } from './WhatsAppRedirectModal';
 import { memberStatusLabel } from '../../utils/whatsapp';
+import { loadMemberSession } from '../../utils/memberSession';
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -33,22 +34,18 @@ export function RegistrationModal({ isOpen, onClose, eventId, eventTitle }: Regi
   const [whatsAppPayload, setWhatsAppPayload] = useState<{ url: string; title: string; message: string; buttonLabel: string } | null>(null);
 
   React.useEffect(() => {
-    const saved = localStorage.getItem('member_session');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setSession(parsed);
-        setFormData(prev => ({
-          ...prev,
-          name: parsed?.full_name?.split(' ').slice(1).join(' ') || '',
-          firstname: parsed?.full_name?.split(' ')[0] || '',
-          email: parsed?.email || '',
-          phone: parsed?.phone || '',
-          member_status: parsed?.status || 'aspirant',
-          sex: parsed?.sex || 'non_precise',
-        }));
-      } catch (_err) {}
-    }
+    const parsed = loadMemberSession();
+    if (!parsed) return;
+    setSession(parsed);
+    setFormData(prev => ({
+      ...prev,
+      name: parsed?.full_name?.split(' ').slice(1).join(' ') || '',
+      firstname: parsed?.full_name?.split(' ')[0] || '',
+      email: parsed?.email || '',
+      phone: parsed?.phone || '',
+      member_status: parsed?.status || 'aspirant',
+      sex: parsed?.sex || 'non_precise',
+    }));
   }, [isOpen]);
 
   React.useEffect(() => {

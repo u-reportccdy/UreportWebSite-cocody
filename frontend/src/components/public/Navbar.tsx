@@ -6,6 +6,8 @@ import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { JoinModal } from './JoinModal';
 import { PATHS } from '../../routes/paths';
+import { clearMemberSession, loadMemberSession, subscribeMemberSessionChange } from '../../utils/memberSession';
+import { logoutMember } from '../../services/member.service';
 
 interface MemberSession {
   id: string;
@@ -21,15 +23,7 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isNavExpanded, setIsNavExpanded] = useState(false);
   const lastScrollY = useRef(0);
-  const [session, setSession] = useState<MemberSession | null>(() => {
-    const saved = localStorage.getItem('member_session');
-    if (!saved) return null;
-    try {
-      return JSON.parse(saved) as MemberSession;
-    } catch {
-      return null;
-    }
-  });
+  const [session, setSession] = useState<MemberSession | null>(() => loadMemberSession());
   const location = useLocation();
   const path = location.pathname;
   const navLinks = [
@@ -43,20 +37,8 @@ export function Navbar() {
   const displayedLinks = session ? [...navLinks, ...protectedLinks] : navLinks;
 
   useEffect(() => {
-    const onStorage = () => {
-      const saved = localStorage.getItem('member_session');
-      if (!saved) {
-        setSession(null);
-        return;
-      }
-      try {
-        setSession(JSON.parse(saved) as MemberSession);
-      } catch {
-        setSession(null);
-      }
-    };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    const onSessionChange = () => setSession(loadMemberSession());
+    return subscribeMemberSessionChange(onSessionChange);
   }, []);
 
   useEffect(() => {
@@ -79,8 +61,13 @@ export function Navbar() {
     if (!isScrolled) setIsNavExpanded(false);
   }, [isScrolled]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('member_session');
+  const handleLogout = async () => {
+    try {
+      await logoutMember();
+    } catch {
+      // Ignore logout API failures and clear local state anyway.
+    }
+    clearMemberSession();
     setSession(null);
   };
 
@@ -273,7 +260,7 @@ export function Navbar() {
                     {firstName}
                   </span>
                   <button 
-                    onClick={handleLogout} 
+                    onClick={() => void handleLogout()} 
                     className="p-1 hover:bg-red-50 text-gray-500 hover:text-red-500 rounded-full transition-all shrink-0"
                     title="Se déconnecter"
                   >
@@ -334,7 +321,7 @@ export function Navbar() {
                         <span className="text-base font-bold text-gray-800">{displayName}</span>
                       </div>
                       <span className="text-xs text-gray-500 capitalize px-7">Profil: {session.status}</span>
-                      <Button fullWidth variant="outline" className="mt-2 text-red-500 border-red-200 hover:bg-red-50" onClick={handleLogout}>
+                      <Button fullWidth variant="outline" className="mt-2 text-red-500 border-red-200 hover:bg-red-50" onClick={() => void handleLogout()}>
                         <LogOut className="w-4 h-4 mr-2" /> Se déconnecter
                       </Button>
                     </div>

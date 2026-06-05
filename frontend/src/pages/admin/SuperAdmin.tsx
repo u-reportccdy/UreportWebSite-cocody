@@ -242,7 +242,6 @@ export function SuperAdmin() {
                 } catch (err: any) {
                   const detail = err?.response?.data?.detail || 'Impossible de modifier le mode maintenance.';
                   if (err?.response?.status === 401 || err?.response?.status === 403) {
-                    sessionStorage.removeItem('admin_token');
                     sessionStorage.removeItem('admin_role');
                     sessionStorage.removeItem('admin_email');
                   }

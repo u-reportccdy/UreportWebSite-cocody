@@ -1,10 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
 export function SuperAdminGuard() {
-  const token = sessionStorage.getItem('admin_token');
   const role = sessionStorage.getItem('admin_role');
 
-  if (!token) {
+  if (!role) {
     return <Navigate to="/superadmin/login" replace />;
   }
   if (role !== 'superadmin') {

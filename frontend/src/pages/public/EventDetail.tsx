@@ -10,6 +10,7 @@ import { JoinModal } from '../../components/public/JoinModal';
 import { cleanRichHtml } from '../../utils/richText';
 import { WhatsAppRedirectModal } from '../../components/public/WhatsAppRedirectModal';
 import { memberStatusLabel } from '../../utils/whatsapp';
+import { loadMemberSession, subscribeMemberSessionChange } from '../../utils/memberSession';
 
 
 
@@ -27,14 +28,15 @@ export function EventDetail() {
   const [whatsAppPayload, setWhatsAppPayload] = useState<{ url: string; title: string; message: string; buttonLabel: string } | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem('member_session');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setSession(parsed);
+    const syncSession = () => {
+      const parsed = loadMemberSession();
+      setSession(parsed);
+      if (parsed) {
         setFormData({ member_status: parsed?.status || 'aspirant', sex: parsed?.sex || 'non_precise' });
-      } catch (_err) {}
-    }
+      }
+    };
+    syncSession();
+    return subscribeMemberSessionChange(syncSession);
   }, []);
 
   useEffect(() => {
