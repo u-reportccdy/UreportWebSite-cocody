@@ -11,6 +11,19 @@ export function Team() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [photoPreview, setPhotoPreview] = useState('');
+  const toSafeImageSrc = (value: string): string => {
+    const trimmed = value.trim();
+    if (!trimmed) return '';
+    if (trimmed.startsWith('/')) return trimmed;
+    if (/^data:image\/[a-zA-Z+.-]+;base64,[a-zA-Z0-9+/=]+$/.test(trimmed)) return trimmed;
+    try {
+      const parsed = new URL(trimmed, window.location.origin);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') return parsed.toString();
+    } catch {
+      return '';
+    }
+    return '';
+  };
   const [formData, setFormData] = useState({
     full_name: '',
     role: '',
@@ -186,8 +199,8 @@ export function Team() {
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-700">Photo</label>
                   <input type="file" accept="image/*" onChange={async e => await handlePhotoUpload(e.target.files?.[0] ?? null)} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0099DC] file:text-white hover:file:bg-[#007bb5]" />
-                  <input type="url" placeholder="URL photo (optionnel)" value={formData.photo_url.startsWith('data:') ? '' : formData.photo_url} onChange={e => { setFormData({ ...formData, photo_url: e.target.value }); setPhotoPreview(e.target.value); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
-                  {photoPreview && <img src={photoPreview} alt="Aperçu" className="w-20 h-20 rounded-full object-cover border border-gray-200" />}
+                  <input type="url" placeholder="URL photo (optionnel)" value={formData.photo_url.startsWith('data:') ? '' : formData.photo_url} onChange={e => { const nextValue = e.target.value; setFormData({ ...formData, photo_url: nextValue }); setPhotoPreview(toSafeImageSrc(nextValue)); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+                  {toSafeImageSrc(photoPreview) && <img src={toSafeImageSrc(photoPreview)} alt="Aperçu" className="w-20 h-20 rounded-full object-cover border border-gray-200" />}
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-semibold text-gray-700">Ordre d'affichage</label>
