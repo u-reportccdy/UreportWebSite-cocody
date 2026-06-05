@@ -4,7 +4,7 @@
 # documentation.
 # JFrog SAST performs 1st party source code security analysis
 # For more information, see
-# https://docs.jfrog-applications.jfrog.io/jfrog-security-features/sast
+# https://jfrog.io
 
 name: "JFrog SAST Scan"
 
@@ -39,7 +39,6 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
 
-    # Remplacement de l'installation npm par l'action officielle recommandée
     - name: Install and configure JFrog CLI
       uses: jfrog/setup-jfrog-cli@v4
       env:
@@ -47,6 +46,10 @@ jobs:
         JF_TOKEN: ${{ env.JF_TOKEN }}
 
     - name: Run JFrog SAST
+      # Injection explicite des variables d'environnement requises pour jf audit
+      env:
+        JF_URL: ${{ env.JF_URL }}
+        JF_TOKEN: ${{ env.JF_TOKEN }}
       run: |
         jf audit --sast --format=sarif > jfrog_sast.sarif
 
@@ -54,5 +57,3 @@ jobs:
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: jfrog_sast.sarif
-
-  
