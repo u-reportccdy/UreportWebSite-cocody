@@ -17,6 +17,25 @@ export function Partners() {
   const [logoPreview, setLogoPreview] = useState<string>('');
   const [logoSize, setLogoSize] = useState({ width: 300, height: 300 });
 
+  const sanitizeLogoSrc = (value: string): string => {
+    const trimmed = value.trim();
+    if (!trimmed) return '';
+
+    // Keep image data URLs produced by trusted upload flow
+    if (trimmed.startsWith('data:image/')) return trimmed;
+
+    try {
+      const url = new URL(trimmed, window.location.origin);
+      if (url.protocol === 'https:' || url.protocol === 'http:') {
+        return url.href;
+      }
+    } catch {
+      // invalid URL -> rejected
+    }
+
+    return '';
+  };
+
   const loadPartners = async () => {
     setIsLoading(true);
     try {
@@ -204,7 +223,7 @@ export function Partners() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Logo du Partenaire</label>
                   <div className="grid gap-3">
                     <input type="file" accept="image/*" onChange={async e => await handleLogoUpload(e.target.files?.[0] ?? null)} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0099DC] file:text-white hover:file:bg-[#007bb5]" />
-                    <input type="url" placeholder="URL du Logo (optionnel)" value={formData.logo.startsWith('data:') ? '' : formData.logo} onChange={e => { setFormData({...formData, logo: e.target.value}); setLogoPreview(e.target.value); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
+                    <input type="url" placeholder="URL du Logo (optionnel)" value={formData.logo.startsWith('data:') ? '' : formData.logo} onChange={e => { const rawValue = e.target.value; const safeLogoSrc = sanitizeLogoSrc(rawValue); setFormData({...formData, logo: rawValue}); setLogoPreview(safeLogoSrc); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
                   </div>
                   {logoPreview && (
                     <div className="mt-3 rounded-lg overflow-hidden border border-gray-200 flex justify-center bg-gray-50 p-4">
