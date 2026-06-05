@@ -23,6 +23,21 @@ export function Testimonials() {
   const [isSaving, setIsSaving] = useState(false);
   const [avatarSize, setAvatarSize] = useState({ width: 300, height: 300 });
 
+  const sanitizeAvatarUrl = (value: string): string => {
+    const trimmed = value.trim();
+    if (!trimmed) return '';
+    if (trimmed.startsWith('data:image/')) return trimmed;
+    try {
+      const parsed = new URL(trimmed);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        return trimmed;
+      }
+    } catch {
+      return '';
+    }
+    return '';
+  };
+
   const loadTestimonials = async () => {
     try {
       setIsLoading(true);
@@ -234,7 +249,7 @@ export function Testimonials() {
                 <div className="grid gap-3">
                   <label className="block text-sm font-medium text-gray-700">Photo / Avatar</label>
                   <input type="file" accept="image/*" onChange={async e => await handleAvatarUpload(e.target.files?.[0] ?? null)} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0099DC] file:text-white hover:file:bg-[#007bb5]" />
-                  <input type="url" placeholder="URL photo (optionnel)" value={formData.avatar.startsWith('data:') ? '' : formData.avatar} onChange={e => { setFormData({ ...formData, avatar: e.target.value }); setAvatarPreview(e.target.value); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
+                  <input type="url" placeholder="URL photo (optionnel)" value={formData.avatar.startsWith('data:') ? '' : formData.avatar} onChange={e => { const safeAvatarUrl = sanitizeAvatarUrl(e.target.value); setFormData({ ...formData, avatar: safeAvatarUrl }); setAvatarPreview(safeAvatarUrl); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
                 </div>
                 {avatarPreview && (
                   <div className="mt-3 flex justify-center">
