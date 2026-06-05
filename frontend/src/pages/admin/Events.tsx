@@ -10,6 +10,19 @@ import { resizeImageToDataUrl } from '../../utils/imageResize';
 
 const quillModules = { toolbar: [['bold', 'italic', 'underline'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']] };
 
+const sanitizeImageSrc = (value: string): string => {
+  const trimmed = value.trim();
+  if (!trimmed) return '';
+  if (trimmed.startsWith('data:image/')) return trimmed;
+  try {
+    const parsed = new URL(trimmed);
+    if (parsed.protocol === 'https:' || parsed.protocol === 'http:') return parsed.toString();
+  } catch {
+    return '';
+  }
+  return '';
+};
+
 const statusToApi: Record<string, string> = {
   'A venir': 'upcoming',
   Ouvert: 'ongoing',
@@ -430,7 +443,7 @@ export function Events() {
                 <input required type="text" placeholder="Titre" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent focus:bg-white transition-all" />
                 <div className="grid gap-3">
                   <input type="file" accept="image/*" onChange={async e => await handleImageUpload(e.target.files?.[0] ?? null)} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0099DC] file:text-white hover:file:bg-[#007bb5]" />
-                  <input type="url" placeholder="URL photo (optionnel)" value={formData.image.startsWith('data:') ? '' : formData.image} onChange={e => { setFormData({ ...formData, image: e.target.value }); setImagePreview(e.target.value); }} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent focus:bg-white transition-all" />
+                  <input type="url" placeholder="URL photo (optionnel)" value={formData.image.startsWith('data:') ? '' : formData.image} onChange={e => { const safeImageSrc = sanitizeImageSrc(e.target.value); setFormData({ ...formData, image: safeImageSrc }); setImagePreview(safeImageSrc); }} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent focus:bg-white transition-all" />
                 </div>
                 {imagePreview && <div className="mt-3 rounded-lg overflow-hidden border border-gray-200"><img src={imagePreview} alt="Apercu" className="w-full h-48 object-cover" /></div>}
                 <div className="grid grid-cols-2 gap-4">
