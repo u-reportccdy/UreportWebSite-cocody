@@ -5,12 +5,14 @@ interface InputProps extends
   error?: string;
   multiline?: boolean;
   rows?: number;
+  inputClassName?: string;
 }
 export function Input({
   label,
   error,
   multiline = false,
   className = '',
+  inputClassName = '',
   id,
   ...props
 }: InputProps) {
@@ -32,13 +34,13 @@ export function Input({
       {multiline ?
       <textarea
         id={inputId}
-        className={`${baseStyles} ${errorStyles} resize-none`}
+        className={`${baseStyles} ${errorStyles} resize-none ${inputClassName}`}
         {...props as React.TextareaHTMLAttributes<HTMLTextAreaElement>} /> :
 
 
       <input
         id={inputId}
-        className={`${baseStyles} ${errorStyles}`}
+        className={`${baseStyles} ${errorStyles} ${inputClassName}`}
         {...props as React.InputHTMLAttributes<HTMLInputElement>} />
 
       }

@@ -1,23 +1,54 @@
-import React, { useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Users, Search, Filter } from 'lucide-react';
+import { Calendar, MapPin, Users, Search, Loader2 } from 'lucide-react';
 import { Link } from '../../components/public/Link';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
-import { Input } from '../../components/ui/Input';
-import { events } from '../../data/mockData';
 import { RegistrationModal } from '../../components/public/RegistrationModal';
+import { fetchEvents } from '../../services/event.service';
 export function Events() {
   const [filter, setFilter] = useState<'all' | 'upcoming' | 'past'>('upcoming');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
-  const filteredEvents = events.filter((event) => {
-    const matchesFilter = filter === 'all' || event.status === filter;
-    const matchesSearch =
-      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.location.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
+  const [events, setEvents] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        setIsLoading(true);
+        const rows = await fetchEvents();
+        setEvents(rows.map((event: any) => ({
+          ...event,
+          date: event.date || event.event_date,
+          time: event.time || [event.start_time, event.end_time].filter(Boolean).join(' - '),
+          image: event.image || event.image_url,
+          registered: event.registered || 0,
+        })));
+      } catch (err) {
+        console.error('Erreur chargement evenements:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadEvents();
+  }, []);
+
+  const filteredEvents = events
+    .filter((event) => {
+      const matchesFilter = filter === 'all' || event.status === filter;
+      const matchesSearch =
+        event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.location.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesFilter && matchesSearch;
+    })
+    .sort((a, b) => {
+      const aTime = new Date(a.date || 0).getTime();
+      const bTime = new Date(b.date || 0).getTime();
+      return bTime - aTime;
+    })
+    .slice(0, 10);
   return (
     <div className="min-h-screen bg-gray-50 pb-20" translate="no">
       {/* Header */}
@@ -60,8 +91,7 @@ export function Events() {
               Tous
             </button>
           </div>
-
-          <div className="relative w-full md:w-72">
+          <div className="relative w-full md:w-[360px]">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-gray-400" />
             </div>
@@ -70,13 +100,18 @@ export function Events() {
               placeholder="Rechercher un événement..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-gray-900 placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent" />
+              className="w-full pl-11 pr-4 py-2.5 rounded-2xl border border-gray-300 bg-gray-50 text-gray-900 placeholder:text-[#586A82] text-[15px] shadow-[0_2px_8px_rgba(15,23,42,0.08)] focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent" />
 
           </div>
         </Card>
 
         {/* Events Grid */}
-        {filteredEvents.length > 0 ?
+        {isLoading ? (
+          <div className="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
+            <Loader2 className="w-12 h-12 text-[#0099DC] animate-spin mx-auto mb-4" />
+            <p className="text-gray-500 font-semibold">Chargement des événements...</p>
+          </div>
+        ) : filteredEvents.length > 0 ?
           <motion.div
             layout
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -175,7 +210,9 @@ export function Events() {
               Aucun événement trouvé
             </h3>
             <p className="text-gray-500">
-              Essayez de modifier vos filtres ou votre recherche.
+              {searchQuery.trim()
+                ? `Aucun résultat pour "${searchQuery}".`
+                : 'Essayez de modifier vos filtres ou votre recherche.'}
             </p>
             <Button
               variant="outline"
@@ -194,8 +231,10 @@ export function Events() {
       <RegistrationModal
         isOpen={!!selectedEvent}
         onClose={() => setSelectedEvent(null)}
+        eventId={selectedEvent?.id?.toString() || ''}
         eventTitle={selectedEvent?.title || ''}
       />
     </div>);
 
 }
+

@@ -4,6 +4,7 @@ export const PATHS = {
     ARTICLES: '/articles',
     EVENTS: '/events',
     GALLERY: '/gallery',
+    CONTRIBUTION_PAYMENT: '/cotisation/paiement',
     PARTNERS: '/partners',
     TESTIMONIALS: '/testimonials',
     ABOUT: '/about',
@@ -14,6 +15,14 @@ export const PATHS = {
     DASHBOARD: '/admin',
     ARTICLES: '/admin/articles',
     EVENTS: '/admin/events',
-    INSCRIPTIONS: '/admin/inscriptions'
+    INSCRIPTIONS: '/admin/inscriptions',
+    MEMBER_SEARCH: '/admin/member-search',
+    TEAM: '/admin/team',
+    STATS: '/admin/stats',
+    GALLERY: '/admin/gallery',
+    PARTNERS: '/admin/partners',
+    TESTIMONIALS: '/admin/testimonials',
+    NEWSLETTER: '/admin/newsletter',
+    SETTINGS: '/admin/settings'
   }
 };

@@ -1,0 +1,29 @@
+{
+  "name": "U-Report Cocody | La voix des jeunes",
+  "short_name": "U-Report Cocody",
+  "description": "Plateforme U-Report Cocody.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0099DC",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

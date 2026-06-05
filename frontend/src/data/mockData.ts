@@ -1,4 +1,4 @@
-export const stats = [
+﻿export const stats = [
 { id: 1, label: 'U-Reporters Actifs', value: '9 840+' },
 { id: 2, label: 'Événements Organisés', value: '120+' },
 { id: 3, label: 'Partenaires Locaux', value: '15' },

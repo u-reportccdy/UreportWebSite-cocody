@@ -1,3 +1,9 @@
+﻿html, body, #root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 @import "tailwindcss";
 
 @theme {
@@ -43,3 +49,95 @@ blockquote {
 .article-editor .ql-editor {
   min-height: 200px;
 }
+
+/* Enforce absolute wrapping and word-breaking for pasted editor content */
+.quill-content {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  white-space: pre-wrap !important;
+}
+
+.quill-content * {
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Scrollbar plus propre dans le menu admin */
+.sidebar-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.55) transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.45);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.7);
+  background-clip: content-box;
+}
+
+/* Scrollbar fine pour modales/formulaires */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.45) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.45);
+  border-radius: 999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+
+@keyframes partners-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.partners-marquee {
+  animation: partners-marquee 25s linear infinite;
+  will-change: transform;
+}
+
+.partners-marquee:hover {
+  animation-play-state: paused;
+}
+
+.team-marquee {
+  animation: partners-marquee 25s linear infinite;
+  will-change: transform;
+}
+
+.team-marquee:hover {
+  animation-play-state: paused;
+}
+
+
+

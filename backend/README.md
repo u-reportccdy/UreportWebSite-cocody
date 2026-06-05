@@ -1,42 +1,28 @@
-# U-Report Cocody - Backend
+# U-Report Cocody - Backend Django
 
-Ce dossier représente l'API Serveur de U-Report Cocody. Il sera responsable de la gestion des données, de la sécurité, de l'authentification et de toute la logique métier de la plateforme.
+Backend Django connecte a Supabase via l'API REST PostgREST.
 
-## 🛠 Stack Technique
+## Demarrage
 
-- **Environnement** : [Node.js](https://nodejs.org/)
-- **Framework Web** : [Express.js](https://expressjs.com/)
-- **Langage** : [TypeScript](https://www.typescriptlang.org/)
-- **Utilitaires Dev** : `ts-node-dev` pour le rechargement à chaud (Hot Reloading)
-
-## 📂 Structure actuelle et visée
-
-```text
-backend/
-├── src/
-│   ├── routes/             # Définition des l'URL de l'API (endpoints)
-│   ├── controllers/        # Logique des requêtes (à venir)
-│   ├── models/             # Modèles de base de données (à venir)
-│   ├── middlewares/        # Fonctions de vérification/sécurité (à venir)
-│   └── server.ts           # Point d'entrée principal du serveur
-├── .env                    # Variables d'environnement (Port, URLs Base de données)
-└── tsconfig.json           # Configuration TypeScript du serveur
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+copy .env.example .env
+python manage.py runserver 0.0.0.0:8000
 ```
 
-## 📜 Scripts Disponibles
+Renseigner `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY` dans `.env`, puis executer `supabase/schema.sql` dans l'editeur SQL Supabase.
 
-Dans ce répertoire, vous pouvez lancer :
+## Routes
 
-- `npm run dev`: Lance le serveur avec rechargement automatique à chaque modification de fichier (`ts-node-dev`).
-- `npm run build`: Compile le code TypeScript en JavaScript pur dans un dossier `dist/`.
-- `npm start`: Lance le serveur de production (après avoir effectué un build) en exécutant `node dist/server.js`.
-
-## 🌐 Endpoints (Développement)
-- **`GET /`** : Statut du serveur API.
-- **`GET /health`** : Vérification de la santé de l'API.
-- **`GET /api/articles`** : (Route d'exemple pour s'assurer que le routage fonctionne).
-
-## 💡 Prochaines Étapes
-- Mettre en place la base de données (MongoDB, PostgreSQL, etc.).
-- Gérer l'authentification avec JWT (JSON Web Tokens) pour sécuriser le tableau de bord administrateur (Frontend).
-- Reflêter et migrer le mock entier de `mockData.ts` vers de vrais modèles base de données.
+- `GET /health/`
+- Articles: `/api/articles`, `/api/articles/<id>`
+- Evenements: `/api/events`, `/api/events/<id>`
+- Inscription activite: `/api/events/<id>/register`
+- Liste et presence: `/api/events/<id>/registrations`, `/api/events/<id>/registrations/<registration_id>/attendance`
+- Resume presence: `/api/events/<id>/attendance-summary`
+- Membres: `/api/members`, `/api/members/login`
+- Cotisations: `/api/contributions/initiate`, `/api/contributions`, `/api/contributions/payment-links`
+- Contenus: `/api/partners`, `/api/testimonials`, `/api/gallery/albums`, `/api/gallery/photos`
+- Newsletter: `/api/newsletter/subscribe`, `/api/newsletter/subscribers`
