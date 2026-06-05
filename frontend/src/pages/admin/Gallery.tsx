@@ -18,6 +18,17 @@ export function Gallery() {
   
   const [isSaving, setIsSaving] = useState(false);
 
+  const sanitizeImageUrl = (value: string) => {
+    const trimmed = value.trim();
+    if (!trimmed) return '';
+    try {
+      const parsed = new URL(trimmed);
+      return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? parsed.toString() : '';
+    } catch {
+      return '';
+    }
+  };
+
   // State for Album Modal (Add/Edit)
   const [isAlbumModalOpen, setIsAlbumModalOpen] = useState(false);
   const [editingAlbum, setEditingAlbum] = useState<any | null>(null);
@@ -206,7 +217,7 @@ export function Gallery() {
                 <div className="grid gap-3">
                   <label className="block text-sm font-medium text-gray-700">Image de Couverture</label>
                   <input type="file" accept="image/*" onChange={e => handleAlbumCoverUpload(e.target.files?.[0] ?? null)} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0099DC] file:text-white hover:file:bg-[#007bb5]" />
-                  <input type="url" placeholder="Ou URL image couverture" value={albumFormData.cover.startsWith('data:') ? '' : albumFormData.cover} onChange={e => { setAlbumFormData({ ...albumFormData, cover: e.target.value }); setAlbumPreview(e.target.value); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
+                  <input type="url" placeholder="Ou URL image couverture" value={albumFormData.cover.startsWith('data:') ? '' : albumFormData.cover} onChange={e => { const safeUrl = sanitizeImageUrl(e.target.value); setAlbumFormData({ ...albumFormData, cover: safeUrl }); setAlbumPreview(safeUrl); }} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
                 </div>
                 {albumPreview && (
                   <div className="mt-3 relative h-40 rounded-lg overflow-hidden border border-gray-200">
