@@ -59,10 +59,20 @@ def create_admin_token(email: str, role: str) -> str:
     return signer.sign(payload)
 
 
+def create_member_token(member_id: str, phone: str) -> str:
+    signer = signing.TimestampSigner(salt="member-auth")
+    payload = signing.dumps({"member_id": member_id, "phone": phone})
+    return signer.sign(payload)
+
+
 def parse_admin_token(auth_header: str | None) -> dict[str, Any] | None:
-    if not auth_header or not auth_header.startswith("Bearer "):
+    token = ""
+    if auth_header and auth_header.startswith("Bearer "):
+        token = auth_header.split(" ", 1)[1].strip()
+    elif auth_header:
+        token = auth_header.strip()
+    if not token:
         return None
-    token = auth_header.split(" ", 1)[1].strip()
     signer = signing.TimestampSigner(salt="admin-auth")
     try:
         unsigned = signer.unsign(token, max_age=getattr(settings, "ADMIN_TOKEN_TTL_SECONDS", 3600 * 8))
@@ -71,46 +81,47 @@ def parse_admin_token(auth_header: str | None) -> dict[str, Any] | None:
         return None
 
 
+def parse_member_token(request) -> dict[str, Any] | None:
+    token = (request.headers.get("X-Member-Token") or request.COOKIES.get("member_session") or "").strip()
+    if not token:
+        return None
+    signer = signing.TimestampSigner(salt="member-auth")
+    try:
+        unsigned = signer.unsign(token, max_age=getattr(settings, "MEMBER_TOKEN_TTL_SECONDS", 3600 * 24 * 30))
+        return signing.loads(unsigned)
+    except Exception:
+        return None
+
+
 def _is_admin_request(path: str, method: str) -> bool:
-    # Public team members listing/details for website About page
     if method == "GET" and (path == "/api/team-members" or path.startswith("/api/team-members/")):
         return False
 
-    # Public GET pages/lists remain open
     if method == "GET":
         if path in {"/api/articles", "/api/events", "/api/partners", "/api/testimonials", "/api/gallery/albums", "/api/gallery/photos", "/api/stats", "/api/settings"}:
             return False
         if path.startswith("/api/articles/") or path.startswith("/api/events/") or path.startswith("/api/partners/") or path.startswith("/api/testimonials/"):
-            # Keep sensitive event registration endpoints protected
             if "/registrations" in path or path.endswith("/attendance-summary"):
                 return True
-            if path.endswith("/is-registered"):
-                return False
             return False
         if path == "/api/newsletter/subscribers":
             return True
-        if path == "/api/members":
-            return False
         if path.startswith("/api/members"):
             return True
         if path.startswith("/api/contributions"):
             return True
         if path.startswith("/api/team-members"):
             return False
-        if path.startswith("/api/settings"):
-            return False
         return False
-    # Public registration & newsletter subscribe
     if path.endswith("/register") and method == "POST":
         return False
     if path == "/api/newsletter/subscribe" and method == "POST":
         return False
     if path == "/api/members" and method == "POST":
         return False
-    if path == "/api/contributions/initiate" and method == "POST":
+    if path == "/api/members/login" and method == "POST":
         return False
-    # Event check endpoint (public)
-    if path.endswith("/is-registered") and method == "GET":
+    if path == "/api/contributions/initiate" and method == "POST":
         return False
     if path == "/api/auth/admin/login":
         return False
@@ -120,7 +131,9 @@ def _is_admin_request(path: str, method: str) -> bool:
 
 
 def _is_maintenance_blocked(path: str, method: str, token_data: dict[str, Any] | None) -> tuple[bool, str]:
-    if token_data and token_data.get("role") == "superadmin":
+    if token_data and token_data.get("role") in {"admin", "superadmin"}:
+        return False, ""
+    if path.startswith("/api/auth/admin/login"):
         return False, ""
     if path.startswith("/api/auth/superadmin/login"):
         return False, ""
@@ -147,7 +160,7 @@ def api_view(methods):
             if request.method not in methods:
                 return error_response("Method not allowed", 405)
             try:
-                token_data = parse_admin_token(request.headers.get("Authorization"))
+                token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get("admin_session"))
                 blocked, message = _is_maintenance_blocked(request.path, request.method, token_data)
                 if blocked:
                     return error_response(message, 503)

@@ -9,18 +9,40 @@ from django.conf import settings as django_settings
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import send_mail
 from . import supabase
-from .utils import api_view, body_json, data_response, error_response, status_response, create_admin_token, parse_admin_token
+from .utils import (
+    api_view,
+    body_json,
+    data_response,
+    error_response,
+    status_response,
+    create_admin_token,
+    parse_admin_token,
+    create_member_token,
+    parse_member_token,
+)
 
 _LOGIN_ATTEMPTS: dict[str, dict[str, float | int]] = {}
 _LOGIN_WINDOW_SECONDS = 15 * 60
 _LOGIN_MAX_ATTEMPTS = 8
 ADMIN_AUTH_FILE = Path(django_settings.BASE_DIR) / "admin_auth.json"
+ADMIN_COOKIE_NAME = "admin_session"
+MEMBER_COOKIE_NAME = "member_session"
 
 
 def _prune_login_attempts(now_ts: float):
     stale = [key for key, value in _LOGIN_ATTEMPTS.items() if (now_ts - float(value.get("ts", 0))) > _LOGIN_WINDOW_SECONDS]
     for key in stale:
         _LOGIN_ATTEMPTS.pop(key, None)
+
+
+def _is_rate_limited(key: str, now_ts: float) -> bool:
+    state = _LOGIN_ATTEMPTS.get(key, {"count": 0, "ts": now_ts})
+    return int(state.get("count", 0)) >= _LOGIN_MAX_ATTEMPTS and (now_ts - float(state.get("ts", now_ts))) < _LOGIN_WINDOW_SECONDS
+
+
+def _record_failed_attempt(key: str, now_ts: float):
+    state = _LOGIN_ATTEMPTS.get(key, {"count": 0, "ts": now_ts})
+    _LOGIN_ATTEMPTS[key] = {"count": int(state.get("count", 0)) + 1, "ts": now_ts}
 
 
 def _get_client_ip(request) -> str:
@@ -30,8 +52,26 @@ def _get_client_ip(request) -> str:
     return request.META.get("REMOTE_ADDR", "unknown")
 
 
+def _set_session_cookie(response, name: str, value: str, max_age: int):
+    response.set_cookie(
+        key=name,
+        value=value,
+        max_age=max_age,
+        httponly=True,
+        samesite="Lax",
+        secure=not django_settings.DEBUG,
+        path="/",
+    )
+    return response
+
+
+def _clear_session_cookie(response, name: str):
+    response.delete_cookie(name, path="/", samesite="Lax")
+    return response
+
+
 def _require_superadmin(request):
-    token_data = parse_admin_token(request.headers.get("Authorization"))
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
     if not token_data or token_data.get("role") != "superadmin":
         return None, error_response("Accès réservé au superadmin.", 403)
     return token_data, None
@@ -73,6 +113,41 @@ def _save_admin_auth(data: dict) -> None:
 
 def _normalize_email(value: str | None) -> str:
     return (value or "").strip().lower()
+
+
+def _normalize_phone(value: str | None) -> str:
+    return "".join(ch for ch in str(value or "") if ch.isdigit())
+
+
+def _normalize_name(value: str | None) -> str:
+    return " ".join(str(value or "").strip().lower().split())
+
+
+def _public_member_payload(member: dict) -> dict:
+    return {
+        "id": member.get("id"),
+        "full_name": member.get("full_name"),
+        "phone": member.get("phone"),
+        "email": member.get("email"),
+        "status": member.get("status"),
+        "sex": member.get("sex"),
+    }
+
+
+def _require_member(request, member_id: str | None = None):
+    token_data = parse_member_token(request)
+    if not token_data:
+        return None, error_response("Session membre invalide ou expirée.", 401)
+    token_member_id = str(token_data.get("member_id") or "")
+    if member_id and token_member_id != str(member_id):
+        return None, error_response("Accès membre refusé.", 403)
+    rows = supabase.select("members", f"select=*&id=eq.{token_member_id}")
+    if not rows:
+        return None, error_response("Membre introuvable.", 404)
+    member = rows[0]
+    if _normalize_phone(member.get("phone")) != _normalize_phone(token_data.get("phone")):
+        return None, error_response("Session membre invalide ou expirée.", 401)
+    return member, None
 
 
 def _bootstrap_admin_auth() -> dict:
@@ -181,8 +256,7 @@ def admin_login(request):
     now_ts = time.time()
     _prune_login_attempts(now_ts)
     ip = _get_client_ip(request)
-    ip_state = _LOGIN_ATTEMPTS.get(ip, {"count": 0, "ts": now_ts})
-    if int(ip_state.get("count", 0)) >= _LOGIN_MAX_ATTEMPTS and (now_ts - float(ip_state.get("ts", now_ts))) < _LOGIN_WINDOW_SECONDS:
+    if _is_rate_limited(ip, now_ts):
         return error_response("Trop de tentatives. Réessayez dans quelques minutes.", 429)
 
     email = _normalize_email(payload.get("email"))
@@ -202,22 +276,23 @@ def admin_login(request):
                 break
 
     if not matched_role or not matched_user:
-        _LOGIN_ATTEMPTS[ip] = {"count": int(ip_state.get("count", 0)) + 1, "ts": now_ts}
+        _record_failed_attempt(ip, now_ts)
         return error_response("Identifiants incorrects.", 401)
 
     if matched_user.get("active") is False:
-        _LOGIN_ATTEMPTS[ip] = {"count": int(ip_state.get("count", 0)) + 1, "ts": now_ts}
+        _record_failed_attempt(ip, now_ts)
         return error_response("Compte désactivé.", 403)
     password_hash = matched_user.get("password_hash") or ""
     if not password_hash or not check_password(password, password_hash):
-        _LOGIN_ATTEMPTS[ip] = {"count": int(ip_state.get("count", 0)) + 1, "ts": now_ts}
+        _record_failed_attempt(ip, now_ts)
         return error_response("Identifiants incorrects.", 401)
 
     _LOGIN_ATTEMPTS.pop(ip, None)
     if matched_role == "superadmin":
         return error_response("Utilisez la route superadmin dédiée.", 403)
     token = create_admin_token(email, matched_role)
-    return data_response({"token": token, "role": matched_role, "email": email})
+    response = data_response({"role": matched_role, "email": email})
+    return _set_session_cookie(response, ADMIN_COOKIE_NAME, token, django_settings.ADMIN_TOKEN_TTL_SECONDS)
 
 
 @api_view(["POST"])
@@ -226,8 +301,7 @@ def superadmin_login(request):
     now_ts = time.time()
     _prune_login_attempts(now_ts)
     ip = _get_client_ip(request)
-    ip_state = _LOGIN_ATTEMPTS.get(ip, {"count": 0, "ts": now_ts})
-    if int(ip_state.get("count", 0)) >= _LOGIN_MAX_ATTEMPTS and (now_ts - float(ip_state.get("ts", now_ts))) < _LOGIN_WINDOW_SECONDS:
+    if _is_rate_limited(ip, now_ts):
         return error_response("Trop de tentatives. Réessayez dans quelques minutes.", 429)
 
     email = _normalize_email(payload.get("email"))
@@ -236,24 +310,37 @@ def superadmin_login(request):
     super_user = auth_data.get("superadmin") or {}
 
     if email != _normalize_email(super_user.get("email")):
-        _LOGIN_ATTEMPTS[ip] = {"count": int(ip_state.get("count", 0)) + 1, "ts": now_ts}
+        _record_failed_attempt(ip, now_ts)
         return error_response("Identifiants incorrects.", 401)
     if super_user.get("active") is False:
-        _LOGIN_ATTEMPTS[ip] = {"count": int(ip_state.get("count", 0)) + 1, "ts": now_ts}
+        _record_failed_attempt(ip, now_ts)
         return error_response("Compte superadmin désactivé.", 403)
     password_hash = super_user.get("password_hash") or ""
     if not password_hash or not check_password(password, password_hash):
-        _LOGIN_ATTEMPTS[ip] = {"count": int(ip_state.get("count", 0)) + 1, "ts": now_ts}
+        _record_failed_attempt(ip, now_ts)
         return error_response("Identifiants incorrects.", 401)
 
     _LOGIN_ATTEMPTS.pop(ip, None)
     token = create_admin_token(email, "superadmin")
-    return data_response({"token": token, "role": "superadmin", "email": email})
+    response = data_response({"role": "superadmin", "email": email})
+    return _set_session_cookie(response, ADMIN_COOKIE_NAME, token, django_settings.ADMIN_TOKEN_TTL_SECONDS)
+
+
+@api_view(["POST"])
+def admin_logout(_request):
+    response = status_response()
+    return _clear_session_cookie(response, ADMIN_COOKIE_NAME)
+
+
+@api_view(["POST"])
+def member_logout(_request):
+    response = status_response()
+    return _clear_session_cookie(response, MEMBER_COOKIE_NAME)
 
 
 @api_view(["POST"])
 def admin_change_credentials(request):
-    token_data = parse_admin_token(request.headers.get("Authorization"))
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
     if not token_data:
         return error_response("Unauthorized", 401)
 
@@ -474,12 +561,8 @@ def superadmin_logs(request):
 @api_view(["GET", "POST"])
 def members(request):
     if request.method == "GET":
-        q = (request.GET.get("q") or "").strip()
-        if not q:
-            token_data = parse_admin_token(request.headers.get("Authorization"))
-            if not token_data or token_data.get("role") not in {"admin", "superadmin"}:
-                return error_response("Unauthorized", 401)
         rows = supabase.select("members", "select=*&order=created_at.desc")
+        q = (request.GET.get("q") or "").strip().lower()
         if not q:
             return data_response(rows)
         lower_q = q.lower()
@@ -493,8 +576,56 @@ def members(request):
         ]
         return data_response(filtered)
     payload = body_json(request)
+    payload["full_name"] = " ".join(str(payload.get("full_name") or "").split())
+    payload["phone"] = str(payload.get("phone") or "").strip()
+    payload["email"] = _normalize_email(payload.get("email"))
     payload.setdefault("status", "aspirant")
-    return data_response(supabase.insert("members", payload), 201)
+    if not payload["full_name"] or not _normalize_phone(payload["phone"]):
+        return error_response("Nom complet et numéro de téléphone requis.", 422)
+
+    existing = supabase.select("members", "select=*&order=created_at.desc")
+    normalized_phone = _normalize_phone(payload["phone"])
+    duplicate = next((member for member in existing if _normalize_phone(member.get("phone")) == normalized_phone), None)
+    if duplicate:
+        return error_response("Ce numéro de téléphone est déjà enregistré. Veuillez vous connecter.", 409)
+
+    created = supabase.insert("members", payload)
+    member = created[0] if isinstance(created, list) and created else created
+    token = create_member_token(str(member.get("id")), str(member.get("phone") or ""))
+    response = data_response({"member": _public_member_payload(member)}, 201)
+    return _set_session_cookie(response, MEMBER_COOKIE_NAME, token, django_settings.MEMBER_TOKEN_TTL_SECONDS)
+
+
+@api_view(["POST"])
+def member_login(request):
+    now_ts = time.time()
+    _prune_login_attempts(now_ts)
+    rate_limit_key = f"member:{_get_client_ip(request)}"
+    if _is_rate_limited(rate_limit_key, now_ts):
+        return error_response("Trop de tentatives. Réessayez dans quelques minutes.", 429)
+    payload = body_json(request)
+    full_name = _normalize_name(payload.get("full_name"))
+    phone = _normalize_phone(payload.get("phone"))
+    if not full_name or not phone:
+        return error_response("Nom complet et numéro de téléphone requis.", 422)
+
+    members_rows = supabase.select("members", "select=*&order=created_at.desc")
+    match = next(
+        (
+            row
+            for row in members_rows
+            if _normalize_phone(row.get("phone")) == phone and _normalize_name(row.get("full_name")) == full_name
+        ),
+        None,
+    )
+    if not match:
+        _record_failed_attempt(rate_limit_key, now_ts)
+        return error_response("Aucun membre correspondant. Vérifiez le nom complet et le numéro.", 401)
+
+    _LOGIN_ATTEMPTS.pop(rate_limit_key, None)
+    token = create_member_token(str(match.get("id")), str(match.get("phone") or ""))
+    response = data_response({"member": _public_member_payload(match)})
+    return _set_session_cookie(response, MEMBER_COOKIE_NAME, token, django_settings.MEMBER_TOKEN_TTL_SECONDS)
 
 
 @api_view(["PATCH"])
@@ -503,16 +634,38 @@ def member_status(request, member_id):
 
 @api_view(["GET", "PATCH"])
 def member_detail(request, member_id):
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
+    if not token_data or token_data.get("role") not in {"admin", "superadmin"}:
+        current_member, error = _require_member(request, str(member_id))
+        if error:
+            return error
+    else:
+        current_member = None
     if request.method == "GET":
         rows = supabase.select("members", f"select=*&id=eq.{member_id}")
         if not rows:
             return error_response("Member not found", 404)
-        return data_response(rows[0])
-    return data_response(supabase.update("members", "id", member_id, body_json(request)))
+        return data_response(_public_member_payload(rows[0]) if not token_data else rows[0])
+    payload = body_json(request)
+    if not token_data and current_member:
+        payload = {
+            "full_name": " ".join(str(payload.get("full_name") or current_member.get("full_name") or "").split()),
+            "phone": str(payload.get("phone") or current_member.get("phone") or "").strip(),
+            "email": _normalize_email(payload.get("email") or current_member.get("email")),
+            "sex": payload.get("sex") or current_member.get("sex") or "non_precise",
+            "birth_date": payload.get("birth_date", current_member.get("birth_date")),
+            "commune": payload.get("commune") or current_member.get("commune") or "",
+        }
+    return data_response(supabase.update("members", "id", member_id, payload))
 
 
 @api_view(["GET"])
 def member_activities(request, member_id):
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
+    if not token_data or token_data.get("role") not in {"admin", "superadmin"}:
+        _, error = _require_member(request, str(member_id))
+        if error:
+            return error
     member_rows = supabase.select("members", f"select=*&id=eq.{member_id}")
     if not member_rows:
         return error_response("Member not found", 404)
@@ -568,6 +721,9 @@ def member_activities(request, member_id):
 @api_view(["POST"])
 def event_register(request, event_id):
     payload = body_json(request)
+    member, error = _require_member(request, str(payload.get("member_id") or ""))
+    if error:
+        return error
     rows = supabase.select("events", f"select=id,capacity,registered&id=eq.{event_id}")
     if not rows:
         return error_response("Event not found", 404)
@@ -578,17 +734,12 @@ def event_register(request, event_id):
     if capacity and registered >= capacity:
         return error_response("Event capacity reached", 409)
 
-    member_id = payload.get("member_id")
+    member_id = member.get("id")
     if not member_id:
         return error_response("Authentication required: member_id is required", 401)
-
-    member_rows = supabase.select("members", f"select=*&id=eq.{member_id}")
-    if not member_rows:
-        return error_response("Member not found", 404)
-    member = member_rows[0]
-    payload["full_name"] = payload.get("full_name") or member.get("full_name") or ""
-    payload["phone"] = payload.get("phone") or member.get("phone") or ""
-    payload["email"] = payload.get("email") or member.get("email") or ""
+    payload["full_name"] = member.get("full_name") or ""
+    payload["phone"] = member.get("phone") or ""
+    payload["email"] = member.get("email") or ""
     payload["member_status"] = payload.get("member_status") or member.get("status") or "aspirant"
     payload["sex"] = payload.get("sex") or member.get("sex") or "non_precise"
     if not payload.get("full_name") or not payload.get("phone"):
@@ -616,12 +767,12 @@ def event_registrations(request, event_id):
 
 @api_view(["GET"])
 def event_is_registered(request, event_id):
+    member, error = _require_member(request, str(request.GET.get("member_id") or ""))
+    if error:
+        return error
     member_id = (request.GET.get("member_id") or "").strip()
-    phone = (request.GET.get("phone") or "").strip()
-    if not member_id and not phone:
-        return data_response({"registered": False})
     rows = supabase.select("event_registrations", f"select=member_id,phone&event_id=eq.{event_id}")
-    normalized_phone = "".join(ch for ch in phone if ch.isdigit())
+    normalized_phone = _normalize_phone(member.get("phone"))
     exists = False
     for row in rows:
         if member_id and str(row.get("member_id") or "") == member_id:
@@ -757,7 +908,7 @@ def newsletter_subscribe(request):
         except Exception:
             pass
 
-    return data_response({"subscription": created, "receiver_email": receiver_email}, 201)
+    return data_response({"subscription": created}, 201)
 
 
 @api_view(["GET"])
@@ -831,16 +982,32 @@ def save_local_settings(data):
         pass
 
 
+def _merged_site_settings(remote_settings: dict | None = None, prefer_local: bool = True) -> dict:
+    merged = dict(DEFAULT_SETTINGS)
+    local_settings = load_local_settings()
+    if prefer_local:
+        if isinstance(remote_settings, dict):
+            merged.update({k: v for k, v in remote_settings.items() if v is not None})
+        if isinstance(local_settings, dict):
+            merged.update({k: v for k, v in local_settings.items() if v is not None})
+    else:
+        if isinstance(local_settings, dict):
+            merged.update({k: v for k, v in local_settings.items() if v is not None})
+        if isinstance(remote_settings, dict):
+            merged.update({k: v for k, v in remote_settings.items() if v is not None})
+    return merged
+
+
 @api_view(["GET", "PATCH"])
 def site_settings(request):
     if request.method == "GET":
         try:
             rows = supabase.select("settings", "select=*")
             if rows:
-                return data_response(rows[0])
+                return data_response(_merged_site_settings(rows[0]))
         except Exception:
             return data_response(load_local_settings())
-        return data_response(DEFAULT_SETTINGS)
+        return data_response(_merged_site_settings())
 
     # PATCH
     payload = body_json(request)
@@ -873,31 +1040,39 @@ def site_settings(request):
     ]
     filtered_payload = {k: v for k, v in payload.items() if k in valid_fields}
 
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
     if "site_under_maintenance" in filtered_payload or "maintenance_message" in filtered_payload:
-        token_data = parse_admin_token(request.headers.get("Authorization"))
         if not token_data or token_data.get("role") != "superadmin":
-            return error_response("Seul le superadmin peut modifier le mode maintenance.", 403)
-        _log_superadmin_action(
-            token_data.get("email", ""),
-            "maintenance_updated",
-            "site",
-            {
-                "site_under_maintenance": filtered_payload.get("site_under_maintenance"),
-                "maintenance_message": filtered_payload.get("maintenance_message"),
-            },
-        )
+            filtered_payload.pop("site_under_maintenance", None)
+            filtered_payload.pop("maintenance_message", None)
+        else:
+            _log_superadmin_action(
+                token_data.get("email", ""),
+                "maintenance_updated",
+                "site",
+                {
+                    "site_under_maintenance": filtered_payload.get("site_under_maintenance"),
+                    "maintenance_message": filtered_payload.get("maintenance_message"),
+                },
+            )
 
     try:
         rows = supabase.select("settings", "select=*")
         if rows:
             record_id = rows[0]["id"]
             updated = supabase.update("settings", "id", record_id, filtered_payload)
-            return data_response(updated[0] if isinstance(updated, list) and updated else updated)
+            payload = updated[0] if isinstance(updated, list) and updated else updated
+            if isinstance(payload, dict):
+                save_local_settings(_merged_site_settings(payload, prefer_local=False))
+            return data_response(payload)
         else:
             inserted = supabase.insert("settings", filtered_payload)
-            return data_response(inserted[0] if isinstance(inserted, list) and inserted else inserted, 201)
+            payload = inserted[0] if isinstance(inserted, list) and inserted else inserted
+            if isinstance(payload, dict):
+                save_local_settings(_merged_site_settings(payload, prefer_local=False))
+            return data_response(payload, 201)
     except Exception:
-        current = load_local_settings()
+        current = _merged_site_settings()
         current.update(filtered_payload)
         save_local_settings(current)
         return data_response(current)

@@ -4,8 +4,11 @@ from . import views
 
 urlpatterns = [
     path("auth/admin/login", views.admin_login),
+    path("auth/admin/logout", views.admin_logout),
     path("auth/superadmin/login", views.superadmin_login),
     path("auth/admin/change-credentials", views.admin_change_credentials),
+    path("members/login", views.member_login),
+    path("members/logout", views.member_logout),
     path("superadmin/dashboard", views.superadmin_dashboard),
     path("superadmin/admins", views.superadmin_admins),
     path("superadmin/admins/<uuid:admin_id>", views.superadmin_admin_detail),
