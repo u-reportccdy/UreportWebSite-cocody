@@ -69,6 +69,15 @@ const getAwardIcon = (type: string) => {
   }
 };
 
+const escapeHtml = (value: unknown): string => {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+};
+
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
@@ -315,13 +324,13 @@ export function MemberProfile() {
           <div class="logo">U-<span>Report</span><br><small style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#0099DC;display:block;margin-top:1px;">Cocody</small></div>
           <div class="receipt-title">REÇU DE COTISATION</div>
         </div>
-        <div class="meta-info"><div><strong>N° Trans. :</strong> ${contribution.id.substring(0, 8).toUpperCase()}</div><div><strong>Date :</strong> ${formattedDate}</div></div>
+        <div class="meta-info"><div><strong>N° Trans. :</strong> ${escapeHtml(contribution.id.substring(0, 8).toUpperCase())}</div><div><strong>Date :</strong> ${escapeHtml(formattedDate)}</div></div>
         <div class="section-title">Contributeur</div>
         <div class="details-grid">
-          <div class="detail-item"><label>Nom complet</label><div class="value">${memberData?.full_name || formData.full_name}</div></div>
-          <div class="detail-item"><label>Téléphone</label><div class="value">${memberData?.phone || formData.phone}</div></div>
-          <div class="detail-item"><label>Email</label><div class="value">${memberData?.email || 'Non renseignée'}</div></div>
-          <div class="detail-item"><label>Statut</label><div class="value" style="text-transform:capitalize;">${memberData?.status || 'aspirant'}</div></div>
+          <div class="detail-item"><label>Nom complet</label><div class="value">${escapeHtml(memberData?.full_name || formData.full_name)}</div></div>
+          <div class="detail-item"><label>Téléphone</label><div class="value">${escapeHtml(memberData?.phone || formData.phone)}</div></div>
+          <div class="detail-item"><label>Email</label><div class="value">${escapeHtml(memberData?.email || 'Non renseignée')}</div></div>
+          <div class="detail-item"><label>Statut</label><div class="value" style="text-transform:capitalize;">${escapeHtml(memberData?.status || 'aspirant')}</div></div>
         </div>
         <div class="section-title">Règlement</div>
         <div class="amount-box">
