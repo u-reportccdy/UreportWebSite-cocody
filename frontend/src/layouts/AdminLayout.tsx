@@ -1,5 +1,5 @@
-﻿import { useState } from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Outlet, Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   FileText, 
@@ -16,15 +16,79 @@ import {
   Search,
   UsersRound,
   Menu,
-  X
+  X,
+  Boxes,
+  ClipboardList
 } from 'lucide-react';
 import { PATHS } from '../routes/paths';
 import { logoutAdmin } from '../services/auth.service';
+
+const hasRoutePermission = (role: string | null, routeId: string): boolean => {
+  if (!role) return false;
+  if (role === 'superadmin' || role === 'admin' || role === 'president') return true;
+  
+  // Tout admin connecté a accès à son propre tableau de tâches
+  if (routeId === 'tasks') return true;
+  
+  switch (role) {
+    case 'communication':
+      return ['dashboard', 'articles', 'gallery', 'testimonials', 'partners', 'settings'].includes(routeId);
+    case 'activites':
+    case 'programme':
+      return ['dashboard', 'events', 'inscriptions'].includes(routeId);
+    case 'secretariat':
+      return ['dashboard', 'member-search', 'team', 'newsletter', 'reports'].includes(routeId);
+    case 'finances':
+      return ['dashboard', 'stats', 'reports'].includes(routeId);
+    case 'logistique':
+      return ['dashboard', 'logistics'].includes(routeId);
+    default:
+      return false;
+  }
+};
+
+const getRoleLabel = (role: string | null): string => {
+  switch (role) {
+    case 'superadmin': return 'Super-Administrateur';
+    case 'president': return 'Président';
+    case 'communication': return 'Dépt. Communication';
+    case 'activites':
+    case 'programme': return 'Dépt. Programme & Activités';
+    case 'finances': return 'Dépt. Finances & Cotisations';
+    case 'secretariat': return 'Secrétariat Général';
+    case 'logistique': return 'Dépt. Logistique';
+    default: return 'Administrateur';
+  }
+};
 
 export function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const role = sessionStorage.getItem('admin_role');
+  
+  // Guard the routes dynamically on mount/render
+  const path = location.pathname;
+  let currentRouteId = 'dashboard';
+  if (path.includes('articles')) currentRouteId = 'articles';
+  else if (path.includes('events')) currentRouteId = 'events';
+  else if (path.includes('inscriptions')) currentRouteId = 'inscriptions';
+  else if (path.includes('member-search')) currentRouteId = 'member-search';
+  else if (path.includes('team')) currentRouteId = 'team';
+  else if (path.includes('partners')) currentRouteId = 'partners';
+  else if (path.includes('stats')) currentRouteId = 'stats';
+  else if (path.includes('gallery')) currentRouteId = 'gallery';
+  else if (path.includes('testimonials')) currentRouteId = 'testimonials';
+  else if (path.includes('newsletter')) currentRouteId = 'newsletter';
+  else if (path.includes('logistics')) currentRouteId = 'logistics';
+  else if (path.includes('tasks')) currentRouteId = 'tasks';
+  else if (path.includes('reports')) currentRouteId = 'reports';
+  else if (path.includes('settings')) currentRouteId = 'settings';
+
+  if (role && !hasRoutePermission(role, currentRouteId)) {
+    return <Navigate to="/admin" replace />;
+  }
   
   const handleLogout = async () => {
     try {
@@ -34,7 +98,7 @@ export function AdminLayout() {
     }
     sessionStorage.removeItem('admin_role');
     sessionStorage.removeItem('admin_email');
-    navigate('/');
+    navigate(PATHS.ADMIN.LOGIN);
   };
   
   const getPageTitle = () => {
@@ -49,6 +113,9 @@ export function AdminLayout() {
     if (path.includes('gallery')) return 'Gestion de la Galerie';
     if (path.includes('testimonials')) return 'Gestion des Témoignages';
     if (path.includes('newsletter')) return 'Gestion de la Newsletter';
+    if (path.includes('logistics')) return 'Gestion Logistique';
+    if (path.includes('tasks')) return 'Tâches Collaboratives';
+    if (path.includes('reports')) return 'Rapports d\'Impact BE';
     if (path.includes('settings')) return 'Paramètres de l\'Accueil';
     return 'Tableau de bord';
   };
@@ -100,65 +167,110 @@ export function AdminLayout() {
 
         {/* Navigation Sidebar */}
         <nav className="flex-1 p-4 pr-2 space-y-1.5 overflow-y-auto sidebar-scrollbar" onClick={() => setIsMobileMenuOpen(false)}>
-          <Link to={PATHS.ADMIN.DASHBOARD} className={getLinkClass(PATHS.ADMIN.DASHBOARD)}>
-            <LayoutDashboard className="w-4 h-4 shrink-0" />
-            <span>Tableau de bord</span>
-          </Link>
+          {hasRoutePermission(role, 'dashboard') && (
+            <Link to={PATHS.ADMIN.DASHBOARD} className={getLinkClass(PATHS.ADMIN.DASHBOARD)}>
+              <LayoutDashboard className="w-4 h-4 shrink-0" />
+              <span>Tableau de bord</span>
+            </Link>
+          )}
           
-          <Link to={PATHS.ADMIN.ARTICLES} className={getLinkClass(PATHS.ADMIN.ARTICLES)}>
-            <FileText className="w-4 h-4 shrink-0" />
-            <span>Articles</span>
-          </Link>
+          {hasRoutePermission(role, 'articles') && (
+            <Link to={PATHS.ADMIN.ARTICLES} className={getLinkClass(PATHS.ADMIN.ARTICLES)}>
+              <FileText className="w-4 h-4 shrink-0" />
+              <span>Articles</span>
+            </Link>
+          )}
           
-          <Link to={PATHS.ADMIN.EVENTS} className={getLinkClass(PATHS.ADMIN.EVENTS)}>
-            <Calendar className="w-4 h-4 shrink-0" />
-            <span>Événements</span>
-          </Link>
+          {hasRoutePermission(role, 'events') && (
+            <Link to={PATHS.ADMIN.EVENTS} className={getLinkClass(PATHS.ADMIN.EVENTS)}>
+              <Calendar className="w-4 h-4 shrink-0" />
+              <span>Événements</span>
+            </Link>
+          )}
           
-          <Link to={PATHS.ADMIN.INSCRIPTIONS} className={getLinkClass(PATHS.ADMIN.INSCRIPTIONS)}>
-            <Users className="w-4 h-4 shrink-0" />
-            <span>Inscriptions</span>
-          </Link>
+          {hasRoutePermission(role, 'inscriptions') && (
+            <Link to={PATHS.ADMIN.INSCRIPTIONS} className={getLinkClass(PATHS.ADMIN.INSCRIPTIONS)}>
+              <Users className="w-4 h-4 shrink-0" />
+              <span>Inscriptions</span>
+            </Link>
+          )}
 
-          <Link to={PATHS.ADMIN.MEMBER_SEARCH} className={getLinkClass(PATHS.ADMIN.MEMBER_SEARCH)}>
-            <Search className="w-4 h-4 shrink-0" />
-            <span>Chercher un U-Report</span>
-          </Link>
+          {hasRoutePermission(role, 'member-search') && (
+            <Link to={PATHS.ADMIN.MEMBER_SEARCH} className={getLinkClass(PATHS.ADMIN.MEMBER_SEARCH)}>
+              <Search className="w-4 h-4 shrink-0" />
+              <span>Chercher un U-Report</span>
+            </Link>
+          )}
 
-          <Link to={PATHS.ADMIN.TEAM} className={getLinkClass(PATHS.ADMIN.TEAM)}>
-            <UsersRound className="w-4 h-4 shrink-0" />
-            <span>Notre Équipe</span>
-          </Link>
+          {hasRoutePermission(role, 'team') && (
+            <Link to={PATHS.ADMIN.TEAM} className={getLinkClass(PATHS.ADMIN.TEAM)}>
+              <UsersRound className="w-4 h-4 shrink-0" />
+              <span>Notre Équipe</span>
+            </Link>
+          )}
           
-          <Link to={PATHS.ADMIN.GALLERY} className={getLinkClass(PATHS.ADMIN.GALLERY)}>
-            <ImageIcon className="w-4 h-4 shrink-0" />
-            <span>Galerie Photo</span>
-          </Link>
+          {hasRoutePermission(role, 'gallery') && (
+            <Link to={PATHS.ADMIN.GALLERY} className={getLinkClass(PATHS.ADMIN.GALLERY)}>
+              <ImageIcon className="w-4 h-4 shrink-0" />
+              <span>Galerie Photo</span>
+            </Link>
+          )}
           
-          <Link to={PATHS.ADMIN.TESTIMONIALS} className={getLinkClass(PATHS.ADMIN.TESTIMONIALS)}>
-            <MessageSquare className="w-4 h-4 shrink-0" />
-            <span>Témoignages</span>
-          </Link>
+          {hasRoutePermission(role, 'testimonials') && (
+            <Link to={PATHS.ADMIN.TESTIMONIALS} className={getLinkClass(PATHS.ADMIN.TESTIMONIALS)}>
+              <MessageSquare className="w-4 h-4 shrink-0" />
+              <span>Témoignages</span>
+            </Link>
+          )}
           
-          <Link to={PATHS.ADMIN.PARTNERS} className={getLinkClass(PATHS.ADMIN.PARTNERS)}>
-            <Handshake className="w-4 h-4 shrink-0" />
-            <span>Partenaires</span>
-          </Link>
+          {hasRoutePermission(role, 'partners') && (
+            <Link to={PATHS.ADMIN.PARTNERS} className={getLinkClass(PATHS.ADMIN.PARTNERS)}>
+              <Handshake className="w-4 h-4 shrink-0" />
+              <span>Partenaires</span>
+            </Link>
+          )}
           
-          <Link to={PATHS.ADMIN.STATS} className={getLinkClass(PATHS.ADMIN.STATS)}>
-            <BarChart2 className="w-4 h-4 shrink-0" />
-            <span>Statistiques</span>
-          </Link>
+          {hasRoutePermission(role, 'stats') && (
+            <Link to={PATHS.ADMIN.STATS} className={getLinkClass(PATHS.ADMIN.STATS)}>
+              <BarChart2 className="w-4 h-4 shrink-0" />
+              <span>Statistiques</span>
+            </Link>
+          )}
           
-          <Link to={PATHS.ADMIN.NEWSLETTER} className={getLinkClass(PATHS.ADMIN.NEWSLETTER)}>
-            <Mail className="w-4 h-4 shrink-0" />
-            <span>Newsletter</span>
-          </Link>
+          {hasRoutePermission(role, 'newsletter') && (
+            <Link to={PATHS.ADMIN.NEWSLETTER} className={getLinkClass(PATHS.ADMIN.NEWSLETTER)}>
+              <Mail className="w-4 h-4 shrink-0" />
+              <span>Newsletter</span>
+            </Link>
+          )}
+          
+          {hasRoutePermission(role, 'logistics') && (
+            <Link to={PATHS.ADMIN.LOGISTICS} className={getLinkClass(PATHS.ADMIN.LOGISTICS)}>
+              <Boxes className="w-4 h-4 shrink-0" />
+              <span>Logistique</span>
+            </Link>
+          )}
+          
+          {hasRoutePermission(role, 'tasks') && (
+            <Link to={PATHS.ADMIN.TASKS} className={getLinkClass(PATHS.ADMIN.TASKS)}>
+              <ClipboardList className="w-4 h-4 shrink-0" />
+              <span>Tâches</span>
+            </Link>
+          )}
 
-          <Link to={PATHS.ADMIN.SETTINGS} className={getLinkClass(PATHS.ADMIN.SETTINGS)}>
-            <SettingsIcon className="w-4 h-4 shrink-0" />
-            <span>Paramètres Accueil</span>
-          </Link>
+          {hasRoutePermission(role, 'reports') && (
+            <Link to={PATHS.ADMIN.REPORTS} className={getLinkClass(PATHS.ADMIN.REPORTS)}>
+              <FileText className="w-4 h-4 shrink-0" />
+              <span>Rapports BE</span>
+            </Link>
+          )}
+
+          {hasRoutePermission(role, 'settings') && (
+            <Link to={PATHS.ADMIN.SETTINGS} className={getLinkClass(PATHS.ADMIN.SETTINGS)}>
+              <SettingsIcon className="w-4 h-4 shrink-0" />
+              <span>Paramètres Accueil</span>
+            </Link>
+          )}
         </nav>
 
         {/* Footer Area */}
@@ -188,11 +300,11 @@ export function AdminLayout() {
           <div className="flex items-center space-x-2 sm:space-x-4">
             <div className="hidden sm:flex items-center space-x-2">
               <img
-                src="https://ui-avatars.com/api/?name=Admin+Cocody&background=0099DC&color=fff"
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(getRoleLabel(role))}&background=0099DC&color=fff`}
                 alt="Admin"
-                className="w-8 h-8 rounded-full border" 
+                className="w-8 h-8 rounded-full border shadow-sm" 
               />
-              <span className="text-sm text-gray-700 font-bold">Administrateur</span>
+              <span className="text-sm text-gray-700 font-bold">{getRoleLabel(role)}</span>
             </div>
             <button 
               onClick={() => void handleLogout()}
@@ -213,5 +325,3 @@ export function AdminLayout() {
     </div>
   );
 }
-
-

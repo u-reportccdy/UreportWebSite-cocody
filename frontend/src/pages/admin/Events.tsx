@@ -1,6 +1,6 @@
-﻿import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PlusIcon, SearchIcon, CalendarIcon, MapPinIcon, UsersIcon, MoreVerticalIcon, XIcon, Edit2Icon, Trash2Icon, Loader2, CheckSquareIcon } from 'lucide-react';
+import { PlusIcon, SearchIcon, CalendarIcon, MapPinIcon, UsersIcon, MoreVerticalIcon, XIcon, Edit2Icon, Trash2Icon, Loader2, CheckSquareIcon, QrCode } from 'lucide-react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { createEvent, deleteEvent, fetchEvents, fetchEventRegistrations, markEventAttendance, registerForEvent, updateEvent } from '../../services/event.service';
@@ -103,6 +103,7 @@ export function Events() {
   const [memberSearchQuery, setMemberSearchQuery] = useState('');
   const [memberResults, setMemberResults] = useState<any[]>([]);
   const [selectedMemberIds, setSelectedMemberIds] = useState<Set<string>>(new Set());
+  const [qrEvent, setQrEvent] = useState<any | null>(null);
 
   const [profileMember, setProfileMember] = useState<any>(null);
   const [profileData, setProfileData] = useState<any>(null);
@@ -325,9 +326,10 @@ export function Events() {
             </div>
 
             {activeDropdownId === event.id && (
-              <div className="absolute right-4 top-12 w-44 bg-white border border-gray-100 shadow-lg rounded-lg py-1 z-10">
+              <div className="absolute right-4 top-12 w-48 bg-white border border-gray-100 shadow-lg rounded-lg py-1 z-10">
                 <button onClick={() => handleOpenModal(event)} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#0099DC] flex items-center"><Edit2Icon className="w-4 h-4 mr-2" /> Modifier</button>
                 <button onClick={() => handleOpenAttendanceModal(event.id)} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#0099DC] flex items-center"><CheckSquareIcon className="w-4 h-4 mr-2" /> Présences (cocher)</button>
+                <button onClick={() => { setQrEvent(event); setActiveDropdownId(null); }} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#0099DC] flex items-center"><QrCode className="w-4 h-4 mr-2" /> QR Code Présence</button>
                 <button onClick={() => handleDelete(event.id)} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center"><Trash2Icon className="w-4 h-4 mr-2" /> Supprimer</button>
               </div>
             )}
@@ -474,7 +476,59 @@ export function Events() {
           </div>
         )}
       </AnimatePresence>
+
+      <AnimatePresence>
+        {qrEvent && (
+          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/70 overflow-y-auto backdrop-blur-xs">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 overflow-hidden text-center relative border border-slate-100">
+              <button onClick={() => setQrEvent(null)} className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-650 hover:bg-slate-100 rounded-full transition-all"><XIcon className="w-5 h-5" /></button>
+              
+              <div className="space-y-4 mt-2">
+                <div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#0099DC] bg-[#0099DC]/10 px-2.5 py-1 rounded">CHECK-IN SUR TERRAIN</span>
+                  <h3 className="text-base font-black text-slate-900 mt-3 leading-snug">{qrEvent.title}</h3>
+                  <p className="text-[11px] text-slate-400 font-bold mt-1">{qrEvent.date} - {qrEvent.location}</p>
+                </div>
+
+                <div className="w-56 h-56 mx-auto bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center justify-center shadow-xs">
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+                      window.location.origin + '/events/' + qrEvent.id + '/checkin'
+                    )}`}
+                    alt="QR Code Présence"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-[10px] text-slate-500 font-bold max-w-xs mx-auto leading-relaxed">
+                    Affichez ou imprimez ce QR Code. Les participants le scannent avec leur smartphone pour s'enregistrer instantanément à l'activité.
+                  </p>
+                  <div className="pt-2">
+                    <a
+                      href={window.location.origin + '/events/' + qrEvent.id + '/checkin'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-black text-[#0099DC] hover:underline"
+                    >
+                      Ouvrir le lien de check-in
+                    </a>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-slate-100">
+                  <button
+                    onClick={() => setQrEvent(null)}
+                    className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all"
+                  >
+                    Fermer
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
-

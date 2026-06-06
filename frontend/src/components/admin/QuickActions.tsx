@@ -1,41 +1,168 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import {
   CalendarPlusIcon,
   PenSquareIcon,
   HandshakeIcon,
-  UsersIcon } from
-'lucide-react';
+  UsersIcon,
+  Boxes,
+  ClipboardList,
+  Search,
+  Mail,
+  BarChart2,
+  FileText
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const actions = [
-{
-  label: 'Créer un événement',
-  icon: CalendarPlusIcon,
-  color: '#0099DC',
-  path: '/admin/events'
-},
-{
-  label: 'Rédiger un article',
-  icon: PenSquareIcon,
-  color: '#6CC24A',
-  path: '/admin/articles'
-},
-{
-  label: 'Ajouter un partenaire',
-  icon: HandshakeIcon,
-  color: '#FFC107',
-  path: '/admin/partners'
-},
-{
-  label: 'Voir les inscriptions',
-  icon: UsersIcon,
-  color: '#8B5CF6',
-  path: '/admin/inscriptions'
-}];
+const getActionsForRole = (role: string | null) => {
+  if (!role) return [];
+  
+  if (role === 'superadmin' || role === 'admin' || role === 'president') {
+    return [
+      {
+        label: 'Créer un événement',
+        icon: CalendarPlusIcon,
+        color: '#0099DC',
+        path: '/admin/events'
+      },
+      {
+        label: 'Rédiger un article',
+        icon: PenSquareIcon,
+        color: '#6CC24A',
+        path: '/admin/articles'
+      },
+      {
+        label: 'Voir les inscriptions',
+        icon: UsersIcon,
+        color: '#8B5CF6',
+        path: '/admin/inscriptions'
+      },
+      {
+        label: 'Rapports BE',
+        icon: FileText,
+        color: '#EF4444',
+        path: '/admin/reports'
+      }
+    ];
+  }
+
+  switch (role) {
+    case 'communication':
+      return [
+        {
+          label: 'Rédiger un article',
+          icon: PenSquareIcon,
+          color: '#6CC24A',
+          path: '/admin/articles'
+        },
+        {
+          label: 'Ajouter un partenaire',
+          icon: HandshakeIcon,
+          color: '#FFC107',
+          path: '/admin/partners'
+        },
+        {
+          label: 'Mes Tâches',
+          icon: ClipboardList,
+          color: '#0099DC',
+          path: '/admin/tasks'
+        }
+      ];
+    case 'activites':
+    case 'programme':
+      return [
+        {
+          label: 'Créer un événement',
+          icon: CalendarPlusIcon,
+          color: '#0099DC',
+          path: '/admin/events'
+        },
+        {
+          label: 'Voir les inscriptions',
+          icon: UsersIcon,
+          color: '#8B5CF6',
+          path: '/admin/inscriptions'
+        },
+        {
+          label: 'Mes Tâches',
+          icon: ClipboardList,
+          color: '#6CC24A',
+          path: '/admin/tasks'
+        }
+      ];
+    case 'logistique':
+      return [
+        {
+          label: 'Gérer la logistique',
+          icon: Boxes,
+          color: '#E28743',
+          path: '/admin/logistics'
+        },
+        {
+          label: 'Mes Tâches',
+          icon: ClipboardList,
+          color: '#0099DC',
+          path: '/admin/tasks'
+        }
+      ];
+    case 'finances':
+      return [
+        {
+          label: 'Statistiques & Cotisations',
+          icon: BarChart2,
+          color: '#8B5CF6',
+          path: '/admin/stats'
+        },
+        {
+          label: 'Rapports BE',
+          icon: FileText,
+          color: '#EF4444',
+          path: '/admin/reports'
+        },
+        {
+          label: 'Mes Tâches',
+          icon: ClipboardList,
+          color: '#6CC24A',
+          path: '/admin/tasks'
+        }
+      ];
+    case 'secretariat':
+      return [
+        {
+          label: 'Chercher un membre',
+          icon: Search,
+          color: '#0099DC',
+          path: '/admin/member-search'
+        },
+        {
+          label: 'Newsletter',
+          icon: Mail,
+          color: '#6CC24A',
+          path: '/admin/newsletter'
+        },
+        {
+          label: 'Rapports BE',
+          icon: FileText,
+          color: '#EF4444',
+          path: '/admin/reports'
+        },
+        {
+          label: 'Mes Tâches',
+          icon: ClipboardList,
+          color: '#8B5CF6',
+          path: '/admin/tasks'
+        }
+      ];
+    default:
+      return [];
+  }
+};
 
 export function QuickActions() {
   const navigate = useNavigate();
+  const role = sessionStorage.getItem('admin_role');
+  const roleActions = getActionsForRole(role);
+
   return (
     <motion.div
       initial={{
@@ -54,10 +181,10 @@ export function QuickActions() {
       
       <h2 className="text-lg font-bold text-[#1E293B] mb-4">Actions Rapides</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {actions.map((action, index) => {
+        {roleActions.map((action, index) => {
           const Icon = action.icon;
           return (
-              <motion.button
+            <motion.button
               key={index}
               onClick={() => navigate(action.path)}
               whileHover={{
@@ -74,16 +201,16 @@ export function QuickActions() {
                   backgroundColor: `${action.color}15`,
                   color: action.color
                 }}>
-                
                 <Icon className="w-6 h-6" />
               </div>
               <span className="text-sm font-medium text-[#1E293B] text-center group-hover:text-[#0099DC] transition-colors">
                 {action.label}
               </span>
-            </motion.button>);
-
+            </motion.button>
+          );
         })}
       </div>
-    </motion.div>);
-
+    </motion.div>
+  );
 }
+

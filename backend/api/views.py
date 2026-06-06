@@ -1,4 +1,4 @@
-﻿from datetime import datetime, timezone
+from datetime import datetime, timezone
 import os
 import json
 import time
@@ -131,6 +131,10 @@ def _public_member_payload(member: dict) -> dict:
         "email": member.get("email"),
         "status": member.get("status"),
         "sex": member.get("sex"),
+        "commune": member.get("commune"),
+        "birth_date": member.get("birth_date"),
+        "avatar_url": member.get("avatar_url"),
+        "created_at": member.get("created_at"),
     }
 
 
@@ -208,6 +212,82 @@ def _load_admin_auth() -> dict:
     return _bootstrap_admin_auth()
 
 
+def _bootstrap_admins() -> list[dict]:
+    auth_data = _load_admin_auth()
+    super_user = auth_data.get("superadmin") or {}
+    legacy_admins = auth_data.get("admins") or []
+    
+    bootstrapped = []
+    if super_user.get("email"):
+        super_payload = {
+            "email": _normalize_email(super_user.get("email")),
+            "password_hash": super_user.get("password_hash"),
+            "role": "superadmin",
+            "active": super_user.get("active", True)
+        }
+        try:
+            supabase.insert("admins", super_payload)
+            bootstrapped.append(super_payload)
+        except Exception:
+            pass
+
+    for admin in legacy_admins:
+        if admin.get("email"):
+            admin_payload = {
+                "email": _normalize_email(admin.get("email")),
+                "password_hash": admin.get("password_hash"),
+                "role": admin.get("role", "communication"),
+                "active": admin.get("active", True)
+            }
+            try:
+                supabase.insert("admins", admin_payload)
+                bootstrapped.append(admin_payload)
+            except Exception:
+                pass
+    return bootstrapped
+
+
+def _get_admin_by_email(email: str) -> dict | None:
+    normalized = _normalize_email(email)
+    try:
+        rows = supabase.select("admins", f"select=*&email=eq.{normalized}")
+        if rows:
+            return rows[0]
+        
+        # Check if table exists but is empty
+        all_rows = supabase.select("admins", "select=id")
+        if not all_rows:
+            _bootstrap_admins()
+            rows = supabase.select("admins", f"select=*&email=eq.{normalized}")
+            if rows:
+                return rows[0]
+    except Exception:
+        # Fallback to local admin_auth.json
+        pass
+
+    # Fallback: read local admin_auth.json
+    auth_data = _load_admin_auth()
+    super_user = auth_data.get("superadmin") or {}
+    if normalized == _normalize_email(super_user.get("email")):
+        return {
+            "id": "legacy-superadmin",
+            "email": super_user.get("email"),
+            "password_hash": super_user.get("password_hash"),
+            "role": "superadmin",
+            "active": super_user.get("active", True),
+        }
+    for admin in auth_data.get("admins", []):
+        if normalized == _normalize_email(admin.get("email")):
+            return {
+                "id": admin.get("id"),
+                "email": admin.get("email"),
+                "password_hash": admin.get("password_hash"),
+                "role": admin.get("role", "communication"),  # Default role for legacy admins
+                "active": admin.get("active", True),
+            }
+    return None
+
+
 def _list_create(table, order="created_at.desc"):
     @api_view(["GET", "POST"])
     def view(request):
@@ -236,7 +316,26 @@ def _detail(table):
 
 articles = _list_create("articles")
 article_detail = _detail("articles")
-events = _list_create("events", "event_date.desc")
+@api_view(["GET", "POST"])
+def events(request):
+    if request.method == "GET":
+        order = "event_date.desc"
+        return data_response(supabase.select("events", f"select=*&order={order}"))
+    
+    # POST
+    payload = body_json(request)
+    new_event = supabase.insert("events", payload)
+    
+    # Trigger event bus
+    try:
+        from . import event_bus
+        event_bus.dispatch("event.created", new_event)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Event bus dispatch failed: {e}")
+        
+    return data_response(new_event, 201)
+
 event_detail = _detail("events")
 partners = _list_create("partners")
 partner_detail = _detail("partners")
@@ -261,37 +360,26 @@ def admin_login(request):
 
     email = _normalize_email(payload.get("email"))
     password = payload.get("password") or ""
-    auth_data = _load_admin_auth()
-    matched_role = None
-    matched_user = None
-    super_user = auth_data.get("superadmin") or {}
-    if email and email == _normalize_email(super_user.get("email")):
-        matched_role = "superadmin"
-        matched_user = super_user
-    else:
-        for admin in auth_data.get("admins", []):
-            if email and email == _normalize_email(admin.get("email")):
-                matched_role = "admin"
-                matched_user = admin
-                break
+    admin = _get_admin_by_email(email)
 
-    if not matched_role or not matched_user:
+    if not admin:
         _record_failed_attempt(ip, now_ts)
         return error_response("Identifiants incorrects.", 401)
 
-    if matched_user.get("active") is False:
+    if admin.get("active") is False:
         _record_failed_attempt(ip, now_ts)
         return error_response("Compte désactivé.", 403)
-    password_hash = matched_user.get("password_hash") or ""
+    password_hash = admin.get("password_hash") or ""
     if not password_hash or not check_password(password, password_hash):
         _record_failed_attempt(ip, now_ts)
         return error_response("Identifiants incorrects.", 401)
 
     _LOGIN_ATTEMPTS.pop(ip, None)
-    if matched_role == "superadmin":
+    role = admin.get("role", "communication")
+    if role == "superadmin":
         return error_response("Utilisez la route superadmin dédiée.", 403)
-    token = create_admin_token(email, matched_role)
-    response = data_response({"role": matched_role, "email": email})
+    token = create_admin_token(email, role)
+    response = data_response({"role": role, "email": email})
     return _set_session_cookie(response, ADMIN_COOKIE_NAME, token, django_settings.ADMIN_TOKEN_TTL_SECONDS)
 
 
@@ -306,16 +394,15 @@ def superadmin_login(request):
 
     email = _normalize_email(payload.get("email"))
     password = payload.get("password") or ""
-    auth_data = _load_admin_auth()
-    super_user = auth_data.get("superadmin") or {}
+    admin = _get_admin_by_email(email)
 
-    if email != _normalize_email(super_user.get("email")):
+    if not admin or admin.get("role") != "superadmin":
         _record_failed_attempt(ip, now_ts)
         return error_response("Identifiants incorrects.", 401)
-    if super_user.get("active") is False:
+    if admin.get("active") is False:
         _record_failed_attempt(ip, now_ts)
         return error_response("Compte superadmin désactivé.", 403)
-    password_hash = super_user.get("password_hash") or ""
+    password_hash = admin.get("password_hash") or ""
     if not password_hash or not check_password(password, password_hash):
         _record_failed_attempt(ip, now_ts)
         return error_response("Identifiants incorrects.", 401)
@@ -449,71 +536,151 @@ def superadmin_admins(request):
         return error
     auth_data = _load_admin_auth()
     super_email = _normalize_email((auth_data.get("superadmin") or {}).get("email"))
+    
     if request.method == "GET":
-        admins = [
-            {
-                "id": admin.get("id"),
-                "email": admin.get("email"),
-                "active": bool(admin.get("active", True)),
-                "created_at": admin.get("created_at"),
-            }
-            for admin in auth_data.get("admins", [])
-            if _normalize_email(admin.get("email")) != super_email
-        ]
-        return data_response(admins)
+        try:
+            rows = supabase.select("admins", "select=*&order=created_at.desc")
+            admins = [
+                {
+                    "id": admin.get("id"),
+                    "email": admin.get("email"),
+                    "role": admin.get("role"),
+                    "active": bool(admin.get("active", True)),
+                    "created_at": admin.get("created_at"),
+                }
+                for admin in rows
+                if _normalize_email(admin.get("email")) != super_email
+            ]
+            return data_response(admins)
+        except Exception:
+            admins = [
+                {
+                    "id": admin.get("id"),
+                    "email": admin.get("email"),
+                    "role": admin.get("role", "communication"),
+                    "active": bool(admin.get("active", True)),
+                    "created_at": admin.get("created_at"),
+                }
+                for admin in auth_data.get("admins", [])
+                if _normalize_email(admin.get("email")) != super_email
+            ]
+            return data_response(admins)
 
     payload = body_json(request)
     email = _normalize_email(payload.get("email"))
     password = payload.get("password") or ""
+    role = payload.get("role") or "communication"
+    
+    if role not in {"superadmin", "president", "communication", "programme", "logistique", "finances", "secretariat"}:
+        return error_response("Département / Rôle invalide.", 422)
     if not email or not password or len(password) < 10:
         return error_response("Email et mot de passe (>=10 caractères) requis.", 422)
     if email == super_email:
         return error_response("Impossible d'utiliser l'email du superadmin pour un admin.", 422)
-    for adm in auth_data.get("admins", []):
-        if _normalize_email(adm.get("email")) == email:
-            return error_response("Cet admin existe déjà.", 409)
+        
+    existing = _get_admin_by_email(email)
+    if existing:
+        return error_response("Cet admin existe déjà.", 409)
+        
     new_admin = {
-        "id": str(uuid.uuid4()),
         "email": email,
         "password_hash": make_password(password),
-        "active": True,
-        "created_at": datetime.now(timezone.utc).isoformat(),
+        "role": role,
+        "active": True
     }
-    auth_data.setdefault("admins", []).append(new_admin)
-    _save_admin_auth(auth_data)
-    _log_superadmin_action(token_data.get("email", ""), "admin_created", email, {"admin_id": new_admin["id"]})
-    return data_response({"id": new_admin["id"], "email": email, "active": True}, 201)
+    
+    try:
+        created = supabase.insert("admins", new_admin)
+        admin_row = created[0] if isinstance(created, list) and created else created
+        _log_superadmin_action(token_data.get("email", ""), "admin_created", email, {"admin_id": admin_row.get("id"), "role": role})
+        return data_response({"id": admin_row.get("id"), "email": email, "role": role, "active": True}, 201)
+    except Exception:
+        new_admin["id"] = str(uuid.uuid4())
+        new_admin["created_at"] = datetime.now(timezone.utc).isoformat()
+        auth_data.setdefault("admins", []).append(new_admin)
+        _save_admin_auth(auth_data)
+        _log_superadmin_action(token_data.get("email", ""), "admin_created (local)", email, {"admin_id": new_admin["id"], "role": role})
+        return data_response({"id": new_admin["id"], "email": email, "role": role, "active": True}, 201)
 
 
-@api_view(["PATCH"])
+@api_view(["PATCH", "DELETE"])
 def superadmin_admin_detail(request, admin_id):
     token_data, error = _require_superadmin(request)
     if error:
         return error
     payload = body_json(request)
-    auth_data = _load_admin_auth()
-    admins = auth_data.get("admins", [])
-    idx = next((i for i, adm in enumerate(admins) if str(adm.get("id")) == str(admin_id)), -1)
-    if idx < 0:
-        return error_response("Admin introuvable.", 404)
-    admin = admins[idx]
-    if "email" in payload:
-        email = _normalize_email(payload.get("email"))
-        if not email:
-            return error_response("Email invalide.", 422)
-        admin["email"] = email
-    if "active" in payload:
-        admin["active"] = bool(payload.get("active"))
-    if payload.get("new_password"):
-        new_password = str(payload.get("new_password"))
-        if len(new_password) < 10:
-            return error_response("Mot de passe trop court.", 422)
-        admin["password_hash"] = make_password(new_password)
-    admins[idx] = admin
-    auth_data["admins"] = admins
-    _save_admin_auth(auth_data)
-    _log_superadmin_action(token_data.get("email", ""), "admin_updated", admin.get("email", ""), {"admin_id": str(admin_id)})
-    return data_response({"id": admin.get("id"), "email": admin.get("email"), "active": bool(admin.get("active", True))})
+    
+    if request.method == "DELETE":
+        try:
+            supabase.delete("admins", "id", admin_id)
+            _log_superadmin_action(token_data.get("email", ""), "admin_deleted", "", {"admin_id": str(admin_id)})
+            return status_response()
+        except Exception:
+            auth_data = _load_admin_auth()
+            auth_data["admins"] = [adm for adm in auth_data.get("admins", []) if str(adm.get("id")) != str(admin_id)]
+            _save_admin_auth(auth_data)
+            return status_response()
+
+    # PATCH
+    try:
+        rows = supabase.select("admins", f"select=*&id=eq.{admin_id}")
+        if not rows:
+            return error_response("Admin introuvable.", 404)
+        admin = rows[0]
+        
+        update_payload = {}
+        if "email" in payload:
+            email = _normalize_email(payload.get("email"))
+            if not email:
+                return error_response("Email invalide.", 422)
+            update_payload["email"] = email
+        if "active" in payload:
+            update_payload["active"] = bool(payload.get("active"))
+        if "role" in payload:
+            role = payload.get("role")
+            if role not in {"superadmin", "president", "communication", "programme", "logistique", "finances", "secretariat"}:
+                return error_response("Rôle/Département invalide.", 422)
+            update_payload["role"] = role
+        if payload.get("new_password"):
+            new_password = str(payload.get("new_password"))
+            if len(new_password) < 10:
+                return error_response("Mot de passe trop court.", 422)
+            update_payload["password_hash"] = make_password(new_password)
+            
+        updated = supabase.update("admins", "id", admin_id, update_payload)
+        admin_row = updated[0] if isinstance(updated, list) and updated else updated
+        _log_superadmin_action(token_data.get("email", ""), "admin_updated", admin_row.get("email", ""), {"admin_id": str(admin_id)})
+        return data_response({
+            "id": admin_row.get("id"),
+            "email": admin_row.get("email"),
+            "role": admin_row.get("role"),
+            "active": bool(admin_row.get("active", True))
+        })
+    except Exception:
+        auth_data = _load_admin_auth()
+        admins = auth_data.get("admins", [])
+        idx = next((i for i, adm in enumerate(admins) if str(adm.get("id")) == str(admin_id)), -1)
+        if idx < 0:
+            return error_response("Admin introuvable.", 404)
+        admin = admins[idx]
+        if "email" in payload:
+            admin["email"] = _normalize_email(payload.get("email"))
+        if "active" in payload:
+            admin["active"] = bool(payload.get("active"))
+        if "role" in payload:
+            admin["role"] = payload.get("role")
+        if payload.get("new_password"):
+            new_password = str(payload.get("new_password"))
+            admin["password_hash"] = make_password(new_password)
+        admins[idx] = admin
+        auth_data["admins"] = admins
+        _save_admin_auth(auth_data)
+        return data_response({
+            "id": admin.get("id"),
+            "email": admin.get("email"),
+            "role": admin.get("role", "communication"),
+            "active": bool(admin.get("active", True))
+        })
 
 
 @api_view(["POST"])
@@ -579,7 +746,8 @@ def members(request):
     payload["full_name"] = " ".join(str(payload.get("full_name") or "").split())
     payload["phone"] = str(payload.get("phone") or "").strip()
     payload["email"] = _normalize_email(payload.get("email"))
-    payload.setdefault("status", "aspirant")
+    # Status is always aspirant at inscription — cannot be self-assigned
+    payload["status"] = "aspirant"
     if not payload["full_name"] or not _normalize_phone(payload["phone"]):
         return error_response("Nom complet et numéro de téléphone requis.", 422)
 
@@ -630,24 +798,40 @@ def member_login(request):
 
 @api_view(["PATCH"])
 def member_status(request, member_id):
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
+    if not token_data or token_data.get("role") not in {"admin", "superadmin", "president", "secretariat"}:
+        return error_response("Forbidden: Seul le secrétariat ou le superadmin peut modifier le statut.", 403)
     return data_response(supabase.update("members", "id", member_id, body_json(request)))
+
 
 @api_view(["GET", "PATCH"])
 def member_detail(request, member_id):
     token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
-    if not token_data or token_data.get("role") not in {"admin", "superadmin"}:
+    allowed_admin_roles = {"admin", "superadmin", "president", "secretariat", "logistique", "programme", "activites"}
+    if not token_data or token_data.get("role") not in allowed_admin_roles:
         current_member, error = _require_member(request, str(member_id))
         if error:
             return error
     else:
         current_member = None
+
     if request.method == "GET":
         rows = supabase.select("members", f"select=*&id=eq.{member_id}")
         if not rows:
             return error_response("Member not found", 404)
         return data_response(_public_member_payload(rows[0]) if not token_data else rows[0])
+
+    # PATCH
     payload = body_json(request)
-    if not token_data and current_member:
+    if token_data:
+        admin_role = token_data.get("role")
+        if admin_role not in {"admin", "superadmin", "president", "secretariat", "logistique"}:
+            return error_response("Forbidden: Votre rôle ne vous permet pas de modifier les membres.", 403)
+        
+        if admin_role == "logistique":
+            allowed_fields = {"interview_passed", "tshirt_received", "is_pco", "commission", "integration_note"}
+            payload = {k: v for k, v in payload.items() if k in allowed_fields}
+    elif current_member:
         payload = {
             "full_name": " ".join(str(payload.get("full_name") or current_member.get("full_name") or "").split()),
             "phone": str(payload.get("phone") or current_member.get("phone") or "").strip(),
@@ -656,13 +840,21 @@ def member_detail(request, member_id):
             "birth_date": payload.get("birth_date", current_member.get("birth_date")),
             "commune": payload.get("commune") or current_member.get("commune") or "",
         }
+        if "avatar_url" in body_json(request):
+            raw = body_json(request).get("avatar_url")
+            if raw is None or (isinstance(raw, str) and len(raw) < 5_000_000):
+                payload["avatar_url"] = raw
+    else:
+        return error_response("Accès refusé.", 403)
+
     return data_response(supabase.update("members", "id", member_id, payload))
 
 
 @api_view(["GET"])
 def member_activities(request, member_id):
     token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
-    if not token_data or token_data.get("role") not in {"admin", "superadmin"}:
+    allowed_admin_roles = {"admin", "superadmin", "president", "secretariat", "logistique", "programme", "activites", "finances", "communication"}
+    if not token_data or token_data.get("role") not in allowed_admin_roles:
         _, error = _require_member(request, str(member_id))
         if error:
             return error
@@ -757,6 +949,104 @@ def event_register(request, event_id):
         return error_response("Une erreur technique est survenue. Veuillez réessayer.", 500)
     supabase.update("events", "id", event_id, {"registered": registered + 1})
     return data_response(created, 201)
+
+
+@api_view(["POST"])
+def event_quick_checkin(request, event_id):
+    payload = body_json(request)
+    
+    # 1. Fetch event to verify existence and capacity
+    rows = supabase.select("events", f"select=id,capacity,registered,title,whatsapp_link&id=eq.{event_id}")
+    if not rows:
+        return error_response("Activité introuvable.", 404)
+    event = rows[0]
+    
+    phone = _normalize_phone(payload.get("phone"))
+    if not phone:
+        return error_response("Numéro de téléphone requis.", 422)
+
+    # 2. Check if member exists in the database
+    members_rows = supabase.select("members", "select=*")
+    member = next(
+        (m for m in members_rows if _normalize_phone(m.get("phone")) == phone),
+        None
+    )
+
+    if not member:
+        # If it's just checking phone number lookup, return not_found status
+        if not payload.get("full_name"):
+            return data_response({"status": "not_member", "phone": phone})
+            
+        # Create a new member since info is provided
+        new_member_payload = {
+            "full_name": " ".join(str(payload.get("full_name") or "").split()),
+            "phone": payload.get("phone"),
+            "sex": payload.get("sex") or "non_precise",
+            "commune": payload.get("commune") or "Cocody",
+            "birth_date": payload.get("birth_date") or None,
+            "status": "aspirant"
+        }
+        if not new_member_payload["full_name"]:
+            return error_response("Nom complet requis pour l'inscription.", 422)
+            
+        try:
+            created_members = supabase.insert("members", new_member_payload)
+            member = created_members[0] if isinstance(created_members, list) and created_members else created_members
+        except Exception as exc:
+            return error_response(f"Erreur lors de la création du membre: {str(exc)}", 500)
+
+    # 3. Register member to the event and mark as attended
+    registrations = supabase.select("event_registrations", f"select=*&event_id=eq.{event_id}")
+    existing_reg = next(
+        (r for r in registrations if str(r.get("member_id")) == str(member.get("id")) or _normalize_phone(r.get("phone")) == phone),
+        None
+    )
+
+    already_registered = False
+    if existing_reg:
+        already_registered = True
+        # Mark as attended if not already done
+        if not existing_reg.get("attended"):
+            supabase.update("event_registrations", "id", existing_reg.get("id"), {"attended": True})
+    else:
+        # Check capacity
+        capacity = event.get("capacity") or 0
+        registered = event.get("registered") or 0
+        if capacity and registered >= capacity:
+            return error_response("La capacité maximale de cette activité est atteinte.", 409)
+            
+        # Create registration with attended=True
+        reg_payload = {
+            "event_id": str(event_id),
+            "member_id": str(member.get("id")),
+            "full_name": member.get("full_name"),
+            "phone": member.get("phone"),
+            "email": member.get("email") or "",
+            "member_status": member.get("status") or "aspirant",
+            "sex": member.get("sex") or "non_precise",
+            "attended": True
+        }
+        try:
+            supabase.insert("event_registrations", reg_payload)
+            supabase.update("events", "id", event_id, {"registered": registered + 1})
+        except Exception as exc:
+            return error_response(f"Erreur d'inscription: {str(exc)}", 500)
+
+    return data_response({
+        "status": "success",
+        "member": {
+            "id": member.get("id"),
+            "full_name": member.get("full_name"),
+            "phone": member.get("phone"),
+            "status": member.get("status"),
+        },
+        "already_registered": already_registered,
+        "event": {
+            "id": event.get("id"),
+            "title": event.get("title"),
+            "whatsapp_link": event.get("whatsapp_link"),
+        }
+    })
 
 
 @api_view(["GET"])
@@ -1077,3 +1367,331 @@ def site_settings(request):
         save_local_settings(current)
         return data_response(current)
 
+
+# --- LOGISTICS & TASKS VIEWS ---
+
+materials = _list_create("logistics_materials", "name.asc")
+material_detail = _detail("logistics_materials")
+
+@api_view(["GET", "POST"])
+def logistics_requests(request):
+    if request.method == "GET":
+        reqs = supabase.select("logistics_requests", "select=*&order=created_at.desc")
+        if reqs:
+            try:
+                materials_list = {m["id"]: m for m in supabase.select("logistics_materials", "select=id,name")}
+                events_list = {e["id"]: e for e in supabase.select("events", "select=id,title")}
+                for r in reqs:
+                    r["material"] = materials_list.get(r["material_id"])
+                    r["event"] = events_list.get(r["event_id"])
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).error(f"Error resolving logistics relations: {e}")
+        return data_response(reqs)
+    
+    # POST
+    payload = body_json(request)
+    material_id = payload.get("material_id")
+    quantity = int(payload.get("quantity") or 0)
+    if not material_id or quantity <= 0:
+        return error_response("Matériel ou quantité invalide.", 400)
+    
+    m_rows = supabase.select("logistics_materials", f"select=*&id=eq.{material_id}")
+    if not m_rows:
+        return error_response("Matériel introuvable.", 404)
+    
+    material = m_rows[0]
+    if material["available_quantity"] < quantity:
+        return error_response(f"Quantité demandée ({quantity}) supérieure au stock disponible ({material['available_quantity']}).", 400)
+        
+    created = supabase.insert("logistics_requests", payload)
+    return data_response(created, 201)
+
+
+@api_view(["GET", "PATCH", "DELETE"])
+def logistics_request_detail(request, record_id):
+    if request.method == "GET":
+        rows = supabase.select("logistics_requests", f"select=*&id=eq.{record_id}")
+        if not rows:
+            return error_response("Demande introuvable", 404)
+        req = rows[0]
+        # Resolve relations
+        m_rows = supabase.select("logistics_materials", f"select=id,name&id=eq.{req['material_id']}")
+        e_rows = supabase.select("events", f"select=id,title&id=eq.{req['event_id']}")
+        req["material"] = m_rows[0] if m_rows else None
+        req["event"] = e_rows[0] if e_rows else None
+        return data_response(req)
+        
+    if request.method == "PATCH":
+        rows = supabase.select("logistics_requests", f"select=*&id=eq.{record_id}")
+        if not rows:
+            return error_response("Demande introuvable", 404)
+        old_req = rows[0]
+        old_status = old_req.get("status")
+        
+        payload = body_json(request)
+        new_status = payload.get("status")
+        
+        # If status changes, handle material inventory adjustment
+        if new_status and new_status != old_status:
+            material_id = old_req["material_id"]
+            qty = old_req["quantity"]
+            
+            m_rows = supabase.select("logistics_materials", f"select=*&id=eq.{material_id}")
+            if m_rows:
+                material = m_rows[0]
+                available = material["available_quantity"]
+                total = material["total_quantity"]
+                
+                updated_available = available
+                if old_status in ("pending", "rejected") and new_status == "approved":
+                    if available < qty:
+                        return error_response(f"Stock insuffisant. Disponible: {available}, Demandé: {qty}", 400)
+                    updated_available = available - qty
+                elif old_status == "approved" and new_status in ("returned", "rejected", "pending"):
+                    updated_available = min(total, available + qty)
+                
+                if updated_available != available:
+                    supabase.update("logistics_materials", "id", material_id, {"available_quantity": updated_available})
+        
+        updated = supabase.update("logistics_requests", "id", record_id, payload)
+        return data_response(updated)
+        
+    # DELETE
+    rows = supabase.select("logistics_requests", f"select=*&id=eq.{record_id}")
+    if rows:
+        req = rows[0]
+        if req.get("status") == "approved":
+            m_rows = supabase.select("logistics_materials", f"select=*&id=eq.{req['material_id']}")
+            if m_rows:
+                material = m_rows[0]
+                supabase.update("logistics_materials", "id", req['material_id'], {
+                    "available_quantity": min(material["total_quantity"], material["available_quantity"] + req["quantity"])
+                })
+    supabase.delete("logistics_requests", "id", record_id)
+    return status_response()
+
+
+@api_view(["GET", "POST"])
+def tasks(request):
+    if request.method == "GET":
+        dept = request.GET.get("department_code")
+        event = request.GET.get("event_id")
+        status = request.GET.get("status")
+        
+        url_params = "select=*&order=created_at.desc"
+        if dept:
+            url_params += f"&department_code=eq.{dept}"
+        if event:
+            url_params += f"&event_id=eq.{event}"
+        if status:
+            url_params += f"&status=eq.{status}"
+            
+        tasks_list = supabase.select("tasks", url_params)
+        
+        if tasks_list:
+            try:
+                events_list = {e["id"]: e for e in supabase.select("events", "select=id,title")}
+                admins_list = {a["id"]: a for a in supabase.select("admins", "select=id,email,role")}
+                for t in tasks_list:
+                    t["event"] = events_list.get(t["event_id"]) if t.get("event_id") else None
+                    t["assigned_user"] = admins_list.get(t["assigned_user_id"]) if t.get("assigned_user_id") else None
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).error(f"Error resolving task relations: {e}")
+        return data_response(tasks_list)
+        
+    # POST
+    payload = body_json(request)
+    created = supabase.insert("tasks", payload)
+    return data_response(created, 201)
+
+
+@api_view(["GET", "PATCH", "DELETE"])
+def task_detail(request, record_id):
+    if request.method == "GET":
+        rows = supabase.select("tasks", f"select=*&id=eq.{record_id}")
+        if not rows:
+            return error_response("Tâche introuvable", 404)
+        t = rows[0]
+        if t.get("event_id"):
+            e_rows = supabase.select("events", f"select=id,title&id=eq.{t['event_id']}")
+            t["event"] = e_rows[0] if e_rows else None
+        if t.get("assigned_user_id"):
+            a_rows = supabase.select("admins", f"select=id,email,role&id=eq.{t['assigned_user_id']}")
+            t["assigned_user"] = a_rows[0] if a_rows else None
+        return data_response(t)
+        
+    if request.method == "PATCH":
+        payload = body_json(request)
+        updated = supabase.update("tasks", "id", record_id, payload)
+        return data_response(updated)
+        
+    supabase.delete("tasks", "id", record_id)
+    return status_response()
+
+
+@api_view(["GET"])
+def member_contributions(request, member_id):
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
+    if not token_data or token_data.get("role") not in {"admin", "superadmin", "finances", "president"}:
+        _, error = _require_member(request, str(member_id))
+        if error:
+            return error
+
+    rows = supabase.select("contributions", f"select=*&member_id=eq.{member_id}&order=created_at.desc")
+    return data_response(rows)
+
+
+@api_view(["GET"])
+def stats_report(request):
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
+    if not token_data or token_data.get("role") not in {"superadmin", "president", "secretariat", "finances"}:
+        return error_response("Accès non autorisé pour votre rôle.", 403)
+        
+    try:
+        # 1. Event/Attendance Stats
+        try:
+            events_summary = supabase.select("event_attendance_summary", "select=*&order=attendance_rate.desc")
+        except Exception:
+            events_summary = []
+        
+        # 2. Logistics Stats
+        try:
+            materials = supabase.select("logistics_materials", "select=*")
+        except Exception:
+            materials = []
+            
+        try:
+            requests = supabase.select("logistics_requests", "select=*")
+        except Exception:
+            requests = []
+        
+        # 3. Contributions Stats
+        try:
+            contributions_rows = supabase.select("contributions", "select=*")
+        except Exception:
+            contributions_rows = []
+        
+        # Aggregating contributions
+        total_collected = sum(c.get("amount") or 0 for c in contributions_rows if c.get("status") == "paid")
+        total_pending = sum(c.get("amount") or 0 for c in contributions_rows if c.get("status") == "pending")
+        paid_count = sum(1 for c in contributions_rows if c.get("status") == "paid")
+        pending_count = sum(1 for c in contributions_rows if c.get("status") == "pending")
+        
+        # Aggregating logistics
+        total_materials_qty = sum(m.get("total_quantity") or 0 for m in materials)
+        available_materials_qty = sum(m.get("available_quantity") or 0 for m in materials)
+        damaged_materials_qty = sum(m.get("total_quantity", 0) - m.get("available_quantity", 0) for m in materials if m.get("condition") == "damaged")
+        
+        pending_requests_count = sum(1 for r in requests if r.get("status") == "pending")
+        approved_requests_count = sum(1 for r in requests if r.get("status") == "approved")
+        
+        # Aggregating general attendance
+        total_registrations = sum(e.get("registered_count") or 0 for e in events_summary)
+        total_attended = sum(e.get("attended_count") or 0 for e in events_summary)
+        avg_attendance_rate = 0
+        if total_registrations > 0:
+            avg_attendance_rate = round((total_attended / total_registrations) * 100)
+            
+        return data_response({
+            "events": {
+                "summary": events_summary,
+                "total_registrations": total_registrations,
+                "total_attended": total_attended,
+                "avg_attendance_rate": avg_attendance_rate
+            },
+            "logistics": {
+                "total_items": len(materials),
+                "total_qty": total_materials_qty,
+                "available_qty": available_materials_qty,
+                "damaged_qty": damaged_materials_qty,
+                "requests": {
+                    "total": len(requests),
+                    "pending": pending_requests_count,
+                    "approved": approved_requests_count
+                }
+            },
+            "contributions": {
+                "total_collected": total_collected,
+                "total_pending": total_pending,
+                "paid_count": paid_count,
+                "pending_count": pending_count,
+                "history": contributions_rows[:50] # Send last 50 contributions for preview
+            }
+        })
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Stats report error: {e}")
+        return error_response(f"Erreur lors de la génération des statistiques : {e}", 500)
+
+
+# ---------------------------------------------------------------------------
+# Awards / Prix
+# ---------------------------------------------------------------------------
+
+@api_view(["GET", "POST"])
+def member_awards(request, member_id):
+    """List or create awards/certificates for a member."""
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
+
+    if request.method == "GET":
+        # Members can read their own awards; admins can read any.
+        if not token_data or token_data.get("role") not in {"admin", "superadmin"}:
+            _, error = _require_member(request, str(member_id))
+            if error:
+                return error
+        rows = supabase.select("member_awards", f"select=*&member_id=eq.{member_id}&order=awarded_year.desc,created_at.desc")
+        return data_response(rows or [])
+
+    # POST — admin or member themselves
+    is_admin = token_data and token_data.get("role") in {"admin", "superadmin"}
+    if not is_admin:
+        _, error = _require_member(request, str(member_id))
+        if error:
+            return error
+
+    # Check member exists
+    member_rows = supabase.select("members", f"select=id&id=eq.{member_id}")
+    if not member_rows:
+        return error_response("Membre introuvable.", 404)
+
+    body = body_json(request)
+    award_name = str(body.get("award_name") or "").strip()
+    if not award_name:
+        return error_response("Le nom du prix ou certificat est requis.", 422)
+
+    VALID_TYPES = {"ugirl", "best_ureporter", "award", "custom", "certificate"}
+    award_type = str(body.get("award_type") or "award").strip()
+    if award_type not in VALID_TYPES:
+        award_type = "custom"
+
+    payload = {
+        "member_id": str(member_id),
+        "award_name": award_name,
+        "award_type": award_type,
+        "awarded_year": body.get("awarded_year") or datetime.now(timezone.utc).year,
+        "description": str(body.get("description") or "").strip(),
+        "document_url": str(body.get("document_url") or "").strip(),
+        "issuer": str(body.get("issuer") or "").strip(),
+    }
+    created = supabase.insert("member_awards", payload)
+    award = created[0] if isinstance(created, list) and created else created
+    return data_response(award, 201)
+
+
+@api_view(["DELETE"])
+def member_award_detail(request, member_id, award_id):
+    """Delete an award/certificate."""
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
+    is_admin = token_data and token_data.get("role") in {"admin", "superadmin"}
+    if not is_admin:
+        _, error = _require_member(request, str(member_id))
+        if error:
+            return error
+
+    rows = supabase.select("member_awards", f"select=id&id=eq.{award_id}&member_id=eq.{member_id}")
+    if not rows:
+        return error_response("Prix ou certificat introuvable.", 404)
+    supabase.delete("member_awards", "id", str(award_id))
+    return status_response("Prix ou certificat supprimé.", 200)

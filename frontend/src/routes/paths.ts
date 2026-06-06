@@ -5,6 +5,7 @@ export const PATHS = {
     EVENTS: '/events',
     GALLERY: '/gallery',
     CONTRIBUTION_PAYMENT: '/cotisation/paiement',
+    MEMBER_PROFILE: '/member/profile',
     PARTNERS: '/partners',
     TESTIMONIALS: '/testimonials',
     ABOUT: '/about',
@@ -23,6 +24,9 @@ export const PATHS = {
     PARTNERS: '/admin/partners',
     TESTIMONIALS: '/admin/testimonials',
     NEWSLETTER: '/admin/newsletter',
-    SETTINGS: '/admin/settings'
+    SETTINGS: '/admin/settings',
+    LOGISTICS: '/admin/logistics',
+    TASKS: '/admin/tasks',
+    REPORTS: '/admin/reports'
   }
 };

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XIcon, User, Mail, Phone, MapPin, AlertCircle } from 'lucide-react';
 import { Button } from '../ui/Button';
@@ -33,7 +33,6 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     birthDate: '',
     neighborhood: '',
     motivation: '',
-    profile: 'aspirant' as 'aspirant' | 'ureporter' | 'mentor'
   });
 
   // Sync mode state when modal opens or initialMode changes
@@ -79,7 +78,6 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
           sex: formData.sex,
           birth_date: formData.birthDate || null,
           commune: formData.neighborhood || 'Cocody',
-          status: formData.profile,
           integration_note: formData.motivation || 'Connexion directe',
         });
 
@@ -93,7 +91,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
         if (targetUrl) {
           const message = fillTemplate(template, {
             name: member?.full_name || `${formData.firstname} ${formData.name}`.trim(),
-            status_label: memberStatusLabel(member?.status || formData.profile),
+            status_label: memberStatusLabel(member?.status || 'aspirant'),
             event_title: 'la plateforme U-Report Cocody',
           });
           setWhatsAppPayload({
@@ -271,31 +269,6 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-700">Profil souhaité</label>
-                      <select
-                        value={formData.profile}
-                        onChange={e => setFormData({...formData, profile: e.target.value as any})}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent transition-all bg-white"
-                      >
-                        <option value="aspirant">Aspirant (Découvrir et s'informer)</option>
-                        <option value="ureporter">U-Reporter (Acteur actif sur le terrain)</option>
-                        <option value="mentor">Mentor (Encadrant / Guide)</option>
-                      </select>
-
-                      {formData.profile === 'ureporter' && (
-                        <div className="rounded-xl border border-blue-100 bg-blue-50/70 p-3 text-xs text-blue-700 flex items-start gap-2 animate-fadeIn text-left">
-                          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                          <span><strong>Engagement U-Reporter :</strong> Pour ce profil, vous devez déjà faire partie de la communauté ou vous engager à participer activement à toutes nos actions terrain et à nos réunions.</span>
-                        </div>
-                      )}
-                      {formData.profile === 'mentor' && (
-                        <div className="rounded-xl border border-amber-100 bg-amber-50/70 p-3 text-xs text-amber-800 flex items-start gap-2 animate-fadeIn text-left">
-                          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                          <span><strong>Rôle de Mentor :</strong> Ce profil nécessite que vous fassiez déjà partie de la communauté et fera l'objet d'une validation spécifique par le bureau de U-Report Cocody.</span>
-                        </div>
-                      )}
-                    </div>
 
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-gray-700">Motivation</label>

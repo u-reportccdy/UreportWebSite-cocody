@@ -10,14 +10,14 @@ export const fetchAdmins = async () => {
   return response.data.data;
 };
 
-export const createAdminAccount = async (payload: { email: string; password: string }) => {
+export const createAdminAccount = async (payload: { email: string; password: string; role?: string }) => {
   const response = await api.post('/superadmin/admins', payload);
   return response.data.data;
 };
 
 export const updateAdminAccount = async (
   adminId: string,
-  payload: { email?: string; active?: boolean; new_password?: string }
+  payload: { email?: string; active?: boolean; new_password?: string; role?: string }
 ) => {
   const response = await api.patch(`/superadmin/admins/${adminId}`, payload);
   return response.data.data;

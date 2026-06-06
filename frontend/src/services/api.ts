@@ -16,7 +16,7 @@ api.interceptors.response.use(
     const status = error?.response?.status;
     const url = String(error?.config?.url || '');
     const isAuthRoute = url.includes('/auth/admin/login') || url.includes('/auth/superadmin/login');
-    if ((status === 401 || status === 403) && !isAuthRoute) {
+    if (status === 401 && !isAuthRoute) {
       sessionStorage.removeItem('admin_role');
       sessionStorage.removeItem('admin_email');
     }

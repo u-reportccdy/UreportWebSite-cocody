@@ -107,6 +107,10 @@ def _is_admin_request(path: str, method: str) -> bool:
         if path == "/api/newsletter/subscribers":
             return True
         if path.startswith("/api/members"):
+            import re
+            member_detail_pattern = r"^/api/members/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/activities|/contributions)?$"
+            if re.match(member_detail_pattern, path):
+                return False
             return True
         if path.startswith("/api/contributions"):
             return True
@@ -121,17 +125,77 @@ def _is_admin_request(path: str, method: str) -> bool:
         return False
     if path == "/api/members/login" and method == "POST":
         return False
+    if path == "/api/members/logout" and method == "POST":
+        return False
     if path == "/api/contributions/initiate" and method == "POST":
         return False
     if path == "/api/auth/admin/login":
         return False
     if path == "/api/auth/superadmin/login":
         return False
+    # Members can update their own profile and read their own awards
+    import re
+    member_self_pattern = r"^/api/members/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/awards(/[0-9a-f-]+)?|/activities|/contributions|/status)?$"
+    if re.match(member_self_pattern, path) and method in {"GET", "POST", "PATCH", "DELETE"}:
+        return False
     return True
 
 
+def _has_permission(role: str | None, path: str, method: str) -> bool:
+    if not role:
+        return False
+    if role in {"superadmin", "admin", "president"}:
+        return True
+
+    # communication
+    if role == "communication":
+        return any(path.startswith(prefix) for prefix in [
+            "/api/articles",
+            "/api/partners",
+            "/api/testimonials",
+            "/api/gallery",
+            "/api/settings",
+            "/api/tasks"
+        ])
+
+    # programme (formerly activites)
+    if role in {"activites", "programme"}:
+        return any(path.startswith(prefix) for prefix in [
+            "/api/events",
+            "/api/tasks"
+        ]) or (path.startswith("/api/members") and method == "GET")
+
+    # logistique
+    if role == "logistique":
+        return any(path.startswith(prefix) for prefix in [
+            "/api/logistics",
+            "/api/materials",
+            "/api/tasks"
+        ]) or path.startswith("/api/members")
+
+    # finances
+    if role == "finances":
+        return any(path.startswith(prefix) for prefix in [
+            "/api/contributions",
+            "/api/payment-links",
+            "/api/stats",
+            "/api/tasks"
+        ])
+
+    # secretariat
+    if role == "secretariat":
+        return any(path.startswith(prefix) for prefix in [
+            "/api/members",
+            "/api/newsletter/subscribers",
+            "/api/team-members",
+            "/api/tasks"
+        ])
+
+    return False
+
+
 def _is_maintenance_blocked(path: str, method: str, token_data: dict[str, Any] | None) -> tuple[bool, str]:
-    if token_data and token_data.get("role") in {"admin", "superadmin"}:
+    if token_data and token_data.get("role") in {"admin", "superadmin", "communication", "activites", "finances", "secretariat"}:
         return False, ""
     if path.startswith("/api/auth/admin/login"):
         return False, ""
@@ -165,8 +229,10 @@ def api_view(methods):
                 if blocked:
                     return error_response(message, 503)
                 if _is_admin_request(request.path, request.method):
-                    if not token_data or token_data.get("role") not in {"admin", "superadmin"}:
+                    if not token_data:
                         return error_response("Unauthorized", 401)
+                    if not _has_permission(token_data.get("role"), request.path, request.method):
+                        return error_response("Forbidden: Accès refusé pour votre département.", 403)
                 return func(request, *args, **kwargs)
             except json.JSONDecodeError:
                 return error_response("Invalid JSON payload", 400)

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XIcon, CheckCircle } from 'lucide-react';
 import { Button } from '../ui/Button';
@@ -182,18 +182,6 @@ export function RegistrationModal({ isOpen, onClose, eventId, eventTitle }: Regi
                 </div>
                 <Input label="Email" type="email" required value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
                 <Input label="Telephone" type="tel" required placeholder="+225 0000000000" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value.replace(/[^\d+()\s-]/g, '') })} />
-                <div className="space-y-1.5">
-                  <label className="text-sm font-semibold text-gray-700">Statut</label>
-                  <select
-                    value={formData.member_status}
-                    onChange={e => setFormData({ ...formData, member_status: e.target.value })}
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ureport-blue"
-                  >
-                    <option value="aspirant">Aspirant</option>
-                    <option value="ureporter">U-Reporter</option>
-                    <option value="mentor">Mentor</option>
-                  </select>
-                </div>
                 <div className="space-y-1.5">
                   <label className="text-sm font-semibold text-gray-700">Sexe</label>
                   <select

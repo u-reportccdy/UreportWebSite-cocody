@@ -64,3 +64,17 @@ export const markEventAttendance = async (
   });
   return response.data.data;
 };
+
+export const quickCheckIn = async (
+  eventId: string,
+  payload: {
+    phone: string;
+    full_name?: string;
+    sex?: string;
+    birth_date?: string;
+    commune?: string;
+  }
+) => {
+  const response = await api.post(`/events/${eventId}/quick-checkin`, payload);
+  return response.data;
+};

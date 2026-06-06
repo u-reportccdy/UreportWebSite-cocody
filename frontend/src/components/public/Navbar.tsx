@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, LogOut, User } from 'lucide-react';
 import { Link } from './Link';
 import { Button } from '../ui/Button';
@@ -255,10 +255,12 @@ export function Navbar() {
               )}
               {session ? (
                 <div className="flex items-center gap-3 bg-blue-50 px-4 py-2 rounded-full border border-ureport-blue/15 shadow-sm">
-                  <User className="w-4 h-4 text-ureport-blue shrink-0" />
-                  <span className="text-sm font-semibold text-gray-800 truncate max-w-[120px]">
-                    {firstName}
-                  </span>
+                  <Link href={PATHS.PUBLIC.MEMBER_PROFILE} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <User className="w-4 h-4 text-ureport-blue shrink-0" />
+                    <span className="text-sm font-semibold text-gray-800 truncate max-w-[120px]">
+                      {firstName}
+                    </span>
+                  </Link>
                   <button 
                     onClick={() => void handleLogout()} 
                     className="p-1 hover:bg-red-50 text-gray-500 hover:text-red-500 rounded-full transition-all shrink-0"
@@ -273,7 +275,7 @@ export function Navbar() {
                 </Button>
               )}
             </div>
-
+ 
             {/* Mobile Menu Button */}
             <div className={`flex items-center md:hidden transition-all duration-300 ${isScrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
               <button
@@ -284,7 +286,7 @@ export function Navbar() {
             </div>
           </div>
         </div>
-
+ 
         {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen &&
@@ -316,10 +318,14 @@ export function Navbar() {
                 <div className="pt-4 px-4">
                   {session ? (
                     <div className="flex flex-col gap-2 bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                      <div className="flex items-center gap-2">
+                      <Link 
+                        href={PATHS.PUBLIC.MEMBER_PROFILE}
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center gap-2 hover:text-ureport-blue transition-colors"
+                      >
                         <User className="w-5 h-5 text-ureport-blue" />
                         <span className="text-base font-bold text-gray-800">{displayName}</span>
-                      </div>
+                      </Link>
                       <span className="text-xs text-gray-500 capitalize px-7">Profil: {session.status}</span>
                       <Button fullWidth variant="outline" className="mt-2 text-red-500 border-red-200 hover:bg-red-50" onClick={() => void handleLogout()}>
                         <LogOut className="w-4 h-4 mr-2" /> Se déconnecter

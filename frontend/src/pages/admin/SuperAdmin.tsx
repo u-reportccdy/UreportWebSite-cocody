@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ShieldCheck,
   Wrench,
@@ -27,7 +27,7 @@ import {
   updateAdminAccount,
 } from '../../services/superadmin.service';
 
-type AdminRowEdit = { email: string; new_password: string };
+type AdminRowEdit = { email: string; role: string; new_password: string };
 
 const css = `
   .sa-root { display:flex; flex-direction:column; gap:1.25rem; max-width:72rem; margin:0 auto; font-family:inherit; }
@@ -98,12 +98,13 @@ const css = `
   .sa-log-meta { color:#94a3b8; font-size:12px; margin-left:4px; }
   .sa-field-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .sa-row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .sa-row4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; }
   .sa-td-actions { display:flex; gap:6px; justify-content:flex-end; }
   .sa-password-wrap { position:relative; width:100%; }
   .sa-password-wrap .sa-input { padding-right:38px; }
   .sa-eye-btn { position:absolute; right:8px; top:50%; transform:translateY(-50%); border:none; background:transparent; color:#64748b; cursor:pointer; display:flex; }
   .sa-eye-btn:hover { color:#0f172a; }
-  @media (max-width:640px) { .sa-field-grid, .sa-row3 { grid-template-columns:1fr; } }
+  @media (max-width:640px) { .sa-field-grid, .sa-row3, .sa-row4 { grid-template-columns:1fr; } }
 `;
 
 export function SuperAdmin() {
@@ -115,7 +116,7 @@ export function SuperAdmin() {
   const [maintenanceMessage, setMaintenanceMessage] = useState('Le site est actuellement en maintenance. Veuillez revenir plus tard.');
   const [maintenanceImageUrl, setMaintenanceImageUrl] = useState('/images/logo-512.png');
   const [isMaintenanceOn, setIsMaintenanceOn] = useState(false);
-  const [newAdmin, setNewAdmin] = useState({ email: '', password: '' });
+  const [newAdmin, setNewAdmin] = useState({ email: '', password: '', role: 'communication' });
   const [codes, setCodes] = useState({ admin_password: '', superadmin_password: '' });
   const [rowEdit, setRowEdit] = useState<Record<string, AdminRowEdit>>({});
   const [loading, setLoading] = useState(true);
@@ -142,7 +143,7 @@ export function SuperAdmin() {
       setMaintenanceImageUrl(s?.maintenance_image_url || '/images/logo-512.png');
       const next: Record<string, AdminRowEdit> = {};
       (a || []).forEach((adm: any) => {
-        next[adm.id] = { email: adm.email || '', new_password: '' };
+        next[adm.id] = { email: adm.email || '', role: adm.role || 'communication', new_password: '' };
       });
       setRowEdit(next);
     } finally {
@@ -268,7 +269,7 @@ export function SuperAdmin() {
             <Users size={16} className="sa-section-icon" />
             <span className="sa-section-title">Gestion des admins</span>
           </div>
-          <div className="sa-row3">
+          <div className="sa-row4">
             <input
               className="sa-input"
               type="email"
@@ -280,6 +281,19 @@ export function SuperAdmin() {
               value={newAdmin.email}
               onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
             />
+            <select
+              className="sa-input"
+              value={newAdmin.role}
+              onChange={(e) => setNewAdmin({ ...newAdmin, role: e.target.value })}
+            >
+              <option value="communication">Communication</option>
+              <option value="programme">Programme & Activités</option>
+              <option value="logistique">Logistique</option>
+              <option value="secretariat">Secrétariat Général</option>
+              <option value="finances">Finances</option>
+              <option value="president">Président</option>
+              <option value="superadmin">Super Admin</option>
+            </select>
             <div className="sa-password-wrap">
               <input
                 className="sa-input"
@@ -311,7 +325,7 @@ export function SuperAdmin() {
                     return;
                   }
                   await createAdminAccount(newAdmin);
-                  setNewAdmin({ email: '', password: '' });
+                  setNewAdmin({ email: '', password: '', role: 'communication' });
                   await load();
                   await confirmDialog({ title: 'Succès', message: 'Admin ajouté avec succès.', confirmText: 'OK', cancelText: 'Fermer' });
                 } catch (err: any) {
@@ -330,6 +344,7 @@ export function SuperAdmin() {
               <thead>
                 <tr>
                   <th>Email</th>
+                  <th>Rôle</th>
                   <th>Nouveau code</th>
                   <th>Statut</th>
                   <th style={{ textAlign: 'right' }}>Actions</th>
@@ -346,6 +361,21 @@ export function SuperAdmin() {
                         onChange={(e) => setRowEdit((prev) => ({ ...prev, [admin.id]: { ...prev[admin.id], email: e.target.value } }))}
                         style={{ maxWidth: 220 }}
                       />
+                    </td>
+                    <td>
+                      <select
+                        className="sa-input"
+                        value={rowEdit[admin.id]?.role || admin.role || 'communication'}
+                        onChange={(e) => setRowEdit((prev) => ({ ...prev, [admin.id]: { ...prev[admin.id], role: e.target.value } }))}
+                      >
+                        <option value="communication">Communication</option>
+                        <option value="programme">Programme & Activités</option>
+                        <option value="logistique">Logistique</option>
+                        <option value="secretariat">Secrétariat Général</option>
+                        <option value="finances">Finances</option>
+                        <option value="president">Président</option>
+                        <option value="superadmin">Super Admin</option>
+                      </select>
                     </td>
                     <td>
                       <div className="sa-password-wrap" style={{ maxWidth: 220 }}>
@@ -371,7 +401,11 @@ export function SuperAdmin() {
                             if (!(await confirmDialog({ title: 'Modifier admin', message: 'Confirmer la modification de cet admin ?' }))) return;
                             try {
                               const edit = rowEdit[admin.id];
-                              await updateAdminAccount(admin.id, { email: edit?.email, new_password: edit?.new_password || undefined });
+                              await updateAdminAccount(admin.id, { 
+                                email: edit?.email, 
+                                new_password: edit?.new_password || undefined,
+                                role: edit?.role || admin.role 
+                              });
                               await load();
                               await confirmDialog({ title: 'Succès', message: 'Admin modifié avec succès.', confirmText: 'OK', cancelText: 'Fermer' });
                             } catch (err: any) {

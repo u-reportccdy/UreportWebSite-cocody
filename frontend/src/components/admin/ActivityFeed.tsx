@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ClockIcon, FileText, Calendar, Users, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,16 @@ interface ActivityFeedProps {
 
 export function ActivityFeed({ activities }: ActivityFeedProps) {
   const list = activities || [];
+
+  const role = sessionStorage.getItem('admin_role');
+  const getReportsLink = () => {
+    if (role === 'secretariat') return '/admin/reports';
+    if (role === 'finances' || role === 'superadmin' || role === 'president' || role === 'admin') return '/admin/stats';
+    if (role === 'communication') return '/admin/articles';
+    if (role === 'programme' || role === 'activites') return '/admin/events';
+    if (role === 'logistique') return '/admin/logistics';
+    return '/admin';
+  };
 
   return (
     <motion.div
@@ -58,7 +68,7 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
           })
         )}
       </div>
-      <Link to="/admin/stats" className="w-full mt-6 py-2.5 text-sm font-semibold text-[#0099DC] hover:text-[#007bb5] transition-colors block text-center border border-[#0099DC]/10 rounded-xl hover:bg-blue-50">
+      <Link to={getReportsLink()} className="w-full mt-6 py-2.5 text-sm font-semibold text-[#0099DC] hover:text-[#007bb5] transition-colors block text-center border border-[#0099DC]/10 rounded-xl hover:bg-blue-50">
         Voir tous les rapports
       </Link>
     </motion.div>

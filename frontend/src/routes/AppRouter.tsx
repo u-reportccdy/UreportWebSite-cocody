@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { PATHS } from './paths';
 
-// Layouts
+// Layouts and Pages routing config
 import { PublicLayout } from '../layouts/PublicLayout';
 import { AdminLayout } from '../layouts/AdminLayout';
 import { SuperAdminLayout } from '../layouts/SuperAdminLayout';
@@ -14,6 +14,8 @@ import { About } from '../pages/public/About';
 import { ArticleDetail } from '../pages/public/ArticleDetail';
 import { EventDetail } from '../pages/public/EventDetail';
 import { CotisationPayment } from '../pages/public/CotisationPayment';
+import { MemberProfile } from '../pages/public/MemberProfile';
+import { EventCheckIn } from '../pages/public/EventCheckIn';
 
 // Pages Admin
 import { Dashboard } from '../pages/admin/Dashboard';
@@ -28,6 +30,9 @@ import { Partners as AdminPartners } from '../pages/admin/Partners';
 import { Testimonials as AdminTestimonials } from '../pages/admin/Testimonials';
 import { Newsletter as AdminNewsletter } from '../pages/admin/Newsletter';
 import { Settings as AdminSettings } from '../pages/admin/Settings';
+import { Logistics } from '../pages/admin/Logistics';
+import { Tasks } from '../pages/admin/Tasks';
+import { Reports } from '../pages/admin/Reports';
 
 import { Login as AdminLogin } from '../pages/admin/Login';
 import { AdminGuard } from './AdminGuard';
@@ -45,9 +50,11 @@ const router = createBrowserRouter([
       { path: PATHS.PUBLIC.EVENTS, element: <PublicEvents /> },
       { path: PATHS.PUBLIC.GALLERY, element: <PublicGallery /> },
       { path: PATHS.PUBLIC.CONTRIBUTION_PAYMENT, element: <CotisationPayment /> },
+      { path: PATHS.PUBLIC.MEMBER_PROFILE, element: <MemberProfile /> },
       { path: PATHS.PUBLIC.ABOUT, element: <About /> },
       { path: '/articles/:id', element: <ArticleDetail /> },
       { path: '/events/:id', element: <EventDetail /> },
+      { path: '/events/:id/checkin', element: <EventCheckIn /> },
     ]
   },
   {
@@ -87,6 +94,9 @@ const router = createBrowserRouter([
           { path: PATHS.ADMIN.TESTIMONIALS, element: <AdminTestimonials /> },
           { path: PATHS.ADMIN.NEWSLETTER, element: <AdminNewsletter /> },
           { path: PATHS.ADMIN.SETTINGS, element: <AdminSettings /> },
+          { path: PATHS.ADMIN.LOGISTICS, element: <Logistics /> },
+          { path: PATHS.ADMIN.TASKS, element: <Tasks /> },
+          { path: PATHS.ADMIN.REPORTS, element: <Reports /> },
         ]
       }
     ]
