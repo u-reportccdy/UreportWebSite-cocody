@@ -7,6 +7,11 @@ export interface MemberSession {
   sex?: string;
 }
 
+interface StoredMemberSession {
+  id: string;
+  full_name: string;
+}
+
 const MEMBER_SESSION_KEY = 'member_session';
 const MEMBER_SESSION_EVENT = 'member-session-changed';
 
@@ -28,7 +33,11 @@ export function loadMemberSession(): MemberSession | null {
 
 export function saveMemberSession(session: MemberSession) {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(MEMBER_SESSION_KEY, JSON.stringify(session));
+  const storedSession: StoredMemberSession = {
+    id: session.id,
+    full_name: session.full_name,
+  };
+  localStorage.setItem(MEMBER_SESSION_KEY, JSON.stringify(storedSession));
   dispatchMemberSessionChange();
 }
 
