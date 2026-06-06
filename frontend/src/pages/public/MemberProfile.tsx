@@ -204,11 +204,7 @@ export function MemberProfile() {
       saveMemberSession({
         id: session.id,
         full_name: updated.full_name,
-        phone: updated.phone,
-        email: updated.email,
-        status: updated.status,
-        sex: updated.sex,
-      });
+      } as any);
       setSuccessMsg('Votre profil a été mis à jour avec succès !');
       loadData();
     } catch (err) {
