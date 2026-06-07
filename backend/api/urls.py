@@ -6,6 +6,7 @@ urlpatterns = [
     path("auth/admin/login", views.admin_login),
     path("auth/admin/logout", views.admin_logout),
     path("auth/superadmin/login", views.superadmin_login),
+    path("auth/portal/login", views.portal_login),
     path("auth/admin/change-credentials", views.admin_change_credentials),
     path("members/login", views.member_login),
     path("members/logout", views.member_logout),

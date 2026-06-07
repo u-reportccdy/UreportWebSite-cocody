@@ -270,9 +270,16 @@ export function Navbar() {
                   </button>
                 </div>
               ) : (
-                <Button size="sm" onClick={() => setIsJoinModalOpen(true)}>
-                  Connexion
-                </Button>
+                <div className="flex items-center gap-3">
+                  <Link href="/portal">
+                    <Button variant="outline" size="sm">
+                      Portail
+                    </Button>
+                  </Link>
+                  <Button size="sm" onClick={() => setIsJoinModalOpen(true)}>
+                    Connexion
+                  </Button>
+                </div>
               )}
             </div>
  
@@ -332,9 +339,16 @@ export function Navbar() {
                       </Button>
                     </div>
                   ) : (
-                    <Button fullWidth onClick={() => { setIsOpen(false); setIsJoinModalOpen(true); }}>
-                      Connexion
-                    </Button>
+                    <div className="flex flex-col gap-2">
+                      <Link href="/portal" onClick={() => setIsOpen(false)}>
+                        <Button fullWidth variant="outline">
+                          Portail
+                        </Button>
+                      </Link>
+                      <Button fullWidth onClick={() => { setIsOpen(false); setIsJoinModalOpen(true); }}>
+                        Connexion
+                      </Button>
+                    </div>
                   )}
                 </div>
               </div>

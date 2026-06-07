@@ -68,12 +68,16 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: '/portal',
+    element: <AdminLogin />
+  },
+  {
     path: '/superadmin/login',
-    element: <SuperAdminLogin />
+    element: <Navigate to="/portal" replace />
   },
   {
     path: '/admin/login',
-    element: <AdminLogin />
+    element: <Navigate to="/portal" replace />
   },
   {
     path: '/admin',

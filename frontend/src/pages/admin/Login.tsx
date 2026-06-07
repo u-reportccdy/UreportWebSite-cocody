@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
@@ -15,7 +15,7 @@ export function Login() {
     e.preventDefault();
     setError('');
     try {
-      const response = await api.post('/auth/admin/login', { email, password });
+      const response = await api.post('/auth/portal/login', { email, password });
       const data = response.data?.data;
       if (!data?.role) throw new Error('Invalid auth response');
       sessionStorage.setItem('admin_role', data.role || 'admin');
@@ -39,7 +39,7 @@ export function Login() {
             <span className="text-gray-900 ml-0.5">Report</span>
           </span>
           <span className="text-xs font-bold uppercase tracking-widest text-[#0099DC] bg-[#0099DC]/10 px-3 py-1 rounded-full border border-[#0099DC]/20">
-            Espace Administration
+            Portail d'Administration
           </span>
         </div>
 

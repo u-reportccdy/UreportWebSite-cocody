@@ -54,7 +54,7 @@ export function SuperAdminLayout() {
               }
               sessionStorage.removeItem('admin_role');
               sessionStorage.removeItem('admin_email');
-              navigate('/superadmin/login');
+              navigate('/portal');
             }}
             className="w-full flex items-center justify-center gap-2 text-sm bg-red-50 text-red-600 px-3 py-2 rounded-xl hover:bg-red-100 transition-all font-semibold"
           >

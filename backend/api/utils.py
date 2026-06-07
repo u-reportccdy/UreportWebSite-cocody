@@ -135,6 +135,8 @@ def _is_admin_request(path: str, method: str) -> bool:
         return False
     if path == "/api/auth/superadmin/login":
         return False
+    if path == "/api/auth/portal/login":
+        return False
     # Members can update their own profile and read their own awards
     import re
     member_self_pattern = r"^/api/members/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/awards(/[0-9a-f-]+)?|/activities|/contributions|/status)?$"
@@ -203,6 +205,8 @@ def _is_maintenance_blocked(path: str, method: str, token_data: dict[str, Any] |
         return False, ""
     if path.startswith("/api/auth/superadmin/login"):
         return False, ""
+    if path.startswith("/api/auth/portal/login"):
+        return False, ""
     settings_data = _get_runtime_settings()
     is_on = bool(settings_data.get("site_under_maintenance"))
     if not is_on:
@@ -210,6 +214,7 @@ def _is_maintenance_blocked(path: str, method: str, token_data: dict[str, Any] |
     allowed_public = (
         (path.startswith("/api/settings") and method == "GET")
         or (path.startswith("/api/auth/superadmin/login"))
+        or (path.startswith("/api/auth/portal/login"))
         or (path.startswith("/api/health"))
     )
     if allowed_public:

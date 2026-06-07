@@ -424,6 +424,38 @@ def superadmin_login(request):
 
 
 @api_view(["POST"])
+def portal_login(request):
+    payload = body_json(request)
+    now_ts = time.time()
+    _prune_login_attempts(now_ts)
+    ip = _get_client_ip(request)
+    if _is_rate_limited(ip, now_ts):
+        return error_response("Trop de tentatives. Réessayez dans quelques minutes.", 429)
+
+    email = _normalize_email(payload.get("email"))
+    password = payload.get("password") or ""
+    admin = _get_admin_by_email(email)
+
+    if not admin:
+        _record_failed_attempt(ip, now_ts)
+        return error_response("Identifiants incorrects.", 401)
+
+    if admin.get("active") is False:
+        _record_failed_attempt(ip, now_ts)
+        return error_response("Compte désactivé.", 403)
+    password_hash = admin.get("password_hash") or ""
+    if not password_hash or not check_password(password, password_hash):
+        _record_failed_attempt(ip, now_ts)
+        return error_response("Identifiants incorrects.", 401)
+
+    _LOGIN_ATTEMPTS.pop(ip, None)
+    role = admin.get("role", "communication")
+    token = create_admin_token(email, role)
+    response = data_response({"role": role, "email": email})
+    return _set_session_cookie(response, ADMIN_COOKIE_NAME, token, django_settings.ADMIN_TOKEN_TTL_SECONDS)
+
+
+@api_view(["POST"])
 def admin_logout(_request):
     response = status_response()
     return _clear_session_cookie(response, ADMIN_COOKIE_NAME)

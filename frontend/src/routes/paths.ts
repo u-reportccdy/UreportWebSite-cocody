@@ -12,7 +12,7 @@ export const PATHS = {
     CONTACT: '/contact'
   },
   ADMIN: {
-    LOGIN: '/admin/login',
+    LOGIN: '/portal',
     DASHBOARD: '/admin',
     ARTICLES: '/admin/articles',
     EVENTS: '/admin/events',
