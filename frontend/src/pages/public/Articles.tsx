@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Newspaper, RefreshCw, Search } from 'lucide-react';
 import { Link } from '../../components/public/Link';
@@ -173,7 +173,7 @@ export function Articles() {
 
         {!isLoading && !error && featuredArticle && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-16">
-            <Link href={`/articles/${featuredArticle.id}`} className="group block">
+            <Link href={featuredArticle.external_link || `/articles/${featuredArticle.id}`} className="group block">
               <Card hover className="overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-0">
                 <div className="h-64 lg:h-auto relative overflow-hidden bg-gray-100">
                   {featuredArticle.image && (
@@ -218,7 +218,7 @@ export function Articles() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <Link href={`/articles/${article.id}`} className="group block h-full">
+              <Link href={article.external_link || `/articles/${article.id}`} className="group block h-full">
                 <Card hover className="h-full flex flex-col">
                   <div className="h-56 overflow-hidden relative bg-gray-100">
                     {article.image && (

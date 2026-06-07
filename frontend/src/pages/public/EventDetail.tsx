@@ -1,11 +1,12 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Clock, Users, Share2, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Calendar, MapPin, Clock, Users, Share2, ArrowLeft, CheckCircle, Camera } from 'lucide-react';
 import { Link } from '../../components/public/Link';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { fetchEvent, isRegisteredForEvent, registerForEvent } from '../../services/event.service';
+import { fetchGalleryAlbums, fetchGalleryPhotosForAlbum } from '../../services/content.service';
 import { JoinModal } from '../../components/public/JoinModal';
 import { cleanRichHtml } from '../../utils/richText';
 import { WhatsAppRedirectModal } from '../../components/public/WhatsAppRedirectModal';
@@ -17,6 +18,8 @@ import { loadMemberSession, subscribeMemberSessionChange } from '../../utils/mem
 export function EventDetail() {
   const { id } = useParams<{ id: string }>();
   const [event, setEvent] = useState<any>(null);
+  const [associatedAlbum, setAssociatedAlbum] = useState<any>(null);
+  const [albumPhotos, setAlbumPhotos] = useState<any[]>([]);
   const [formData, setFormData] = useState({ member_status: 'aspirant', sex: 'non_precise' });
   const [session, setSession] = useState<any>(null);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
@@ -40,18 +43,41 @@ export function EventDetail() {
   }, []);
 
   useEffect(() => {
-    const loadEvent = async () => {
+    const loadEventAndAlbum = async () => {
       if (!id) return;
       setIsLoading(true);
       try {
-        const row = await fetchEvent(id);
+        const [row, albums] = await Promise.all([
+          fetchEvent(id),
+          fetchGalleryAlbums().catch(err => {
+            console.error('Erreur chargement albums:', err);
+            return [];
+          })
+        ]);
+        const todayStr = new Date().toISOString().split('T')[0];
+        const date = row.date || row.event_date;
+        const isPast = date ? date < todayStr : false;
+        const status = isPast ? 'past' : (row.status || 'upcoming');
         setEvent({
           ...row,
-          date: row.date || row.event_date,
+          date,
+          status,
           time: row.time || [row.start_time, row.end_time].filter(Boolean).join(' - '),
           image: row.image || row.image_url,
           registered: row.registered || 0,
         });
+        const matchingAlbum = (albums || []).find((album: any) => album.event_id === id);
+        setAssociatedAlbum(matchingAlbum || null);
+
+        if (matchingAlbum) {
+          const photos = await fetchGalleryPhotosForAlbum(matchingAlbum.id).catch(err => {
+            console.error('Erreur chargement photos:', err);
+            return [];
+          });
+          setAlbumPhotos(photos || []);
+        } else {
+          setAlbumPhotos([]);
+        }
       } catch (err) {
         console.error('Erreur chargement activite:', err);
         setError('Evenement introuvable');
@@ -60,7 +86,7 @@ export function EventDetail() {
       }
     };
 
-    loadEvent();
+    loadEventAndAlbum();
   }, [id]);
 
   useEffect(() => {
@@ -148,6 +174,84 @@ export function EventDetail() {
                 <div className="text-gray-800 leading-relaxed quill-content space-y-4" dangerouslySetInnerHTML={{ __html: cleanRichHtml(event.description || 'Aucune description disponible.') }} />
               </div>
             </Card>
+
+            {albumPhotos.length > 0 ? (
+              <div id="photos-section">
+                <Card className="p-8 space-y-6">
+                  <div className="flex justify-between items-center border-b pb-4">
+                    <h3 className="font-heading font-bold text-2xl text-ureport-dark flex items-center gap-2">
+                      <Camera className="w-6 h-6 text-ureport-blue" />
+                      Photos de l'action
+                    </h3>
+                    {associatedAlbum?.external_link && (
+                      <a
+                        href={associatedAlbum.external_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-bold text-ureport-blue hover:text-[#007bb5] flex items-center gap-1 transition-colors"
+                      >
+                        Voir plus sur Drive <ArrowLeft className="w-4 h-4 rotate-180" />
+                      </a>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    {albumPhotos.slice(0, 20).map((photo, idx) => (
+                      <div
+                        key={photo.id || idx}
+                        className="relative aspect-video rounded-xl overflow-hidden shadow-sm hover:shadow-md border border-gray-100 group cursor-pointer"
+                        onClick={() => {
+                          window.open(photo.image_url, '_blank');
+                        }}
+                      >
+                        <img
+                          src={photo.image_url}
+                          alt=""
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                    ))}
+                  </div>
+
+                  {associatedAlbum?.external_link && (
+                    <div className="pt-4 flex justify-center">
+                      <Button
+                        onClick={() => window.open(associatedAlbum.external_link, '_blank', 'noopener,noreferrer')}
+                        variant="outline"
+                        className="flex items-center gap-2 border-ureport-blue text-ureport-blue hover:bg-ureport-blue hover:text-white"
+                      >
+                        <Camera className="w-5 h-5" />
+                        Voir toutes les photos sur Drive
+                      </Button>
+                    </div>
+                  )}
+                </Card>
+              </div>
+            ) : (
+              associatedAlbum?.external_link && (
+                <div id="photos-section">
+                  <Card className="p-8 space-y-6">
+                    <div className="flex justify-between items-center border-b pb-4">
+                      <h3 className="font-heading font-bold text-2xl text-ureport-dark flex items-center gap-2">
+                        <Camera className="w-6 h-6 text-ureport-blue" />
+                        Photos de l'action
+                      </h3>
+                    </div>
+                    <div className="text-center py-8">
+                      <p className="text-gray-500 mb-6 font-semibold">Les photos de cette activité sont disponibles sur notre album externe.</p>
+                      <Button
+                        onClick={() => window.open(associatedAlbum.external_link, '_blank', 'noopener,noreferrer')}
+                        className="bg-[#0099DC] text-white hover:bg-[#007bb5] transition-all duration-300 py-3 px-6 rounded-xl font-bold shadow-md hover:shadow-lg flex items-center gap-2 mx-auto"
+                      >
+                        <Camera className="w-5 h-5" />
+                        Accéder à l'album photos (Drive)
+                      </Button>
+                    </div>
+                  </Card>
+                </div>
+              )
+            )}
           </div>
 
           <div className="space-y-8">
@@ -159,6 +263,31 @@ export function EventDetail() {
                 <div className="flex items-start"><div className="bg-orange-50 p-3 rounded-xl mr-4"><MapPin className="w-6 h-6 text-ureport-gold" /></div><div><p className="font-bold text-gray-900">Lieu</p><p className="text-gray-600">{event.location}</p></div></div>
                 <div className="flex items-start"><div className="bg-green-50 p-3 rounded-xl mr-4"><Users className="w-6 h-6 text-green-500" /></div><div className="w-full"><p className="font-bold text-gray-900">Places disponibles</p><div className="flex justify-between text-sm text-gray-600 mb-1 mt-1"><span>{event.registered} inscrits</span><span>{event.capacity} total</span></div><div className="w-full bg-gray-200 rounded-full h-2"><div className={`h-2 rounded-full ${isFull ? 'bg-red-500' : 'bg-green-500'}`} style={{ width: `${(event.registered / (event.capacity || 1)) * 100}%` }}></div></div></div></div>
               </div>
+              {associatedAlbum && (
+                <div className="mt-6 pt-6 border-t animate-fade-in">
+                  <Button
+                    onClick={() => {
+                      if (albumPhotos.length > 0) {
+                        const el = document.getElementById('photos-section');
+                        if (el) {
+                          el.scrollIntoView({ behavior: 'smooth' });
+                          return;
+                        }
+                      }
+                      if (associatedAlbum.external_link) {
+                        window.open(associatedAlbum.external_link, '_blank', 'noopener,noreferrer');
+                      } else {
+                        window.location.href = '/gallery';
+                      }
+                    }}
+                    fullWidth
+                    className="flex items-center justify-center gap-2 bg-[#0099DC] text-white hover:bg-[#007bb5] transition-all duration-300 py-3 rounded-xl font-bold shadow-md hover:shadow-lg"
+                  >
+                    <Camera className="w-5 h-5" />
+                    Voir les photos de l'activité
+                  </Button>
+                </div>
+              )}
               <div className="mt-8 pt-6 border-t flex justify-center"><button className="flex items-center text-gray-500 hover:text-ureport-blue transition-colors font-semibold"><Share2 className="w-5 h-5 mr-2" /> Partager l'activite</button></div>
             </Card>
 

@@ -119,6 +119,16 @@ def _normalize_phone(value: str | None) -> str:
     return "".join(ch for ch in str(value or "") if ch.isdigit())
 
 
+def _phones_match(phone1: str | None, phone2: str | None) -> bool:
+    p1 = "".join(ch for ch in str(phone1 or "") if ch.isdigit())
+    p2 = "".join(ch for ch in str(phone2 or "") if ch.isdigit())
+    if not p1 or not p2:
+        return False
+    if len(p1) >= 9 and len(p2) >= 9:
+        return p1[-9:] == p2[-9:]
+    return p1 == p2
+
+
 def _normalize_name(value: str | None) -> str:
     return " ".join(str(value or "").strip().lower().split())
 
@@ -149,7 +159,7 @@ def _require_member(request, member_id: str | None = None):
     if not rows:
         return None, error_response("Membre introuvable.", 404)
     member = rows[0]
-    if _normalize_phone(member.get("phone")) != _normalize_phone(token_data.get("phone")):
+    if not _phones_match(member.get("phone"), token_data.get("phone")):
         return None, error_response("Session membre invalide ou expirée.", 401)
     return member, None
 
@@ -752,8 +762,7 @@ def members(request):
         return error_response("Nom complet et numéro de téléphone requis.", 422)
 
     existing = supabase.select("members", "select=*&order=created_at.desc")
-    normalized_phone = _normalize_phone(payload["phone"])
-    duplicate = next((member for member in existing if _normalize_phone(member.get("phone")) == normalized_phone), None)
+    duplicate = next((member for member in existing if _phones_match(member.get("phone"), payload["phone"])), None)
     if duplicate:
         return error_response("Ce numéro de téléphone est déjà enregistré. Veuillez vous connecter.", 409)
 
@@ -782,7 +791,7 @@ def member_login(request):
         (
             row
             for row in members_rows
-            if _normalize_phone(row.get("phone")) == phone and _normalize_name(row.get("full_name")) == full_name
+            if _phones_match(row.get("phone"), phone) and _normalize_name(row.get("full_name")) == full_name
         ),
         None,
     )
@@ -916,11 +925,21 @@ def event_register(request, event_id):
     member, error = _require_member(request, str(payload.get("member_id") or ""))
     if error:
         return error
-    rows = supabase.select("events", f"select=id,capacity,registered&id=eq.{event_id}")
+    rows = supabase.select("events", f"select=id,capacity,registered,event_date&id=eq.{event_id}")
     if not rows:
         return error_response("Event not found", 404)
 
     event = rows[0]
+    
+    event_date_str = event.get("event_date")
+    if event_date_str:
+        try:
+            event_date = datetime.strptime(event_date_str[:10], "%Y-%m-%d").date()
+            if event_date < datetime.now(timezone.utc).date():
+                return error_response("Cette activité est passée. Les inscriptions sont fermées.", 400)
+        except Exception:
+            pass
+
     capacity = event.get("capacity") or 0
     registered = event.get("registered") or 0
     if capacity and registered >= capacity:
@@ -936,6 +955,15 @@ def event_register(request, event_id):
     payload["sex"] = payload.get("sex") or member.get("sex") or "non_precise"
     if not payload.get("full_name") or not payload.get("phone"):
         return error_response("full_name and phone are required", 422)
+
+    # Check if already registered (with phone prefix tolerance)
+    registrations = supabase.select("event_registrations", f"select=*&event_id=eq.{event_id}")
+    duplicate_reg = next(
+        (r for r in registrations if str(r.get("member_id")) == str(member_id) or _phones_match(r.get("phone"), payload.get("phone"))),
+        None
+    )
+    if duplicate_reg:
+        return error_response("Vous êtes déjà inscrit à cette activité.", 409)
 
     payload["event_id"] = str(event_id)
     payload["member_status"] = payload.get("member_status") or payload.get("status") or "aspirant"
@@ -956,10 +984,19 @@ def event_quick_checkin(request, event_id):
     payload = body_json(request)
     
     # 1. Fetch event to verify existence and capacity
-    rows = supabase.select("events", f"select=id,capacity,registered,title,whatsapp_link&id=eq.{event_id}")
+    rows = supabase.select("events", f"select=id,capacity,registered,title,whatsapp_link,event_date&id=eq.{event_id}")
     if not rows:
         return error_response("Activité introuvable.", 404)
     event = rows[0]
+
+    event_date_str = event.get("event_date")
+    if event_date_str:
+        try:
+            event_date = datetime.strptime(event_date_str[:10], "%Y-%m-%d").date()
+            if event_date < datetime.now(timezone.utc).date():
+                return error_response("Cette activité est passée. Les inscriptions sont fermées.", 400)
+        except Exception:
+            pass
     
     phone = _normalize_phone(payload.get("phone"))
     if not phone:
@@ -968,7 +1005,7 @@ def event_quick_checkin(request, event_id):
     # 2. Check if member exists in the database
     members_rows = supabase.select("members", "select=*")
     member = next(
-        (m for m in members_rows if _normalize_phone(m.get("phone")) == phone),
+        (m for m in members_rows if _phones_match(m.get("phone"), phone)),
         None
     )
 
@@ -998,7 +1035,7 @@ def event_quick_checkin(request, event_id):
     # 3. Register member to the event and mark as attended
     registrations = supabase.select("event_registrations", f"select=*&event_id=eq.{event_id}")
     existing_reg = next(
-        (r for r in registrations if str(r.get("member_id")) == str(member.get("id")) or _normalize_phone(r.get("phone")) == phone),
+        (r for r in registrations if str(r.get("member_id")) == str(member.get("id")) or _phones_match(r.get("phone"), phone)),
         None
     )
 
@@ -1062,14 +1099,12 @@ def event_is_registered(request, event_id):
         return error
     member_id = (request.GET.get("member_id") or "").strip()
     rows = supabase.select("event_registrations", f"select=member_id,phone&event_id=eq.{event_id}")
-    normalized_phone = _normalize_phone(member.get("phone"))
     exists = False
     for row in rows:
         if member_id and str(row.get("member_id") or "") == member_id:
             exists = True
             break
-        reg_phone = "".join(ch for ch in str(row.get("phone") or "") if ch.isdigit())
-        if normalized_phone and reg_phone and reg_phone == normalized_phone:
+        if _phones_match(row.get("phone"), member.get("phone")):
             exists = True
             break
     return data_response({"registered": exists})

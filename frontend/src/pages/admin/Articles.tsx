@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlusIcon, SearchIcon, Edit2Icon, Trash2Icon, XIcon, Loader2 } from 'lucide-react';
 import ReactQuill from 'react-quill-new';
@@ -40,6 +40,7 @@ export function Articles() {
     excerpt: '',
     content: '',
     author: 'U-Report Cocody',
+    external_link: '',
   });
 
   const slugify = (value: string) =>
@@ -79,11 +80,12 @@ export function Articles() {
         excerpt: article.excerpt || '',
         content: article.content || '',
         author: article.author || 'U-Report Cocody',
+        external_link: article.external_link || '',
       });
     } else {
       setEditingArticle(null);
       setImagePreview('');
-      setFormData({ title: '', category: 'Actualites', status: 'Brouillon', image: '', excerpt: '', content: '', author: 'U-Report Cocody' });
+      setFormData({ title: '', category: 'Actualites', status: 'Brouillon', image: '', excerpt: '', content: '', author: 'U-Report Cocody', external_link: '' });
     }
     setIsModalOpen(true);
   };
@@ -130,6 +132,7 @@ export function Articles() {
         author: formData.author || 'U-Report Cocody',
         status: formData.status === 'Publie' ? 'published' : 'draft',
         published_at: formData.status === 'Publie' ? new Date().toISOString() : null,
+        external_link: formData.external_link,
       };
 
       if (editingArticle) {
@@ -238,6 +241,10 @@ export function Articles() {
                 </div>
                 <input required type="text" placeholder="Auteur de l'article" value={formData.author} onChange={e => setFormData({ ...formData, author: e.target.value })} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
                 <textarea rows={2} placeholder="Resume" value={formData.excerpt} onChange={e => setFormData({ ...formData, excerpt: e.target.value })} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 mb-1">Lien externe (optionnel - ex: Facebook, Instagram, TikTok...)</label>
+                  <input type="url" placeholder="https://..." value={formData.external_link} onChange={e => setFormData({ ...formData, external_link: e.target.value })} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
+                </div>
                 <div className="bg-white rounded-lg border border-gray-300 pb-12">
                   <ReactQuill theme="snow" value={formData.content} onChange={value => setFormData({ ...formData, content: value })} modules={quillModules} className="h-64" />
                 </div>

@@ -112,7 +112,7 @@ export function EventCheckIn() {
       }
     } catch (err: any) {
       console.error(err);
-      setError(err.response?.data?.message || 'Une erreur est survenue lors de la vérification.');
+      setError(err.response?.data?.detail || err.response?.data?.message || 'Une erreur est survenue lors de la vérification.');
     } finally {
       setIsSubmitting(false);
     }
@@ -129,7 +129,7 @@ export function EventCheckIn() {
       setStep('success');
     } catch (err: any) {
       console.error(err);
-      setError(err.response?.data?.message || 'Erreur lors de la validation de présence.');
+      setError(err.response?.data?.detail || err.response?.data?.message || 'Erreur lors de la validation de présence.');
     } finally {
       setIsSubmitting(false);
     }
@@ -154,7 +154,7 @@ export function EventCheckIn() {
       setStep('success');
     } catch (err: any) {
       console.error(err);
-      setError(err.response?.data?.message || 'Erreur lors de l’inscription et de la validation.');
+      setError(err.response?.data?.detail || err.response?.data?.message || 'Erreur lors de l’inscription et de la validation.');
     } finally {
       setIsSubmitting(false);
     }

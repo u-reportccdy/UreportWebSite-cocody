@@ -119,6 +119,8 @@ def _is_admin_request(path: str, method: str) -> bool:
         return False
     if path.endswith("/register") and method == "POST":
         return False
+    if path.endswith("/quick-checkin") and method == "POST":
+        return False
     if path == "/api/newsletter/subscribe" and method == "POST":
         return False
     if path == "/api/members" and method == "POST":

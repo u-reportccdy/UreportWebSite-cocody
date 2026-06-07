@@ -1,22 +1,30 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlusIcon, CalendarIcon, Edit2Icon, Trash2Icon, XIcon, SearchIcon, Loader2, ExternalLink } from 'lucide-react';
 import { 
   fetchGalleryAlbums, 
   createGalleryAlbum, 
   updateGalleryAlbum, 
-  deleteGalleryAlbum 
+  deleteGalleryAlbum,
+  fetchGalleryPhotosForAlbum,
+  createGalleryPhoto,
+  deleteGalleryPhoto
 } from '../../services/content.service';
+import { fetchEvents } from '../../services/event.service';
 import { useConfirm } from '../../components/ui/ConfirmDialog';
 import { resizeImageToDataUrl } from '../../utils/imageResize';
 
 export function Gallery() {
   const confirm = useConfirm();
   const [albums, setAlbums] = useState<any[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   
   const [isSaving, setIsSaving] = useState(false);
+  const [photos, setPhotos] = useState<any[]>([]);
+  const [isLoadingPhotos, setIsLoadingPhotos] = useState(false);
+  const [isSavingPhotos, setIsSavingPhotos] = useState(false);
 
   const sanitizeImageUrl = (value: string) => {
     const trimmed = value.trim();
@@ -39,6 +47,7 @@ export function Gallery() {
     date: '',
     cover: '',
     external_link: '',
+    event_id: '',
   });
 
   const loadAlbums = async () => {
@@ -53,12 +62,22 @@ export function Gallery() {
     }
   };
 
+  const loadEvents = async () => {
+    try {
+      const rows = await fetchEvents();
+      setEvents(rows || []);
+    } catch (err) {
+      console.error('Erreur chargement événements pour la galerie:', err);
+    }
+  };
+
   useEffect(() => {
     loadAlbums();
+    loadEvents();
   }, []);
 
   // Album CRUDS Handlers
-  const handleOpenAlbumModal = (album: any = null) => {
+  const handleOpenAlbumModal = async (album: any = null) => {
     if (album) {
       setEditingAlbum(album);
       setAlbumPreview(album.cover_url || album.cover || '');
@@ -67,18 +86,101 @@ export function Gallery() {
         date: album.event_date || album.date || '',
         cover: album.cover_url || album.cover || '',
         external_link: album.external_link || '',
+        event_id: album.event_id || '',
       });
+      // Fetch photos for the album
+      setPhotos([]);
+      setIsLoadingPhotos(true);
+      try {
+        const albumPhotos = await fetchGalleryPhotosForAlbum(album.id);
+        setPhotos(albumPhotos || []);
+      } catch (err) {
+        console.error('Erreur chargement photos:', err);
+      } finally {
+        setIsLoadingPhotos(false);
+      }
     } else {
       setEditingAlbum(null);
+      setPhotos([]);
       setAlbumPreview('');
       setAlbumFormData({
         title: '',
         date: '',
         cover: '',
         external_link: '',
+        event_id: '',
       });
     }
     setIsAlbumModalOpen(true);
+  };
+
+  const handlePhotoUpload = async (files: FileList | null) => {
+    if (!files || !editingAlbum) return;
+
+    const maxPhotosAllowed = 20;
+    const remainingSlots = maxPhotosAllowed - photos.length;
+
+    if (remainingSlots <= 0) {
+      alert(`Vous avez atteint la limite de ${maxPhotosAllowed} photos pour cet album.`);
+      return;
+    }
+
+    const filesToUpload = Array.from(files).slice(0, remainingSlots);
+    if (files.length > remainingSlots) {
+      alert(`Seules les ${remainingSlots} premières images ont été sélectionnées pour respecter la limite de ${maxPhotosAllowed} photos.`);
+    }
+
+    setIsSavingPhotos(true);
+    try {
+      const resizePromises = filesToUpload.map((file) => {
+        return resizeImageToDataUrl(file, { width: 1024, height: 768 })
+          .then(async (base64) => {
+            await createGalleryPhoto({
+              album_id: editingAlbum.id,
+              image_url: base64,
+              caption: '',
+            });
+          });
+      });
+
+      await Promise.all(resizePromises);
+
+      // Reload photos
+      const albumPhotos = await fetchGalleryPhotosForAlbum(editingAlbum.id);
+      setPhotos(albumPhotos || []);
+    } catch (err) {
+      console.error('Erreur téléversement photos:', err);
+      alert('Une erreur est survenue lors de l\'ajout des photos.');
+    } finally {
+      setIsSavingPhotos(false);
+    }
+  };
+
+  const handleDeletePhoto = async (photoId: string) => {
+    const ok = await confirm({
+      title: 'Supprimer cette photo ?',
+      message: 'Elle sera définitivement retirée de cet album.',
+      confirmText: 'Supprimer',
+      danger: true,
+    });
+    if (!ok) return;
+
+    try {
+      await deleteGalleryPhoto(photoId);
+      setPhotos(prev => prev.filter(p => p.id !== photoId));
+    } catch (err) {
+      console.error('Erreur suppression photo:', err);
+      alert('Impossible de supprimer la photo.');
+    }
+  };
+
+  const handleEventChange = (eventId: string) => {
+    const selectedEvent = events.find(e => e.id === eventId);
+    setAlbumFormData(prev => ({
+      ...prev,
+      event_id: eventId,
+      date: selectedEvent?.event_date || selectedEvent?.date || prev.date || '',
+    }));
   };
 
   const handleAlbumCoverUpload = (file: File | null) => {
@@ -101,6 +203,7 @@ export function Gallery() {
       event_date: albumFormData.date || null,
       cover_url: albumFormData.cover,
       external_link: albumFormData.external_link,
+      event_id: albumFormData.event_id || null,
     };
 
     try {
@@ -225,10 +328,76 @@ export function Gallery() {
                   </div>
                 )}
                 <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Activité associée (optionnel)</label>
+                  <select
+                    value={albumFormData.event_id}
+                    onChange={e => handleEventChange(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent text-gray-900 bg-white"
+                  >
+                    <option value="">-- Aucun --</option>
+                    {events.map(ev => (
+                      <option key={ev.id} value={ev.id}>
+                        {ev.title} {ev.event_date || ev.date ? `(${new Date(ev.event_date || ev.date).toLocaleDateString('fr-FR')})` : ''}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">Lier cet album à une activité pour pré-remplir la date et afficher les photos sur la page de détails.</p>
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Lien externe (Google Drive, Photos, etc.)</label>
                   <input type="url" placeholder="Ex: https://drive.google.com/drive/folders/..." value={albumFormData.external_link} onChange={e => setAlbumFormData({ ...albumFormData, external_link: e.target.value })} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent" />
                   <p className="text-xs text-gray-500 mt-1">Au clic, l'utilisateur sera redirigé vers ce lien pour voir toutes les photos.</p>
                 </div>
+                {editingAlbum ? (
+                  <div className="pt-4 border-t border-gray-100 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <h4 className="text-sm font-bold text-gray-900">Photos de l'album ({photos.length} / 20)</h4>
+                      <label className={`text-xs font-semibold px-3 py-1.5 rounded-lg border border-gray-205 cursor-pointer hover:bg-gray-50 flex items-center gap-1 ${isSavingPhotos ? 'opacity-50 pointer-events-none' : ''}`}>
+                        <span>Ajouter des photos</span>
+                        <input
+                          type="file"
+                          multiple
+                          accept="image/*"
+                          onChange={e => handlePhotoUpload(e.target.files)}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+
+                    {isLoadingPhotos ? (
+                      <div className="text-center py-6 text-xs text-gray-500 flex items-center justify-center gap-1">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Chargement des photos...
+                      </div>
+                    ) : photos.length === 0 ? (
+                      <p className="text-xs text-gray-400 italic text-center py-6">Aucune photo dans cet album.</p>
+                    ) : (
+                      <div className="grid grid-cols-4 gap-2">
+                        {photos.map(photo => (
+                          <div key={photo.id} className="relative aspect-square rounded-lg overflow-hidden border border-gray-100 group">
+                            <img src={photo.image_url} alt="" className="w-full h-full object-cover" />
+                            <button
+                              type="button"
+                              onClick={() => handleDeletePhoto(photo.id)}
+                              className="absolute top-1 right-1 p-1 bg-white/90 text-red-500 hover:text-red-700 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <Trash2Icon className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {isSavingPhotos && (
+                      <div className="text-xs text-[#0099DC] font-semibold animate-pulse text-center">
+                        Ajout des photos en cours...
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-xs text-gray-500 italic text-center py-4 bg-gray-50 rounded-lg">
+                    Une fois l'album créé et enregistré, vous pourrez y ajouter des photos directement.
+                  </p>
+                )}
                 <div className="pt-4 flex justify-end space-x-3">
                   <button type="button" onClick={() => setIsAlbumModalOpen(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">Annuler</button>
                   <button type="submit" disabled={isSaving} className="px-4 py-2 bg-[#0099DC] text-white rounded-lg hover:bg-[#007bb5] transition-colors flex items-center justify-center">

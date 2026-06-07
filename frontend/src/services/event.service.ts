@@ -76,5 +76,6 @@ export const quickCheckIn = async (
   }
 ) => {
   const response = await api.post(`/events/${eventId}/quick-checkin`, payload);
-  return response.data;
+  return response.data.data;
 };
+

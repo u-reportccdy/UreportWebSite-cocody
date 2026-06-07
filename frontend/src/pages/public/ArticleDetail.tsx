@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Share } from 'lucide-react';
 import { Link } from '../../components/public/Link';
@@ -22,6 +22,10 @@ export function ArticleDetail() {
       setError('');
       try {
         const row = await fetchArticle(id);
+        if (row.external_link) {
+          window.location.replace(row.external_link);
+          return;
+        }
         setArticle({
           ...row,
           image: row.image || row.image_url,

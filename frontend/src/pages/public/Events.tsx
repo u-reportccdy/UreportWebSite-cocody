@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Users, Search, Loader2 } from 'lucide-react';
 import { Link } from '../../components/public/Link';
@@ -18,13 +18,20 @@ export function Events() {
       try {
         setIsLoading(true);
         const rows = await fetchEvents();
-        setEvents(rows.map((event: any) => ({
-          ...event,
-          date: event.date || event.event_date,
-          time: event.time || [event.start_time, event.end_time].filter(Boolean).join(' - '),
-          image: event.image || event.image_url,
-          registered: event.registered || 0,
-        })));
+        const todayStr = new Date().toISOString().split('T')[0];
+        setEvents(rows.map((event: any) => {
+          const date = event.date || event.event_date;
+          const isPast = date ? date < todayStr : false;
+          const status = isPast ? 'past' : (event.status || 'upcoming');
+          return {
+            ...event,
+            date,
+            status,
+            time: event.time || [event.start_time, event.end_time].filter(Boolean).join(' - '),
+            image: event.image || event.image_url,
+            registered: event.registered || 0,
+          };
+        }));
       } catch (err) {
         console.error('Erreur chargement evenements:', err);
       } finally {

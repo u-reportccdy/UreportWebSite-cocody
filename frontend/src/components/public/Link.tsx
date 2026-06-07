@@ -14,7 +14,24 @@ export function Link({
   className = '',
   onClick,
   ...props
-}: LinkProps) {
+}: LinkProps & React.AnchorHTMLAttributes<HTMLAnchorElement>) {
+  const isExternal = href.startsWith('http://') || href.startsWith('https://');
+
+  if (isExternal) {
+    return (
+      <a
+        href={href}
+        className={className}
+        onClick={onClick}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...props}
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
     <RouterLink
       to={href}

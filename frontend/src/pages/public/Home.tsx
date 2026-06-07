@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { ArrowRight, Calendar, Users, Heart, Star, Loader2 } from 'lucide-react';
@@ -75,12 +75,19 @@ export function Home() {
           { id: 'partners', label: 'Partenaires locaux', value: `${statsData.partners_local || 0}+` },
         ]);
         
-        setEvents(eventsData.map((event: any) => ({
-          ...event,
-          date: event.date || event.event_date,
-          image: event.image || event.image_url,
-          spots: event.spots || event.capacity,
-        })));
+        const todayStr = new Date().toISOString().split('T')[0];
+        setEvents(eventsData.map((event: any) => {
+          const date = event.date || event.event_date;
+          const isPast = date ? date < todayStr : false;
+          const status = isPast ? 'past' : (event.status || 'upcoming');
+          return {
+            ...event,
+            date,
+            status,
+            image: event.image || event.image_url,
+            spots: event.spots || event.capacity,
+          };
+        }));
 
         setArticles(articlesData.map((article: any) => ({
           ...article,
@@ -579,7 +586,7 @@ export function Home() {
           >
             {recentArticlesMobile.map((article) => (
               <motion.div key={article.id} variants={itemVariants}>
-                <Link href={`/articles/${article.id}`} className="group block h-full">
+              <Link href={article.external_link || `/articles/${article.id}`} className="group block h-full">
                   <Card hover className="h-full flex flex-col border-none shadow-md bg-gray-50 group-hover:bg-white transition-colors">
                     <div className="h-48 overflow-hidden rounded-t-2xl">
                       <img
@@ -621,7 +628,7 @@ export function Home() {
           >
             {recentArticles.map((article) => (
               <motion.div key={article.id} variants={itemVariants}>
-                <Link href={`/articles/${article.id}`} className="group block h-full">
+              <Link href={article.external_link || `/articles/${article.id}`} className="group block h-full">
                   <Card hover className="h-full flex flex-col border-none shadow-md bg-gray-50 group-hover:bg-white transition-colors">
                     <div className="h-48 overflow-hidden rounded-t-2xl">
                       <img
