@@ -23,7 +23,7 @@ from .utils import (
 
 _LOGIN_ATTEMPTS: dict[str, dict[str, float | int]] = {}
 _LOGIN_WINDOW_SECONDS = 15 * 60
-_LOGIN_MAX_ATTEMPTS = 8
+_LOGIN_MAX_ATTEMPTS = 100
 ADMIN_AUTH_FILE = Path(django_settings.BASE_DIR) / "admin_auth.json"
 ADMIN_COOKIE_NAME = "admin_session"
 MEMBER_COOKIE_NAME = "member_session"
