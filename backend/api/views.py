@@ -548,7 +548,8 @@ def superadmin_dashboard(request):
     auth_data = _load_admin_auth()
     super_email = _normalize_email((auth_data.get("superadmin") or {}).get("email"))
     admins = [a for a in auth_data.get("admins", []) if _normalize_email(a.get("email")) != super_email]
-    settings_data = load_local_settings()
+    local_settings = load_local_settings()
+    settings_data = local_settings if local_settings is not None else DEFAULT_SETTINGS
     try:
         rows = supabase.select("settings", "select=*")
         if rows:
@@ -1246,11 +1247,11 @@ def newsletter_subscribe(request):
         if rows:
             receiver_email = str(rows[0].get("newsletter_receiver_email") or "").strip()
     except Exception:
-        local_settings = load_local_settings()
+        local_settings = load_local_settings() or DEFAULT_SETTINGS
         receiver_email = str(local_settings.get("newsletter_receiver_email") or "").strip()
 
     if not receiver_email:
-        local_settings = load_local_settings()
+        local_settings = load_local_settings() or DEFAULT_SETTINGS
         receiver_email = str(local_settings.get("newsletter_receiver_email") or "").strip()
 
     if receiver_email:
@@ -1297,23 +1298,23 @@ SETTINGS_FILE_PATH = django_settings.BASE_DIR / "site_settings.json"
 DEFAULT_SETTINGS = {
     "hero_title": "Engagez-vous pour Cocody",
     "hero_subtitle": "La voix de la jeunesse Ivoirienne",
-    "hero_description": "Rejoignez la plus grande communautÃ© de jeunes engagÃ©s. Participez Ã  nos actions, donnez votre avis et contribuez au dÃ©veloppement de notre commune.",
+    "hero_description": "Rejoignez la plus grande communauté de jeunes engagés. Participez à nos actions, donnez votre avis et contribuez au développement de notre commune.",
     "hero_image_url": "https://images.unsplash.com/photo-1529390079861-591de354faf5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
-    "about_title": "Plus qu'une communautÃ©, un mouvement.",
-    "about_description": "U-Report est une plateforme sociale dÃ©veloppÃ©e par l'UNICEF pour engager les jeunes et les communautÃ©s. Ã€ Cocody, nous utilisons cet outil pour identifier les problÃ¨mes locaux, proposer des solutions et agir concrÃ¨tement sur le terrain.",
+    "about_title": "Plus qu'une communauté, un mouvement.",
+    "about_description": "U-Report est une plateforme sociale développée par l'UNICEF pour engager les jeunes et les communautés. À Cocody, nous utilisons cet outil pour identifier les problèmes locaux, proposer des solutions et agir concrètement sur le terrain.",
     "facebook_url": "https://www.facebook.com/share/1DoAeSBX6n/?mibextid=wwXIfr",
     "instagram_url": "https://www.instagram.com/communaute_ureportcocody?igsh=cDk4Nm0wcDdyZThs",
     "tiktok_url": "https://www.tiktok.com/@ureportcocody?_r=1&_t=ZS-96SxX2CetXu",
     "whatsapp_group_link": "",
     "whatsapp_manager_link": "",
-    "whatsapp_message_aspirant": "Bonjour, je suis {name} ({status_label}) et je viens de m'inscrire Ã  l'activitÃ© \"{event_title}\". Merci de m'ajouter au groupe d'intÃ©gration.",
-    "whatsapp_message_advanced": "Bonjour, je suis {name} ({status_label}) et je viens de m'inscrire Ã  l'activitÃ© \"{event_title}\". Je souhaite finaliser mon intÃ©gration.",
+    "whatsapp_message_aspirant": "Bonjour, je suis {name} ({status_label}) et je viens de m'inscrire à l'activité \"{event_title}\". Merci de m'ajouter au groupe d'intégration.",
+    "whatsapp_message_advanced": "Bonjour, je suis {name} ({status_label}) et je viens de m'inscrire à l'activité \"{event_title}\". Je souhaite finaliser mon intégration.",
     "footer_contact_title": "Contact",
-    "footer_contact_address": "Mairie de Cocody,\nAbidjan, CÃ´te d'Ivoire",
+    "footer_contact_address": "Mairie de Cocody,\nAbidjan, Côte d'Ivoire",
     "footer_contact_phone": "+225 00 00 00 00 00",
     "footer_contact_email": "contact@ureportcocody.ci",
     "footer_newsletter_title": "Newsletter",
-    "footer_newsletter_text": "Restez informÃ© de nos prochaines activitÃ©s et opportunitÃ©s d'engagement.",
+    "footer_newsletter_text": "Restez informé de nos prochaines activités et opportunités d'engagement.",
     "footer_newsletter_placeholder": "Votre adresse email",
     "footer_newsletter_button": "S'abonner",
     "newsletter_receiver_email": "contact@ureportcocody.ci",
@@ -1326,10 +1327,14 @@ def load_local_settings():
     if os.path.exists(SETTINGS_FILE_PATH):
         try:
             with open(SETTINGS_FILE_PATH, "r", encoding="utf-8") as f:
-                return json.load(f)
+                loaded = json.load(f)
+                if isinstance(loaded, dict):
+                    merged = dict(DEFAULT_SETTINGS)
+                    merged.update({k: v for k, v in loaded.items() if v is not None})
+                    return merged
         except Exception:
             pass
-    return DEFAULT_SETTINGS
+    return None
 
 def save_local_settings(data):
     try:
@@ -1363,7 +1368,8 @@ def site_settings(request):
             if rows:
                 return data_response(_merged_site_settings(rows[0]))
         except Exception:
-            return data_response(load_local_settings())
+            local = load_local_settings()
+            return data_response(local if local is not None else DEFAULT_SETTINGS)
         return data_response(_merged_site_settings())
 
     # PATCH
