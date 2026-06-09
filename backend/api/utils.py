@@ -133,6 +133,8 @@ def _is_admin_request(path: str, method: str) -> bool:
         return False
     if path == "/api/auth/admin/login":
         return False
+    if path == "/api/auth/admin/logout":
+        return False
     if path == "/api/auth/superadmin/login":
         return False
     if path == "/api/auth/portal/login":
