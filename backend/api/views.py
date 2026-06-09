@@ -53,20 +53,27 @@ def _get_client_ip(request) -> str:
 
 
 def _set_session_cookie(response, name: str, value: str, max_age: int):
+    is_prod = not django_settings.DEBUG
     response.set_cookie(
         key=name,
         value=value,
         max_age=max_age,
         httponly=True,
-        samesite="Lax",
-        secure=not django_settings.DEBUG,
+        samesite="None" if is_prod else "Lax",
+        secure=is_prod,
         path="/",
     )
     return response
 
 
 def _clear_session_cookie(response, name: str):
-    response.delete_cookie(name, path="/", samesite="Lax")
+    is_prod = not django_settings.DEBUG
+    response.delete_cookie(
+        name,
+        path="/",
+        samesite="None" if is_prod else "Lax",
+        secure=is_prod,
+    )
     return response
 
 
