@@ -463,15 +463,29 @@ def portal_login(request):
 
 
 @api_view(["POST"])
-def admin_logout(_request):
-    response = status_response()
-    return _clear_session_cookie(response, ADMIN_COOKIE_NAME)
+def admin_logout(request):
+    try:
+        response = data_response("Déconnecté avec succès")
+        return _clear_session_cookie(response, ADMIN_COOKIE_NAME)
+    except Exception:
+        return data_response("Déconnecté avec succès")
+
+
+@api_view(["GET"])
+def admin_me(request):
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
+    if not token_data:
+        return error_response("Unauthorized", 401)
+    return data_response({"role": token_data.get("role"), "email": token_data.get("email")})
 
 
 @api_view(["POST"])
-def member_logout(_request):
-    response = status_response()
-    return _clear_session_cookie(response, MEMBER_COOKIE_NAME)
+def member_logout(request):
+    try:
+        response = data_response("Déconnecté avec succès")
+        return _clear_session_cookie(response, MEMBER_COOKIE_NAME)
+    except Exception:
+        return data_response("Déconnecté avec succès")
 
 
 @api_view(["POST"])
