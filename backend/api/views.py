@@ -68,8 +68,14 @@ def _set_session_cookie(response, name: str, value: str, max_age: int):
 
 def _clear_session_cookie(response, name: str):
     is_prod = not django_settings.DEBUG
-    response.delete_cookie(
+    # delete_cookie ne supporte pas le paramètre 'secure' en Django.
+    # On utilise set_cookie avec max_age=0 et une date d'expiration passée
+    # pour forcer la suppression sur tous les navigateurs en respectant SameSite/Secure.
+    response.set_cookie(
         name,
+        value="",
+        max_age=0,
+        expires="Thu, 01 Jan 1970 00:00:00 GMT",
         path="/",
         samesite="None" if is_prod else "Lax",
         secure=is_prod,
