@@ -1,14 +1,10 @@
 import axios from 'axios';
 
-let API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-
-// Garantir que l'URL se termine par /api si c'est une URL absolue vers Render
-if (API_URL && !API_URL.endsWith('/api') && !API_URL.endsWith('/api/') && API_URL !== '/api') {
-  API_URL = API_URL.replace(/\/$/, '') + '/api';
-}
-
+// En production comme en développement local, on utilise le chemin relatif '/api'
+// pour passer par le proxy (Vite en local / Vercel en production).
+// Cela garantit que les requêtes soient "same-origin" et évite le blocage des cookies tiers par les navigateurs.
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: '/api',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
