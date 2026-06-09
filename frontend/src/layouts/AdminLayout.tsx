@@ -18,7 +18,8 @@ import {
   Menu,
   X,
   Boxes,
-  ClipboardList
+  ClipboardList,
+  ShieldCheck
 } from 'lucide-react';
 import { PATHS } from '../routes/paths';
 import { logoutAdmin } from '../services/auth.service';
@@ -275,6 +276,15 @@ export function AdminLayout() {
 
         {/* Footer Area */}
         <div className="p-4 border-t border-gray-800 space-y-2 shrink-0">
+          {role === 'superadmin' && (
+            <Link 
+              to="/superadmin" 
+              className="flex items-center justify-center space-x-2 w-full px-4 py-2.5 bg-red-950/40 hover:bg-red-900/40 border border-red-900/30 hover:border-red-800/40 rounded-xl transition text-sm font-semibold text-red-300 hover:text-red-200"
+            >
+              <ShieldCheck className="w-4 h-4 shrink-0" />
+              <span>Panel Super Admin</span>
+            </Link>
+          )}
           <Link 
             to={PATHS.PUBLIC.HOME} 
             className="flex items-center justify-center space-x-2 w-full px-4 py-2.5 bg-gray-850 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 rounded-xl transition text-sm font-medium text-gray-300 hover:text-white"

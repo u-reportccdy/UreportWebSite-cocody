@@ -207,7 +207,7 @@ export function PublicLayout() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-900">
+    <div className="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-900 w-full max-w-full overflow-x-hidden relative">
       <Navbar />
       <main className="flex-grow pt-20">
         <Outlet />
