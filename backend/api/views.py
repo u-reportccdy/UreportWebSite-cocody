@@ -309,8 +309,16 @@ def _list_create(table, order="created_at.desc"):
     @api_view(["GET", "POST"])
     def view(request):
         if request.method == "GET":
-            return data_response(supabase.select(table, f"select=*&order={order}"))
-        return data_response(supabase.insert(table, body_json(request)), 201)
+            try:
+                return data_response(supabase.select(table, f"select=*&order={order}"))
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).error(f"Error fetching from {table}: {e}")
+                return data_response([])
+        try:
+            return data_response(supabase.insert(table, body_json(request)), 201)
+        except Exception as e:
+            return error_response(f"Création impossible: {str(e)}", 400)
 
     return view
 
@@ -319,14 +327,23 @@ def _detail(table):
     @api_view(["GET", "PATCH", "DELETE"])
     def view(request, record_id):
         if request.method == "GET":
-            rows = supabase.select(table, f"select=*&id=eq.{record_id}")
-            if not rows:
-                return error_response("Not found", 404)
-            return data_response(rows[0])
+            try:
+                rows = supabase.select(table, f"select=*&id=eq.{record_id}")
+                if not rows:
+                    return error_response("Not found", 404)
+                return data_response(rows[0])
+            except Exception as e:
+                return error_response(f"Not found: {str(e)}", 404)
         if request.method == "PATCH":
-            return data_response(supabase.update(table, "id", record_id, body_json(request)))
-        supabase.delete(table, "id", record_id)
-        return status_response()
+            try:
+                return data_response(supabase.update(table, "id", record_id, body_json(request)))
+            except Exception as e:
+                return error_response(f"Modification impossible: {str(e)}", 400)
+        try:
+            supabase.delete(table, "id", record_id)
+            return status_response()
+        except Exception as e:
+            return error_response(f"Suppression impossible: {str(e)}", 400)
 
     return view
 
@@ -337,21 +354,27 @@ article_detail = _detail("articles")
 def events(request):
     if request.method == "GET":
         order = "event_date.desc"
-        return data_response(supabase.select("events", f"select=*&order={order}"))
+        try:
+            return data_response(supabase.select("events", f"select=*&order={order}"))
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Error fetching events: {e}")
+            return data_response([])
     
     # POST
     payload = body_json(request)
-    new_event = supabase.insert("events", payload)
-    
-    # Trigger event bus
     try:
-        from . import event_bus
-        event_bus.dispatch("event.created", new_event)
+        new_event = supabase.insert("events", payload)
+        # Trigger event bus
+        try:
+            from . import event_bus
+            event_bus.dispatch("event.created", new_event)
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Event bus dispatch failed: {e}")
+        return data_response(new_event, 201)
     except Exception as e:
-        import logging
-        logging.getLogger(__name__).error(f"Event bus dispatch failed: {e}")
-        
-    return data_response(new_event, 201)
+        return error_response(f"Création d'événement impossible: {str(e)}", 400)
 
 event_detail = _detail("events")
 partners = _list_create("partners")
@@ -1470,7 +1493,12 @@ material_detail = _detail("logistics_materials")
 @api_view(["GET", "POST"])
 def logistics_requests(request):
     if request.method == "GET":
-        reqs = supabase.select("logistics_requests", "select=*&order=created_at.desc")
+        try:
+            reqs = supabase.select("logistics_requests", "select=*&order=created_at.desc")
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Error fetching logistics_requests: {e}")
+            reqs = []
         if reqs:
             try:
                 materials_list = {m["id"]: m for m in supabase.select("logistics_materials", "select=id,name")}
@@ -1490,80 +1518,110 @@ def logistics_requests(request):
     if not material_id or quantity <= 0:
         return error_response("Matériel ou quantité invalide.", 400)
     
-    m_rows = supabase.select("logistics_materials", f"select=*&id=eq.{material_id}")
+    try:
+        m_rows = supabase.select("logistics_materials", f"select=*&id=eq.{material_id}")
+    except Exception as e:
+        return error_response("Impossible d'accéder au matériel.", 500)
+        
     if not m_rows:
         return error_response("Matériel introuvable.", 404)
     
     material = m_rows[0]
-    if material["available_quantity"] < quantity:
-        return error_response(f"Quantité demandée ({quantity}) supérieure au stock disponible ({material['available_quantity']}).", 400)
+    if material.get("available_quantity", 0) < quantity:
+        return error_response(f"Quantité demandée ({quantity}) supérieure au stock disponible ({material.get('available_quantity', 0)}).", 400)
         
-    created = supabase.insert("logistics_requests", payload)
-    return data_response(created, 201)
+    try:
+        created = supabase.insert("logistics_requests", payload)
+        return data_response(created, 201)
+    except Exception as e:
+        return error_response(f"Impossible de créer la demande: {str(e)}", 400)
 
 
 @api_view(["GET", "PATCH", "DELETE"])
 def logistics_request_detail(request, record_id):
     if request.method == "GET":
-        rows = supabase.select("logistics_requests", f"select=*&id=eq.{record_id}")
-        if not rows:
-            return error_response("Demande introuvable", 404)
-        req = rows[0]
-        # Resolve relations
-        m_rows = supabase.select("logistics_materials", f"select=id,name&id=eq.{req['material_id']}")
-        e_rows = supabase.select("events", f"select=id,title&id=eq.{req['event_id']}")
-        req["material"] = m_rows[0] if m_rows else None
-        req["event"] = e_rows[0] if e_rows else None
-        return data_response(req)
+        try:
+            rows = supabase.select("logistics_requests", f"select=*&id=eq.{record_id}")
+            if not rows:
+                return error_response("Demande introuvable", 404)
+            req = rows[0]
+            # Resolve relations
+            try:
+                m_rows = supabase.select("logistics_materials", f"select=id,name&id=eq.{req['material_id']}")
+                req["material"] = m_rows[0] if m_rows else None
+            except Exception:
+                req["material"] = None
+            try:
+                e_rows = supabase.select("events", f"select=id,title&id=eq.{req['event_id']}")
+                req["event"] = e_rows[0] if e_rows else None
+            except Exception:
+                req["event"] = None
+            return data_response(req)
+        except Exception as e:
+            return error_response(f"Erreur lors de la récupération: {str(e)}", 500)
         
     if request.method == "PATCH":
-        rows = supabase.select("logistics_requests", f"select=*&id=eq.{record_id}")
-        if not rows:
-            return error_response("Demande introuvable", 404)
-        old_req = rows[0]
-        old_status = old_req.get("status")
-        
-        payload = body_json(request)
-        new_status = payload.get("status")
-        
-        # If status changes, handle material inventory adjustment
-        if new_status and new_status != old_status:
-            material_id = old_req["material_id"]
-            qty = old_req["quantity"]
+        try:
+            rows = supabase.select("logistics_requests", f"select=*&id=eq.{record_id}")
+            if not rows:
+                return error_response("Demande introuvable", 404)
+            old_req = rows[0]
+            old_status = old_req.get("status")
             
-            m_rows = supabase.select("logistics_materials", f"select=*&id=eq.{material_id}")
-            if m_rows:
-                material = m_rows[0]
-                available = material["available_quantity"]
-                total = material["total_quantity"]
+            payload = body_json(request)
+            new_status = payload.get("status")
+            
+            # If status changes, handle material inventory adjustment
+            if new_status and new_status != old_status:
+                material_id = old_req["material_id"]
+                qty = old_req["quantity"]
                 
-                updated_available = available
-                if old_status in ("pending", "rejected") and new_status == "approved":
-                    if available < qty:
-                        return error_response(f"Stock insuffisant. Disponible: {available}, Demandé: {qty}", 400)
-                    updated_available = available - qty
-                elif old_status == "approved" and new_status in ("returned", "rejected", "pending"):
-                    updated_available = min(total, available + qty)
-                
-                if updated_available != available:
-                    supabase.update("logistics_materials", "id", material_id, {"available_quantity": updated_available})
-        
-        updated = supabase.update("logistics_requests", "id", record_id, payload)
-        return data_response(updated)
+                try:
+                    m_rows = supabase.select("logistics_materials", f"select=*&id=eq.{material_id}")
+                    if m_rows:
+                        material = m_rows[0]
+                        available = material.get("available_quantity", 0)
+                        total = material.get("total_quantity", 0)
+                        
+                        updated_available = available
+                        if old_status in ("pending", "rejected") and new_status == "approved":
+                            if available < qty:
+                                return error_response(f"Stock insuffisant. Disponible: {available}, Demandé: {qty}", 400)
+                            updated_available = available - qty
+                        elif old_status == "approved" and new_status in ("returned", "rejected", "pending"):
+                            updated_available = min(total, available + qty)
+                        
+                        if updated_available != available:
+                            supabase.update("logistics_materials", "id", material_id, {"available_quantity": updated_available})
+                except Exception as e:
+                    import logging
+                    logging.getLogger(__name__).error(f"Inventory update skipped due to database error: {e}")
+            
+            updated = supabase.update("logistics_requests", "id", record_id, payload)
+            return data_response(updated)
+        except Exception as e:
+            return error_response(f"Modification impossible: {str(e)}", 400)
         
     # DELETE
-    rows = supabase.select("logistics_requests", f"select=*&id=eq.{record_id}")
-    if rows:
-        req = rows[0]
-        if req.get("status") == "approved":
-            m_rows = supabase.select("logistics_materials", f"select=*&id=eq.{req['material_id']}")
-            if m_rows:
-                material = m_rows[0]
-                supabase.update("logistics_materials", "id", req['material_id'], {
-                    "available_quantity": min(material["total_quantity"], material["available_quantity"] + req["quantity"])
-                })
-    supabase.delete("logistics_requests", "id", record_id)
-    return status_response()
+    try:
+        rows = supabase.select("logistics_requests", f"select=*&id=eq.{record_id}")
+        if rows:
+            req = rows[0]
+            if req.get("status") == "approved":
+                try:
+                    m_rows = supabase.select("logistics_materials", f"select=*&id=eq.{req['material_id']}")
+                    if m_rows:
+                        material = m_rows[0]
+                        supabase.update("logistics_materials", "id", req['material_id'], {
+                            "available_quantity": min(material.get("total_quantity", 0), material.get("available_quantity", 0) + req.get("quantity", 0))
+                        })
+                except Exception as e:
+                    import logging
+                    logging.getLogger(__name__).error(f"Error returning inventory during request delete: {e}")
+        supabase.delete("logistics_requests", "id", record_id)
+        return status_response()
+    except Exception as e:
+        return error_response(f"Suppression impossible: {str(e)}", 400)
 
 
 @api_view(["GET", "POST"])
@@ -1581,7 +1639,12 @@ def tasks(request):
         if status:
             url_params += f"&status=eq.{status}"
             
-        tasks_list = supabase.select("tasks", url_params)
+        try:
+            tasks_list = supabase.select("tasks", url_params)
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Error fetching tasks: {e}")
+            tasks_list = []
         
         if tasks_list:
             try:
@@ -1597,32 +1660,50 @@ def tasks(request):
         
     # POST
     payload = body_json(request)
-    created = supabase.insert("tasks", payload)
-    return data_response(created, 201)
+    try:
+        created = supabase.insert("tasks", payload)
+        return data_response(created, 201)
+    except Exception as e:
+        return error_response(f"Création de tâche impossible: {str(e)}", 400)
 
 
 @api_view(["GET", "PATCH", "DELETE"])
 def task_detail(request, record_id):
     if request.method == "GET":
-        rows = supabase.select("tasks", f"select=*&id=eq.{record_id}")
-        if not rows:
-            return error_response("Tâche introuvable", 404)
-        t = rows[0]
-        if t.get("event_id"):
-            e_rows = supabase.select("events", f"select=id,title&id=eq.{t['event_id']}")
-            t["event"] = e_rows[0] if e_rows else None
-        if t.get("assigned_user_id"):
-            a_rows = supabase.select("admins", f"select=id,email,role&id=eq.{t['assigned_user_id']}")
-            t["assigned_user"] = a_rows[0] if a_rows else None
-        return data_response(t)
+        try:
+            rows = supabase.select("tasks", f"select=*&id=eq.{record_id}")
+            if not rows:
+                return error_response("Tâche introuvable", 404)
+            t = rows[0]
+            try:
+                if t.get("event_id"):
+                    e_rows = supabase.select("events", f"select=id,title&id=eq.{t['event_id']}")
+                    t["event"] = e_rows[0] if e_rows else None
+            except Exception:
+                t["event"] = None
+            try:
+                if t.get("assigned_user_id"):
+                    a_rows = supabase.select("admins", f"select=id,email,role&id=eq.{t['assigned_user_id']}")
+                    t["assigned_user"] = a_rows[0] if a_rows else None
+            except Exception:
+                t["assigned_user"] = None
+            return data_response(t)
+        except Exception as e:
+            return error_response(f"Erreur de récupération: {str(e)}", 500)
         
     if request.method == "PATCH":
         payload = body_json(request)
-        updated = supabase.update("tasks", "id", record_id, payload)
-        return data_response(updated)
+        try:
+            updated = supabase.update("tasks", "id", record_id, payload)
+            return data_response(updated)
+        except Exception as e:
+            return error_response(f"Modification impossible: {str(e)}", 400)
         
-    supabase.delete("tasks", "id", record_id)
-    return status_response()
+    try:
+        supabase.delete("tasks", "id", record_id)
+        return status_response()
+    except Exception as e:
+        return error_response(f"Suppression impossible: {str(e)}", 400)
 
 
 @api_view(["GET"])
@@ -1633,7 +1714,12 @@ def member_contributions(request, member_id):
         if error:
             return error
 
-    rows = supabase.select("contributions", f"select=*&member_id=eq.{member_id}&order=created_at.desc")
+    try:
+        rows = supabase.select("contributions", f"select=*&member_id=eq.{member_id}&order=created_at.desc")
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Error fetching contributions: {e}")
+        rows = []
     return data_response(rows)
 
 
@@ -1735,7 +1821,12 @@ def member_awards(request, member_id):
             _, error = _require_member(request, str(member_id))
             if error:
                 return error
-        rows = supabase.select("member_awards", f"select=*&member_id=eq.{member_id}&order=awarded_year.desc,created_at.desc")
+        try:
+            rows = supabase.select("member_awards", f"select=*&member_id=eq.{member_id}&order=awarded_year.desc,created_at.desc")
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Error fetching member_awards: {e}")
+            rows = []
         return data_response(rows or [])
 
     # POST — admin or member themselves
@@ -1746,7 +1837,11 @@ def member_awards(request, member_id):
             return error
 
     # Check member exists
-    member_rows = supabase.select("members", f"select=id&id=eq.{member_id}")
+    try:
+        member_rows = supabase.select("members", f"select=id&id=eq.{member_id}")
+    except Exception as e:
+        return error_response(f"Impossible de vérifier le membre: {str(e)}", 500)
+        
     if not member_rows:
         return error_response("Membre introuvable.", 404)
 
@@ -1769,9 +1864,12 @@ def member_awards(request, member_id):
         "document_url": str(body.get("document_url") or "").strip(),
         "issuer": str(body.get("issuer") or "").strip(),
     }
-    created = supabase.insert("member_awards", payload)
-    award = created[0] if isinstance(created, list) and created else created
-    return data_response(award, 201)
+    try:
+        created = supabase.insert("member_awards", payload)
+        award = created[0] if isinstance(created, list) and created else created
+        return data_response(award, 201)
+    except Exception as e:
+        return error_response(f"Impossible d'ajouter le certificat: {str(e)}", 400)
 
 
 @api_view(["DELETE"])
@@ -1784,8 +1882,11 @@ def member_award_detail(request, member_id, award_id):
         if error:
             return error
 
-    rows = supabase.select("member_awards", f"select=id&id=eq.{award_id}&member_id=eq.{member_id}")
-    if not rows:
-        return error_response("Prix ou certificat introuvable.", 404)
-    supabase.delete("member_awards", "id", str(award_id))
-    return status_response("Prix ou certificat supprimé.", 200)
+    try:
+        rows = supabase.select("member_awards", f"select=id&id=eq.{award_id}&member_id=eq.{member_id}")
+        if not rows:
+            return error_response("Prix ou certificat introuvable.", 404)
+        supabase.delete("member_awards", "id", str(award_id))
+        return status_response("Prix ou certificat supprimé.", 200)
+    except Exception as e:
+        return error_response(f"Suppression impossible: {str(e)}", 400)

@@ -245,8 +245,10 @@ def api_view(methods):
                 return func(request, *args, **kwargs)
             except json.JSONDecodeError:
                 return error_response("Invalid JSON payload", 400)
-            except Exception:
-                return error_response("Une erreur technique est survenue.", 500)
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                return error_response(f"Une erreur technique est survenue: {str(e)}", 500)
 
         return wrapper
 
