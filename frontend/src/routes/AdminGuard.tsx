@@ -11,17 +11,6 @@ export function AdminGuard() {
     let active = true;
 
     const checkAuth = async () => {
-      // Pour éviter de re-interroger l'API à chaque navigation interne si la session est déjà là
-      const cachedRole = sessionStorage.getItem('admin_role');
-      if (cachedRole) {
-        if (active) {
-          setIsAuthenticated(true);
-          setRole(cachedRole);
-          setLoading(false);
-        }
-        return;
-      }
-
       try {
         const response = await api.get('/auth/admin/me');
         if (!active) return;
@@ -33,10 +22,14 @@ export function AdminGuard() {
           setRole(data.role);
         } else {
           setIsAuthenticated(false);
+          sessionStorage.removeItem('admin_role');
+          sessionStorage.removeItem('admin_email');
         }
       } catch (err) {
         if (!active) return;
         setIsAuthenticated(false);
+        sessionStorage.removeItem('admin_role');
+        sessionStorage.removeItem('admin_email');
       } finally {
         if (active) setLoading(false);
       }
@@ -60,13 +53,10 @@ export function AdminGuard() {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
-  }
-
-  if (role === 'superadmin') {
-    return <Navigate to="/superadmin" replace />;
+    return <Navigate to="/portal" replace />;
   }
 
   return <Outlet />;
 }
+
 

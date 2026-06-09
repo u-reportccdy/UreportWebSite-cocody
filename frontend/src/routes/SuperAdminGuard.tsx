@@ -10,15 +10,6 @@ export function SuperAdminGuard() {
     let active = true;
 
     const checkAuth = async () => {
-      const cachedRole = sessionStorage.getItem('admin_role');
-      if (cachedRole) {
-        if (active) {
-          setRole(cachedRole);
-          setLoading(false);
-        }
-        return;
-      }
-
       try {
         const response = await api.get('/auth/admin/me');
         if (!active) return;
@@ -29,10 +20,14 @@ export function SuperAdminGuard() {
           setRole(data.role);
         } else {
           setRole(null);
+          sessionStorage.removeItem('admin_role');
+          sessionStorage.removeItem('admin_email');
         }
       } catch (err) {
         if (!active) return;
         setRole(null);
+        sessionStorage.removeItem('admin_role');
+        sessionStorage.removeItem('admin_email');
       } finally {
         if (active) setLoading(false);
       }
@@ -56,7 +51,7 @@ export function SuperAdminGuard() {
   }
 
   if (!role) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/portal" replace />;
   }
 
   if (role !== 'superadmin') {
@@ -65,3 +60,4 @@ export function SuperAdminGuard() {
 
   return <Outlet />;
 }
+
