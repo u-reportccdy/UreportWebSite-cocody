@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+let API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
+// Garantir que l'URL se termine par /api si c'est une URL absolue vers Render
+if (API_URL && !API_URL.endsWith('/api') && !API_URL.endsWith('/api/') && API_URL !== '/api') {
+  API_URL = API_URL.replace(/\/$/, '') + '/api';
+}
 
 const api = axios.create({
   baseURL: API_URL,
