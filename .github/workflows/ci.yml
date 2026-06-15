@@ -19,9 +19,7 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
-          cache-dependency-path: |
-            frontend/package-lock.json
-            backend/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
 
       # --- FRONTEND ---
       - name: "🎨 Installation des dépendances (Frontend)"
@@ -32,26 +30,19 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
-      # --- BACKEND ---
-      - name: "🔌 Installation des dépendances (Backend)"
-        working-directory: ./backend
-        run: npm ci
+      # --- BACKEND (Python / Django) ---
+      - name: "⚙️ Configuration de Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'backend/requirements.txt'
 
-      - name: "🏗️ Build du Backend"
-        working-directory: ./backend
+      - name: "🔌 Installation des dépendances (Backend Django)"
         run: |
-          if npm run | grep -q "build"; then
-            npm run build
-          fi
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
 
-      - name: "🚀 Vérification de démarrage (Backend)"
-        working-directory: ./backend
+      - name: "🚀 Vérification Django (Backend)"
         run: |
-          # Vérification de démarrage sécurisée
-          if [ -f "index.js" ]; then
-            node index.js & sleep 5 && kill $!
-          elif npm run | grep -q "start"; then
-            npm run start & sleep 5 && kill $!
-          else
-            echo "Avertissement : Aucun point d'entrée trouvé."
-          fi
+          python backend/manage.py check

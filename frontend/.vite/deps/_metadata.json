@@ -1,59 +1,79 @@
 {
-  "hash": "5f02d358",
+  "hash": "ae35b288",
   "configHash": "083b3265",
-  "lockfileHash": "5009492d",
-  "browserHash": "dfddc2d2",
+  "lockfileHash": "93583ea4",
+  "browserHash": "fc304388",
   "optimized": {
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "7f214dd9",
+      "needsInterop": false
+    },
     "framer-motion": {
       "src": "../../node_modules/framer-motion/dist/es/index.mjs",
       "file": "framer-motion.js",
-      "fileHash": "2f5acce9",
+      "fileHash": "4ff31e54",
       "needsInterop": false
     },
     "lucide-react": {
-      "src": "../../node_modules/lucide-react/dist/esm/lucide-react.js",
+      "src": "../../node_modules/lucide-react/dist/esm/lucide-react.mjs",
       "file": "lucide-react.js",
-      "fileHash": "16ae5ae6",
+      "fileHash": "da6186db",
       "needsInterop": false
     },
     "react-dom/client": {
       "src": "../../node_modules/react-dom/client.js",
       "file": "react-dom_client.js",
-      "fileHash": "b90823b5",
+      "fileHash": "280535f6",
       "needsInterop": true
+    },
+    "react-quill-new": {
+      "src": "../../node_modules/react-quill-new/lib/index.js",
+      "file": "react-quill-new.js",
+      "fileHash": "7c77ec5d",
+      "needsInterop": false
     },
     "react-router-dom": {
       "src": "../../node_modules/react-router-dom/dist/index.mjs",
       "file": "react-router-dom.js",
-      "fileHash": "54abd160",
+      "fileHash": "9dedd109",
       "needsInterop": false
     },
     "react": {
       "src": "../../node_modules/react/index.js",
       "file": "react.js",
-      "fileHash": "da3afa09",
+      "fileHash": "ad31319a",
       "needsInterop": true
     },
     "react/jsx-dev-runtime": {
       "src": "../../node_modules/react/jsx-dev-runtime.js",
       "file": "react_jsx-dev-runtime.js",
-      "fileHash": "2c9aef2a",
+      "fileHash": "d4abdff7",
       "needsInterop": true
     },
     "recharts": {
       "src": "../../node_modules/recharts/es6/index.js",
       "file": "recharts.js",
-      "fileHash": "1f7618ab",
+      "fileHash": "79a5cd9f",
       "needsInterop": false
     }
   },
   "chunks": {
-    "react-3_O8oni9": {
-      "file": "react-3_O8oni9.js",
+    "chunk-B-1-B7_t": {
+      "file": "chunk-B-1-B7_t.js",
       "isDynamicEntry": false
     },
-    "react-dom-DKYhWFhx": {
-      "file": "react-dom-DKYhWFhx.js",
+    "eventemitter3-DXlPniTz": {
+      "file": "eventemitter3-DXlPniTz.js",
+      "isDynamicEntry": false
+    },
+    "jsx-runtime-D51v3ApR": {
+      "file": "jsx-runtime-D51v3ApR.js",
+      "isDynamicEntry": false
+    },
+    "react-dom-Br2l1Z8p": {
+      "file": "react-dom-Br2l1Z8p.js",
       "isDynamicEntry": false
     }
   }

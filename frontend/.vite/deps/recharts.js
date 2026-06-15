@@ -1,5 +1,7 @@
-import { i as __toESM, n as __commonJSMin, r as __exportAll, t as require_react } from "./react-3_O8oni9.js";
-import { t as require_react_dom } from "./react-dom-DKYhWFhx.js";
+import { n as __exportAll, r as __toESM, t as __commonJSMin } from "./chunk-B-1-B7_t.js";
+import { t as require_react } from "./react.js";
+import { t as require_react_dom } from "./react-dom-Br2l1Z8p.js";
+import { t as eventemitter3_default } from "./eventemitter3-DXlPniTz.js";
 //#region node_modules/clsx/dist/clsx.mjs
 var import_react = /* @__PURE__ */ __toESM(require_react());
 function r(e) {
@@ -531,7 +533,7 @@ function svgPropertiesNoEvents(obj) {
 */
 function svgPropertiesNoEventsFromUnknown(input) {
 	if (input == null) return null;
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(input) && typeof input.props === "object" && input.props !== null) {
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(input) && typeof input.props === "object" && input.props !== null) {
 		var p = input.props;
 		return svgPropertiesNoEvents(p);
 	}
@@ -569,7 +571,7 @@ function svgPropertiesAndEvents(obj) {
 */
 function svgPropertiesAndEventsFromUnknown(input) {
 	if (input == null) return null;
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(input)) return svgPropertiesAndEvents(input.props);
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(input)) return svgPropertiesAndEvents(input.props);
 	if (typeof input === "object" && !Array.isArray(input)) return svgPropertiesAndEvents(input);
 	return null;
 }
@@ -619,7 +621,7 @@ function _objectWithoutPropertiesLoose$38(r, e) {
 *
 * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg
 */
-var Surface = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var Surface = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var { children, width, height, viewBox, className, style, title, desc } = props, others = _objectWithoutProperties$38(props, _excluded$38);
 	var svgView = viewBox || {
 		width,
@@ -628,14 +630,14 @@ var Surface = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
 		y: 0
 	};
 	var layerClass = clsx("recharts-surface", className);
-	return /* @__PURE__ */ import_react.createElement("svg", _extends$52({}, svgPropertiesAndEvents(others), {
+	return /*#__PURE__*/ import_react.createElement("svg", _extends$52({}, svgPropertiesAndEvents(others), {
 		className: layerClass,
 		width,
 		height,
 		style,
 		viewBox: "".concat(svgView.x, " ").concat(svgView.y, " ").concat(svgView.width, " ").concat(svgView.height),
 		ref
-	}), /* @__PURE__ */ import_react.createElement("title", null, title), /* @__PURE__ */ import_react.createElement("desc", null, desc), children);
+	}), /*#__PURE__*/ import_react.createElement("title", null, title), /*#__PURE__*/ import_react.createElement("desc", null, desc), children);
 });
 //#endregion
 //#region node_modules/recharts/es6/container/Layer.js
@@ -675,15 +677,15 @@ function _objectWithoutPropertiesLoose$37(r, e) {
 *
 * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/g
 */
-var Layer = /* @__PURE__ */ import_react.forwardRef((props, ref) => {
+var Layer = /*#__PURE__*/ import_react.forwardRef((props, ref) => {
 	var { children, className } = props, others = _objectWithoutProperties$37(props, _excluded$37);
 	var layerClass = clsx("recharts-layer", className);
-	return /* @__PURE__ */ import_react.createElement("g", _extends$51({ className: layerClass }, svgPropertiesAndEvents(others), { ref }), children);
+	return /*#__PURE__*/ import_react.createElement("g", _extends$51({ className: layerClass }, svgPropertiesAndEvents(others), { ref }), children);
 });
 //#endregion
 //#region node_modules/recharts/es6/context/legendPortalContext.js
 var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom());
-var LegendPortalContext = /* @__PURE__ */ (0, import_react.createContext)(null);
+var LegendPortalContext = /*#__PURE__*/ (0, import_react.createContext)(null);
 var useLegendPortal = () => (0, import_react.useContext)(LegendPortalContext);
 //#endregion
 //#region node_modules/d3-shape/src/constant.js
@@ -1579,8 +1581,17 @@ function wiggle_default(series, order) {
 }
 //#endregion
 //#region node_modules/es-toolkit/dist/_internal/isUnsafeProperty.js
-var require_isUnsafeProperty = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_isUnsafeProperty$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Checks if a property key is unsafe to modify directly.
+	*
+	* This function is used in functions like `merge` to prevent prototype pollution attacks
+	* by identifying property keys that could modify the object's prototype chain or constructor.
+	*
+	* @param key - The property key to check
+	* @returns `true` if the property is unsafe to modify directly, `false` otherwise
+	* @internal
+	*/
 	function isUnsafeProperty(key) {
 		return key === "__proto__";
 	}
@@ -1588,8 +1599,24 @@ var require_isUnsafeProperty = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/_internal/isDeepKey.js
-var require_isDeepKey = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_isDeepKey$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Checks if a given key is a deep key.
+	*
+	* A deep key is a string that contains a dot (.) or square brackets with a property accessor.
+	*
+	* @param {PropertyKey} key - The key to check.
+	* @returns {boolean} - Returns true if the key is a deep key, otherwise false.
+	*
+	* Examples:
+	*
+	* isDeepKey('a.b') // true
+	* isDeepKey('a[b]') // true
+	* isDeepKey('a') // false
+	* isDeepKey(123) // false
+	* isDeepKey('a.b.c') // true
+	* isDeepKey('a[b][c]') // true
+	*/
 	function isDeepKey(key) {
 		switch (typeof key) {
 			case "number":
@@ -1601,8 +1628,14 @@ var require_isDeepKey = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/_internal/toKey.js
-var require_toKey = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_toKey$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Converts `value` to a string key if it's not a string or symbol.
+	*
+	* @private
+	* @param {*} value The value to inspect.
+	* @returns {string|symbol} Returns the key.
+	*/
 	function toKey(value) {
 		if (typeof value === "string" || typeof value === "symbol") return value;
 		if (Object.is(value?.valueOf?.(), -0)) return "-0";
@@ -1612,8 +1645,23 @@ var require_toKey = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/util/toString.js
-var require_toString = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_toString$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Converts `value` to a string.
+	*
+	* An empty string is returned for `null` and `undefined` values.
+	* The sign of `-0` is preserved.
+	*
+	* @param {any} value - The value to convert.
+	* @returns {string} Returns the converted string.
+	*
+	* @example
+	* toString(null) // returns ''
+	* toString(undefined) // returns ''
+	* toString(-0) // returns '-0'
+	* toString([1, 2, -0]) // returns '1,2,-0'
+	* toString([Symbol('a'), Symbol('b')]) // returns 'Symbol(a),Symbol(b)'
+	*/
 	function toString(value) {
 		if (value == null) return "";
 		if (typeof value === "string") return value;
@@ -1626,14 +1674,30 @@ var require_toString = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/util/toPath.js
-var require_toPath = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var toString = require_toString();
-	var toKey = require_toKey();
+var require_toPath$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_toKey$3 = require_toKey$4();
+	var require_toString = require_toString$1();
+	/**
+	* Converts a deep key string into an array of path segments.
+	*
+	* This function takes a string representing a deep key (e.g., 'a.b.c' or 'a[b][c]') and breaks it down into an array of strings, each representing a segment of the path.
+	*
+	* @param {any} deepKey - The deep key string to convert.
+	* @returns {string[]} An array of strings, each representing a segment of the path.
+	*
+	* Examples:
+	*
+	* toPath('a.b.c') // Returns ['a', 'b', 'c']
+	* toPath('a[b][c]') // Returns ['a', 'b', 'c']
+	* toPath('.a.b.c') // Returns ['', 'a', 'b', 'c']
+	* toPath('a["b.c"].d') // Returns ['a', 'b.c', 'd']
+	* toPath('') // Returns []
+	* toPath('.a[b].c.d[e]["f.g"].h') // Returns ['', 'a', 'b', 'c', 'd', 'e', 'f.g', 'h']
+	*/
 	function toPath(deepKey) {
-		if (Array.isArray(deepKey)) return deepKey.map(toKey.toKey);
+		if (Array.isArray(deepKey)) return deepKey.map(require_toKey$3.toKey);
 		if (typeof deepKey === "symbol") return [deepKey];
-		deepKey = toString.toString(deepKey);
+		deepKey = require_toString.toString(deepKey);
 		const result = [];
 		const length = deepKey.length;
 		if (length === 0) return result;
@@ -1679,25 +1743,43 @@ var require_toPath = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/object/get.js
-var require_get$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isUnsafeProperty = require_isUnsafeProperty();
-	var isDeepKey = require_isDeepKey();
-	var toKey = require_toKey();
-	var toPath = require_toPath();
+var require_get$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isUnsafeProperty$1 = require_isUnsafeProperty$2();
+	var require_isDeepKey$3 = require_isDeepKey$4();
+	var require_toKey$2 = require_toKey$4();
+	var require_toPath$3 = require_toPath$4();
+	/**
+	* Retrieves the value at a given path from an object. If the resolved value is undefined, the defaultValue is returned instead.
+	*
+	* @param {any} object - The object to query.
+	* @param {PropertyKey | readonly PropertyKey[]} path - The path of the property to get.
+	* @param {any} [defaultValue] - The value returned if the resolved value is undefined.
+	* @returns {any} Returns the resolved value.
+	*
+	* @example
+	* const object = { a: { b: { c: 1 } } };
+	* get(object, 'a.b.c');
+	* // => 1
+	*
+	* get(object, ['a', 'b', 'c']);
+	* // => 1
+	*
+	* get(object, 'a.b.d', 'default');
+	* // => 'default'
+	*/
 	function get(object, path, defaultValue) {
 		if (object == null) return defaultValue;
 		switch (typeof path) {
 			case "string": {
-				if (isUnsafeProperty.isUnsafeProperty(path)) return defaultValue;
+				if (require_isUnsafeProperty$1.isUnsafeProperty(path)) return defaultValue;
 				const result = object[path];
-				if (result === void 0) if (isDeepKey.isDeepKey(path)) return get(object, toPath.toPath(path), defaultValue);
+				if (result === void 0) if (require_isDeepKey$3.isDeepKey(path)) return get(object, require_toPath$3.toPath(path), defaultValue);
 				else return defaultValue;
 				return result;
 			}
 			case "number":
 			case "symbol": {
-				if (typeof path === "number") path = toKey.toKey(path);
+				if (typeof path === "number") path = require_toKey$2.toKey(path);
 				const result = object[path];
 				if (result === void 0) return defaultValue;
 				return result;
@@ -1706,7 +1788,7 @@ var require_get$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 				if (Array.isArray(path)) return getWithPath(object, path, defaultValue);
 				if (Object.is(path?.valueOf(), -0)) path = "-0";
 				else path = String(path);
-				if (isUnsafeProperty.isUnsafeProperty(path)) return defaultValue;
+				if (require_isUnsafeProperty$1.isUnsafeProperty(path)) return defaultValue;
 				const result = object[path];
 				if (result === void 0) return defaultValue;
 				return result;
@@ -1718,7 +1800,7 @@ var require_get$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		let current = object;
 		for (let index = 0; index < path.length; index++) {
 			if (current == null) return defaultValue;
-			if (isUnsafeProperty.isUnsafeProperty(path[index])) return defaultValue;
+			if (require_isUnsafeProperty$1.isUnsafeProperty(path[index])) return defaultValue;
 			current = current[path[index]];
 		}
 		if (current === void 0) return defaultValue;
@@ -1729,7 +1811,7 @@ var require_get$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 //#endregion
 //#region node_modules/recharts/es6/util/round.js
 var import_get = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
-	module.exports = require_get$1().get;
+	module.exports = require_get$4().get;
 })))());
 var defaultRoundPrecision = 4;
 function round(num) {
@@ -2010,7 +2092,7 @@ var Symbols = (_ref) => {
 	};
 	var { className, cx, cy } = props;
 	var filteredProps = svgPropertiesAndEvents(props);
-	if (isNumber(cx) && isNumber(cy) && isNumber(size)) return /* @__PURE__ */ import_react.createElement("path", _extends$50({}, filteredProps, {
+	if (isNumber(cx) && isNumber(cy) && isNumber(size)) return /*#__PURE__*/ import_react.createElement("path", _extends$50({}, filteredProps, {
 		className: clsx("recharts-symbols", className),
 		transform: "translate(".concat(cx, ", ").concat(cy, ")"),
 		d: getPath()
@@ -2134,6 +2216,8 @@ var isPolarCoordinate = (c) => {
 * Ticks can be any type when the axis is the type of category.
 *
 * Ticks must be numbers when the axis is the type of number.
+*
+* @inline
 */
 /**
 * @inline
@@ -2144,7 +2228,7 @@ var isPolarCoordinate = (c) => {
 var adaptEventHandlers = (props, newHandler) => {
 	if (!props || typeof props === "function" || typeof props === "boolean") return null;
 	var inputProps = props;
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(props)) inputProps = props.props;
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(props)) inputProps = props.props;
 	if (typeof inputProps !== "object" && typeof inputProps !== "function") return null;
 	var out = {};
 	Object.keys(inputProps).forEach((key) => {
@@ -2422,7 +2506,7 @@ function Icon(_ref) {
 	var color = data.inactive ? inactiveColor : data.color;
 	var preferredIcon = iconType !== null && iconType !== void 0 ? iconType : data.type;
 	if (preferredIcon === "none") return null;
-	if (preferredIcon === "plainline") return /* @__PURE__ */ import_react.createElement("line", {
+	if (preferredIcon === "plainline") return /*#__PURE__*/ import_react.createElement("line", {
 		strokeWidth: 4,
 		fill: "none",
 		stroke: color,
@@ -2433,25 +2517,25 @@ function Icon(_ref) {
 		y2: halfSize,
 		className: "recharts-legend-icon"
 	});
-	if (preferredIcon === "line") return /* @__PURE__ */ import_react.createElement("path", {
+	if (preferredIcon === "line") return /*#__PURE__*/ import_react.createElement("path", {
 		strokeWidth: 4,
 		fill: "none",
 		stroke: color,
 		d: "M0,".concat(halfSize, "h").concat(thirdSize, "\n            A").concat(sixthSize, ",").concat(sixthSize, ",0,1,1,").concat(2 * thirdSize, ",").concat(halfSize, "\n            H").concat(SIZE, "M").concat(2 * thirdSize, ",").concat(halfSize, "\n            A").concat(sixthSize, ",").concat(sixthSize, ",0,1,1,").concat(thirdSize, ",").concat(halfSize),
 		className: "recharts-legend-icon"
 	});
-	if (preferredIcon === "rect") return /* @__PURE__ */ import_react.createElement("path", {
+	if (preferredIcon === "rect") return /*#__PURE__*/ import_react.createElement("path", {
 		stroke: "none",
 		fill: color,
 		d: "M0,".concat(SIZE / 8, "h").concat(SIZE, "v").concat(SIZE * 3 / 4, "h").concat(-SIZE, "z"),
 		className: "recharts-legend-icon"
 	});
-	if (/* @__PURE__ */ import_react.isValidElement(data.legendIcon)) {
+	if (/*#__PURE__*/ import_react.isValidElement(data.legendIcon)) {
 		var iconProps = _objectSpread$68({}, data);
 		delete iconProps.legendIcon;
-		return /* @__PURE__ */ import_react.cloneElement(data.legendIcon, iconProps);
+		return /*#__PURE__*/ import_react.cloneElement(data.legendIcon, iconProps);
 	}
-	return /* @__PURE__ */ import_react.createElement(Symbols, {
+	return /*#__PURE__*/ import_react.createElement(Symbols, {
 		fill: color,
 		cx: halfSize,
 		cy: halfSize,
@@ -2488,21 +2572,21 @@ function Items(props) {
 		var finalLabelStyle = typeof labelStyle === "object" ? _objectSpread$68({}, labelStyle) : {};
 		finalLabelStyle.color = entry.inactive ? inactiveColor : finalLabelStyle.color || entry.color;
 		var finalValue = finalFormatter ? finalFormatter(entry.value, entry, i) : entry.value;
-		return /* @__PURE__ */ import_react.createElement("li", _extends$49({
+		return /*#__PURE__*/ import_react.createElement("li", _extends$49({
 			className,
 			style: itemStyle,
 			key: "legend-item-".concat(i)
-		}, adaptEventsOfChild(props, entry, i)), /* @__PURE__ */ import_react.createElement(Surface, {
+		}, adaptEventsOfChild(props, entry, i)), /*#__PURE__*/ import_react.createElement(Surface, {
 			width: iconSize,
 			height: iconSize,
 			viewBox,
 			style: svgStyle,
-			"aria-label": "".concat(finalValue, " legend icon")
-		}, /* @__PURE__ */ import_react.createElement(Icon, {
+			"aria-label": "".concat(entry.value, " legend icon")
+		}, /*#__PURE__*/ import_react.createElement(Icon, {
 			data: entry,
 			iconType,
 			inactiveColor
-		})), /* @__PURE__ */ import_react.createElement("span", {
+		})), /*#__PURE__*/ import_react.createElement("span", {
 			className: "recharts-legend-item-text",
 			style: finalLabelStyle
 		}, finalValue));
@@ -2523,15 +2607,42 @@ var DefaultLegendContent = (outsideProps) => {
 		margin: 0,
 		textAlign: layout === "horizontal" ? align : "left"
 	};
-	return /* @__PURE__ */ import_react.createElement("ul", {
+	return /*#__PURE__*/ import_react.createElement("ul", {
 		className: "recharts-default-legend",
 		style: finalStyle
-	}, /* @__PURE__ */ import_react.createElement(Items, _extends$49({}, props, { payload })));
+	}, /*#__PURE__*/ import_react.createElement(Items, _extends$49({}, props, { payload })));
 };
 //#endregion
 //#region node_modules/es-toolkit/dist/array/uniqBy.js
-var require_uniqBy$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_uniqBy$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Returns a new array containing only the unique elements from the original array,
+	* based on the values returned by the mapper function.
+	*
+	* When duplicates are found, the first occurrence is kept and the rest are discarded.
+	*
+	* @template T - The type of elements in the array.
+	* @template U - The type of mapped elements.
+	* @param {T[]} arr - The array to process.
+	* @param {(item: T) => U} mapper - The function used to convert the array elements.
+	* @returns {T[]} A new array containing only the unique elements from the original array, based on the values returned by the mapper function.
+	*
+	* @example
+	* ```ts
+	* uniqBy([1.2, 1.5, 2.1, 3.2, 5.7, 5.3, 7.19], Math.floor);
+	* // [1.2, 2.1, 3.2, 5.7, 7.19]
+	* ```
+	*
+	* @example
+	* const array = [
+	*   { category: 'fruit', name: 'apple' },
+	*   { category: 'fruit', name: 'banana' },
+	*   { category: 'vegetable', name: 'carrot' },
+	* ];
+	* uniqBy(array, item => item.category).length
+	* // 2
+	* ```
+	*/
 	function uniqBy(arr, mapper) {
 		const map = /* @__PURE__ */ new Map();
 		for (let i = 0; i < arr.length; i++) {
@@ -2545,8 +2656,25 @@ var require_uniqBy$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/function/ary.js
-var require_ary = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_ary$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Creates a function that invokes func, with up to n arguments, ignoring any additional arguments.
+	*
+	* @template F - The type of the function.
+	* @param {F} func - The function to cap arguments for.
+	* @param {number} n - The arity cap.
+	* @returns {(...args: any[]) => ReturnType<F>} Returns the new capped function.
+	*
+	* @example
+	* function fn(a: number, b: number, c: number) {
+	*   return Array.from(arguments);
+	* }
+	*
+	* ary(fn, 0)(1, 2, 3) // []
+	* ary(fn, 1)(1, 2, 3) // [1]
+	* ary(fn, 2)(1, 2, 3) // [1, 2]
+	* ary(fn, 3)(1, 2, 3) // [1, 2, 3]
+	*/
 	function ary(func, n) {
 		return function(...args) {
 			return func.apply(this, args.slice(0, n));
@@ -2556,192 +2684,133 @@ var require_ary = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/function/identity.js
-var require_identity = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_identity$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Returns the input value unchanged.
+	*
+	* @template T - The type of the input value.
+	* @param {T} x - The value to be returned.
+	* @returns {T} The input value.
+	*
+	* @example
+	* // Returns 5
+	* identity(5);
+	*
+	* @example
+	* // Returns 'hello'
+	* identity('hello');
+	*
+	* @example
+	* // Returns { key: 'value' }
+	* identity({ key: 'value' });
+	*/
 	function identity(x) {
 		return x;
 	}
 	exports.identity = identity;
 }));
 //#endregion
-//#region node_modules/es-toolkit/dist/predicate/isLength.js
-var require_isLength = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	function isLength(value) {
-		return Number.isSafeInteger(value) && value >= 0;
-	}
-	exports.isLength = isLength;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/predicate/isArrayLike.js
-var require_isArrayLike = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isLength = require_isLength();
-	function isArrayLike(value) {
-		return value != null && typeof value !== "function" && isLength.isLength(value.length);
-	}
-	exports.isArrayLike = isArrayLike;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/predicate/isObjectLike.js
-var require_isObjectLike = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	function isObjectLike(value) {
-		return typeof value === "object" && value !== null;
-	}
-	exports.isObjectLike = isObjectLike;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/predicate/isArrayLikeObject.js
-var require_isArrayLikeObject = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isArrayLike = require_isArrayLike();
-	var isObjectLike = require_isObjectLike();
-	function isArrayLikeObject(value) {
-		return isObjectLike.isObjectLike(value) && isArrayLike.isArrayLike(value);
-	}
-	exports.isArrayLikeObject = isArrayLikeObject;
-}));
-//#endregion
 //#region node_modules/es-toolkit/dist/compat/object/property.js
-var require_property = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var get = require_get$1();
+var require_property$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_get$2 = require_get$4();
+	/**
+	* Creates a function that returns the value at a given path of an object.
+	*
+	* @template T - The type of object.
+	* @template R - The type of the value to return.
+	* @param {PropertyPath} path - The path of the property to get.
+	* @returns {(object: T) => R} - Returns a new function that takes an object and returns the value at the specified path.
+	*
+	* @example
+	* const getObjectValue = property('a.b.c');
+	* const result = getObjectValue({ a: { b: { c: 3 } } });
+	* console.log(result); // => 3
+	*
+	* @example
+	* const getObjectValue = property(['a', 'b', 'c']);
+	* const result = getObjectValue({ a: { b: { c: 3 } } });
+	* console.log(result); // => 3
+	*/
 	function property(path) {
 		return function(object) {
-			return get.get(object, path);
+			return require_get$2.get(object, path);
 		};
 	}
 	exports.property = property;
 }));
 //#endregion
-//#region node_modules/es-toolkit/dist/compat/predicate/isObject.js
-var require_isObject = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	function isObject(value) {
-		return value !== null && (typeof value === "object" || typeof value === "function");
-	}
-	exports.isObject = isObject;
-}));
-//#endregion
 //#region node_modules/es-toolkit/dist/predicate/isPrimitive.js
-var require_isPrimitive = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_isPrimitive$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Checks whether a value is a JavaScript primitive.
+	* JavaScript primitives include null, undefined, strings, numbers, booleans, symbols, and bigints.
+	*
+	* @param {unknown} value The value to check.
+	* @returns {value is
+	*     null
+	*   | undefined
+	*   | string
+	*   | number
+	*   | boolean
+	*   | symbol
+	*   | bigint} Returns true if `value` is a primitive, false otherwise.
+	*
+	* @example
+	* isPrimitive(null); // true
+	* isPrimitive(undefined); // true
+	* isPrimitive('123'); // true
+	* isPrimitive(false); // true
+	* isPrimitive(true); // true
+	* isPrimitive(Symbol('a')); // true
+	* isPrimitive(123n); // true
+	* isPrimitive({}); // false
+	* isPrimitive(new Date()); // false
+	* isPrimitive(new Map()); // false
+	* isPrimitive(new Set()); // false
+	* isPrimitive([1, 2, 3]); // false
+	*/
 	function isPrimitive(value) {
 		return value == null || typeof value !== "object" && typeof value !== "function";
 	}
 	exports.isPrimitive = isPrimitive;
 }));
 //#endregion
-//#region node_modules/es-toolkit/dist/_internal/isEqualsSameValueZero.js
-var require_isEqualsSameValueZero = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	function isEqualsSameValueZero(value, other) {
-		return value === other || Number.isNaN(value) && Number.isNaN(other);
+//#region node_modules/es-toolkit/dist/predicate/isTypedArray.js
+var require_isTypedArray$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Checks if a value is a TypedArray.
+	* @param {unknown} x The value to check.
+	* @returns {x is
+	*     Uint8Array
+	*   | Uint8ClampedArray
+	*   | Uint16Array
+	*   | Uint32Array
+	*   | BigUint64Array
+	*   | Int8Array
+	*   | Int16Array
+	*   | Int32Array
+	*   | BigInt64Array
+	*   | Float32Array
+	*   | Float64Array} Returns true if `x` is a TypedArray, false otherwise.
+	*
+	* @example
+	* const arr = new Uint8Array([1, 2, 3]);
+	* isTypedArray(arr); // true
+	*
+	* const regularArray = [1, 2, 3];
+	* isTypedArray(regularArray); // false
+	*
+	* const buffer = new ArrayBuffer(16);
+	* isTypedArray(buffer); // false
+	*/
+	function isTypedArray(x) {
+		return ArrayBuffer.isView(x) && !(x instanceof DataView);
 	}
-	exports.isEqualsSameValueZero = isEqualsSameValueZero;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/predicate/isMatchWith.js
-var require_isMatchWith = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isObject = require_isObject();
-	var isPrimitive = require_isPrimitive();
-	var isEqualsSameValueZero = require_isEqualsSameValueZero();
-	function isMatchWith(target, source, compare) {
-		if (typeof compare !== "function") return isMatchWith(target, source, () => void 0);
-		return isMatchWithInternal(target, source, function doesMatch(objValue, srcValue, key, object, source, stack) {
-			const isEqual = compare(objValue, srcValue, key, object, source, stack);
-			if (isEqual !== void 0) return Boolean(isEqual);
-			return isMatchWithInternal(objValue, srcValue, doesMatch, stack);
-		}, /* @__PURE__ */ new Map());
-	}
-	function isMatchWithInternal(target, source, compare, stack) {
-		if (source === target) return true;
-		switch (typeof source) {
-			case "object": return isObjectMatch(target, source, compare, stack);
-			case "function":
-				if (Object.keys(source).length > 0) return isMatchWithInternal(target, { ...source }, compare, stack);
-				return isEqualsSameValueZero.isEqualsSameValueZero(target, source);
-			default:
-				if (!isObject.isObject(target)) return isEqualsSameValueZero.isEqualsSameValueZero(target, source);
-				if (typeof source === "string") return source === "";
-				return true;
-		}
-	}
-	function isObjectMatch(target, source, compare, stack) {
-		if (source == null) return true;
-		if (Array.isArray(source)) return isArrayMatch(target, source, compare, stack);
-		if (source instanceof Map) return isMapMatch(target, source, compare, stack);
-		if (source instanceof Set) return isSetMatch(target, source, compare, stack);
-		const keys = Object.keys(source);
-		if (target == null || isPrimitive.isPrimitive(target)) return keys.length === 0;
-		if (keys.length === 0) return true;
-		if (stack?.has(source)) return stack.get(source) === target;
-		stack?.set(source, target);
-		try {
-			for (let i = 0; i < keys.length; i++) {
-				const key = keys[i];
-				if (!isPrimitive.isPrimitive(target) && !(key in target)) return false;
-				if (source[key] === void 0 && target[key] !== void 0) return false;
-				if (source[key] === null && target[key] !== null) return false;
-				if (!compare(target[key], source[key], key, target, source, stack)) return false;
-			}
-			return true;
-		} finally {
-			stack?.delete(source);
-		}
-	}
-	function isMapMatch(target, source, compare, stack) {
-		if (source.size === 0) return true;
-		if (!(target instanceof Map)) return false;
-		for (const [key, sourceValue] of source.entries()) if (compare(target.get(key), sourceValue, key, target, source, stack) === false) return false;
-		return true;
-	}
-	function isArrayMatch(target, source, compare, stack) {
-		if (source.length === 0) return true;
-		if (!Array.isArray(target)) return false;
-		const countedIndex = /* @__PURE__ */ new Set();
-		for (let i = 0; i < source.length; i++) {
-			const sourceItem = source[i];
-			let found = false;
-			for (let j = 0; j < target.length; j++) {
-				if (countedIndex.has(j)) continue;
-				const targetItem = target[j];
-				let matches = false;
-				if (compare(targetItem, sourceItem, i, target, source, stack)) matches = true;
-				if (matches) {
-					countedIndex.add(j);
-					found = true;
-					break;
-				}
-			}
-			if (!found) return false;
-		}
-		return true;
-	}
-	function isSetMatch(target, source, compare, stack) {
-		if (source.size === 0) return true;
-		if (!(target instanceof Set)) return false;
-		return isArrayMatch([...target], [...source], compare, stack);
-	}
-	exports.isMatchWith = isMatchWith;
-	exports.isSetMatch = isSetMatch;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/predicate/isMatch.js
-var require_isMatch = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isMatchWith = require_isMatchWith();
-	function isMatch(target, source) {
-		return isMatchWith.isMatchWith(target, source, () => void 0);
-	}
-	exports.isMatch = isMatch;
+	exports.isTypedArray = isTypedArray;
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/_internal/getSymbols.js
-var require_getSymbols = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_getSymbols$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	function getSymbols(object) {
 		return Object.getOwnPropertySymbols(object).filter((symbol) => Object.prototype.propertyIsEnumerable.call(object, symbol));
 	}
@@ -2749,8 +2818,14 @@ var require_getSymbols = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/_internal/getTag.js
-var require_getTag = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_getTag$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Gets the `toStringTag` of `value`.
+	*
+	* @private
+	* @param {T} value The value to query.
+	* @returns {string} Returns the `Object.prototype.toString.call` result.
+	*/
 	function getTag(value) {
 		if (value == null) return value === void 0 ? "[object Undefined]" : "[object Null]";
 		return Object.prototype.toString.call(value);
@@ -2759,8 +2834,7 @@ var require_getTag = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/_internal/tags.js
-var require_tags = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_tags$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var regexpTag = "[object RegExp]";
 	var stringTag = "[object String]";
 	var numberTag = "[object Number]";
@@ -2815,30 +2889,95 @@ var require_tags = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.uint8ClampedArrayTag = uint8ClampedArrayTag;
 }));
 //#endregion
-//#region node_modules/es-toolkit/dist/predicate/isTypedArray.js
-var require_isTypedArray$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	function isTypedArray(x) {
-		return ArrayBuffer.isView(x) && !(x instanceof DataView);
+//#region node_modules/es-toolkit/dist/_internal/globalThis.js
+var require_globalThis$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	exports.globalThis_ = typeof globalThis === "object" && globalThis || typeof window === "object" && window || typeof self === "object" && self || typeof global === "object" && global || (function() {
+		return this;
+	})() || Function("return this")();
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/predicate/isBuffer.js
+var require_isBuffer$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_globalThis = require_globalThis$1();
+	/**
+	* Checks if the given value is a Buffer instance.
+	*
+	* This function tests whether the provided value is an instance of Buffer.
+	* It returns `true` if the value is a Buffer, and `false` otherwise.
+	*
+	* This function can also serve as a type predicate in TypeScript, narrowing the type of the argument to `Buffer`.
+	*
+	* @param {unknown} x - The value to check if it is a Buffer.
+	* @returns {boolean} Returns `true` if `x` is a Buffer, else `false`.
+	*
+	* @example
+	* const buffer = Buffer.from("test");
+	* console.log(isBuffer(buffer)); // true
+	*
+	* const notBuffer = "not a buffer";
+	* console.log(isBuffer(notBuffer)); // false
+	*/
+	function isBuffer(x) {
+		return typeof require_globalThis.globalThis_.Buffer !== "undefined" && require_globalThis.globalThis_.Buffer.isBuffer(x);
 	}
-	exports.isTypedArray = isTypedArray;
+	exports.isBuffer = isBuffer;
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/object/cloneDeepWith.js
-var require_cloneDeepWith$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var getSymbols = require_getSymbols();
-	var getTag = require_getTag();
-	var tags = require_tags();
-	var isPrimitive = require_isPrimitive();
-	var isTypedArray = require_isTypedArray$1();
+var require_cloneDeepWith$5 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isPrimitive$1 = require_isPrimitive$2();
+	var require_isTypedArray$3 = require_isTypedArray$4();
+	var require_getSymbols$1 = require_getSymbols$2();
+	var require_getTag$2 = require_getTag$3();
+	var require_tags$1 = require_tags$2();
+	var require_isBuffer$1 = require_isBuffer$2();
+	/**
+	* Deeply clones the given object.
+	*
+	* You can customize the deep cloning process using the `cloneValue` function.
+	* The function takes the current value `value`, the property name `key`, and the entire object `obj` as arguments.
+	* If the function returns a value, that value is used;
+	* if it returns `undefined`, the default cloning method is used.
+	*
+	* @template T - The type of the object.
+	* @param {T} obj - The object to clone.
+	* @param {Function} [cloneValue] - A function to customize the cloning process.
+	* @returns {T} - A deep clone of the given object.
+	*
+	* @example
+	* // Clone a primitive value
+	* const num = 29;
+	* const clonedNum = cloneDeepWith(num);
+	* console.log(clonedNum); // 29
+	* console.log(clonedNum === num); // true
+	*
+	* @example
+	* // Clone an object with a customizer
+	* const obj = { a: 1, b: 2 };
+	* const clonedObj = cloneDeepWith(obj, (value) => {
+	*   if (typeof value === 'number') {
+	*     return value * 2; // Double the number
+	*   }
+	* });
+	* console.log(clonedObj); // { a: 2, b: 4 }
+	* console.log(clonedObj === obj); // false
+	*
+	* @example
+	* // Clone an array with a customizer
+	* const arr = [1, 2, 3];
+	* const clonedArr = cloneDeepWith(arr, (value) => {
+	*   return value + 1; // Increment each value
+	* });
+	* console.log(clonedArr); // [2, 3, 4]
+	* console.log(clonedArr === arr); // false
+	*/
 	function cloneDeepWith(obj, cloneValue) {
 		return cloneDeepWithImpl(obj, void 0, obj, /* @__PURE__ */ new Map(), cloneValue);
 	}
 	function cloneDeepWithImpl(valueToClone, keyToClone, objectToClone, stack = /* @__PURE__ */ new Map(), cloneValue = void 0) {
 		const cloned = cloneValue?.(valueToClone, keyToClone, objectToClone, stack);
 		if (cloned !== void 0) return cloned;
-		if (isPrimitive.isPrimitive(valueToClone)) return valueToClone;
+		if (require_isPrimitive$1.isPrimitive(valueToClone)) return valueToClone;
 		if (stack.has(valueToClone)) return stack.get(valueToClone);
 		if (Array.isArray(valueToClone)) {
 			const result = new Array(valueToClone.length);
@@ -2866,8 +3005,8 @@ var require_cloneDeepWith$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 			for (const value of valueToClone) result.add(cloneDeepWithImpl(value, void 0, objectToClone, stack, cloneValue));
 			return result;
 		}
-		if (typeof Buffer !== "undefined" && Buffer.isBuffer(valueToClone)) return valueToClone.subarray();
-		if (isTypedArray.isTypedArray(valueToClone)) {
+		if (require_isBuffer$1.isBuffer(valueToClone)) return valueToClone.subarray();
+		if (require_isTypedArray$3.isTypedArray(valueToClone)) {
 			const result = new (Object.getPrototypeOf(valueToClone)).constructor(valueToClone.length);
 			stack.set(valueToClone, result);
 			for (let i = 0; i < valueToClone.length; i++) result[i] = cloneDeepWithImpl(valueToClone[i], i, objectToClone, stack, cloneValue);
@@ -2930,7 +3069,7 @@ var require_cloneDeepWith$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		return valueToClone;
 	}
 	function copyProperties(target, source, objectToClone = target, stack, cloneValue) {
-		const keys = [...Object.keys(source), ...getSymbols.getSymbols(source)];
+		const keys = [...Object.keys(source), ...require_getSymbols$1.getSymbols(source)];
 		for (let i = 0; i < keys.length; i++) {
 			const key = keys[i];
 			const descriptor = Object.getOwnPropertyDescriptor(target, key);
@@ -2938,29 +3077,29 @@ var require_cloneDeepWith$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		}
 	}
 	function isCloneableObject(object) {
-		switch (getTag.getTag(object)) {
-			case tags.argumentsTag:
-			case tags.arrayTag:
-			case tags.arrayBufferTag:
-			case tags.dataViewTag:
-			case tags.booleanTag:
-			case tags.dateTag:
-			case tags.float32ArrayTag:
-			case tags.float64ArrayTag:
-			case tags.int8ArrayTag:
-			case tags.int16ArrayTag:
-			case tags.int32ArrayTag:
-			case tags.mapTag:
-			case tags.numberTag:
-			case tags.objectTag:
-			case tags.regexpTag:
-			case tags.setTag:
-			case tags.stringTag:
-			case tags.symbolTag:
-			case tags.uint8ArrayTag:
-			case tags.uint8ClampedArrayTag:
-			case tags.uint16ArrayTag:
-			case tags.uint32ArrayTag: return true;
+		switch (require_getTag$2.getTag(object)) {
+			case require_tags$1.argumentsTag:
+			case require_tags$1.arrayTag:
+			case require_tags$1.arrayBufferTag:
+			case require_tags$1.dataViewTag:
+			case require_tags$1.booleanTag:
+			case require_tags$1.dateTag:
+			case require_tags$1.float32ArrayTag:
+			case require_tags$1.float64ArrayTag:
+			case require_tags$1.int8ArrayTag:
+			case require_tags$1.int16ArrayTag:
+			case require_tags$1.int32ArrayTag:
+			case require_tags$1.mapTag:
+			case require_tags$1.numberTag:
+			case require_tags$1.objectTag:
+			case require_tags$1.regexpTag:
+			case require_tags$1.setTag:
+			case require_tags$1.stringTag:
+			case require_tags$1.symbolTag:
+			case require_tags$1.uint8ArrayTag:
+			case require_tags$1.uint8ClampedArrayTag:
+			case require_tags$1.uint16ArrayTag:
+			case require_tags$1.uint32ArrayTag: return true;
 			default: return false;
 		}
 	}
@@ -2970,57 +3109,410 @@ var require_cloneDeepWith$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/object/cloneDeep.js
-var require_cloneDeep$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var cloneDeepWith = require_cloneDeepWith$1();
+var require_cloneDeep$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_cloneDeepWith$4 = require_cloneDeepWith$5();
+	/**
+	* Creates a deep clone of the given object.
+	*
+	* @template T - The type of the object.
+	* @param {T} obj - The object to clone.
+	* @returns {T} - A deep clone of the given object.
+	*
+	* @example
+	* // Clone a primitive values
+	* const num = 29;
+	* const clonedNum = cloneDeep(num);
+	* console.log(clonedNum); // 29
+	* console.log(clonedNum === num); // true
+	*
+	* @example
+	* // Clone an array
+	* const arr = [1, 2, 3];
+	* const clonedArr = cloneDeep(arr);
+	* console.log(clonedArr); // [1, 2, 3]
+	* console.log(clonedArr === arr); // false
+	*
+	* @example
+	* // Clone an array with nested objects
+	* const arr = [1, { a: 1 }, [1, 2, 3]];
+	* const clonedArr = cloneDeep(arr);
+	* arr[1].a = 2;
+	* console.log(arr); // [1, { a: 2 }, [1, 2, 3]]
+	* console.log(clonedArr); // [1, { a: 1 }, [1, 2, 3]]
+	* console.log(clonedArr === arr); // false
+	*
+	* @example
+	* // Clone an object
+	* const obj = { a: 1, b: 'es-toolkit', c: [1, 2, 3] };
+	* const clonedObj = cloneDeep(obj);
+	* console.log(clonedObj); // { a: 1, b: 'es-toolkit', c: [1, 2, 3] }
+	* console.log(clonedObj === obj); // false
+	*
+	* @example
+	* // Clone an object with nested objects
+	* const obj = { a: 1, b: { c: 1 } };
+	* const clonedObj = cloneDeep(obj);
+	* obj.b.c = 2;
+	* console.log(obj); // { a: 1, b: { c: 2 } }
+	* console.log(clonedObj); // { a: 1, b: { c: 1 } }
+	* console.log(clonedObj === obj); // false
+	*/
 	function cloneDeep(obj) {
-		return cloneDeepWith.cloneDeepWithImpl(obj, void 0, obj, /* @__PURE__ */ new Map(), void 0);
+		return require_cloneDeepWith$4.cloneDeepWithImpl(obj, void 0, obj, /* @__PURE__ */ new Map(), void 0);
 	}
 	exports.cloneDeep = cloneDeep;
 }));
 //#endregion
+//#region node_modules/es-toolkit/dist/_internal/isEqualsSameValueZero.js
+var require_isEqualsSameValueZero$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Performs a `SameValueZero` comparison between two values to determine if they are equivalent.
+	*
+	* @param {any} value - The value to compare.
+	* @param {any} other - The other value to compare.
+	* @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	*
+	* @example
+	* eq(1, 1); // true
+	* eq(0, -0); // true
+	* eq(NaN, NaN); // true
+	* eq('a', Object('a')); // false
+	*/
+	function isEqualsSameValueZero(value, other) {
+		return value === other || Number.isNaN(value) && Number.isNaN(other);
+	}
+	exports.isEqualsSameValueZero = isEqualsSameValueZero;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/util/eq.js
+var require_eq = /* @__PURE__ */ __commonJSMin((() => {
+	require_isEqualsSameValueZero$2();
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/predicate/isObject.js
+var require_isObject$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Checks if the given value is an object. An object is a value that is
+	* not a primitive type (string, number, boolean, symbol, null, or undefined).
+	*
+	* This function tests whether the provided value is an object or not.
+	* It returns `true` if the value is an object, and `false` otherwise.
+	*
+	* This function can also serve as a type predicate in TypeScript, narrowing the type of the argument to an object value.
+	*
+	* @param {any} value - The value to check if it is an object.
+	* @returns {value is object} `true` if the value is an object, `false` otherwise.
+	*
+	* @example
+	* const value1 = {};
+	* const value2 = [1, 2, 3];
+	* const value3 = () => {};
+	* const value4 = null;
+	*
+	* console.log(isObject(value1)); // true
+	* console.log(isObject(value2)); // true
+	* console.log(isObject(value3)); // true
+	* console.log(isObject(value4)); // false
+	*/
+	function isObject(value) {
+		return value !== null && (typeof value === "object" || typeof value === "function");
+	}
+	exports.isObject = isObject;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/predicate/isMatchWith.js
+var require_isMatchWith$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isPrimitive = require_isPrimitive$2();
+	var require_isEqualsSameValueZero$1 = require_isEqualsSameValueZero$2();
+	require_eq();
+	var require_isObject$1 = require_isObject$2();
+	/**
+	* Performs a deep comparison between a target value and a source pattern to determine if they match,
+	* using a custom comparison function for fine-grained control over the matching logic.
+	*
+	* This function recursively traverses both values, calling the custom compare function for each
+	* property/element pair. If the compare function returns a boolean, that result is used directly.
+	* If it returns undefined, the default matching behavior continues recursively.
+	*
+	* The matching behavior varies by data type:
+	* - **Objects**: Matches if all properties in the source exist in the target and match
+	* - **Arrays**: Matches if all elements in the source array can be found in the target array (order-independent)
+	* - **Maps**: Matches if all key-value pairs in the source Map exist and match in the target Map
+	* - **Sets**: Matches if all elements in the source Set can be found in the target Set
+	* - **Functions**: Matches using strict equality, or object comparison if the function has properties
+	* - **Primitives**: Matches using strict equality
+	*
+	* Special cases:
+	* - Empty objects, arrays, Maps, and Sets always match any target
+	* - `null` and `undefined` source values have specific matching rules
+	* - Circular references are handled using an internal stack to prevent infinite recursion
+	*
+	* @param {object} target - The value to be tested for matching
+	* @param {object} source - The pattern/template to match against
+	* @param {function} [compare] - Optional custom comparison function that receives:
+	*   - `objValue` - The value from the target at the current path
+	*   - `srcValue` - The value from the source at the current path
+	*   - `key` - The property key or array index being compared
+	*   - `object` - The parent object/array from the target
+	*   - `source` - The parent object/array from the source
+	*   - `stack` - Internal Map used for circular reference detection
+	*   Should return `true` for a match, `false` for no match, or `undefined` to continue with default behavior
+	*
+	* @returns {boolean} `true` if the target matches the source pattern, `false` otherwise
+	*
+	* @example
+	* // Basic matching without custom comparator
+	* isMatchWith({ a: 1, b: 2 }, { a: 1 }); // true
+	* isMatchWith([1, 2, 3], [1, 3]); // true
+	*
+	* @example
+	* // Custom comparison for case-insensitive string matching
+	* const caseInsensitiveCompare = (objVal, srcVal) => {
+	*   if (typeof objVal === 'string' && typeof srcVal === 'string') {
+	*     return objVal.toLowerCase() === srcVal.toLowerCase();
+	*   }
+	*   return undefined; // Use default behavior for non-strings
+	* };
+	*
+	* isMatchWith(
+	*   { name: 'JOHN', age: 30 },
+	*   { name: 'john' },
+	*   caseInsensitiveCompare
+	* ); // true
+	*
+	* @example
+	* // Custom comparison for range matching
+	* const rangeCompare = (objVal, srcVal, key) => {
+	*   if (key === 'age' && typeof srcVal === 'object' && srcVal.min !== undefined) {
+	*     return objVal >= srcVal.min && objVal <= srcVal.max;
+	*   }
+	*   return undefined;
+	* };
+	*
+	* isMatchWith(
+	*   { name: 'John', age: 25 },
+	*   { age: { min: 18, max: 30 } },
+	*   rangeCompare
+	* ); // true
+	*/
+	function isMatchWith(target, source, compare) {
+		if (typeof compare !== "function") return isMatchWith(target, source, () => void 0);
+		return isMatchWithInternal(target, source, function doesMatch(objValue, srcValue, key, object, source, stack) {
+			const isEqual = compare(objValue, srcValue, key, object, source, stack);
+			if (isEqual !== void 0) return Boolean(isEqual);
+			return isMatchWithInternal(objValue, srcValue, doesMatch, stack);
+		}, /* @__PURE__ */ new Map());
+	}
+	function isMatchWithInternal(target, source, compare, stack) {
+		if (source === target) return true;
+		switch (typeof source) {
+			case "object": return isObjectMatch(target, source, compare, stack);
+			case "function":
+				if (Object.keys(source).length > 0) return isMatchWithInternal(target, { ...source }, compare, stack);
+				return require_isEqualsSameValueZero$1.isEqualsSameValueZero(target, source);
+			default:
+				if (!require_isObject$1.isObject(target)) return require_isEqualsSameValueZero$1.isEqualsSameValueZero(target, source);
+				if (typeof source === "string") return source === "";
+				return true;
+		}
+	}
+	function isObjectMatch(target, source, compare, stack) {
+		if (source == null) return true;
+		if (Array.isArray(source)) return isArrayMatch(target, source, compare, stack);
+		if (source instanceof Map) return isMapMatch(target, source, compare, stack);
+		if (source instanceof Set) return isSetMatch(target, source, compare, stack);
+		const keys = Object.keys(source);
+		if (target == null || require_isPrimitive.isPrimitive(target)) return keys.length === 0;
+		if (keys.length === 0) return true;
+		if (stack?.has(source)) return stack.get(source) === target;
+		stack?.set(source, target);
+		try {
+			for (let i = 0; i < keys.length; i++) {
+				const key = keys[i];
+				if (!require_isPrimitive.isPrimitive(target) && !(key in target)) return false;
+				if (source[key] === void 0 && target[key] !== void 0) return false;
+				if (source[key] === null && target[key] !== null) return false;
+				if (!compare(target[key], source[key], key, target, source, stack)) return false;
+			}
+			return true;
+		} finally {
+			stack?.delete(source);
+		}
+	}
+	function isMapMatch(target, source, compare, stack) {
+		if (source.size === 0) return true;
+		if (!(target instanceof Map)) return false;
+		for (const [key, sourceValue] of source.entries()) if (compare(target.get(key), sourceValue, key, target, source, stack) === false) return false;
+		return true;
+	}
+	function isArrayMatch(target, source, compare, stack) {
+		if (source.length === 0) return true;
+		if (!Array.isArray(target)) return false;
+		const countedIndex = /* @__PURE__ */ new Set();
+		for (let i = 0; i < source.length; i++) {
+			const sourceItem = source[i];
+			let found = false;
+			for (let j = 0; j < target.length; j++) {
+				if (countedIndex.has(j)) continue;
+				const targetItem = target[j];
+				let matches = false;
+				if (compare(targetItem, sourceItem, i, target, source, stack)) matches = true;
+				if (matches) {
+					countedIndex.add(j);
+					found = true;
+					break;
+				}
+			}
+			if (!found) return false;
+		}
+		return true;
+	}
+	function isSetMatch(target, source, compare, stack) {
+		if (source.size === 0) return true;
+		if (!(target instanceof Set)) return false;
+		return isArrayMatch([...target], [...source], compare, stack);
+	}
+	exports.isMatchWith = isMatchWith;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/predicate/isMatch.js
+var require_isMatch$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isMatchWith = require_isMatchWith$1();
+	/**
+	* Checks if the target matches the source by comparing their structures and values.
+	* This function supports deep comparison for objects, arrays, maps, and sets.
+	*
+	* @param {object} target - The target value to match against.
+	* @param {object} source - The source value to match with.
+	* @returns {boolean} - Returns `true` if the target matches the source, otherwise `false`.
+	*
+	* @example
+	* // Basic usage
+	* isMatch({ a: 1, b: 2 }, { a: 1 }); // true
+	*
+	* @example
+	* // Matching arrays
+	* isMatch([1, 2, 3], [1, 2, 3]); // true
+	*
+	* @example
+	* // Matching maps
+	* const targetMap = new Map([['key1', 'value1'], ['key2', 'value2']]);
+	* const sourceMap = new Map([['key1', 'value1']]);
+	* isMatch(targetMap, sourceMap); // true
+	*
+	* @example
+	* // Matching sets
+	* const targetSet = new Set([1, 2, 3]);
+	* const sourceSet = new Set([1, 2]);
+	* isMatch(targetSet, sourceSet); // true
+	*/
+	function isMatch(target, source) {
+		return require_isMatchWith.isMatchWith(target, source, () => void 0);
+	}
+	exports.isMatch = isMatch;
+}));
+//#endregion
 //#region node_modules/es-toolkit/dist/compat/predicate/matches.js
-var require_matches = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isMatch = require_isMatch();
-	var cloneDeep = require_cloneDeep$1();
+var require_matches$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_cloneDeep$2 = require_cloneDeep$3();
+	var require_isMatch$1 = require_isMatch$2();
+	/**
+	* Creates a function that performs a deep comparison between a given target and the source object.
+	*
+	* @template T
+	* @template V
+	* @param {T} source - The source object to create the matcher from.
+	* @returns {(target: V) => boolean} Returns a function that takes a target object and returns `true` if the target matches the source, otherwise `false`.
+	*
+	* @example
+	* // Basic usage
+	* const matcher = matches({ a: 1, b: 2 });
+	* matcher({ a: 1, b: 2, c: 3 }); // true
+	* matcher({ a: 1, c: 3 }); // false
+	*
+	* @example
+	* // Matching arrays
+	* const arrayMatcher = matches([1, 2, 3]);
+	* arrayMatcher([1, 2, 3, 4]); // true
+	* arrayMatcher([4, 5, 6]); // false
+	*
+	* @example
+	* // Matching objects with nested structures
+	* const nestedMatcher = matches({ a: { b: 2 } });
+	* nestedMatcher({ a: { b: 2, c: 3 } }); // true
+	* nestedMatcher({ a: { c: 3 } }); // false
+	*/
 	function matches(source) {
-		source = cloneDeep.cloneDeep(source);
+		source = require_cloneDeep$2.cloneDeep(source);
 		return (target) => {
-			return isMatch.isMatch(target, source);
+			return require_isMatch$1.isMatch(target, source);
 		};
 	}
 	exports.matches = matches;
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/object/cloneDeepWith.js
-var require_cloneDeepWith = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var cloneDeepWith$1 = require_cloneDeepWith$1();
-	var getTag = require_getTag();
-	var tags = require_tags();
+var require_cloneDeepWith$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_getTag$1 = require_getTag$3();
+	var require_tags = require_tags$2();
+	var require_cloneDeepWith$2 = require_cloneDeepWith$5();
+	/**
+	* Creates a deep clone of the given object using a customizer function.
+	*
+	* @template T - The type of the object.
+	* @param {T} obj - The object to clone.
+	* @param {Function} [cloneValue] - A function to customize the cloning process.
+	* @returns {T} - A deep clone of the given object.
+	*
+	* @example
+	* // Clone a primitive value
+	* const num = 29;
+	* const clonedNum = cloneDeepWith(num);
+	* console.log(clonedNum); // 29
+	* console.log(clonedNum === num); // true
+	*
+	* @example
+	* // Clone an object with a customizer
+	* const obj = { a: 1, b: 2 };
+	* const clonedObj = cloneDeepWith(obj, (value) => {
+	*   if (typeof value === 'number') {
+	*     return value * 2; // Double the number
+	*   }
+	* });
+	* console.log(clonedObj); // { a: 2, b: 4 }
+	* console.log(clonedObj === obj); // false
+	*
+	* @example
+	* // Clone an array with a customizer
+	* const arr = [1, 2, 3];
+	* const clonedArr = cloneDeepWith(arr, (value) => {
+	*   return value + 1; // Increment each value
+	* });
+	* console.log(clonedArr); // [2, 3, 4]
+	* console.log(clonedArr === arr); // false
+	*/
 	function cloneDeepWith(obj, customizer) {
-		return cloneDeepWith$1.cloneDeepWith(obj, (value, key, object, stack) => {
+		return require_cloneDeepWith$2.cloneDeepWith(obj, (value, key, object, stack) => {
 			const cloned = customizer?.(value, key, object, stack);
 			if (cloned !== void 0) return cloned;
 			if (typeof obj !== "object") return;
-			if (getTag.getTag(obj) === tags.objectTag && typeof obj.constructor !== "function") {
+			if (require_getTag$1.getTag(obj) === "[object Object]" && typeof obj.constructor !== "function") {
 				const result = {};
 				stack.set(obj, result);
-				cloneDeepWith$1.copyProperties(result, obj, object, stack);
+				require_cloneDeepWith$2.copyProperties(result, obj, object, stack);
 				return result;
 			}
 			switch (Object.prototype.toString.call(obj)) {
-				case tags.numberTag:
-				case tags.stringTag:
-				case tags.booleanTag: {
+				case require_tags.numberTag:
+				case require_tags.stringTag:
+				case require_tags.booleanTag: {
 					const result = new obj.constructor(obj?.valueOf());
-					cloneDeepWith$1.copyProperties(result, obj);
+					require_cloneDeepWith$2.copyProperties(result, obj);
 					return result;
 				}
-				case tags.argumentsTag: {
+				case require_tags.argumentsTag: {
 					const result = {};
-					cloneDeepWith$1.copyProperties(result, obj);
+					require_cloneDeepWith$2.copyProperties(result, obj);
 					result.length = obj.length;
 					result[Symbol.iterator] = obj[Symbol.iterator];
 					return result;
@@ -3033,18 +3525,62 @@ var require_cloneDeepWith = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/object/cloneDeep.js
-var require_cloneDeep = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var cloneDeepWith = require_cloneDeepWith();
+var require_cloneDeep$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_cloneDeepWith$1 = require_cloneDeepWith$3();
+	/**
+	* Creates a deep clone of the given object.
+	*
+	* @template T - The type of the object.
+	* @param {T} obj - The object to clone.
+	* @returns {T} - A deep clone of the given object.
+	*
+	* @example
+	* // Clone a primitive values
+	* const num = 29;
+	* const clonedNum = clone(num);
+	* console.log(clonedNum); // 29
+	* console.log(clonedNum === num); // true
+	*
+	* @example
+	* // Clone an array
+	* const arr = [1, 2, 3];
+	* const clonedArr = clone(arr);
+	* console.log(clonedArr); // [1, 2, 3]
+	* console.log(clonedArr === arr); // false
+	*
+	* @example
+	* // Clone an array with nested objects
+	* const arr = [1, { a: 1 }, [1, 2, 3]];
+	* const clonedArr = clone(arr);
+	* arr[1].a = 2;
+	* console.log(arr); // [2, { a: 2 }, [1, 2, 3]]
+	* console.log(clonedArr); // [1, { a: 1 }, [1, 2, 3]]
+	* console.log(clonedArr === arr); // false
+	*
+	* @example
+	* // Clone an object
+	* const obj = { a: 1, b: 'es-toolkit', c: [1, 2, 3] };
+	* const clonedObj = clone(obj);
+	* console.log(clonedObj); // { a: 1, b: 'es-toolkit', c: [1, 2, 3] }
+	* console.log(clonedObj === obj); // false
+	*
+	* @example
+	* // Clone an object with nested objects
+	* const obj = { a: 1, b: { c: 1 } };
+	* const clonedObj = clone(obj);
+	* obj.b.c = 2;
+	* console.log(obj); // { a: 1, b: { c: 2 } }
+	* console.log(clonedObj); // { a: 1, b: { c: 1 } }
+	* console.log(clonedObj === obj); // false
+	*/
 	function cloneDeep(obj) {
-		return cloneDeepWith.cloneDeepWith(obj);
+		return require_cloneDeepWith$1.cloneDeepWith(obj);
 	}
 	exports.cloneDeep = cloneDeep;
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/_internal/isIndex.js
-var require_isIndex = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_isIndex$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var IS_UNSIGNED_INTEGER = /^(?:0|[1-9]\d*)$/;
 	function isIndex(value, length = Number.MAX_SAFE_INTEGER) {
 		switch (typeof value) {
@@ -3057,33 +3593,80 @@ var require_isIndex = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/predicate/isArguments.js
-var require_isArguments = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var getTag = require_getTag();
+var require_isArguments$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_getTag = require_getTag$3();
+	/**
+	* Checks if the given value is an arguments object.
+	*
+	* This function tests whether the provided value is an arguments object or not.
+	* It returns `true` if the value is an arguments object, and `false` otherwise.
+	*
+	* This function can also serve as a type predicate in TypeScript, narrowing the type of the argument to an arguments object.
+	*
+	* @param {any} value - The value to test if it is an arguments object.
+	* @returns {value is IArguments} `true` if the value is an arguments, `false` otherwise.
+	*
+	* @example
+	* const args = (function() { return arguments; })();
+	* const strictArgs = (function() { 'use strict'; return arguments; })();
+	* const value = [1, 2, 3];
+	*
+	* console.log(isArguments(args)); // true
+	* console.log(isArguments(strictArgs)); // true
+	* console.log(isArguments(value)); // false
+	*/
 	function isArguments(value) {
-		return value !== null && typeof value === "object" && getTag.getTag(value) === "[object Arguments]";
+		return value !== null && typeof value === "object" && require_getTag.getTag(value) === "[object Arguments]";
 	}
 	exports.isArguments = isArguments;
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/object/has.js
-var require_has = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isDeepKey = require_isDeepKey();
-	var isIndex = require_isIndex();
-	var isArguments = require_isArguments();
-	var toPath = require_toPath();
+var require_has$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isDeepKey$2 = require_isDeepKey$4();
+	var require_toPath$2 = require_toPath$4();
+	var require_isIndex$1 = require_isIndex$2();
+	var require_isArguments = require_isArguments$1();
+	/**
+	* Checks if a given path exists within an object.
+	*
+	* You can provide the path as a single property key, an array of property keys,
+	* or a string representing a deep path.
+	*
+	* If the path is an index and the object is an array or an arguments object, the function will verify
+	* if the index is valid and within the bounds of the array or arguments object, even if the array or
+	* arguments object is sparse (i.e., not all indexes are defined).
+	*
+	* @param {any} object - The object to query.
+	* @param {PropertyKey | readonly PropertyKey[]} path - The path to check. This can be a single property key,
+	*        an array of property keys, or a string representing a deep path.
+	* @returns {boolean} Returns `true` if the path exists in the object, `false` otherwise.
+	*
+	* @example
+	*
+	* const obj = { a: { b: { c: 3 } } };
+	*
+	* has(obj, 'a'); // true
+	* has(obj, ['a', 'b']); // true
+	* has(obj, ['a', 'b', 'c']); // true
+	* has(obj, 'a.b.c'); // true
+	* has(obj, 'a.b.d'); // false
+	* has(obj, ['a', 'b', 'c', 'd']); // false
+	* has([], 0); // false
+	* has([1, 2, 3], 2); // true
+	* has([1, 2, 3], 5); // false
+	*/
 	function has(object, path) {
 		let resolvedPath;
 		if (Array.isArray(path)) resolvedPath = path;
-		else if (typeof path === "string" && isDeepKey.isDeepKey(path) && object?.[path] == null) resolvedPath = toPath.toPath(path);
+		else if (typeof path === "string" && require_isDeepKey$2.isDeepKey(path) && object?.[path] == null) resolvedPath = require_toPath$2.toPath(path);
 		else resolvedPath = [path];
 		if (resolvedPath.length === 0) return false;
 		let current = object;
 		for (let i = 0; i < resolvedPath.length; i++) {
 			const key = resolvedPath[i];
 			if (current == null || !Object.hasOwn(current, key)) {
-				if (!((Array.isArray(current) || isArguments.isArguments(current)) && isIndex.isIndex(key) && key < current.length)) return false;
+				if (!((Array.isArray(current) || require_isArguments.isArguments(current)) && require_isIndex$1.isIndex(key) && key < current.length)) return false;
 			}
 			current = current[key];
 		}
@@ -3093,73 +3676,230 @@ var require_has = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/predicate/matchesProperty.js
-var require_matchesProperty = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isMatch = require_isMatch();
-	var toKey = require_toKey();
-	var cloneDeep = require_cloneDeep();
-	var get = require_get$1();
-	var has = require_has();
+var require_matchesProperty$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_toKey$1 = require_toKey$4();
+	var require_get$1 = require_get$4();
+	var require_isMatch = require_isMatch$2();
+	var require_cloneDeep = require_cloneDeep$1();
+	var require_has = require_has$1();
+	/**
+	* Creates a function that checks if a given target object matches a specific property value.
+	*
+	* The returned function takes a target object and determines if the property at the
+	* specified path within the target object is equal to the given value.
+	*
+	* @param {PropertyPath} property - The property path to check within the target object.
+	*     This can be a single property key or an array of property keys.
+	* @param {T} source - The value to compare against the property value in the target object.
+	*
+	* @returns {(target?: V) => boolean} - A function that takes a target object and returns
+	*     `true` if the property value at the given path in the target object matches the provided value,
+	*     otherwise returns `false`.
+	*
+	* @example
+	* // Using a single property key
+	* const checkName = matchesProperty('name', 'Alice');
+	* console.log(checkName({ name: 'Alice' })); // true
+	* console.log(checkName({ name: 'Bob' })); // false
+	*
+	* // Using an array of property keys
+	* const checkNested = matchesProperty(['address', 'city'], 'New York');
+	* console.log(checkNested({ address: { city: 'New York' } })); // true
+	* console.log(checkNested({ address: { city: 'Los Angeles' } })); // false
+	*/
 	function matchesProperty(property, source) {
 		switch (typeof property) {
 			case "object":
 				if (Object.is(property?.valueOf(), -0)) property = "-0";
 				break;
 			case "number":
-				property = toKey.toKey(property);
+				property = require_toKey$1.toKey(property);
 				break;
 		}
-		source = cloneDeep.cloneDeep(source);
+		source = require_cloneDeep.cloneDeep(source);
 		return function(target) {
-			const result = get.get(target, property);
-			if (result === void 0) return has.has(target, property);
+			const result = require_get$1.get(target, property);
+			if (result === void 0) return require_has.has(target, property);
 			if (source === void 0) return result === void 0;
-			return isMatch.isMatch(result, source);
+			return require_isMatch.isMatch(result, source);
 		};
 	}
 	exports.matchesProperty = matchesProperty;
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/util/iteratee.js
-var require_iteratee = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var identity = require_identity();
-	var property = require_property();
-	var matches = require_matches();
-	var matchesProperty = require_matchesProperty();
+var require_iteratee$4 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_identity$3 = require_identity$4();
+	var require_property = require_property$1();
+	var require_matches = require_matches$1();
+	var require_matchesProperty = require_matchesProperty$1();
+	/**
+	* Creates a function that returns a value from an element in a collection.
+	*
+	* You can call `iteratee` with the following types of arguments:
+	*
+	* - **Function**: Returns the function as-is, which will be called with the element from the collection.
+	* - **Property name**: Returns the value of the specified property from the element.
+	* - **Property-value pair**: Returns a boolean indicating whether the element's property matches the given value.
+	* - **Partial object**: Returns a boolean indicating whether the element matches the properties of the partial object.
+	*
+	* If you don't provide any arguments or pass `null`, this function will return a function that simply returns its input unchanged.
+	*
+	* @param {symbol | number | string | object | null | ((...args: any[]) => any)} value - The value to convert to an iteratee.
+	* @returns {(...args: any[]) => unknown} - Returns the new iteratee function.
+	* @example
+	* const func = iteratee();
+	* [{ a: 1 }, { a: 2 }, { a: 3 }].map(func) // => [{ a: 1 }, { a: 2 }, { a: 3 }]
+	*
+	* const func = iteratee((object) => object.a);
+	* [{ a: 1 }, { a: 2 }, { a: 3 }].map(func) // => [1, 2, 3]
+	*
+	* const func = iteratee('a');
+	* [{ a: 1 }, { a: 2 }, { a: 3 }].map(func) // => [1, 2, 3]
+	*
+	* const func = iteratee({ a: 1 });
+	* [{ a: 1 }, { a: 2 }, { a: 3 }].find(func) // => { a: 1 }
+	*
+	* const func = iteratee(['a', 1]);
+	* [{ a: 1 }, { a: 2 }, { a: 3 }].find(func) // => { a: 1 }
+	*/
 	function iteratee(value) {
-		if (value == null) return identity.identity;
+		if (value == null) return require_identity$3.identity;
 		switch (typeof value) {
 			case "function": return value;
 			case "object":
-				if (Array.isArray(value) && value.length === 2) return matchesProperty.matchesProperty(value[0], value[1]);
-				return matches.matches(value);
+				if (Array.isArray(value) && value.length === 2) return require_matchesProperty.matchesProperty(value[0], value[1]);
+				return require_matches.matches(value);
 			case "string":
 			case "symbol":
-			case "number": return property.property(value);
+			case "number": return require_property.property(value);
 		}
 	}
 	exports.iteratee = iteratee;
 }));
 //#endregion
+//#region node_modules/es-toolkit/dist/predicate/isLength.js
+var require_isLength$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Checks if a given value is a valid length.
+	*
+	* A valid length is of type `number`, is a non-negative integer, and is less than or equal to
+	* JavaScript's maximum safe integer (`Number.MAX_SAFE_INTEGER`).
+	* It returns `true` if the value is a valid length, and `false` otherwise.
+	*
+	* This function can also serve as a type predicate in TypeScript, narrowing the type of the
+	* argument to a valid length (`number`).
+	*
+	* @param {any} value The value to check.
+	* @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	*
+	* @example
+	* isLength(0); // true
+	* isLength(42); // true
+	* isLength(-1); // false
+	* isLength(1.5); // false
+	* isLength(Number.MAX_SAFE_INTEGER); // true
+	* isLength(Number.MAX_SAFE_INTEGER + 1); // false
+	*/
+	function isLength(value) {
+		return Number.isSafeInteger(value) && value >= 0;
+	}
+	exports.isLength = isLength;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/predicate/isArrayLike.js
+var require_isArrayLike$5 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isLength = require_isLength$1();
+	/**
+	* Checks if `value` is array-like.
+	*
+	* @param {any} value The value to check.
+	* @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	*
+	* @example
+	* isArrayLike([1, 2, 3]); // true
+	* isArrayLike('abc'); // true
+	* isArrayLike({ 0: 'a', length: 1 }); // true
+	* isArrayLike({}); // false
+	* isArrayLike(null); // false
+	* isArrayLike(undefined); // false
+	*/
+	function isArrayLike(value) {
+		return value != null && typeof value !== "function" && require_isLength.isLength(value.length);
+	}
+	exports.isArrayLike = isArrayLike;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/predicate/isObjectLike.js
+var require_isObjectLike$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Checks if the given value is object-like.
+	*
+	* A value is object-like if its type is object and it is not null.
+	*
+	* This function can also serve as a type predicate in TypeScript, narrowing the type of the argument to an object-like value.
+	*
+	* @param {any} value - The value to test if it is an object-like.
+	* @returns {boolean} `true` if the value is an object-like, `false` otherwise.
+	*
+	* @example
+	* const value1 = { a: 1 };
+	* const value2 = [1, 2, 3];
+	* const value3 = 'abc';
+	* const value4 = () => {};
+	* const value5 = null;
+	*
+	* console.log(isObjectLike(value1)); // true
+	* console.log(isObjectLike(value2)); // true
+	* console.log(isObjectLike(value3)); // false
+	* console.log(isObjectLike(value4)); // false
+	* console.log(isObjectLike(value5)); // false
+	*/
+	function isObjectLike(value) {
+		return typeof value === "object" && value !== null;
+	}
+	exports.isObjectLike = isObjectLike;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/predicate/isArrayLikeObject.js
+var require_isArrayLikeObject$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isArrayLike$4 = require_isArrayLike$5();
+	var require_isObjectLike = require_isObjectLike$1();
+	/**
+	* Checks if the given value is a non-primitive, array-like object.
+	*
+	* @param {any} value The value to check.
+	* @returns {boolean} `true` if the value is a non-primitive, array-like object, `false` otherwise.
+	*
+	* @example
+	* isArrayLikeObject([1, 2, 3]); // true
+	* isArrayLikeObject({ 0: 'a', length: 1 }); // true
+	* isArrayLikeObject('abc'); // false
+	* isArrayLikeObject(()=>{}); // false
+	*/
+	function isArrayLikeObject(value) {
+		return require_isObjectLike.isObjectLike(value) && require_isArrayLike$4.isArrayLike(value);
+	}
+	exports.isArrayLikeObject = isArrayLikeObject;
+}));
+//#endregion
 //#region node_modules/es-toolkit/dist/compat/array/uniqBy.js
-var require_uniqBy$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var uniqBy$1 = require_uniqBy$2();
-	var ary = require_ary();
-	var identity = require_identity();
-	var isArrayLikeObject = require_isArrayLikeObject();
-	var iteratee = require_iteratee();
-	function uniqBy(array, iteratee$1 = identity.identity) {
-		if (!isArrayLikeObject.isArrayLikeObject(array)) return [];
-		return uniqBy$1.uniqBy(Array.from(array), ary.ary(iteratee.iteratee(iteratee$1), 1));
+var require_uniqBy$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_uniqBy$1 = require_uniqBy$3();
+	var require_ary = require_ary$1();
+	var require_identity$2 = require_identity$4();
+	var require_iteratee$3 = require_iteratee$4();
+	var require_isArrayLikeObject = require_isArrayLikeObject$1();
+	function uniqBy(array, iteratee$1 = require_identity$2.identity) {
+		if (!require_isArrayLikeObject.isArrayLikeObject(array)) return [];
+		return require_uniqBy$1.uniqBy(Array.from(array), require_ary.ary(require_iteratee$3.iteratee(iteratee$1), 1));
 	}
 	exports.uniqBy = uniqBy;
 }));
 //#endregion
 //#region node_modules/recharts/es6/util/payload/getUniqPayload.js
 var import_uniqBy = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
-	module.exports = require_uniqBy$1().uniqBy;
+	module.exports = require_uniqBy$2().uniqBy;
 })))());
 /**
 * This is configuration option that decides how to filter for unique values only:
@@ -3323,7 +4063,7 @@ var import_with_selector$1 = (/* @__PURE__ */ __commonJSMin(((exports, module) =
 *
 * https://react-redux.js.org/using-react-redux/accessing-store#providing-custom-context
 */
-var RechartsReduxContext = /* @__PURE__ */ (0, import_react.createContext)(null);
+var RechartsReduxContext = /*#__PURE__*/ (0, import_react.createContext)(null);
 //#endregion
 //#region node_modules/recharts/es6/state/hooks.js
 var noopDispatch = (a) => a;
@@ -3604,9 +4344,57 @@ var createStructuredSelector = Object.assign((inputSelectorsObject, selectorCrea
 	});
 }, { withTypes: () => createStructuredSelector });
 //#endregion
+//#region node_modules/es-toolkit/dist/array/flatten.js
+var require_flatten$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Flattens an array up to the specified depth.
+	*
+	* @template T - The type of elements within the array.
+	* @template D - The depth to which the array should be flattened.
+	* @param {T[]} arr - The array to flatten.
+	* @param {D} depth - The depth level specifying how deep a nested array structure should be flattened. Defaults to 1.
+	* @returns {Array<FlatArray<T[], D>>} A new array that has been flattened.
+	*
+	* @example
+	* const arr = flatten([1, [2, 3], [4, [5, 6]]], 1);
+	* // Returns: [1, 2, 3, 4, [5, 6]]
+	*
+	* const arr = flatten([1, [2, 3], [4, [5, 6]]], 2);
+	* // Returns: [1, 2, 3, 4, 5, 6]
+	*/
+	function flatten(arr, depth = 1) {
+		const result = [];
+		const flooredDepth = Math.floor(depth);
+		const recursive = (arr, currentDepth) => {
+			for (let i = 0; i < arr.length; i++) {
+				const item = arr[i];
+				if (Array.isArray(item) && currentDepth < flooredDepth) recursive(item, currentDepth + 1);
+				else result.push(item);
+			}
+		};
+		recursive(arr, 0);
+		return result;
+	}
+	exports.flatten = flatten;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/_internal/isIterateeCall.js
+var require_isIterateeCall$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isEqualsSameValueZero = require_isEqualsSameValueZero$2();
+	require_eq();
+	var require_isArrayLike$3 = require_isArrayLike$5();
+	var require_isObject = require_isObject$2();
+	var require_isIndex = require_isIndex$2();
+	function isIterateeCall(value, index, object) {
+		if (!require_isObject.isObject(object)) return false;
+		if (typeof index === "number" && require_isArrayLike$3.isArrayLike(object) && require_isIndex.isIndex(index) && index < object.length || typeof index === "string" && index in object) return require_isEqualsSameValueZero.isEqualsSameValueZero(object[index], value);
+		return false;
+	}
+	exports.isIterateeCall = isIterateeCall;
+}));
+//#endregion
 //#region node_modules/es-toolkit/dist/compat/_internal/compareValues.js
-var require_compareValues = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_compareValues$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	function getPriority(a) {
 		if (typeof a === "symbol") return 1;
 		if (a === null) return 2;
@@ -3630,8 +4418,21 @@ var require_compareValues = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/predicate/isSymbol.js
-var require_isSymbol = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_isSymbol$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Check whether a value is a symbol.
+	*
+	* This function can also serve as a type predicate in TypeScript, narrowing the type of the argument to `symbol`.
+	*
+	* @param {unknown} value The value to check.
+	* @returns {value is symbol} Returns `true` if `value` is a symbol, else `false`.
+	* @example
+	* isSymbol(Symbol.iterator);
+	* // => true
+	*
+	* isSymbol('abc');
+	* // => false
+	*/
 	function isSymbol(value) {
 		return typeof value === "symbol" || value instanceof Symbol;
 	}
@@ -3639,25 +4440,69 @@ var require_isSymbol = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/_internal/isKey.js
-var require_isKey = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isSymbol = require_isSymbol();
+var require_isKey$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isSymbol$1 = require_isSymbol$2();
+	/**  Matches any deep property path. (e.g. `a.b[0].c`)*/
 	var regexIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/;
+	/**  Matches any word character (alphanumeric & underscore).*/
 	var regexIsPlainProp = /^\w*$/;
+	/**
+	* Checks if `value` is a property name and not a property path. (It's ok that the `value` is not in the keys of the `object`)
+	* @param {unknown} value The value to check.
+	* @param {unknown} object The object to query.
+	* @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+	*
+	* @example
+	* isKey('a', { a: 1 });
+	* // => true
+	*
+	* isKey('a.b', { a: { b: 2 } });
+	* // => false
+	*/
 	function isKey(value, object) {
 		if (Array.isArray(value)) return false;
-		if (typeof value === "number" || typeof value === "boolean" || value == null || isSymbol.isSymbol(value)) return true;
+		if (typeof value === "number" || typeof value === "boolean" || value == null || require_isSymbol$1.isSymbol(value)) return true;
 		return typeof value === "string" && (regexIsPlainProp.test(value) || !regexIsDeepProp.test(value)) || object != null && Object.hasOwn(object, value);
 	}
 	exports.isKey = isKey;
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/array/orderBy.js
-var require_orderBy = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var compareValues = require_compareValues();
-	var isKey = require_isKey();
-	var toPath = require_toPath();
+var require_orderBy$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_toPath$1 = require_toPath$4();
+	var require_compareValues = require_compareValues$1();
+	var require_isKey = require_isKey$1();
+	/**
+	* Sorts an array of objects based on multiple properties and their corresponding order directions.
+	*
+	* This function takes an array of objects, an array of criteria to sort by, and an array of order directions.
+	* It returns the sorted array, ordering by each key according to its corresponding direction ('asc' for ascending or 'desc' for descending).
+	* If values for a key are equal, it moves to the next key to determine the order.
+	*
+	* @template T - The type of elements in the array.
+	* @param {ArrayLike<T> | object | null | undefined} collection - The array of objects to be sorted.
+	* @param {Criterion<T> | Array<Criterion<T>>} criteria - An array of criteria (property names or property paths or custom key functions) to sort by.
+	* @param {unknown | unknown[]} orders - An array of order directions ('asc' for ascending or 'desc' for descending).
+	* @param {unknown} [guard] Enables use as an iteratee for methods like `_.reduce`.
+	* @returns {T[]} - The sorted array.
+	*
+	* @example
+	* // Sort an array of objects by 'user' in ascending order and 'age' in descending order.
+	* const users = [
+	*   { user: 'fred', age: 48 },
+	*   { user: 'barney', age: 34 },
+	*   { user: 'fred', age: 40 },
+	*   { user: 'barney', age: 36 },
+	* ];
+	* const result = orderBy(users, ['user', (item) => item.age], ['asc', 'desc']);
+	* // result will be:
+	* // [
+	* //   { user: 'barney', age: 36 },
+	* //   { user: 'barney', age: 34 },
+	* //   { user: 'fred', age: 48 },
+	* //   { user: 'fred', age: 40 },
+	* // ]
+	*/
 	function orderBy(collection, criteria, orders, guard) {
 		if (collection == null) return [];
 		orders = guard ? void 0 : orders;
@@ -3684,10 +4529,10 @@ var require_orderBy = /* @__PURE__ */ __commonJSMin(((exports) => {
 		};
 		const preparedCriteria = criteria.map((criterion) => {
 			if (Array.isArray(criterion) && criterion.length === 1) criterion = criterion[0];
-			if (criterion == null || typeof criterion === "function" || Array.isArray(criterion) || isKey.isKey(criterion)) return criterion;
+			if (criterion == null || typeof criterion === "function" || Array.isArray(criterion) || require_isKey.isKey(criterion)) return criterion;
 			return {
 				key: criterion,
-				path: toPath.toPath(criterion)
+				path: require_toPath$1.toPath(criterion)
 			};
 		});
 		return collection.map((item) => ({
@@ -3695,7 +4540,7 @@ var require_orderBy = /* @__PURE__ */ __commonJSMin(((exports) => {
 			criteria: preparedCriteria.map((criterion) => getValueByCriterion(criterion, item))
 		})).slice().sort((a, b) => {
 			for (let i = 0; i < preparedCriteria.length; i++) {
-				const comparedResult = compareValues.compareValues(a.criteria[i], b.criteria[i], orders[i]);
+				const comparedResult = require_compareValues.compareValues(a.criteria[i], b.criteria[i], orders[i]);
 				if (comparedResult !== 0) return comparedResult;
 			}
 			return 0;
@@ -3704,51 +4549,16 @@ var require_orderBy = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.orderBy = orderBy;
 }));
 //#endregion
-//#region node_modules/es-toolkit/dist/array/flatten.js
-var require_flatten$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	function flatten(arr, depth = 1) {
-		const result = [];
-		const flooredDepth = Math.floor(depth);
-		const recursive = (arr, currentDepth) => {
-			for (let i = 0; i < arr.length; i++) {
-				const item = arr[i];
-				if (Array.isArray(item) && currentDepth < flooredDepth) recursive(item, currentDepth + 1);
-				else result.push(item);
-			}
-		};
-		recursive(arr, 0);
-		return result;
-	}
-	exports.flatten = flatten;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/_internal/isIterateeCall.js
-var require_isIterateeCall = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isIndex = require_isIndex();
-	var isArrayLike = require_isArrayLike();
-	var isObject = require_isObject();
-	var isEqualsSameValueZero = require_isEqualsSameValueZero();
-	function isIterateeCall(value, index, object) {
-		if (!isObject.isObject(object)) return false;
-		if (typeof index === "number" && isArrayLike.isArrayLike(object) && isIndex.isIndex(index) && index < object.length || typeof index === "string" && index in object) return isEqualsSameValueZero.isEqualsSameValueZero(object[index], value);
-		return false;
-	}
-	exports.isIterateeCall = isIterateeCall;
-}));
-//#endregion
 //#region node_modules/es-toolkit/dist/compat/array/sortBy.js
 var require_sortBy$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var orderBy = require_orderBy();
-	var flatten = require_flatten$1();
-	var isIterateeCall = require_isIterateeCall();
+	var require_flatten$2 = require_flatten$3();
+	var require_isIterateeCall$1 = require_isIterateeCall$2();
+	var require_orderBy = require_orderBy$1();
 	function sortBy(collection, ...criteria) {
 		const length = criteria.length;
-		if (length > 1 && isIterateeCall.isIterateeCall(collection, criteria[0], criteria[1])) criteria = [];
-		else if (length > 2 && isIterateeCall.isIterateeCall(criteria[0], criteria[1], criteria[2])) criteria = [criteria[0]];
-		return orderBy.orderBy(collection, flatten.flatten(criteria), ["asc"]);
+		if (length > 1 && require_isIterateeCall$1.isIterateeCall(collection, criteria[0], criteria[1])) criteria = [];
+		else if (length > 2 && require_isIterateeCall$1.isIterateeCall(criteria[0], criteria[1], criteria[2])) criteria = [criteria[0]];
+		return require_orderBy.orderBy(collection, require_flatten$2.flatten(criteria), ["asc"]);
 	}
 	exports.sortBy = sortBy;
 }));
@@ -3823,7 +4633,7 @@ function useElementOffset() {
 }
 //#endregion
 //#region node_modules/redux/dist/redux.mjs
-var symbol_observable_default = typeof Symbol === "function" && Symbol.observable || "@@observable";
+var symbol_observable_default = /* @__PURE__ */ (() => typeof Symbol === "function" && Symbol.observable || "@@observable")();
 var randomString = () => Math.random().toString(36).substring(7).split("").join(".");
 var actionTypes_default = {
 	INIT: `@@redux/INIT${/* @__PURE__ */ randomString()}`,
@@ -3945,6 +4755,14 @@ function createStore(reducer, preloadedState, enhancer) {
 	function observable() {
 		const outerSubscribe = subscribe;
 		return {
+			/**
+			* The minimal observable subscription method.
+			* @param observer Any object that can be used as an observer.
+			* The observer object should have a `next` method.
+			* @returns An object with an `unsubscribe` method that can
+			* be used to unsubscribe the observable from the store, and prevent further
+			* emission of values from the observable.
+			*/
 			subscribe(observer) {
 				if (typeof observer !== "object" || observer === null) throw new Error(`Expected the observer to be an object. Instead, received: '${kindOf(observer)}'`);
 				function observeState() {
@@ -4752,7 +5570,7 @@ function isActionCreator(action) {
 function getMessage(type) {
 	const splitType = type ? `${type}`.split("/") : [];
 	const actionName = splitType[splitType.length - 1] || "actionCreator";
-	return `Detected an action creator with type "${type || "unknown"}" being dispatched. 
+	return `Detected an action creator with type "${type || "unknown"}" being dispatched.
 Make sure you're calling the action creator before dispatching, i.e. \`dispatch(${actionName}())\` instead of \`dispatch(${actionName})\`. This is necessary even if the action has no payload.`;
 }
 function createActionCreatorInvariantMiddleware(options = {}) {
@@ -5011,13 +5829,27 @@ var createQueueWithTimer = (timeout) => {
 		setTimeout(notify, timeout);
 	};
 };
+var createRafWithFallbackTimer = (raf, timeout) => {
+	return (notify) => {
+		let called = false;
+		const callback = () => {
+			if (called) return;
+			called = true;
+			cancelAnimationFrame(rafId);
+			clearTimeout(timerId);
+			notify();
+		};
+		const rafId = raf(callback);
+		const timerId = setTimeout(callback, timeout);
+	};
+};
 var autoBatchEnhancer = (options = { type: "raf" }) => (next) => (...args) => {
 	const store = next(...args);
 	let notifying = true;
 	let shouldNotifyAtEndOfTick = false;
 	let notificationQueued = false;
 	const listeners = /* @__PURE__ */ new Set();
-	const queueCallback = options.type === "tick" ? queueMicrotask : options.type === "raf" ? typeof window !== "undefined" && window.requestAnimationFrame ? window.requestAnimationFrame : createQueueWithTimer(10) : options.type === "callback" ? options.queueNotification : createQueueWithTimer(options.timeout);
+	const queueCallback = options.type === "tick" ? queueMicrotask : options.type === "raf" ? typeof window !== "undefined" && window.requestAnimationFrame ? createRafWithFallbackTimer(window.requestAnimationFrame, 100) : createQueueWithTimer(10) : options.type === "callback" ? options.queueNotification : createQueueWithTimer(options.timeout);
 	const notifyListeners = () => {
 		notificationQueued = false;
 		if (shouldNotifyAtEndOfTick) {
@@ -5390,6 +6222,7 @@ var TaskAbortError = class {
 		this.code = code;
 		this.message = `${task} ${cancelled} (reason: ${code})`;
 	}
+	code;
 	name = "TaskAbortError";
 	message;
 };
@@ -5511,7 +6344,7 @@ var createTakePattern = (startListening, signal) => {
 			unsubscribe();
 		}
 	};
-	return (predicate, timeout) => catchRejection(take(predicate, timeout));
+	return ((predicate, timeout) => catchRejection(take(predicate, timeout)));
 };
 var getListenerEntryPropsFrom = (options) => {
 	let { type, actionCreator, matcher, predicate, effect } = options;
@@ -5595,9 +6428,9 @@ var createListenerMiddleware = (middlewareOptions = {}) => {
 			if (cancelOptions?.cancelActive) cancelActiveListeners(entry);
 		};
 	};
-	const startListening = (options) => {
+	const startListening = ((options) => {
 		return insertEntry(findListenerEntry(listenerMap, options) ?? createListenerEntry(options));
-	};
+	});
 	assign(startListening, { withTypes: () => startListening });
 	const stopListening = (options) => {
 		const entry = findListenerEntry(listenerMap, options);
@@ -6299,11 +7132,11 @@ var selectAxisViewBox = createSelector(selectChartWidth, selectChartHeight, (wid
 }));
 //#endregion
 //#region node_modules/recharts/es6/context/PanoramaContext.js
-var PanoramaContext = /* @__PURE__ */ (0, import_react.createContext)(null);
+var PanoramaContext = /*#__PURE__*/ (0, import_react.createContext)(null);
 var useIsPanorama = () => (0, import_react.useContext)(PanoramaContext) != null;
 var PanoramaContextProvider = (_ref) => {
 	var { children } = _ref;
-	return /* @__PURE__ */ import_react.createElement(PanoramaContext.Provider, { value: true }, children);
+	return /*#__PURE__*/ import_react.createElement(PanoramaContext.Provider, { value: true }, children);
 };
 //#endregion
 //#region node_modules/recharts/es6/state/selectors/brushSelectors.js
@@ -6320,8 +7153,42 @@ var selectBrushDimensions = createSelector([
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/function/debounce.js
-var require_debounce$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_debounce$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Creates a debounced function that delays invoking the provided function until after `debounceMs` milliseconds
+	* have elapsed since the last time the debounced function was invoked. The debounced function also has a `cancel`
+	* method to cancel any pending execution.
+	*
+	* @template F - The type of function.
+	* @param {F} func - The function to debounce.
+	* @param {number} debounceMs - The number of milliseconds to delay.
+	* @param {DebounceOptions} options - The options object
+	* @param {AbortSignal} options.signal - An optional AbortSignal to cancel the debounced function.
+	* @returns A new debounced function with a `cancel` method.
+	*
+	* @example
+	* const debouncedFunction = debounce(() => {
+	*   console.log('Function executed');
+	* }, 1000);
+	*
+	* // Will log 'Function executed' after 1 second if not called again in that time
+	* debouncedFunction();
+	*
+	* // Will not log anything as the previous call is canceled
+	* debouncedFunction.cancel();
+	*
+	* // With AbortSignal
+	* const controller = new AbortController();
+	* const signal = controller.signal;
+	* const debouncedWithSignal = debounce(() => {
+	*  console.log('Function executed');
+	* }, 1000, { signal });
+	*
+	* debouncedWithSignal();
+	*
+	* // Will cancel the debounced function call
+	* controller.abort();
+	*/
 	function debounce(func, debounceMs, { signal, edges } = {}) {
 		let pendingThis = void 0;
 		let pendingArgs = null;
@@ -6378,9 +7245,8 @@ var require_debounce$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/function/debounce.js
-var require_debounce = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var debounce$1 = require_debounce$1();
+var require_debounce$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_debounce$1 = require_debounce$3();
 	function debounce(func, debounceMs = 0, options = {}) {
 		if (typeof options !== "object") options = {};
 		const { leading = false, trailing = true, maxWait } = options;
@@ -6389,7 +7255,7 @@ var require_debounce = /* @__PURE__ */ __commonJSMin(((exports) => {
 		if (trailing) edges[1] = "trailing";
 		let result = void 0;
 		let pendingAt = null;
-		const _debounced = debounce$1.debounce(function(...args) {
+		const _debounced = require_debounce$1.debounce(function(...args) {
 			result = func.apply(this, args);
 			pendingAt = null;
 		}, debounceMs, { edges });
@@ -6420,11 +7286,40 @@ var require_debounce = /* @__PURE__ */ __commonJSMin(((exports) => {
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/function/throttle.js
 var require_throttle$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var debounce = require_debounce();
+	var require_debounce = require_debounce$2();
+	/**
+	* Creates a throttled function that only invokes the provided function at most once
+	* per every `throttleMs` milliseconds. Subsequent calls to the throttled function
+	* within the wait time will not trigger the execution of the original function.
+	*
+	* @template F - The type of function.
+	* @param {F} func - The function to throttle.
+	* @param {number} throttleMs - The number of milliseconds to throttle executions to.
+	* @param {ThrottleOptions} options - The options object
+	* @param {AbortSignal} options.signal - An optional AbortSignal to cancel the throttled function.
+	* @param {boolean} options.leading - If `true`, the function will be invoked on the leading edge of the timeout.
+	* @param {boolean} options.trailing - If `true`, the function will be invoked on the trailing edge of the timeout.
+	* @returns {(...args: Parameters<F>) => void} A new throttled function that accepts the same parameters as the original function.
+	*
+	* @example
+	* const throttledFunction = throttle(() => {
+	*   console.log('Function executed');
+	* }, 1000);
+	*
+	* // Will log 'Function executed' immediately
+	* throttledFunction();
+	*
+	* // Will not log anything as it is within the throttle time
+	* throttledFunction();
+	*
+	* // After 1 second
+	* setTimeout(() => {
+	*   throttledFunction(); // Will log 'Function executed'
+	* }, 1000);
+	*/
 	function throttle(func, throttleMs = 0, options = {}) {
 		const { leading = true, trailing = true } = options;
-		return debounce.debounce(func, throttleMs, {
+		return require_debounce.debounce(func, throttleMs, {
 			leading,
 			maxWait: throttleMs,
 			trailing
@@ -6580,7 +7475,7 @@ function _toPrimitive$67(t, r) {
 	}
 	return ("string" === r ? String : Number)(t);
 }
-var ResponsiveContainerContext = /* @__PURE__ */ (0, import_react.createContext)(defaultResponsiveContainerProps.initialDimension);
+var ResponsiveContainerContext = /*#__PURE__*/ (0, import_react.createContext)(defaultResponsiveContainerProps.initialDimension);
 function isAcceptableSize(size) {
 	return isPositiveNumber(size.width) && isPositiveNumber(size.height);
 }
@@ -6591,10 +7486,10 @@ function ResponsiveContainerContextProvider(_ref) {
 		height
 	}), [width, height]);
 	if (!isAcceptableSize(size)) return null;
-	return /* @__PURE__ */ import_react.createElement(ResponsiveContainerContext.Provider, { value: size }, children);
+	return /*#__PURE__*/ import_react.createElement(ResponsiveContainerContext.Provider, { value: size }, children);
 }
 var useResponsiveContainerContext = () => (0, import_react.useContext)(ResponsiveContainerContext);
-var SizeDetectorContainer = /* @__PURE__ */ (0, import_react.forwardRef)((_ref2, ref) => {
+var SizeDetectorContainer = /*#__PURE__*/ (0, import_react.forwardRef)((_ref2, ref) => {
 	var { aspect, initialDimension = defaultResponsiveContainerProps.initialDimension, width, height, minWidth = defaultResponsiveContainerProps.minWidth, minHeight, maxHeight, children, debounce = defaultResponsiveContainerProps.debounce, id, className, onResize, style = {} } = _ref2;
 	var containerRef = (0, import_react.useRef)(null);
 	var onResizeRef = (0, import_react.useRef)();
@@ -6646,7 +7541,7 @@ var SizeDetectorContainer = /* @__PURE__ */ (0, import_react.forwardRef)((_ref2,
 		maxHeight
 	});
 	warn(calculatedWidth != null && calculatedWidth > 0 || calculatedHeight != null && calculatedHeight > 0, "The width(%s) and height(%s) of chart should be greater than 0,\n       please check the style of container, or the props width(%s) and height(%s),\n       or add a minWidth(%s) or minHeight(%s) or use aspect(%s) to control the\n       height and width.", calculatedWidth, calculatedHeight, width, height, minWidth, minHeight, aspect);
-	return /* @__PURE__ */ import_react.createElement("div", {
+	return /*#__PURE__*/ import_react.createElement("div", {
 		id: id ? "".concat(id) : void 0,
 		className: clsx("recharts-responsive-container", className),
 		style: _objectSpread$65(_objectSpread$65({}, style), {}, {
@@ -6657,10 +7552,10 @@ var SizeDetectorContainer = /* @__PURE__ */ (0, import_react.forwardRef)((_ref2,
 			maxHeight
 		}),
 		ref: containerRef
-	}, /* @__PURE__ */ import_react.createElement("div", { style: getInnerDivStyle({
+	}, /*#__PURE__*/ import_react.createElement("div", { style: getInnerDivStyle({
 		width,
 		height
-	}) }, /* @__PURE__ */ import_react.createElement(ResponsiveContainerContextProvider, {
+	}) }, /*#__PURE__*/ import_react.createElement(ResponsiveContainerContextProvider, {
 		width: calculatedWidth,
 		height: calculatedHeight
 	}, children)));
@@ -6676,7 +7571,7 @@ var SizeDetectorContainer = /* @__PURE__ */ (0, import_react.forwardRef)((_ref2,
 *
 * @provides ResponsiveContainerContext
 */
-var ResponsiveContainer = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var ResponsiveContainer = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var responsiveContainerContext = useResponsiveContainerContext();
 	if (isPositiveNumber(responsiveContainerContext.width) && isPositiveNumber(responsiveContainerContext.height)) return props.children;
 	var { width, height } = getDefaultWidthAndHeight({
@@ -6690,11 +7585,11 @@ var ResponsiveContainer = /* @__PURE__ */ (0, import_react.forwardRef)((props, r
 		aspect: props.aspect,
 		maxHeight: props.maxHeight
 	});
-	if (isNumber(calculatedWidth) && isNumber(calculatedHeight)) return /* @__PURE__ */ import_react.createElement(ResponsiveContainerContextProvider, {
+	if (isNumber(calculatedWidth) && isNumber(calculatedHeight)) return /*#__PURE__*/ import_react.createElement(ResponsiveContainerContextProvider, {
 		width: calculatedWidth,
 		height: calculatedHeight
 	}, props.children);
-	return /* @__PURE__ */ import_react.createElement(SizeDetectorContainer, _extends$48({}, props, {
+	return /*#__PURE__*/ import_react.createElement(SizeDetectorContainer, _extends$48({}, props, {
 		width,
 		height,
 		ref
@@ -7878,9 +8773,9 @@ function LegendContent(props) {
 	var { contextPayload } = props, otherProps = _objectWithoutProperties$35(props, _excluded$35);
 	var finalPayload = getUniqPayload(contextPayload, props.payloadUniqBy, defaultUniqBy$1);
 	var contentProps = _objectSpread$64(_objectSpread$64({}, otherProps), {}, { payload: finalPayload });
-	if (/* @__PURE__ */ import_react.isValidElement(props.content)) return /* @__PURE__ */ import_react.cloneElement(props.content, contentProps);
-	if (typeof props.content === "function") return /* @__PURE__ */ import_react.createElement(props.content, contentProps);
-	return /* @__PURE__ */ import_react.createElement(DefaultLegendContent, contentProps);
+	if (/*#__PURE__*/ import_react.isValidElement(props.content)) return /*#__PURE__*/ import_react.cloneElement(props.content, contentProps);
+	if (typeof props.content === "function") return /*#__PURE__*/ import_react.createElement(props.content, contentProps);
+	return /*#__PURE__*/ import_react.createElement(DefaultLegendContent, contentProps);
 }
 function getDefaultPosition(style, props, margin, chartWidth, chartHeight, box) {
 	var { layout, align, verticalAlign } = props;
@@ -7947,26 +8842,26 @@ function LegendImpl(outsideProps) {
 	}, getDefaultPosition(wrapperStyle, props, margin, chartWidth, chartHeight, lastBoundingBox)), wrapperStyle);
 	var legendPortal = portalFromProps !== null && portalFromProps !== void 0 ? portalFromProps : legendPortalFromContext;
 	if (legendPortal == null || contextPayload == null) return null;
-	return /* @__PURE__ */ (0, import_react_dom.createPortal)(/* @__PURE__ */ import_react.createElement("div", {
+	return /*#__PURE__*/ (0, import_react_dom.createPortal)(/* @__PURE__ */ import_react.createElement("div", {
 		className: "recharts-legend-wrapper",
 		style: outerStyle,
 		ref: updateBoundingBox
-	}, /* @__PURE__ */ import_react.createElement(LegendSettingsDispatcher, {
+	}, /*#__PURE__*/ import_react.createElement(LegendSettingsDispatcher, {
 		layout: props.layout,
 		align: props.align,
 		verticalAlign: props.verticalAlign,
 		itemSorter: props.itemSorter
-	}), !portalFromProps && /* @__PURE__ */ import_react.createElement(LegendSizeDispatcher, {
+	}), !portalFromProps && /*#__PURE__*/ import_react.createElement(LegendSizeDispatcher, {
 		width: lastBoundingBox.width,
 		height: lastBoundingBox.height
-	}), /* @__PURE__ */ import_react.createElement(LegendContent, _extends$47({}, props, widthOrHeight, {
+	}), /*#__PURE__*/ import_react.createElement(LegendContent, _extends$47({}, props, widthOrHeight, {
 		margin,
 		chartWidth,
 		chartHeight,
 		contextPayload
 	}))), legendPortal);
 }
-var Legend = /* @__PURE__ */ import_react.memo(LegendImpl, propsAreEqual);
+var Legend = /*#__PURE__*/ import_react.memo(LegendImpl, propsAreEqual);
 Legend.displayName = "Legend";
 //#endregion
 //#region node_modules/recharts/es6/component/DefaultTooltipContent.js
@@ -8068,7 +8963,7 @@ var DefaultTooltipContent = (props) => {
 				margin: 0
 			};
 			var items = lodashLikeSortBy(payload, itemSorter).map((entry, i) => {
-				if (entry.type === "none") return null;
+				if (!entry || entry.type === "none") return null;
 				var finalFormatter = entry.formatter || formatter || defaultFormatter;
 				var { value, name } = entry;
 				var finalValue = value;
@@ -8080,13 +8975,13 @@ var DefaultTooltipContent = (props) => {
 					else return null;
 				}
 				var finalItemStyle = _objectSpread$63(_objectSpread$63({}, defaultDefaultTooltipContentProps.itemStyle), {}, { color: entry.color || defaultDefaultTooltipContentProps.itemStyle.color }, itemStyle);
-				return /* @__PURE__ */ import_react.createElement("li", {
+				return /*#__PURE__*/ import_react.createElement("li", {
 					className: "recharts-tooltip-item",
 					key: "tooltip-item-".concat(i),
 					style: finalItemStyle
-				}, isNumOrStr(finalName) ? /* @__PURE__ */ import_react.createElement("span", { className: "recharts-tooltip-item-name" }, finalName) : null, isNumOrStr(finalName) ? /* @__PURE__ */ import_react.createElement("span", { className: "recharts-tooltip-item-separator" }, separator) : null, /* @__PURE__ */ import_react.createElement("span", { className: "recharts-tooltip-item-value" }, finalValue), /* @__PURE__ */ import_react.createElement("span", { className: "recharts-tooltip-item-unit" }, entry.unit || ""));
+				}, isNumOrStr(finalName) ? /*#__PURE__*/ import_react.createElement("span", { className: "recharts-tooltip-item-name" }, finalName) : null, isNumOrStr(finalName) ? /*#__PURE__*/ import_react.createElement("span", { className: "recharts-tooltip-item-separator" }, separator) : null, /*#__PURE__*/ import_react.createElement("span", { className: "recharts-tooltip-item-value" }, finalValue), /*#__PURE__*/ import_react.createElement("span", { className: "recharts-tooltip-item-unit" }, entry.unit || ""));
 			});
-			return /* @__PURE__ */ import_react.createElement("ul", {
+			return /*#__PURE__*/ import_react.createElement("ul", {
 				className: "recharts-tooltip-item-list",
 				style: listStyle
 			}, items);
@@ -8104,13 +8999,13 @@ var DefaultTooltipContent = (props) => {
 		role: "status",
 		"aria-live": "assertive"
 	} : {};
-	return /* @__PURE__ */ import_react.createElement("div", _extends$46({
+	return /*#__PURE__*/ import_react.createElement("div", _extends$46({
 		className: wrapperCN,
 		style: finalStyle
-	}, accessibilityAttributes), /* @__PURE__ */ import_react.createElement("p", {
+	}, accessibilityAttributes), /*#__PURE__*/ import_react.createElement("p", {
 		className: labelCN,
 		style: finalLabelStyle
-	}, /* @__PURE__ */ import_react.isValidElement(finalLabel) ? finalLabel : "".concat(finalLabel)), renderContent());
+	}, /*#__PURE__*/ import_react.isValidElement(finalLabel) ? finalLabel : "".concat(finalLabel)), renderContent());
 };
 //#endregion
 //#region node_modules/recharts/es6/util/tooltip/translate.js
@@ -8323,7 +9218,7 @@ function TooltipBoundingBoxImpl(props) {
 		top: 0,
 		left: 0
 	})), {}, { visibility: !state.dismissed && props.active && props.hasPayload ? "visible" : "hidden" }, props.wrapperStyle);
-	return /* @__PURE__ */ import_react.createElement("div", {
+	return /*#__PURE__*/ import_react.createElement("div", {
 		xmlns: "http://www.w3.org/1999/xhtml",
 		tabIndex: -1,
 		className: cssClasses,
@@ -8331,7 +9226,7 @@ function TooltipBoundingBoxImpl(props) {
 		ref: props.innerRef
 	}, props.children);
 }
-var TooltipBoundingBox = /* @__PURE__ */ import_react.memo(TooltipBoundingBoxImpl);
+var TooltipBoundingBox = /*#__PURE__*/ import_react.memo(TooltipBoundingBoxImpl);
 //#endregion
 //#region node_modules/recharts/es6/context/accessibilityContext.js
 var useAccessibilityLayer = () => {
@@ -8466,7 +9361,7 @@ var Curve = (props) => {
 		connectNulls: props.connectNulls
 	};
 	var realPath = points && points.length ? getPath$1(getPathInput) : path;
-	return /* @__PURE__ */ import_react.createElement("path", _extends$45({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
+	return /*#__PURE__*/ import_react.createElement("path", _extends$45({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
 		className: clsx("recharts-curve", className),
 		d: realPath === null ? void 0 : realPath,
 		ref: pathRef
@@ -8570,7 +9465,7 @@ var Cross = (_ref) => {
 		height
 	}, rest);
 	if (!isNumber(x) || !isNumber(y) || !isNumber(width) || !isNumber(height) || !isNumber(top) || !isNumber(left)) return null;
-	return /* @__PURE__ */ import_react.createElement("path", _extends$44({}, svgPropertiesAndEvents(props), {
+	return /*#__PURE__*/ import_react.createElement("path", _extends$44({}, svgPropertiesAndEvents(props), {
 		className: clsx("recharts-cross", className),
 		d: getPath(x, y, width, height, top, left)
 	}));
@@ -8995,7 +9890,7 @@ function createDefaultAnimationManager() {
 }
 //#endregion
 //#region node_modules/recharts/es6/animation/useAnimationManager.js
-var AnimationManagerContext = /* @__PURE__ */ (0, import_react.createContext)(createDefaultAnimationManager);
+var AnimationManagerContext = /*#__PURE__*/ (0, import_react.createContext)(createDefaultAnimationManager);
 function useAnimationManager(animationId, animationManagerFromProps) {
 	var contextAnimationManager = (0, import_react.useContext)(AnimationManagerContext);
 	return (0, import_react.useMemo)(() => animationManagerFromProps !== null && animationManagerFromProps !== void 0 ? animationManagerFromProps : contextAnimationManager(animationId), [
@@ -9339,7 +10234,7 @@ var Rectangle = (rectangleProps) => {
 	var layerClass = clsx("recharts-rectangle", className);
 	if (!isUpdateAnimationActive) {
 		var _svgPropertiesAndEven = svgPropertiesAndEvents(props), { radius: _ } = _svgPropertiesAndEven, otherPathProps = _objectWithoutProperties$33(_svgPropertiesAndEven, _excluded$33);
-		return /* @__PURE__ */ import_react.createElement("path", _extends$43({}, otherPathProps, {
+		return /*#__PURE__*/ import_react.createElement("path", _extends$43({}, otherPathProps, {
 			x: round(x),
 			y: round(y),
 			width: round(width),
@@ -9356,7 +10251,7 @@ var Rectangle = (rectangleProps) => {
 	var from = "0px ".concat(totalLength === -1 ? 1 : totalLength, "px");
 	var to = "".concat(totalLength, "px ").concat(totalLength, "px");
 	var transition = getTransitionVal(["strokeDasharray"], animationDuration, typeof animationEasing === "string" ? animationEasing : defaultRectangleProps.animationEasing);
-	return /* @__PURE__ */ import_react.createElement(JavascriptAnimate, {
+	return /*#__PURE__*/ import_react.createElement(JavascriptAnimate, {
 		animationId,
 		key: animationId,
 		canBegin: totalLength > 0,
@@ -9383,7 +10278,7 @@ var Rectangle = (rectangleProps) => {
 		};
 		else animationStyle = { strokeDasharray: from };
 		var _svgPropertiesAndEven2 = svgPropertiesAndEvents(props), { radius: _ } = _svgPropertiesAndEven2, otherPathProps = _objectWithoutProperties$33(_svgPropertiesAndEven2, _excluded2$17);
-		return /* @__PURE__ */ import_react.createElement("path", _extends$43({}, otherPathProps, {
+		return /*#__PURE__*/ import_react.createElement("path", _extends$43({}, otherPathProps, {
 			radius: typeof radius === "number" ? radius : void 0,
 			className: layerClass,
 			d: getRectanglePath(currX, currY, currWidth, currHeight, radius),
@@ -9773,7 +10668,7 @@ var Sector = (sectorProps) => {
 		startAngle,
 		endAngle
 	});
-	return /* @__PURE__ */ import_react.createElement("path", _extends$42({}, svgPropertiesAndEvents(props), {
+	return /*#__PURE__*/ import_react.createElement("path", _extends$42({}, svgPropertiesAndEvents(props), {
 		className: layerClass,
 		d: path
 	}));
@@ -9813,23 +10708,51 @@ function getCursorPoints(layout, activeCoordinate, offset) {
 }
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/util/toNumber.js
-var require_toNumber = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isSymbol = require_isSymbol();
+var require_toNumber$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isSymbol = require_isSymbol$2();
+	/**
+	* Converts `value` to a number.
+	*
+	* Unlike `Number()`, this function returns `NaN` for symbols.
+	*
+	* @param {unknown} value - The value to convert.
+	* @returns {number} Returns the number.
+	*
+	* @example
+	* toNumber(3.2); // => 3.2
+	* toNumber(Number.MIN_VALUE); // => 5e-324
+	* toNumber(Infinity); // => Infinity
+	* toNumber('3.2'); // => 3.2
+	* toNumber(Symbol.iterator); // => NaN
+	* toNumber(NaN); // => NaN
+	*/
 	function toNumber(value) {
-		if (isSymbol.isSymbol(value)) return NaN;
+		if (require_isSymbol.isSymbol(value)) return NaN;
 		return Number(value);
 	}
 	exports.toNumber = toNumber;
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/util/toFinite.js
-var require_toFinite = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var toNumber = require_toNumber();
+var require_toFinite$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_toNumber = require_toNumber$1();
+	/**
+	* Converts `value` to a finite number.
+	*
+	* @param {unknown} value - The value to convert.
+	* @returns {number} Returns the number.
+	*
+	* @example
+	* toFinite(3.2); // => 3.2
+	* toFinite(Number.MIN_VALUE); // => 5e-324
+	* toFinite(Infinity); // => 1.7976931348623157e+308
+	* toFinite('3.2'); // => 3.2
+	* toFinite(Symbol.iterator); // => 0
+	* toFinite(NaN); // => 0
+	*/
 	function toFinite(value) {
 		if (!value) return value === 0 ? value : 0;
-		value = toNumber.toNumber(value);
+		value = require_toNumber.toNumber(value);
 		if (value === Infinity || value === -Infinity) return (value < 0 ? -1 : 1) * Number.MAX_VALUE;
 		return value === value ? value : 0;
 	}
@@ -9838,17 +10761,32 @@ var require_toFinite = /* @__PURE__ */ __commonJSMin(((exports) => {
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/math/range.js
 var require_range$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isIterateeCall = require_isIterateeCall();
-	var toFinite = require_toFinite();
+	var require_toFinite$1 = require_toFinite$2();
+	var require_isIterateeCall = require_isIterateeCall$2();
+	/**
+	* Returns an array of numbers from `start` (inclusive) to `end` (exclusive), incrementing by `step`.
+	*
+	* @param {number} start - The starting number of the range (inclusive).
+	* @param {number} end - The end number of the range (exclusive).
+	* @param {number} step - The step value for the range.
+	* @returns {number[]} An array of numbers from `start` (inclusive) to `end` (exclusive) with the specified `step`.
+	*
+	* @example
+	* // Returns [0, 1, 2, 3]
+	* range(4);
+	*
+	* @example
+	* // Returns [0, -1, -2, -3]
+	* range(0, -4, -1);
+	*/
 	function range(start, end, step) {
-		if (step && typeof step !== "number" && isIterateeCall.isIterateeCall(start, end, step)) end = step = void 0;
-		start = toFinite.toFinite(start);
+		if (step && typeof step !== "number" && require_isIterateeCall.isIterateeCall(start, end, step)) end = step = void 0;
+		start = require_toFinite$1.toFinite(start);
 		if (end === void 0) {
 			end = start;
 			start = 0;
-		} else end = toFinite.toFinite(end);
-		step = step === void 0 ? start < end ? 1 : -1 : toFinite.toFinite(step);
+		} else end = require_toFinite$1.toFinite(end);
+		step = step === void 0 ? start < end ? 1 : -1 : require_toFinite$1.toFinite(step);
 		const length = Math.max(Math.ceil((end - start) / (step || 1)), 0);
 		const result = new Array(length);
 		for (let index = 0; index < length; index++) {
@@ -9899,6 +10837,34 @@ var selectChartDataWithIndexesIfNotInPanoramaPosition3 = (state, _unused1, isPan
 	if (isPanorama) return selectChartDataAndAlwaysIgnoreIndexes(state);
 	return selectChartDataWithIndexes(state);
 };
+/**
+* Returns the chart-level data slice (respecting Brush indexes), memoized by content so that
+* spurious Immer reference changes (e.g. dispatching `setChartData(undefined)` when data is
+* already `undefined`) do not propagate to downstream selectors.
+*
+* Used when a selector needs chart-level data but must avoid extra recomputes when the
+* data content has not actually changed.
+*/
+var selectChartDataSliceIfNotInPanorama = createSelector([selectChartDataWithIndexesIfNotInPanoramaPosition4], (_ref) => {
+	var { chartData, dataStartIndex, dataEndIndex } = _ref;
+	return chartData != null ? chartData.slice(dataStartIndex, dataEndIndex + 1) : [];
+});
+/**
+* Returns the chart-level data slice (ignoring Brush indexes), memoized by content.
+* Used in tooltip and polar selectors that always need the full data range.
+*/
+var selectChartDataSliceIgnoringIndexes = createSelector([selectChartDataAndAlwaysIgnoreIndexes], (_ref2) => {
+	var { chartData, dataStartIndex, dataEndIndex } = _ref2;
+	return chartData != null ? chartData.slice(dataStartIndex, dataEndIndex + 1) : [];
+});
+/**
+* Returns the chart-level data slice (with Brush indexes applied), memoized by content.
+* Used in tooltip selectors.
+*/
+var selectChartDataSliceWithIndexes = createSelector([selectChartDataWithIndexes], (_ref3) => {
+	var { chartData, dataStartIndex, dataEndIndex } = _ref3;
+	return chartData != null ? chartData.slice(dataStartIndex, dataEndIndex + 1) : [];
+});
 //#endregion
 //#region node_modules/recharts/es6/util/isDomainSpecifiedByUser.js
 function isWellFormedNumberDomain(v) {
@@ -10012,6 +10978,7 @@ function parseNumericalUserDomain(userDomain, dataDomain, allowDataOverflow) {
 		}
 	}
 }
+/*! decimal.js-light v2.5.1 https://github.com/MikeMcl/decimal.js-light/LICENCE */
 //#endregion
 //#region node_modules/recharts/es6/util/scale/util/arithmetic.js
 var import_decimal = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
@@ -11143,17 +12110,66 @@ var selectChartBaseValue = (state) => state.rootProps.baseValue;
 * You can reuse these, or you can define your own.
 */
 var DefaultZIndexes = {
+	/**
+	* CartesianGrid and PolarGrid
+	*/
 	grid: -100,
+	/**
+	* Background of Bar and RadialBar.
+	* This is not visible by default but can be enabled by setting background={true} on Bar or RadialBar.
+	*/
 	barBackground: -50,
+	/**
+	* Area, Pie, Radar, and ReferenceArea
+	*/
 	area: 100,
+	/**
+	* Cursor is embedded inside Tooltip and controlled by it.
+	* The Tooltip itself has a separate portal and is not included in the zIndex system;
+	* Cursor is the decoration inside the chart area. CursorRectangle is a rectangle box.
+	* It renders below bar so that in a stacked bar chart the cursor rectangle does not hide the other bars.
+	*/
 	cursorRectangle: 200,
+	/**
+	* Bar and RadialBar
+	*/
 	bar: 300,
+	/**
+	* Line and ReferenceLine, and ErrorBor
+	*/
 	line: 400,
+	/**
+	* XAxis and YAxis and PolarAngleAxis and PolarRadiusAxis ticks and lines and children
+	*/
 	axis: 500,
+	/**
+	* Scatter and ReferenceDot,
+	* and Dots of Line and Area and Radar if they have dot=true
+	*/
 	scatter: 600,
+	/**
+	* Hovering over a Bar or RadialBar renders a highlight rectangle
+	*/
 	activeBar: 1e3,
+	/**
+	* Cursor is embedded inside Tooltip and controlled by it.
+	* The Tooltip itself has a separate portal and is not included in the zIndex system;
+	* Cursor is the decoration inside the chart area, usually a cross or a box.
+	* CursorLine is a line cursor rendered in Line, Area, Scatter, Radar charts.
+	* It renders above the Line and Scatter so that it is always visible.
+	* It renders below active dot so that the dot is always visible and shows the current point.
+	* We're also assuming that the active dot is small enough that it does not fully cover the cursor line.
+	*
+	* This also applies to the radial cursor in RadialBarChart.
+	*/
 	cursorLine: 1100,
+	/**
+	* Hovering over a Point in Line, Area, Scatter, Radar renders a highlight dot
+	*/
 	activeDot: 1200,
+	/**
+	* LabelList and Label, including Axis labels
+	*/
 	label: 2e3
 };
 //#endregion
@@ -12301,28 +13317,6 @@ function hsl2rgb(h, m1, m2) {
 	return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 //#endregion
-//#region node_modules/d3-interpolate/src/basis.js
-function basis(t1, v0, v1, v2, v3) {
-	var t2 = t1 * t1, t3 = t2 * t1;
-	return ((1 - 3 * t1 + 3 * t2 - t3) * v0 + (4 - 6 * t2 + 3 * t3) * v1 + (1 + 3 * t1 + 3 * t2 - 3 * t3) * v2 + t3 * v3) / 6;
-}
-function basis_default(values) {
-	var n = values.length - 1;
-	return function(t) {
-		var i = t <= 0 ? t = 0 : t >= 1 ? (t = 1, n - 1) : Math.floor(t * n), v1 = values[i], v2 = values[i + 1], v0 = i > 0 ? values[i - 1] : 2 * v1 - v2, v3 = i < n - 1 ? values[i + 2] : 2 * v2 - v1;
-		return basis((t - i / n) * n, v0, v1, v2, v3);
-	};
-}
-//#endregion
-//#region node_modules/d3-interpolate/src/basisClosed.js
-function basisClosed_default(values) {
-	var n = values.length;
-	return function(t) {
-		var i = Math.floor(((t %= 1) < 0 ? ++t : t) * n), v0 = values[(i + n - 1) % n], v1 = values[i % n], v2 = values[(i + 1) % n], v3 = values[(i + 2) % n];
-		return basis((t - i / n) * n, v0, v1, v2, v3);
-	};
-}
-//#endregion
 //#region node_modules/d3-interpolate/src/constant.js
 var constant_default = (x) => () => x;
 //#endregion
@@ -12363,29 +13357,6 @@ var rgb_default = (function rgbGamma(y) {
 	rgb$1.gamma = rgbGamma;
 	return rgb$1;
 })(1);
-function rgbSpline(spline) {
-	return function(colors) {
-		var n = colors.length, r = new Array(n), g = new Array(n), b = new Array(n), i, color;
-		for (i = 0; i < n; ++i) {
-			color = rgb(colors[i]);
-			r[i] = color.r || 0;
-			g[i] = color.g || 0;
-			b[i] = color.b || 0;
-		}
-		r = spline(r);
-		g = spline(g);
-		b = spline(b);
-		color.opacity = 1;
-		return function(t) {
-			color.r = r(t);
-			color.g = g(t);
-			color.b = b(t);
-			return color + "";
-		};
-	};
-}
-rgbSpline(basis_default);
-rgbSpline(basisClosed_default);
 //#endregion
 //#region node_modules/d3-interpolate/src/numberArray.js
 function numberArray_default(a, b) {
@@ -14521,9 +15492,10 @@ var d3_scale_exports = /* @__PURE__ */ __exportAll({
 //#endregion
 //#region node_modules/recharts/es6/state/selectors/combiners/combineConfiguredScale.js
 function getD3ScaleFromType(realScaleType) {
-	if (realScaleType in d3_scale_exports) return d3_scale_exports[realScaleType]();
+	var scales = d3_scale_exports;
+	if (realScaleType in scales && typeof scales[realScaleType] === "function") return scales[realScaleType]();
 	var name = "scale".concat(upperFirst(realScaleType));
-	if (name in d3_scale_exports) return d3_scale_exports[name]();
+	if (name in scales && typeof scales[name] === "function") return scales[name]();
 }
 /**
 * Converts external scale definition into internal RechartsScale definition.
@@ -14842,6 +15814,12 @@ var filterGraphicalNotStackedItems = (cartesianItems) => cartesianItems.filter((
 var selectCartesianItemsSettingsExceptStacked = createSelector([selectCartesianItemsSettings], filterGraphicalNotStackedItems);
 var combineGraphicalItemsData = (cartesianItems) => cartesianItems.map((item) => item.data).filter(Boolean).flat(1);
 /**
+* Returns true if at least one graphical item does not define its own `data` prop
+* and therefore relies on the chart-level data.
+* This is used to decide whether to merge chart-level data into the axis domain calculation.
+*/
+var selectAnyCartesianItemsUsesChartData = createSelector([selectCartesianItemsSettings], (items) => items.some((item) => !item.data));
+/**
 * This is a "cheap" selector - it returns the data but doesn't iterate them, so it is not sensitive on the array length.
 * Also does not apply dataKey yet.
 * @param state RechartsRootState
@@ -14867,6 +15845,22 @@ var combineAppliedValues = (data, axisSettings, items) => {
 	return data.map((entry) => ({ value: entry }));
 };
 /**
+* Computes applied values from graphical items data plus, when needed, chart-level data.
+*
+* When at least one graphical item has no own `data` (it relies on chart root data) AND the axis has a `dataKey`,
+* AND there are other items that do have their own data (meaning `displayedData` only contains graphical items data,
+* not chart root data), we also include chart root data values so the axis domain covers all categories,
+* including those only present in the chart root data but not in any graphical item's own data.
+*
+* Values from chart root data that don't match the axis dataKey (undefined) are excluded.
+*/
+var combineAllAppliedValues = (displayedData, axisSettings, items, _ref2, anyItemUsesChartData, graphicalItemsData) => {
+	var { chartData = [], dataStartIndex, dataEndIndex } = _ref2;
+	var appliedValues = combineAppliedValues(displayedData, axisSettings, items);
+	if (anyItemUsesChartData && (axisSettings === null || axisSettings === void 0 ? void 0 : axisSettings.dataKey) != null && graphicalItemsData.length > 0) return [...chartData.slice(dataStartIndex, dataEndIndex + 1).map((item) => ({ value: getValueByDataKey(item, axisSettings.dataKey) })).filter((av) => av.value != null), ...appliedValues];
+	return appliedValues;
+};
+/**
 * This selector will return all values with the appropriate dataKey applied on them.
 * Which dataKey is appropriate depends on where it is defined.
 *
@@ -14875,8 +15869,11 @@ var combineAppliedValues = (data, axisSettings, items) => {
 var selectAllAppliedValues = createSelector([
 	selectDisplayedData$1,
 	selectBaseAxis,
-	selectCartesianItemsSettings
-], combineAppliedValues);
+	selectCartesianItemsSettings,
+	selectChartDataWithIndexesIfNotInPanoramaPosition4,
+	selectAnyCartesianItemsUsesChartData,
+	selectCartesianGraphicalItemsData
+], combineAllAppliedValues);
 function makeNumber(val) {
 	if (isNumOrStr(val) || val instanceof Date) {
 		var n = Number(val);
@@ -14921,15 +15918,22 @@ function isErrorBarRelevantForAxisType(axisType, errorBar) {
 * @return either undefined or an array of ErrorValue
 */
 function getErrorDomainByDataKey(entry, appliedValue, relevantErrorBars) {
-	if (!relevantErrorBars || typeof appliedValue !== "number" || isNan(appliedValue)) return [];
+	if (!relevantErrorBars) return [];
 	if (!relevantErrorBars.length) return [];
+	var appliedNumericValue;
+	if (typeof appliedValue === "number" && !isNan(appliedValue)) appliedNumericValue = appliedValue;
+	else if (Array.isArray(appliedValue)) {
+		var numericRangeValues = onlyAllowNumbers(appliedValue);
+		if (numericRangeValues.length > 0) appliedNumericValue = Math.max(...numericRangeValues);
+	}
+	if (appliedNumericValue == null) return [];
 	return onlyAllowNumbers(relevantErrorBars.flatMap((eb) => {
 		var errorValue = getValueByDataKey(entry, eb.dataKey);
 		var lowBound, highBound;
 		if (Array.isArray(errorValue)) [lowBound, highBound] = errorValue;
 		else lowBound = highBound = errorValue;
 		if (!isWellBehavedNumber(lowBound) || !isWellBehavedNumber(highBound)) return;
-		return [appliedValue - lowBound, appliedValue + highBound];
+		return [appliedNumericValue - lowBound, appliedNumericValue + highBound];
 	}));
 }
 var selectTooltipAxis = (state) => {
@@ -14950,8 +15954,8 @@ var combineStackGroups = (displayedData, items, stackOffsetType, reverseStackOrd
 		acc[item.stackId] = stack;
 		return acc;
 	}, {});
-	return Object.fromEntries(Object.entries(itemsGroup).map((_ref2) => {
-		var [stackId, graphicalItems] = _ref2;
+	return Object.fromEntries(Object.entries(itemsGroup).map((_ref3) => {
+		var [stackId, graphicalItems] = _ref3;
 		var orderedGraphicalItems = reverseStackOrder ? [...graphicalItems].reverse() : graphicalItems;
 		return [stackId, {
 			stackedData: getStackedData(displayedData, orderedGraphicalItems.map(getStackSeriesIdentifier), stackOffsetType),
@@ -14970,8 +15974,8 @@ var selectStackGroups$1 = createSelector([
 	selectStackOffsetType,
 	selectReverseStackOrder
 ], combineStackGroups);
-var combineDomainOfStackGroups = (stackGroups, _ref3, axisType, domainFromUserPreference) => {
-	var { dataStartIndex, dataEndIndex } = _ref3;
+var combineDomainOfStackGroups = (stackGroups, _ref4, axisType, domainFromUserPreference) => {
+	var { dataStartIndex, dataEndIndex } = _ref4;
 	if (domainFromUserPreference != null) return;
 	if (axisType === "zAxis") return;
 	var domainOfStackGroups = getDomainOfStackGroups(stackGroups, dataStartIndex, dataEndIndex);
@@ -15028,12 +16032,15 @@ var mergeDomains = function mergeDomains() {
 	var allValues = allDomains.flat();
 	return [Math.min(...allValues), Math.max(...allValues)];
 };
-var combineDomainOfAllAppliedNumericalValuesIncludingErrorValues = (data, axisSettings, items, errorBars, axisType) => {
+var combineDomainOfAllAppliedNumericalValuesIncludingErrorValues = function combineDomainOfAllAppliedNumericalValuesIncludingErrorValues(displayedData, axisSettings, items, errorBars, axisType) {
+	var chartDataSlice = arguments.length > 5 && arguments[5] !== void 0 ? arguments[5] : [];
 	var lowerEnd, upperEnd;
-	if (items.length > 0) data.forEach((entry) => {
-		items.forEach((item) => {
-			var _errorBars$item$id, _axisSettings$dataKey;
-			var relevantErrorBars = (_errorBars$item$id = errorBars[item.id]) === null || _errorBars$item$id === void 0 ? void 0 : _errorBars$item$id.filter((errorBar) => isErrorBarRelevantForAxisType(axisType, errorBar));
+	if (items.length > 0) items.forEach((item) => {
+		var _errorBars$item$id;
+		var itemData = item.data != null ? [...item.data] : chartDataSlice;
+		var relevantErrorBars = (_errorBars$item$id = errorBars[item.id]) === null || _errorBars$item$id === void 0 ? void 0 : _errorBars$item$id.filter((errorBar) => isErrorBarRelevantForAxisType(axisType, errorBar));
+		itemData.forEach((entry) => {
+			var _axisSettings$dataKey;
 			var valueByDataKey = getValueByDataKey(entry, (_axisSettings$dataKey = axisSettings.dataKey) !== null && _axisSettings$dataKey !== void 0 ? _axisSettings$dataKey : item.dataKey);
 			var errorDomain = getErrorDomainByDataKey(entry, valueByDataKey, relevantErrorBars);
 			if (errorDomain.length >= 2) {
@@ -15049,7 +16056,7 @@ var combineDomainOfAllAppliedNumericalValuesIncludingErrorValues = (data, axisSe
 			}
 		});
 	});
-	if ((axisSettings === null || axisSettings === void 0 ? void 0 : axisSettings.dataKey) != null) data.forEach((item) => {
+	if ((axisSettings === null || axisSettings === void 0 ? void 0 : axisSettings.dataKey) != null && items.length === 0) displayedData.forEach((item) => {
 		var dataValueDomain = makeDomain(getValueByDataKey(item, axisSettings.dataKey));
 		if (dataValueDomain != null) {
 			lowerEnd = lowerEnd == null ? dataValueDomain[0] : Math.min(lowerEnd, dataValueDomain[0]);
@@ -15063,7 +16070,8 @@ var selectDomainOfAllAppliedNumericalValuesIncludingErrorValues$1 = createSelect
 	selectBaseAxis,
 	selectCartesianItemsSettingsExceptStacked,
 	selectAllErrorBarSettings,
-	pickAxisType
+	pickAxisType,
+	selectChartDataSliceIfNotInPanorama
 ], combineDomainOfAllAppliedNumericalValuesIncludingErrorValues, { memoizeOptions: { resultEqualityCheck: numberDomainEqualityCheck } });
 function onlyAllowNumbersAndStringsAndDates(item) {
 	var { value } = item;
@@ -15165,7 +16173,7 @@ var combineAxisDomain = (axisSettings, layout, displayedData, allAppliedValues, 
 		return (0, import_range.default)(0, (_displayedData$length = displayedData === null || displayedData === void 0 ? void 0 : displayedData.length) !== null && _displayedData$length !== void 0 ? _displayedData$length : 0);
 	}
 	if (type === "category") return computeDomainOfTypeCategory(allAppliedValues, axisSettings, isCategorical);
-	if (stackOffsetType === "expand") return expandDomain;
+	if (stackOffsetType === "expand" && !isCategorical) return expandDomain;
 	return numericalDomain;
 };
 var selectAxisDomain = createSelector([
@@ -15294,8 +16302,8 @@ var selectXAxisRange = createSelector([
 	selectBrushDimensions,
 	selectBrushSettings,
 	(_state, _axisId, isPanorama) => isPanorama
-], (offset, padding, brushDimensions, _ref4, isPanorama) => {
-	var { padding: brushPadding } = _ref4;
+], (offset, padding, brushDimensions, _ref5, isPanorama) => {
+	var { padding: brushPadding } = _ref5;
 	if (isPanorama) return [brushPadding.left, brushDimensions.width - brushPadding.right];
 	return [offset.left + padding.left, offset.left + offset.width - padding.right];
 });
@@ -15306,8 +16314,8 @@ var selectYAxisRange = createSelector([
 	selectBrushDimensions,
 	selectBrushSettings,
 	(_state, _axisId, isPanorama) => isPanorama
-], (offset, layout, padding, brushDimensions, _ref5, isPanorama) => {
-	var { padding: brushPadding } = _ref5;
+], (offset, layout, padding, brushDimensions, _ref6, isPanorama) => {
+	var { padding: brushPadding } = _ref6;
 	if (isPanorama) return [brushDimensions.height - brushPadding.bottom, brushPadding.top];
 	if (layout === "horizontal") return [offset.top + offset.height - padding.bottom, offset.top + padding.top];
 	return [offset.top + padding.top, offset.top + offset.height - padding.bottom];
@@ -15471,7 +16479,8 @@ var combineDuplicateDomain = (chartLayout, appliedValues, axis, axisType) => {
 	var { allowDuplicatedCategory, type, dataKey } = axis;
 	var isCategorical = isCategoricalAxis(chartLayout, axisType);
 	var allData = appliedValues.map((av) => av.value);
-	if (dataKey && isCategorical && type === "category" && allowDuplicatedCategory && hasDuplicate(allData)) return allData;
+	var validData = allData.filter((v) => v != null);
+	if (dataKey && isCategorical && type === "category" && allowDuplicatedCategory && hasDuplicate(validData)) return allData;
 };
 var selectDuplicateDomain = createSelector([
 	selectChartLayout,
@@ -15837,6 +16846,7 @@ var tooltipSlice = createSlice({
 		},
 		setActiveMouseOverItemIndex(state, action) {
 			state.syncInteraction.active = false;
+			state.syncInteraction.sourceViewBox = void 0;
 			state.keyboardInteraction.active = false;
 			state.itemInteraction.hover.active = true;
 			state.itemInteraction.hover.index = action.payload.activeIndex;
@@ -15853,6 +16863,7 @@ var tooltipSlice = createSlice({
 		},
 		setActiveClickItemIndex(state, action) {
 			state.syncInteraction.active = false;
+			state.syncInteraction.sourceViewBox = void 0;
 			state.itemInteraction.click.active = true;
 			state.keyboardInteraction.active = false;
 			state.itemInteraction.click.index = action.payload.activeIndex;
@@ -15862,6 +16873,7 @@ var tooltipSlice = createSlice({
 		},
 		setMouseOverAxisIndex(state, action) {
 			state.syncInteraction.active = false;
+			state.syncInteraction.sourceViewBox = void 0;
 			state.axisInteraction.hover.active = true;
 			state.keyboardInteraction.active = false;
 			state.axisInteraction.hover.index = action.payload.activeIndex;
@@ -15870,6 +16882,7 @@ var tooltipSlice = createSlice({
 		},
 		setMouseClickAxisIndex(state, action) {
 			state.syncInteraction.active = false;
+			state.syncInteraction.sourceViewBox = void 0;
 			state.keyboardInteraction.active = false;
 			state.axisInteraction.click.active = true;
 			state.axisInteraction.click.index = action.payload.activeIndex;
@@ -16031,7 +17044,7 @@ var combineTooltipPayloadConfigurations = (tooltipState, tooltipEventType, trigg
 	if (trigger === "hover") filterByGraphicalItemId = tooltipState.itemInteraction.hover.graphicalItemId;
 	else filterByGraphicalItemId = tooltipState.itemInteraction.click.graphicalItemId;
 	if (tooltipState.syncInteraction.active && filterByGraphicalItemId == null) return tooltipState.tooltipItemPayloads;
-	if (filterByGraphicalItemId == null && defaultIndex != null) {
+	if (filterByGraphicalItemId == null && (defaultIndex != null || tooltipState.keyboardInteraction.active)) {
 		var firstItemPayload = tooltipState.tooltipItemPayloads[0];
 		if (firstItemPayload != null) return [firstItemPayload];
 		return [];
@@ -16179,13 +17192,15 @@ var selectAllGraphicalItemsSettings = createSelector([
 	createSelector([selectTooltipAxisType, selectTooltipAxisId], itemAxisPredicate)
 ], combineGraphicalItemsSettings, { memoizeOptions: { resultEqualityCheck: emptyArraysAreEqualCheck } });
 var selectAllStackedGraphicalItemsSettings = createSelector([selectAllGraphicalItemsSettings], (graphicalItems) => graphicalItems.filter(isStacked));
+var selectTooltipGraphicalItemsData = createSelector([selectAllGraphicalItemsSettings], combineGraphicalItemsData, { memoizeOptions: { resultEqualityCheck: emptyArraysAreEqualCheck } });
+var selectAnyTooltipItemUsesChartData = createSelector([selectAllGraphicalItemsSettings], (items) => items.some((item) => !item.data));
 /**
 * Data for tooltip always use the data with indexes set by a Brush,
 * and never accept the isPanorama flag:
 * because Tooltip never displays inside the panorama anyway
 * so we don't need to worry what would happen there.
 */
-var selectTooltipDisplayedData = createSelector([createSelector([selectAllGraphicalItemsSettings], combineGraphicalItemsData, { memoizeOptions: { resultEqualityCheck: emptyArraysAreEqualCheck } }), selectChartDataWithIndexes], combineDisplayedData);
+var selectTooltipDisplayedData = createSelector([selectTooltipGraphicalItemsData, selectChartDataWithIndexes], combineDisplayedData);
 var selectTooltipStackedData = createSelector([
 	selectAllStackedGraphicalItemsSettings,
 	selectChartDataWithIndexes,
@@ -16194,8 +17209,11 @@ var selectTooltipStackedData = createSelector([
 var selectAllTooltipAppliedValues = createSelector([
 	selectTooltipDisplayedData,
 	selectTooltipAxis,
-	selectAllGraphicalItemsSettings
-], combineAppliedValues);
+	selectAllGraphicalItemsSettings,
+	selectChartDataWithIndexes,
+	selectAnyTooltipItemUsesChartData,
+	selectTooltipGraphicalItemsData
+], combineAllAppliedValues);
 var selectTooltipAxisDomainDefinition = createSelector([selectTooltipAxis], getDomainDefinition);
 var selectTooltipDomainFromUserPreferences = createSelector([selectTooltipAxisDomainDefinition, createSelector([selectTooltipAxis], (axisSettings) => axisSettings.allowDataOverflow)], numericalDomainSpecifiedWithoutRequiringData);
 var selectTooltipDomainOfStackGroups = createSelector([
@@ -16214,7 +17232,8 @@ var selectDomainOfAllAppliedNumericalValuesIncludingErrorValues = createSelector
 	selectTooltipAxis,
 	createSelector([selectAllGraphicalItemsSettings], filterGraphicalNotStackedItems),
 	selectAllErrorBarSettings,
-	selectTooltipAxisType
+	selectTooltipAxisType,
+	selectChartDataSliceWithIndexes
 ], combineDomainOfAllAppliedNumericalValuesIncludingErrorValues, { memoizeOptions: { resultEqualityCheck: numberDomainEqualityCheck } });
 var selectTooltipReferenceDotsDomain = createSelector([createSelector([
 	selectReferenceDots,
@@ -16848,22 +17867,63 @@ function ZIndexLayer(_ref) {
 	var { zIndex, children } = _ref;
 	var shouldRenderInPortal = useIsInChartContext() && zIndex !== void 0 && zIndex !== 0;
 	var isPanorama = useIsPanorama();
+	/**
+	* When zIndex changes, the new portal element is not immediately available because
+	* it requires a full render cycle through AllZIndexPortals → ZIndexSvgPortal.
+	* During this transition we keep rendering into the previous portal element
+	* to avoid an unmount/remount cycle that would cause children to briefly disappear.
+	*
+	* `registeredZIndexesRef` tracks every zIndex we have registered so that
+	* we can defer unregistration of old values until the new portal is ready.
+	* `lastPortalElementRef` caches the most recent valid portal DOM node.
+	*/
+	var lastPortalElementRef = (0, import_react.useRef)(void 0);
+	var registeredZIndexesRef = (0, import_react.useRef)(/* @__PURE__ */ new Set());
 	var dispatch = useAppDispatch();
+	var portalElement = useAppSelector((state) => selectZIndexPortalElement(state, zIndex, isPanorama));
 	(0, import_react.useLayoutEffect)(() => {
-		if (!shouldRenderInPortal) return noop$2;
-		dispatch(registerZIndexPortal({ zIndex }));
-		return () => {
-			dispatch(unregisterZIndexPortal({ zIndex }));
-		};
+		if (!shouldRenderInPortal) {
+			var registered = registeredZIndexesRef.current;
+			registered.forEach((z) => {
+				dispatch(unregisterZIndexPortal({ zIndex: z }));
+			});
+			registered.clear();
+			lastPortalElementRef.current = void 0;
+			return;
+		}
+		if (!registeredZIndexesRef.current.has(zIndex)) {
+			dispatch(registerZIndexPortal({ zIndex }));
+			registeredZIndexesRef.current.add(zIndex);
+		}
+		if (portalElement) {
+			lastPortalElementRef.current = portalElement;
+			var _registered = registeredZIndexesRef.current;
+			_registered.forEach((z) => {
+				if (z !== zIndex) {
+					dispatch(unregisterZIndexPortal({ zIndex: z }));
+					_registered.delete(z);
+				}
+			});
+		}
 	}, [
 		dispatch,
 		zIndex,
-		shouldRenderInPortal
+		shouldRenderInPortal,
+		portalElement
 	]);
-	var portalElement = useAppSelector((state) => selectZIndexPortalElement(state, zIndex, isPanorama));
+	(0, import_react.useLayoutEffect)(() => {
+		var registered = registeredZIndexesRef.current;
+		return () => {
+			registered.forEach((z) => {
+				dispatch(unregisterZIndexPortal({ zIndex: z }));
+			});
+			registered.clear();
+		};
+	}, [dispatch]);
 	if (!shouldRenderInPortal) return children;
-	if (!portalElement) return null;
-	return /* @__PURE__ */ (0, import_react_dom.createPortal)(children, portalElement);
+	var targetElement = portalElement !== null && portalElement !== void 0 ? portalElement : lastPortalElementRef.current;
+	if (!targetElement) return null;
+	return /*#__PURE__*/ (0, import_react_dom.createPortal)(children, targetElement);
 }
 //#endregion
 //#region node_modules/recharts/es6/component/Cursor.js
@@ -16926,8 +17986,8 @@ function _toPrimitive$50(t, r) {
 */
 function RenderCursor(_ref) {
 	var { cursor, cursorComp, cursorProps } = _ref;
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(cursor)) return /* @__PURE__ */ (0, import_react.cloneElement)(cursor, cursorProps);
-	return /* @__PURE__ */ (0, import_react.createElement)(cursorComp, cursorProps);
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(cursor)) return /*#__PURE__*/ (0, import_react.cloneElement)(cursor, cursorProps);
+	return /*#__PURE__*/ (0, import_react.createElement)(cursorComp, cursorProps);
 }
 function CursorInternal(props) {
 	var _props$zIndex;
@@ -16971,7 +18031,7 @@ function CursorInternal(props) {
 		payloadIndex: activeTooltipIndex,
 		className: clsx("recharts-tooltip-cursor", extraClassName)
 	});
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: (_props$zIndex = props.zIndex) !== null && _props$zIndex !== void 0 ? _props$zIndex : preferredZIndex }, /* @__PURE__ */ import_react.createElement(RenderCursor, {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: (_props$zIndex = props.zIndex) !== null && _props$zIndex !== void 0 ? _props$zIndex : preferredZIndex }, /*#__PURE__*/ import_react.createElement(RenderCursor, {
 		cursor,
 		cursorComp,
 		cursorProps
@@ -16983,7 +18043,7 @@ function Cursor(props) {
 	var layout = useChartLayout();
 	var chartName = useChartName();
 	if (tooltipAxisBandSize == null || offset == null || layout == null || chartName == null) return null;
-	return /* @__PURE__ */ import_react.createElement(CursorInternal, _extends$41({}, props, {
+	return /*#__PURE__*/ import_react.createElement(CursorInternal, _extends$41({}, props, {
 		offset,
 		layout,
 		tooltipAxisBandSize,
@@ -16992,241 +18052,8 @@ function Cursor(props) {
 }
 //#endregion
 //#region node_modules/recharts/es6/context/tooltipPortalContext.js
-var TooltipPortalContext = /* @__PURE__ */ (0, import_react.createContext)(null);
+var TooltipPortalContext = /*#__PURE__*/ (0, import_react.createContext)(null);
 var useTooltipPortal = () => (0, import_react.useContext)(TooltipPortalContext);
-var eventemitter3_default = (/* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
-	var has = Object.prototype.hasOwnProperty, prefix = "~";
-	/**
-	* Constructor to create a storage for our `EE` objects.
-	* An `Events` instance is a plain object whose properties are event names.
-	*
-	* @constructor
-	* @private
-	*/
-	function Events() {}
-	if (Object.create) {
-		Events.prototype = Object.create(null);
-		if (!new Events().__proto__) prefix = false;
-	}
-	/**
-	* Representation of a single event listener.
-	*
-	* @param {Function} fn The listener function.
-	* @param {*} context The context to invoke the listener with.
-	* @param {Boolean} [once=false] Specify if the listener is a one-time listener.
-	* @constructor
-	* @private
-	*/
-	function EE(fn, context, once) {
-		this.fn = fn;
-		this.context = context;
-		this.once = once || false;
-	}
-	/**
-	* Add a listener for a given event.
-	*
-	* @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
-	* @param {(String|Symbol)} event The event name.
-	* @param {Function} fn The listener function.
-	* @param {*} context The context to invoke the listener with.
-	* @param {Boolean} once Specify if the listener is a one-time listener.
-	* @returns {EventEmitter}
-	* @private
-	*/
-	function addListener(emitter, event, fn, context, once) {
-		if (typeof fn !== "function") throw new TypeError("The listener must be a function");
-		var listener = new EE(fn, context || emitter, once), evt = prefix ? prefix + event : event;
-		if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;
-		else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);
-		else emitter._events[evt] = [emitter._events[evt], listener];
-		return emitter;
-	}
-	/**
-	* Clear event by name.
-	*
-	* @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
-	* @param {(String|Symbol)} evt The Event name.
-	* @private
-	*/
-	function clearEvent(emitter, evt) {
-		if (--emitter._eventsCount === 0) emitter._events = new Events();
-		else delete emitter._events[evt];
-	}
-	/**
-	* Minimal `EventEmitter` interface that is molded against the Node.js
-	* `EventEmitter` interface.
-	*
-	* @constructor
-	* @public
-	*/
-	function EventEmitter() {
-		this._events = new Events();
-		this._eventsCount = 0;
-	}
-	/**
-	* Return an array listing the events for which the emitter has registered
-	* listeners.
-	*
-	* @returns {Array}
-	* @public
-	*/
-	EventEmitter.prototype.eventNames = function eventNames() {
-		var names = [], events, name;
-		if (this._eventsCount === 0) return names;
-		for (name in events = this._events) if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
-		if (Object.getOwnPropertySymbols) return names.concat(Object.getOwnPropertySymbols(events));
-		return names;
-	};
-	/**
-	* Return the listeners registered for a given event.
-	*
-	* @param {(String|Symbol)} event The event name.
-	* @returns {Array} The registered listeners.
-	* @public
-	*/
-	EventEmitter.prototype.listeners = function listeners(event) {
-		var evt = prefix ? prefix + event : event, handlers = this._events[evt];
-		if (!handlers) return [];
-		if (handlers.fn) return [handlers.fn];
-		for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) ee[i] = handlers[i].fn;
-		return ee;
-	};
-	/**
-	* Return the number of listeners listening to a given event.
-	*
-	* @param {(String|Symbol)} event The event name.
-	* @returns {Number} The number of listeners.
-	* @public
-	*/
-	EventEmitter.prototype.listenerCount = function listenerCount(event) {
-		var evt = prefix ? prefix + event : event, listeners = this._events[evt];
-		if (!listeners) return 0;
-		if (listeners.fn) return 1;
-		return listeners.length;
-	};
-	/**
-	* Calls each of the listeners registered for a given event.
-	*
-	* @param {(String|Symbol)} event The event name.
-	* @returns {Boolean} `true` if the event had listeners, else `false`.
-	* @public
-	*/
-	EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
-		var evt = prefix ? prefix + event : event;
-		if (!this._events[evt]) return false;
-		var listeners = this._events[evt], len = arguments.length, args, i;
-		if (listeners.fn) {
-			if (listeners.once) this.removeListener(event, listeners.fn, void 0, true);
-			switch (len) {
-				case 1: return listeners.fn.call(listeners.context), true;
-				case 2: return listeners.fn.call(listeners.context, a1), true;
-				case 3: return listeners.fn.call(listeners.context, a1, a2), true;
-				case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;
-				case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
-				case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
-			}
-			for (i = 1, args = new Array(len - 1); i < len; i++) args[i - 1] = arguments[i];
-			listeners.fn.apply(listeners.context, args);
-		} else {
-			var length = listeners.length, j;
-			for (i = 0; i < length; i++) {
-				if (listeners[i].once) this.removeListener(event, listeners[i].fn, void 0, true);
-				switch (len) {
-					case 1:
-						listeners[i].fn.call(listeners[i].context);
-						break;
-					case 2:
-						listeners[i].fn.call(listeners[i].context, a1);
-						break;
-					case 3:
-						listeners[i].fn.call(listeners[i].context, a1, a2);
-						break;
-					case 4:
-						listeners[i].fn.call(listeners[i].context, a1, a2, a3);
-						break;
-					default:
-						if (!args) for (j = 1, args = new Array(len - 1); j < len; j++) args[j - 1] = arguments[j];
-						listeners[i].fn.apply(listeners[i].context, args);
-				}
-			}
-		}
-		return true;
-	};
-	/**
-	* Add a listener for a given event.
-	*
-	* @param {(String|Symbol)} event The event name.
-	* @param {Function} fn The listener function.
-	* @param {*} [context=this] The context to invoke the listener with.
-	* @returns {EventEmitter} `this`.
-	* @public
-	*/
-	EventEmitter.prototype.on = function on(event, fn, context) {
-		return addListener(this, event, fn, context, false);
-	};
-	/**
-	* Add a one-time listener for a given event.
-	*
-	* @param {(String|Symbol)} event The event name.
-	* @param {Function} fn The listener function.
-	* @param {*} [context=this] The context to invoke the listener with.
-	* @returns {EventEmitter} `this`.
-	* @public
-	*/
-	EventEmitter.prototype.once = function once(event, fn, context) {
-		return addListener(this, event, fn, context, true);
-	};
-	/**
-	* Remove the listeners of a given event.
-	*
-	* @param {(String|Symbol)} event The event name.
-	* @param {Function} fn Only remove the listeners that match this function.
-	* @param {*} context Only remove the listeners that have this context.
-	* @param {Boolean} once Only remove one-time listeners.
-	* @returns {EventEmitter} `this`.
-	* @public
-	*/
-	EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
-		var evt = prefix ? prefix + event : event;
-		if (!this._events[evt]) return this;
-		if (!fn) {
-			clearEvent(this, evt);
-			return this;
-		}
-		var listeners = this._events[evt];
-		if (listeners.fn) {
-			if (listeners.fn === fn && (!once || listeners.once) && (!context || listeners.context === context)) clearEvent(this, evt);
-		} else {
-			for (var i = 0, events = [], length = listeners.length; i < length; i++) if (listeners[i].fn !== fn || once && !listeners[i].once || context && listeners[i].context !== context) events.push(listeners[i]);
-			if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
-			else clearEvent(this, evt);
-		}
-		return this;
-	};
-	/**
-	* Remove all listeners, or those of the specified event.
-	*
-	* @param {(String|Symbol)} [event] The event name.
-	* @returns {EventEmitter} `this`.
-	* @public
-	*/
-	EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
-		var evt;
-		if (event) {
-			evt = prefix ? prefix + event : event;
-			if (this._events[evt]) clearEvent(this, evt);
-		} else {
-			this._events = new Events();
-			this._eventsCount = 0;
-		}
-		return this;
-	};
-	EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
-	EventEmitter.prototype.addListener = EventEmitter.prototype.on;
-	EventEmitter.prefixed = prefix;
-	EventEmitter.EventEmitter = EventEmitter;
-	if ("undefined" !== typeof module) module.exports = EventEmitter;
-})))(), 1)).default;
 //#endregion
 //#region node_modules/recharts/es6/util/Events.js
 var eventCenter = new eventemitter3_default();
@@ -17364,6 +18191,18 @@ function _objectWithoutPropertiesLoose$32(r, e) {
 	}
 	return t;
 }
+/**
+* Listens for tooltip sync events from other charts and dispatches the appropriate
+* sync interaction state based on the current chart's syncMethod.
+*
+* Handles three sync methods:
+* - 'index': passes through the tooltip index with coordinate scaling between chart viewBoxes
+* - 'value': matches the incoming label against this chart's axis ticks by string comparison
+* - function: delegates tick resolution to a user-provided callback
+*
+* When a synced label has no matching tick (e.g. sparse chart), the tooltip is hidden
+* but sourceViewBox is preserved to prevent counter-emission cascades.
+*/
 function useTooltipSyncEventsListener() {
 	var mySyncId = useAppSelector(selectSyncId);
 	var myEventEmitter = useAppSelector(selectEventEmitter);
@@ -17377,6 +18216,18 @@ function useTooltipSyncEventsListener() {
 		var listener = (incomingSyncId, action, emitter) => {
 			if (myEventEmitter === emitter) return;
 			if (mySyncId !== incomingSyncId) return;
+			if (action.payload.active === false) {
+				dispatch(setSyncInteraction({
+					active: false,
+					coordinate: void 0,
+					dataKey: void 0,
+					index: null,
+					label: void 0,
+					sourceViewBox: void 0,
+					graphicalItemId: void 0
+				}));
+				return;
+			}
 			if (syncMethod === "index") {
 				var _action$payload;
 				if (viewBox && action !== null && action !== void 0 && (_action$payload = action.payload) !== null && _action$payload !== void 0 && _action$payload.coordinate && action.payload.sourceViewBox) {
@@ -17402,7 +18253,7 @@ function useTooltipSyncEventsListener() {
 			})];
 			else if (syncMethod === "value") activeTick = tooltipTicks.find((tick) => String(tick.value) === action.payload.label);
 			var { coordinate } = action.payload;
-			if (activeTick == null || action.payload.active === false || coordinate == null || viewBox == null) {
+			if (coordinate == null || viewBox == null) {
 				dispatch(setSyncInteraction({
 					active: false,
 					coordinate: void 0,
@@ -17410,6 +18261,18 @@ function useTooltipSyncEventsListener() {
 					index: null,
 					label: void 0,
 					sourceViewBox: void 0,
+					graphicalItemId: void 0
+				}));
+				return;
+			}
+			if (activeTick == null) {
+				dispatch(setSyncInteraction({
+					active: false,
+					coordinate: void 0,
+					dataKey: void 0,
+					index: null,
+					label: void 0,
+					sourceViewBox: action.payload.sourceViewBox,
 					graphicalItemId: void 0
 				}));
 				return;
@@ -17446,6 +18309,10 @@ function useTooltipSyncEventsListener() {
 		viewBox
 	]);
 }
+/**
+* Listens for brush sync events from other charts and updates this chart's
+* data start/end indexes to match, keeping brush positions synchronised.
+*/
 function useBrushSyncEventsListener() {
 	var mySyncId = useAppSelector(selectSyncId);
 	var myEventEmitter = useAppSelector(selectEventEmitter);
@@ -17487,6 +18354,13 @@ function useSynchronisedEventsFromOtherCharts() {
 *
 * This ignores the syncMethod, because that is set and computed on the receiving end.
 *
+* Outgoing emissions are suppressed when `isReceivingSynchronisation` is true,
+* which is determined by the presence of `sourceViewBox` in the sync state (not by
+* the tooltip's `active` flag). This matters for charts with sparse data: when an
+* incoming sync label has no matching tick, the tooltip becomes inactive but
+* `sourceViewBox` remains set, so the chart is still considered "receiving" and
+* will not emit a counter-sync event that would cascade-clear other charts' tooltips.
+*
 * @param tooltipEventType from Tooltip
 * @param trigger from Tooltip
 * @param activeCoordinate from state
@@ -17502,7 +18376,7 @@ function useTooltipChartSynchronisation(tooltipEventType, trigger, activeCoordin
 	var syncId = useAppSelector(selectSyncId);
 	var syncMethod = useAppSelector(selectSyncMethod);
 	var tooltipState = useAppSelector(selectSynchronisedTooltipState);
-	var isReceivingSynchronisation = tooltipState === null || tooltipState === void 0 ? void 0 : tooltipState.active;
+	var isReceivingSynchronisation = (tooltipState === null || tooltipState === void 0 ? void 0 : tooltipState.sourceViewBox) != null;
 	var viewBox = useViewBox();
 	(0, import_react.useEffect)(() => {
 		if (isReceivingSynchronisation) return;
@@ -17532,6 +18406,10 @@ function useTooltipChartSynchronisation(tooltipEventType, trigger, activeCoordin
 		viewBox
 	]);
 }
+/**
+* Emits brush sync events to other charts when the brush start/end indexes change.
+* If syncId is undefined, no events will be sent.
+*/
 function useBrushChartSynchronisation() {
 	var syncId = useAppSelector(selectSyncId);
 	var eventEmitterSymbol = useAppSelector(selectEventEmitter);
@@ -17600,9 +18478,9 @@ function defaultUniqBy(entry) {
 	return entry.dataKey;
 }
 function renderContent(content, props) {
-	if (/* @__PURE__ */ import_react.isValidElement(content)) return /* @__PURE__ */ import_react.cloneElement(content, props);
-	if (typeof content === "function") return /* @__PURE__ */ import_react.createElement(content, props);
-	return /* @__PURE__ */ import_react.createElement(DefaultTooltipContent, props);
+	if (/*#__PURE__*/ import_react.isValidElement(content)) return /*#__PURE__*/ import_react.cloneElement(content, props);
+	if (typeof content === "function") return /*#__PURE__*/ import_react.createElement(content, props);
+	return /*#__PURE__*/ import_react.createElement(DefaultTooltipContent, props);
 }
 var emptyPayload = [];
 var defaultTooltipProps = {
@@ -17693,7 +18571,7 @@ function Tooltip(outsideProps) {
 		coordinate,
 		accessibilityLayer
 	});
-	var tooltipElement = /* @__PURE__ */ import_react.createElement(TooltipBoundingBox, {
+	var tooltipElement = /*#__PURE__*/ import_react.createElement(TooltipBoundingBox, {
 		allowEscapeViewBox,
 		animationDuration,
 		animationEasing,
@@ -17711,7 +18589,7 @@ function Tooltip(outsideProps) {
 		innerRef: updateBoundingBox,
 		hasPortalFromProps: Boolean(portalFromProps)
 	}, renderContent(content, tooltipContentProps));
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ (0, import_react_dom.createPortal)(tooltipElement, tooltipPortal), finalIsActive && /* @__PURE__ */ import_react.createElement(Cursor, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ (0, import_react_dom.createPortal)(tooltipElement, tooltipPortal), finalIsActive && /*#__PURE__*/ import_react.createElement(Cursor, {
 		cursor,
 		tooltipEventType,
 		coordinate,
@@ -18227,7 +19105,7 @@ var textDefaultProps = {
 	x: 0,
 	y: 0
 };
-var Text = /* @__PURE__ */ (0, import_react.forwardRef)((outsideProps, ref) => {
+var Text = /*#__PURE__*/ (0, import_react.forwardRef)((outsideProps, ref) => {
 	var _resolveDefaultProps = resolveDefaultProps(outsideProps, textDefaultProps), { x: propsX, y: propsY, lineHeight, capHeight, fill, scaleToFit, textAnchor, verticalAnchor } = _resolveDefaultProps, props = _objectWithoutProperties$31(_resolveDefaultProps, _excluded$31);
 	var wordsByLines = (0, import_react.useMemo)(() => {
 		return getWordsByLines({
@@ -18272,7 +19150,7 @@ var Text = /* @__PURE__ */ (0, import_react.forwardRef)((outsideProps, ref) => {
 	}
 	if (angle) transforms.push("rotate(".concat(angle, ", ").concat(x, ", ").concat(y, ")"));
 	if (transforms.length) textProps.transform = transforms.join(" ");
-	return /* @__PURE__ */ import_react.createElement("text", _extends$40({}, svgPropertiesAndEvents(textProps), {
+	return /*#__PURE__*/ import_react.createElement("text", _extends$40({}, svgPropertiesAndEvents(textProps), {
 		ref,
 		x,
 		y,
@@ -18281,7 +19159,7 @@ var Text = /* @__PURE__ */ (0, import_react.forwardRef)((outsideProps, ref) => {
 		fill: fill.includes("url") ? DEFAULT_FILL : fill
 	}), wordsByLines.map((line, index) => {
 		var words = line.words.join(breakAll ? "" : " ");
-		return /* @__PURE__ */ import_react.createElement("tspan", {
+		return /*#__PURE__*/ import_react.createElement("tspan", {
 			x,
 			dy: index === 0 ? startDy : lineHeight,
 			key: "".concat(words, "-").concat(index)
@@ -18556,7 +19434,7 @@ function _extends$39() {
 /**
 * @inline
 */
-var CartesianLabelContext = /* @__PURE__ */ (0, import_react.createContext)(null);
+var CartesianLabelContext = /*#__PURE__*/ (0, import_react.createContext)(null);
 var CartesianLabelContextProvider = (_ref) => {
 	var { x, y, upperWidth, lowerWidth, width, height, children } = _ref;
 	var viewBox = (0, import_react.useMemo)(() => ({
@@ -18574,14 +19452,14 @@ var CartesianLabelContextProvider = (_ref) => {
 		width,
 		height
 	]);
-	return /* @__PURE__ */ import_react.createElement(CartesianLabelContext.Provider, { value: viewBox }, children);
+	return /*#__PURE__*/ import_react.createElement(CartesianLabelContext.Provider, { value: viewBox }, children);
 };
 var useCartesianLabelContext = () => {
 	var labelChildContext = (0, import_react.useContext)(CartesianLabelContext);
 	var chartContext = useViewBox();
 	return labelChildContext || (chartContext ? cartesianViewBoxToTrapezoid(chartContext) : void 0);
 };
-var PolarLabelContext = /* @__PURE__ */ (0, import_react.createContext)(null);
+var PolarLabelContext = /*#__PURE__*/ (0, import_react.createContext)(null);
 var PolarLabelContextProvider = (_ref2) => {
 	var { cx, cy, innerRadius, outerRadius, startAngle, endAngle, clockWise, children } = _ref2;
 	var viewBox = (0, import_react.useMemo)(() => ({
@@ -18601,7 +19479,7 @@ var PolarLabelContextProvider = (_ref2) => {
 		endAngle,
 		clockWise
 	]);
-	return /* @__PURE__ */ import_react.createElement(PolarLabelContext.Provider, { value: viewBox }, children);
+	return /*#__PURE__*/ import_react.createElement(PolarLabelContext.Provider, { value: viewBox }, children);
 };
 var usePolarLabelContext = () => {
 	var labelChildContext = (0, import_react.useContext)(PolarLabelContext);
@@ -18647,13 +19525,13 @@ var renderRadialLabel = (labelProps, position, label, attrs, viewBox) => {
 	var endPoint = polarToCartesian(cx, cy, radius, labelAngle + (direction ? 1 : -1) * 359);
 	var path = "M".concat(startPoint.x, ",").concat(startPoint.y, "\n    A").concat(radius, ",").concat(radius, ",0,1,").concat(direction ? 0 : 1, ",\n    ").concat(endPoint.x, ",").concat(endPoint.y);
 	var id = isNullish(labelProps.id) ? uniqueId("recharts-radial-line-") : labelProps.id;
-	return /* @__PURE__ */ import_react.createElement("text", _extends$39({}, attrs, {
+	return /*#__PURE__*/ import_react.createElement("text", _extends$39({}, attrs, {
 		dominantBaseline: "central",
 		className: clsx("recharts-radial-bar-label", className)
-	}), /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement("path", {
+	}), /*#__PURE__*/ import_react.createElement("defs", null, /*#__PURE__*/ import_react.createElement("path", {
 		id,
 		d: path
-	})), /* @__PURE__ */ import_react.createElement("textPath", { xlinkHref: "#".concat(id) }, label));
+	})), /*#__PURE__*/ import_react.createElement("textPath", { xlinkHref: "#".concat(id) }, label));
 };
 var getAttrsOfPolarLabel = (viewBox, offset, position) => {
 	var { cx, cy, innerRadius, outerRadius, startAngle, endAngle } = viewBox;
@@ -18731,16 +19609,16 @@ function Label(outerProps) {
 	else if (isPolar(viewBoxFromProps)) viewBox = viewBoxFromProps;
 	else viewBox = cartesianViewBoxToTrapezoid(viewBoxFromProps);
 	var cartesianBox = polarViewBoxToTrapezoid(viewBox);
-	if (!viewBox || isNullish(value) && isNullish(children) && !/* @__PURE__ */ (0, import_react.isValidElement)(content) && typeof content !== "function") return null;
+	if (!viewBox || isNullish(value) && isNullish(children) && !/*#__PURE__*/ (0, import_react.isValidElement)(content) && typeof content !== "function") return null;
 	var propsWithViewBox = _objectSpread$43(_objectSpread$43({}, props), {}, { viewBox });
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(content)) {
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(content)) {
 		var { labelRef: _ } = propsWithViewBox;
-		return /* @__PURE__ */ (0, import_react.cloneElement)(content, _objectWithoutProperties$30(propsWithViewBox, _excluded$30));
+		return /*#__PURE__*/ (0, import_react.cloneElement)(content, _objectWithoutProperties$30(propsWithViewBox, _excluded$30));
 	}
 	if (typeof content === "function") {
 		var { content: _2 } = propsWithViewBox;
-		label = /* @__PURE__ */ (0, import_react.createElement)(content, _objectWithoutProperties$30(propsWithViewBox, _excluded2$15));
-		if (/* @__PURE__ */ (0, import_react.isValidElement)(label)) return label;
+		label = /*#__PURE__*/ (0, import_react.createElement)(content, _objectWithoutProperties$30(propsWithViewBox, _excluded2$15));
+		if (/*#__PURE__*/ (0, import_react.isValidElement)(label)) return label;
 	} else label = getLabel(props);
 	var attrs = svgPropertiesAndEvents(props);
 	if (isPolar(viewBox)) {
@@ -18762,7 +19640,7 @@ function Label(outerProps) {
 			verticalAnchor: cartesianResult.verticalAnchor
 		}, cartesianResult.width !== void 0 ? { width: cartesianResult.width } : {}), cartesianResult.height !== void 0 ? { height: cartesianResult.height } : {});
 	}
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(Text, _extends$39({
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(Text, _extends$39({
 		ref: labelRef,
 		className: clsx("recharts-label", className)
 	}, attrs, positionAttrs, {
@@ -18777,23 +19655,23 @@ var parseLabel = (label, viewBox, labelRef) => {
 		viewBox,
 		labelRef
 	};
-	if (label === true) return /* @__PURE__ */ import_react.createElement(Label, _extends$39({ key: "label-implicit" }, commonProps));
-	if (isNumOrStr(label)) return /* @__PURE__ */ import_react.createElement(Label, _extends$39({
+	if (label === true) return /*#__PURE__*/ import_react.createElement(Label, _extends$39({ key: "label-implicit" }, commonProps));
+	if (isNumOrStr(label)) return /*#__PURE__*/ import_react.createElement(Label, _extends$39({
 		key: "label-implicit",
 		value: label
 	}, commonProps));
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(label)) {
-		if (label.type === Label) return /* @__PURE__ */ (0, import_react.cloneElement)(label, _objectSpread$43({ key: "label-implicit" }, commonProps));
-		return /* @__PURE__ */ import_react.createElement(Label, _extends$39({
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(label)) {
+		if (label.type === Label) return /*#__PURE__*/ (0, import_react.cloneElement)(label, _objectSpread$43({ key: "label-implicit" }, commonProps));
+		return /*#__PURE__*/ import_react.createElement(Label, _extends$39({
 			key: "label-implicit",
 			content: label
 		}, commonProps));
 	}
-	if (isLabelContentAFunction(label)) return /* @__PURE__ */ import_react.createElement(Label, _extends$39({
+	if (isLabelContentAFunction(label)) return /*#__PURE__*/ import_react.createElement(Label, _extends$39({
 		key: "label-implicit",
 		content: label
 	}, commonProps));
-	if (label && typeof label === "object") return /* @__PURE__ */ import_react.createElement(Label, _extends$39({}, label, { key: "label-implicit" }, commonProps));
+	if (label && typeof label === "object") return /*#__PURE__*/ import_react.createElement(Label, _extends$39({}, label, { key: "label-implicit" }, commonProps));
 	return null;
 };
 function CartesianLabelFromLabelProp(_ref3) {
@@ -18871,9 +19749,9 @@ var defaultAccessor = (entry) => {
 	var val = Array.isArray(entry.value) ? entry.value[entry.value.length - 1] : entry.value;
 	if (isRenderableText(val)) return val;
 };
-var CartesianLabelListContext = /* @__PURE__ */ (0, import_react.createContext)(void 0);
+var CartesianLabelListContext = /*#__PURE__*/ (0, import_react.createContext)(void 0);
 var CartesianLabelListContextProvider = CartesianLabelListContext.Provider;
-var PolarLabelListContext = /* @__PURE__ */ (0, import_react.createContext)(void 0);
+var PolarLabelListContext = /*#__PURE__*/ (0, import_react.createContext)(void 0);
 var PolarLabelListContextProvider = PolarLabelListContext.Provider;
 function useCartesianLabelListContext() {
 	return (0, import_react.useContext)(CartesianLabelListContext);
@@ -18891,11 +19769,11 @@ function LabelList(_ref) {
 	var polarData = usePolarLabelListContext();
 	var data = cartesianData || polarData;
 	if (!data || !data.length) return null;
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: zIndex !== null && zIndex !== void 0 ? zIndex : DefaultZIndexes.label }, /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-label-list" }, data.map((entry, index) => {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: zIndex !== null && zIndex !== void 0 ? zIndex : DefaultZIndexes.label }, /*#__PURE__*/ import_react.createElement(Layer, { className: "recharts-label-list" }, data.map((entry, index) => {
 		var _restProps$fill;
 		var value = isNullish(dataKey) ? valueAccessor(entry, index) : getValueByDataKey(entry.payload, dataKey);
 		var idProps = isNullish(id) ? {} : { id: "".concat(id, "-").concat(index) };
-		return /* @__PURE__ */ import_react.createElement(Label, _extends$38({ key: "label-".concat(index) }, svgPropertiesAndEvents(entry), others, idProps, {
+		return /*#__PURE__*/ import_react.createElement(Label, _extends$38({ key: "label-".concat(index) }, svgPropertiesAndEvents(entry), others, idProps, {
 			fill: (_restProps$fill = restProps.fill) !== null && _restProps$fill !== void 0 ? _restProps$fill : entry.fill,
 			parentViewBox: entry.parentViewBox,
 			value,
@@ -18910,12 +19788,12 @@ LabelList.displayName = "LabelList";
 function LabelListFromLabelProp(_ref2) {
 	var { label } = _ref2;
 	if (!label) return null;
-	if (label === true) return /* @__PURE__ */ import_react.createElement(LabelList, { key: "labelList-implicit" });
-	if (/* @__PURE__ */ import_react.isValidElement(label) || isLabelContentAFunction(label)) return /* @__PURE__ */ import_react.createElement(LabelList, {
+	if (label === true) return /*#__PURE__*/ import_react.createElement(LabelList, { key: "labelList-implicit" });
+	if (/*#__PURE__*/ import_react.isValidElement(label) || isLabelContentAFunction(label)) return /*#__PURE__*/ import_react.createElement(LabelList, {
 		key: "labelList-implicit",
 		content: label
 	});
-	if (typeof label === "object") return /* @__PURE__ */ import_react.createElement(LabelList, _extends$38({ key: "labelList-implicit" }, label, { type: String(label.type) }));
+	if (typeof label === "object") return /*#__PURE__*/ import_react.createElement(LabelList, _extends$38({ key: "labelList-implicit" }, label, { type: String(label.type) }));
 	return null;
 }
 //#endregion
@@ -18955,10 +19833,10 @@ function _objectWithoutPropertiesLoose$28(r, e) {
 function Customized(_ref) {
 	var { component } = _ref, props = _objectWithoutProperties$28(_ref, _excluded$28);
 	var child;
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(component)) child = /* @__PURE__ */ (0, import_react.cloneElement)(component, props);
-	else if (typeof component === "function") child = /* @__PURE__ */ (0, import_react.createElement)(component, props);
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(component)) child = /*#__PURE__*/ (0, import_react.cloneElement)(component, props);
+	else if (typeof component === "function") child = /*#__PURE__*/ (0, import_react.createElement)(component, props);
 	else warn(false, "Customized's props `component` must be React.element or Function, but got %s.", typeof component);
-	return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-customized-wrapper" }, child);
+	return /*#__PURE__*/ import_react.createElement(Layer, { className: "recharts-customized-wrapper" }, child);
 }
 Customized.displayName = "Customized";
 //#endregion
@@ -19051,20 +19929,20 @@ var Polygon = (props) => {
 	if (baseLinePoints && baseLinePoints.length) {
 		var hasStroke = others.stroke && others.stroke !== "none";
 		var rangePath = getRanglePath(points, baseLinePoints, connectNulls);
-		return /* @__PURE__ */ import_react.createElement("g", { className: layerClass }, /* @__PURE__ */ import_react.createElement("path", _extends$37({}, svgPropertiesAndEvents(others), {
+		return /*#__PURE__*/ import_react.createElement("g", { className: layerClass }, /*#__PURE__*/ import_react.createElement("path", _extends$37({}, svgPropertiesAndEvents(others), {
 			fill: rangePath.slice(-1) === "Z" ? others.fill : "none",
 			stroke: "none",
 			d: rangePath
-		})), hasStroke ? /* @__PURE__ */ import_react.createElement("path", _extends$37({}, svgPropertiesAndEvents(others), {
+		})), hasStroke ? /*#__PURE__*/ import_react.createElement("path", _extends$37({}, svgPropertiesAndEvents(others), {
 			fill: "none",
 			d: getSinglePolygonPath(points, connectNulls)
-		})) : null, hasStroke ? /* @__PURE__ */ import_react.createElement("path", _extends$37({}, svgPropertiesAndEvents(others), {
+		})) : null, hasStroke ? /*#__PURE__*/ import_react.createElement("path", _extends$37({}, svgPropertiesAndEvents(others), {
 			fill: "none",
 			d: getSinglePolygonPath(baseLinePoints, connectNulls)
 		})) : null);
 	}
 	var singlePath = getSinglePolygonPath(points, connectNulls);
-	return /* @__PURE__ */ import_react.createElement("path", _extends$37({}, svgPropertiesAndEvents(others), {
+	return /*#__PURE__*/ import_react.createElement("path", _extends$37({}, svgPropertiesAndEvents(others), {
 		fill: singlePath.slice(-1) === "Z" ? others.fill : "none",
 		className: layerClass,
 		d: singlePath
@@ -19094,7 +19972,7 @@ function _extends$36() {
 var Dot = (props) => {
 	var { cx, cy, r, className } = props;
 	var layerClass = clsx("recharts-dot", className);
-	if (isNumber(cx) && isNumber(cy) && isNumber(r)) return /* @__PURE__ */ import_react.createElement("circle", _extends$36({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
+	if (isNumber(cx) && isNumber(cy) && isNumber(r)) return /*#__PURE__*/ import_react.createElement("circle", _extends$36({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
 		className: layerClass,
 		cx,
 		cy,
@@ -19157,7 +20035,8 @@ var selectPolarAxisDomain = createSelector([
 			selectBaseAxis,
 			selectPolarItemsSettings,
 			selectAllErrorBarSettings,
-			pickAxisType
+			pickAxisType,
+			selectChartDataSliceIgnoringIndexes
 		], combineDomainOfAllAppliedNumericalValuesIncludingErrorValues),
 		unsupportedInPolarChart,
 		selectChartLayout,
@@ -19342,11 +20221,11 @@ var getPolygonPath = (radius, cx, cy, polarAngles) => {
 var PolarAngles = (props) => {
 	var { cx, cy, innerRadius, outerRadius, polarAngles, radialLines } = props;
 	if (!polarAngles || !polarAngles.length || !radialLines) return null;
-	var polarAnglesProps = _objectSpread$42({ stroke: "#ccc" }, svgPropertiesNoEvents(props));
-	return /* @__PURE__ */ import_react.createElement("g", { className: "recharts-polar-grid-angle" }, polarAngles.map((entry) => {
+	var polarAnglesProps = _objectSpread$42({}, svgPropertiesNoEvents(props));
+	return /*#__PURE__*/ import_react.createElement("g", { className: "recharts-polar-grid-angle" }, polarAngles.map((entry) => {
 		var start = polarToCartesian(cx, cy, innerRadius, entry);
 		var end = polarToCartesian(cx, cy, outerRadius, entry);
-		return /* @__PURE__ */ import_react.createElement("line", _extends$35({ key: "line-".concat(entry) }, polarAnglesProps, {
+		return /*#__PURE__*/ import_react.createElement("line", _extends$35({ key: "line-".concat(entry) }, polarAnglesProps, {
 			x1: start.x,
 			y1: start.y,
 			x2: end.x,
@@ -19356,11 +20235,8 @@ var PolarAngles = (props) => {
 };
 var ConcentricCircle = (props) => {
 	var { cx, cy, radius } = props;
-	var concentricCircleProps = _objectSpread$42({
-		stroke: "#ccc",
-		fill: "none"
-	}, svgPropertiesNoEvents(props));
-	return /* @__PURE__ */ import_react.createElement("circle", _extends$35({}, concentricCircleProps, {
+	var concentricCircleProps = _objectSpread$42({}, svgPropertiesNoEvents(props));
+	return /*#__PURE__*/ import_react.createElement("circle", _extends$35({}, concentricCircleProps, {
 		className: clsx("recharts-polar-grid-concentric-circle", props.className),
 		cx,
 		cy,
@@ -19369,11 +20245,8 @@ var ConcentricCircle = (props) => {
 };
 var ConcentricPolygon = (props) => {
 	var { radius } = props;
-	var concentricPolygonProps = _objectSpread$42({
-		stroke: "#ccc",
-		fill: "none"
-	}, svgPropertiesNoEvents(props));
-	return /* @__PURE__ */ import_react.createElement("path", _extends$35({}, concentricPolygonProps, {
+	var concentricPolygonProps = _objectSpread$42({}, svgPropertiesNoEvents(props));
+	return /*#__PURE__*/ import_react.createElement("path", _extends$35({}, concentricPolygonProps, {
 		className: clsx("recharts-polar-grid-concentric-polygon", props.className),
 		d: getPolygonPath(radius, props.cx, props.cy, props.polarAngles)
 	}));
@@ -19383,13 +20256,13 @@ var ConcentricGridPath = (props) => {
 	if (!polarRadius || !polarRadius.length) return null;
 	var maxPolarRadius = Math.max(...polarRadius);
 	var renderBackground = props.fill && props.fill !== "none";
-	return /* @__PURE__ */ import_react.createElement("g", { className: "recharts-polar-grid-concentric" }, renderBackground && gridType === "circle" && /* @__PURE__ */ import_react.createElement(ConcentricCircle, _extends$35({}, props, { radius: maxPolarRadius })), renderBackground && gridType !== "circle" && /* @__PURE__ */ import_react.createElement(ConcentricPolygon, _extends$35({}, props, { radius: maxPolarRadius })), polarRadius.map((entry, i) => {
+	return /*#__PURE__*/ import_react.createElement("g", { className: "recharts-polar-grid-concentric" }, renderBackground && gridType === "circle" && /*#__PURE__*/ import_react.createElement(ConcentricCircle, _extends$35({}, props, { radius: maxPolarRadius })), renderBackground && gridType !== "circle" && /*#__PURE__*/ import_react.createElement(ConcentricPolygon, _extends$35({}, props, { radius: maxPolarRadius })), polarRadius.map((entry, i) => {
 		var key = i;
-		if (gridType === "circle") return /* @__PURE__ */ import_react.createElement(ConcentricCircle, _extends$35({ key }, props, {
+		if (gridType === "circle") return /*#__PURE__*/ import_react.createElement(ConcentricCircle, _extends$35({ key }, props, {
 			fill: "none",
 			radius: entry
 		}));
-		return /* @__PURE__ */ import_react.createElement(ConcentricPolygon, _extends$35({ key }, props, {
+		return /*#__PURE__*/ import_react.createElement(ConcentricPolygon, _extends$35({ key }, props, {
 			fill: "none",
 			radius: entry
 		}));
@@ -19400,7 +20273,10 @@ var defaultPolarGridProps = {
 	radiusAxisId: 0,
 	gridType: "polygon",
 	radialLines: true,
-	zIndex: DefaultZIndexes.grid
+	zIndex: DefaultZIndexes.grid,
+	stroke: "#ccc",
+	strokeWidth: 1,
+	fill: "none"
 };
 /**
 * @consumes PolarViewBoxContext
@@ -19425,13 +20301,13 @@ var PolarGrid = (outsideProps) => {
 	}, inputs);
 	var { outerRadius } = props;
 	if (outerRadius <= 0) return null;
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement("g", { className: "recharts-polar-grid" }, /* @__PURE__ */ import_react.createElement(ConcentricGridPath, _extends$35({
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement("g", { className: "recharts-polar-grid" }, /*#__PURE__*/ import_react.createElement(ConcentricGridPath, _extends$35({
 		gridType,
 		radialLines
 	}, props, {
 		polarAngles,
 		polarRadius
-	})), /* @__PURE__ */ import_react.createElement(PolarAngles, _extends$35({
+	})), /*#__PURE__*/ import_react.createElement(PolarAngles, _extends$35({
 		gridType,
 		radialLines
 	}, props, {
@@ -19442,8 +20318,28 @@ var PolarGrid = (outsideProps) => {
 PolarGrid.displayName = "PolarGrid";
 //#endregion
 //#region node_modules/es-toolkit/dist/array/maxBy.js
-var require_maxBy$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_maxBy$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Finds the element in an array that has the maximum value when applying
+	* the `getValue` function to each element.
+	*
+	* @template T - The type of elements in the array.
+	* @param {T[]} items The array of elements to search.
+	* @param {(element: T, index: number, array: readonly T[]) => number} getValue A function that selects a numeric value from each element.
+	* @returns {T | undefined} The element with the maximum value as determined by the `getValue` function,
+	* or `undefined` if the array is empty.
+	* @example
+	* maxBy([{ a: 1 }, { a: 2 }, { a: 3 }], x => x.a); // Returns: { a: 3 }
+	* maxBy([], x => x.a); // Returns: undefined
+	* maxBy(
+	*   [
+	*     { name: 'john', age: 30 },
+	*     { name: 'jane', age: 28 },
+	*     { name: 'joe', age: 26 },
+	*   ],
+	*   x => x.age
+	* ); // Returns: { name: 'john', age: 30 }
+	*/
 	function maxBy(items, getValue) {
 		if (items.length === 0) return;
 		let maxElement = items[0];
@@ -19462,26 +20358,73 @@ var require_maxBy$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/math/maxBy.js
-var require_maxBy$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var maxBy$1 = require_maxBy$2();
-	var identity = require_identity();
-	var iteratee = require_iteratee();
+var require_maxBy$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_maxBy$1 = require_maxBy$3();
+	var require_identity$1 = require_identity$4();
+	var require_iteratee$2 = require_iteratee$4();
+	/**
+	* Finds the element in an array that has the maximum value when applying
+	* the `iteratee` to each element.
+	*
+	* @template T - The type of elements in the array.
+	* @param {ArrayLike<T> | null | undefined} items The array of elements to search.
+	* @param {ValueIteratee<T>} iteratee
+	* The criteria used to determine the maximum value.
+	*  - If a **function** is provided, it extracts a numeric value from each element.
+	*  - If a **string** is provided, it is treated as a key to extract values from the objects.
+	*  - If a **[key, value]** pair is provided, it matches elements with the specified key-value pair.
+	*  - If an **object** is provided, it matches elements that contain the specified properties.
+	* @returns {T | undefined} The element with the maximum value as determined by the `iteratee`.
+	* @example
+	* maxBy([{ a: 1 }, { a: 2 }, { a: 3 }], x => x.a); // Returns: { a: 3 }
+	* maxBy([], x => x.a); // Returns: undefined
+	* maxBy(
+	*   [
+	*     { name: 'john', age: 30 },
+	*     { name: 'jane', age: 28 },
+	*     { name: 'joe', age: 26 },
+	*   ],
+	*   x => x.age
+	* ); // Returns: { name: 'john', age: 30 }
+	* maxBy([{ a: 1 }, { a: 2 }], 'a'); // Returns: { a: 2 }
+	* maxBy([{ a: 1 }, { a: 2 }], ['a', 1]); // Returns: { a: 1 }
+	* maxBy([{ a: 1 }, { a: 2 }], { a: 1 }); // Returns: { a: 1 }
+	*/
 	function maxBy(items, iteratee$1) {
 		if (items == null) return;
-		return maxBy$1.maxBy(Array.from(items), iteratee.iteratee(iteratee$1 ?? identity.identity));
+		return require_maxBy$1.maxBy(Array.from(items), require_iteratee$2.iteratee(iteratee$1 ?? require_identity$1.identity));
 	}
 	exports.maxBy = maxBy;
 }));
 //#endregion
 //#region node_modules/es-toolkit/compat/maxBy.js
 var require_maxBy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	module.exports = require_maxBy$1().maxBy;
+	module.exports = require_maxBy$2().maxBy;
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/array/minBy.js
-var require_minBy$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_minBy$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Finds the element in an array that has the minimum value when applying
+	* the `getValue` function to each element.
+	*
+	* @template T - The type of elements in the array.
+	* @param {T[]} items The array of elements to search.
+	* @param {(element: T, index: number, array: readonly T[]) => number} getValue A function that selects a numeric value from each element.
+	* @returns {T | undefined} The element with the minimum value as determined by the `getValue` function,
+	* or `undefined` if the array is empty.
+	* @example
+	* minBy([{ a: 1 }, { a: 2 }, { a: 3 }], x => x.a); // Returns: { a: 1 }
+	* minBy([], x => x.a); // Returns: undefined
+	* minBy(
+	*   [
+	*     { name: 'john', age: 30 },
+	*     { name: 'jane', age: 28 },
+	*     { name: 'joe', age: 26 },
+	*   ],
+	*   x => x.age
+	* ); // Returns: { name: 'joe', age: 26 }
+	*/
 	function minBy(items, getValue) {
 		if (items.length === 0) return;
 		let minElement = items[0];
@@ -19500,23 +20443,53 @@ var require_minBy$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/math/minBy.js
-var require_minBy$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var minBy$1 = require_minBy$2();
-	var identity = require_identity();
-	var iteratee = require_iteratee();
+var require_minBy$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_minBy$1 = require_minBy$3();
+	var require_identity = require_identity$4();
+	var require_iteratee$1 = require_iteratee$4();
+	/**
+	* Finds the element in an array that has the minimum value when applying
+	* the `iteratee` to each element.
+	*
+	* @template T - The type of elements in the array.
+	* @param {T[]} items The array of elements to search.
+	* @param {((element: T) => number) | keyof T | [keyof T, unknown] | Partial<T>} iteratee
+	* The criteria used to determine the minimum value.
+	*  - If a **function** is provided, it extracts a numeric value from each element.
+	*  - If a **string** is provided, it is treated as a key to extract values from the objects.
+	*  - If a **[key, value]** pair is provided, it matches elements with the specified key-value pair.
+	*  - If an **object** is provided, it matches elements that contain the specified properties.
+	* @returns {T | undefined} The element with the minimum value as determined by the `iteratee`.
+	* @example
+	* minBy([{ a: 1 }, { a: 2 }, { a: 3 }], x => x.a); // Returns: { a: 1 }
+	* minBy([], x => x.a); // Returns: undefined
+	* minBy(
+	*   [
+	*     { name: 'john', age: 30 },
+	*     { name: 'jane', age: 28 },
+	*     { name: 'joe', age: 26 },
+	*   ],
+	*   x => x.age
+	* ); // Returns: { name: 'joe', age: 26 }
+	* minBy([{ a: 1 }, { a: 2 }], 'a'); // Returns: { a: 1 }
+	* minBy([{ a: 1 }, { a: 2 }], ['a', 1]); // Returns: { a: 2 }
+	* minBy([{ a: 1 }, { a: 2 }], { a: 1 }); // Returns: { a: 2 }
+	*/
 	function minBy(items, iteratee$1) {
 		if (items == null) return;
-		return minBy$1.minBy(Array.from(items), iteratee.iteratee(iteratee$1 ?? identity.identity));
+		return require_minBy$1.minBy(Array.from(items), require_iteratee$1.iteratee(iteratee$1 ?? require_identity.identity));
 	}
 	exports.minBy = minBy;
 }));
 //#endregion
+//#region node_modules/es-toolkit/compat/minBy.js
+var require_minBy = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	module.exports = require_minBy$2().minBy;
+}));
+//#endregion
 //#region node_modules/recharts/es6/state/polarAxisSlice.js
-var import_minBy = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
-	module.exports = require_minBy$1().minBy;
-})))());
 var import_maxBy = /* @__PURE__ */ __toESM(require_maxBy());
+var import_minBy = /* @__PURE__ */ __toESM(require_minBy());
 var polarAxisSlice = createSlice({
 	name: "polarAxis",
 	initialState: {
@@ -19699,13 +20672,13 @@ var renderAxisLine = (props, ticks) => {
 		x2: point1.x,
 		y2: point1.y
 	});
-	return /* @__PURE__ */ import_react.createElement("line", _extends$34({ className: "recharts-polar-radius-axis-line" }, axisLineProps));
+	return /*#__PURE__*/ import_react.createElement("line", _extends$34({ className: "recharts-polar-radius-axis-line" }, axisLineProps));
 };
 var renderTickItem = (option, tickProps, value) => {
 	var tickItem;
-	if (/* @__PURE__ */ import_react.isValidElement(option)) tickItem = /* @__PURE__ */ import_react.cloneElement(option, tickProps);
+	if (/*#__PURE__*/ import_react.isValidElement(option)) tickItem = /*#__PURE__*/ import_react.cloneElement(option, tickProps);
 	else if (typeof option === "function") tickItem = option(tickProps);
-	else tickItem = /* @__PURE__ */ import_react.createElement(Text, _extends$34({}, tickProps, { className: "recharts-polar-radius-axis-tick-value" }), value);
+	else tickItem = /*#__PURE__*/ import_react.createElement(Text, _extends$34({}, tickProps, { className: "recharts-polar-radius-axis-tick-value" }), value);
 	return tickItem;
 };
 var renderTicks = (props, ticks) => {
@@ -19722,12 +20695,12 @@ var renderTicks = (props, ticks) => {
 			stroke: "none",
 			fill: stroke
 		}, customTickProps), {}, { index: i }, coord), {}, { payload: entry });
-		return /* @__PURE__ */ import_react.createElement(Layer, _extends$34({
+		return /*#__PURE__*/ import_react.createElement(Layer, _extends$34({
 			className: clsx("recharts-polar-radius-axis-tick", getClassNameFromUnknown(tick)),
 			key: "tick-".concat(entry.coordinate)
 		}, adaptEventsOfChild(props, entry, i)), renderTickItem(tick, tickProps, tickFormatter ? tickFormatter(entry.value, i) : entry.value));
 	});
-	return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-polar-radius-axis-ticks" }, items);
+	return /*#__PURE__*/ import_react.createElement(Layer, { className: "recharts-polar-radius-axis-ticks" }, items);
 };
 var PolarRadiusAxisWrapper = (defaultsAndInputs) => {
 	var { radiusAxisId } = defaultsAndInputs;
@@ -19737,7 +20710,7 @@ var PolarRadiusAxisWrapper = (defaultsAndInputs) => {
 	if (viewBox == null || !ticks || !ticks.length || scale == null) return null;
 	var props = _objectSpread$41(_objectSpread$41({}, defaultsAndInputs), {}, { scale }, viewBox);
 	var { tick, axisLine } = props;
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(Layer, { className: clsx("recharts-polar-radius-axis", AXIS_TYPE$1, props.className) }, axisLine && renderAxisLine(props, ticks), tick && renderTicks(props, ticks), /* @__PURE__ */ import_react.createElement(PolarLabelContextProvider, getViewBox(props.angle, props.cx, props.cy, ticks), /* @__PURE__ */ import_react.createElement(PolarLabelFromLabelProp, { label: props.label }), props.children)));
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(Layer, { className: clsx("recharts-polar-radius-axis", AXIS_TYPE$1, props.className) }, axisLine && renderAxisLine(props, ticks), tick && renderTicks(props, ticks), /*#__PURE__*/ import_react.createElement(PolarLabelContextProvider, getViewBox(props.angle, props.cx, props.cy, ticks), /*#__PURE__*/ import_react.createElement(PolarLabelFromLabelProp, { label: props.label }), props.children)));
 };
 /**
 * @provides PolarLabelContext
@@ -19746,7 +20719,7 @@ var PolarRadiusAxisWrapper = (defaultsAndInputs) => {
 function PolarRadiusAxis(outsideProps) {
 	var _props$niceTicks;
 	var props = resolveDefaultProps(outsideProps, defaultPolarRadiusAxisProps);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetRadiusAxisSettings, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetRadiusAxisSettings, {
 		domain: props.domain,
 		id: props.radiusAxisId,
 		scale: props.scale,
@@ -19763,7 +20736,7 @@ function PolarRadiusAxis(outsideProps) {
 		ticks: props.ticks,
 		tickCount: props.tickCount,
 		tick: props.tick
-	}), /* @__PURE__ */ import_react.createElement(PolarRadiusAxisWrapper, props));
+	}), /*#__PURE__*/ import_react.createElement(PolarRadiusAxisWrapper, props));
 }
 PolarRadiusAxis.displayName = "PolarRadiusAxis";
 //#endregion
@@ -19908,20 +20881,20 @@ var AxisLine$1 = (props) => {
 	var { cx, cy, radius, axisLineType, axisLine, ticks } = props;
 	if (!axisLine) return null;
 	var axisLineProps = _objectSpread$40(_objectSpread$40({}, svgPropertiesNoEvents(props)), {}, { fill: "none" }, svgPropertiesNoEvents(axisLine));
-	if (axisLineType === "circle") return /* @__PURE__ */ import_react.createElement(Dot, _extends$33({ className: "recharts-polar-angle-axis-line" }, axisLineProps, {
+	if (axisLineType === "circle") return /*#__PURE__*/ import_react.createElement(Dot, _extends$33({ className: "recharts-polar-angle-axis-line" }, axisLineProps, {
 		cx,
 		cy,
 		r: radius
 	}));
 	var points = ticks.map((entry) => polarToCartesian(cx, cy, radius, entry.coordinate));
-	return /* @__PURE__ */ import_react.createElement(Polygon, _extends$33({ className: "recharts-polar-angle-axis-line" }, axisLineProps, { points }));
+	return /*#__PURE__*/ import_react.createElement(Polygon, _extends$33({ className: "recharts-polar-angle-axis-line" }, axisLineProps, { points }));
 };
 var TickItemText = (_ref) => {
 	var { tick, tickProps, value } = _ref;
 	if (!tick) return null;
-	if (/* @__PURE__ */ import_react.isValidElement(tick)) return /* @__PURE__ */ import_react.cloneElement(tick, tickProps);
+	if (/*#__PURE__*/ import_react.isValidElement(tick)) return /*#__PURE__*/ import_react.cloneElement(tick, tickProps);
 	if (typeof tick === "function") return tick(tickProps);
-	return /* @__PURE__ */ import_react.createElement(Text, _extends$33({}, tickProps, { className: "recharts-polar-angle-axis-tick-value" }), value);
+	return /*#__PURE__*/ import_react.createElement(Text, _extends$33({}, tickProps, { className: "recharts-polar-angle-axis-tick-value" }), value);
 };
 var Ticks$1 = (props) => {
 	var { tick, tickLine, tickFormatter, stroke, ticks } = props;
@@ -19943,16 +20916,16 @@ var Ticks$1 = (props) => {
 			x: lineCoord.x2,
 			y: lineCoord.y2
 		});
-		return /* @__PURE__ */ import_react.createElement(Layer, _extends$33({
+		return /*#__PURE__*/ import_react.createElement(Layer, _extends$33({
 			className: clsx("recharts-polar-angle-axis-tick", getClassNameFromUnknown(tick)),
 			key: "tick-".concat(entry.coordinate)
-		}, adaptEventsOfChild(props, entry, i)), tickLine && /* @__PURE__ */ import_react.createElement("line", _extends$33({ className: "recharts-polar-angle-axis-tick-line" }, tickLineProps, lineCoord)), /* @__PURE__ */ import_react.createElement(TickItemText, {
+		}, adaptEventsOfChild(props, entry, i)), tickLine && /*#__PURE__*/ import_react.createElement("line", _extends$33({ className: "recharts-polar-angle-axis-tick-line" }, tickLineProps, lineCoord)), /*#__PURE__*/ import_react.createElement(TickItemText, {
 			tick,
 			tickProps,
 			value: tickFormatter ? tickFormatter(entry.value, i) : entry.value
 		}));
 	});
-	return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-polar-angle-axis-ticks" }, items);
+	return /*#__PURE__*/ import_react.createElement(Layer, { className: "recharts-polar-angle-axis-ticks" }, items);
 };
 var PolarAngleAxisWrapper = (defaultsAndInputs) => {
 	var { angleAxisId } = defaultsAndInputs;
@@ -19965,7 +20938,7 @@ var PolarAngleAxisWrapper = (defaultsAndInputs) => {
 		radius: viewBox.outerRadius,
 		ticks
 	});
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(Layer, { className: clsx("recharts-polar-angle-axis", AXIS_TYPE, props.className) }, /* @__PURE__ */ import_react.createElement(AxisLine$1, props), /* @__PURE__ */ import_react.createElement(Ticks$1, props)));
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(Layer, { className: clsx("recharts-polar-angle-axis", AXIS_TYPE, props.className) }, /*#__PURE__*/ import_react.createElement(AxisLine$1, props), /*#__PURE__*/ import_react.createElement(Ticks$1, props)));
 };
 /**
 * @provides PolarLabelContext
@@ -19974,7 +20947,7 @@ var PolarAngleAxisWrapper = (defaultsAndInputs) => {
 function PolarAngleAxis(outsideProps) {
 	var _props$niceTicks;
 	var props = resolveDefaultProps(outsideProps, defaultPolarAngleAxisProps);
-	return /* @__PURE__ */ import_react.createElement(SetAngleAxisSettings, {
+	return /*#__PURE__*/ import_react.createElement(SetAngleAxisSettings, {
 		id: props.angleAxisId,
 		scale: props.scale,
 		type: props.type,
@@ -19991,7 +20964,7 @@ function PolarAngleAxis(outsideProps) {
 		ticks: props.ticks,
 		tick: props.tick,
 		domain: props.domain
-	}, /* @__PURE__ */ import_react.createElement(PolarAngleAxisWrapper, props));
+	}, /*#__PURE__*/ import_react.createElement(PolarAngleAxisWrapper, props));
 }
 PolarAngleAxis.displayName = "PolarAngleAxis";
 //#endregion
@@ -20250,8 +21223,29 @@ var isClipDot = (dot) => {
 };
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/predicate/isPlainObject.js
-var require_isPlainObject$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_isPlainObject$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Checks if a given value is a plain object.
+	*
+	* A plain object is an object created by the `{}` literal, `new Object()`, or
+	* `Object.create(null)`.
+	*
+	* This function also handles objects with custom
+	* `Symbol.toStringTag` properties.
+	*
+	* `Symbol.toStringTag` is a built-in symbol that a constructor can use to customize the
+	* default string description of objects.
+	*
+	* @param {any} [object] - The value to check.
+	* @returns {boolean} - True if the value is a plain object, otherwise false.
+	*
+	* @example
+	* console.log(isPlainObject({})); // true
+	* console.log(isPlainObject([])); // false
+	* console.log(isPlainObject(null)); // false
+	* console.log(isPlainObject(Object.create(null))); // true
+	* console.log(isPlainObject(new Map())); // false
+	*/
 	function isPlainObject(object) {
 		if (typeof object !== "object") return false;
 		if (object == null) return false;
@@ -20271,7 +21265,7 @@ var require_isPlainObject$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 //#endregion
 //#region node_modules/recharts/es6/shape/Trapezoid.js
 var import_isPlainObject = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
-	module.exports = require_isPlainObject$1().isPlainObject;
+	module.exports = require_isPlainObject$2().isPlainObject;
 })))());
 /**
 * @fileOverview Rectangle
@@ -20392,7 +21386,7 @@ var Trapezoid = (outsideProps) => {
 	}, []);
 	if (x !== +x || y !== +y || upperWidth !== +upperWidth || lowerWidth !== +lowerWidth || height !== +height || upperWidth === 0 && lowerWidth === 0 || height === 0) return null;
 	var layerClass = clsx("recharts-trapezoid", className);
-	if (!isUpdateAnimationActive) return /* @__PURE__ */ import_react.createElement("g", null, /* @__PURE__ */ import_react.createElement("path", _extends$32({}, svgPropertiesAndEvents(trapezoidProps), {
+	if (!isUpdateAnimationActive) return /*#__PURE__*/ import_react.createElement("g", null, /*#__PURE__*/ import_react.createElement("path", _extends$32({}, svgPropertiesAndEvents(trapezoidProps), {
 		className: layerClass,
 		d: getTrapezoidPath(x, y, upperWidth, lowerWidth, height)
 	})));
@@ -20404,7 +21398,7 @@ var Trapezoid = (outsideProps) => {
 	var from = "0px ".concat(totalLength === -1 ? 1 : totalLength, "px");
 	var to = "".concat(totalLength, "px ").concat(totalLength, "px");
 	var transition = getTransitionVal(["strokeDasharray"], animationDuration, animationEasing);
-	return /* @__PURE__ */ import_react.createElement(JavascriptAnimate, {
+	return /*#__PURE__*/ import_react.createElement(JavascriptAnimate, {
 		animationId,
 		key: animationId,
 		canBegin: totalLength > 0,
@@ -20429,7 +21423,7 @@ var Trapezoid = (outsideProps) => {
 			transition,
 			strokeDasharray: to
 		} : { strokeDasharray: from };
-		return /* @__PURE__ */ import_react.createElement("path", _extends$32({}, svgPropertiesAndEvents(trapezoidProps), {
+		return /*#__PURE__*/ import_react.createElement("path", _extends$32({}, svgPropertiesAndEvents(trapezoidProps), {
 			className: layerClass,
 			d: getTrapezoidPath(currX, currY, currUpperWidth, currLowerWidth, currHeight),
 			ref: pathRef,
@@ -20528,40 +21522,40 @@ function isSymbolsProps(shapeType, _elementProps) {
 function ShapeSelector(_ref) {
 	var { shapeType, elementProps } = _ref;
 	switch (shapeType) {
-		case "rectangle": return /* @__PURE__ */ import_react.createElement(Rectangle, elementProps);
-		case "trapezoid": return /* @__PURE__ */ import_react.createElement(Trapezoid, elementProps);
-		case "sector": return /* @__PURE__ */ import_react.createElement(Sector, elementProps);
+		case "rectangle": return /*#__PURE__*/ import_react.createElement(Rectangle, elementProps);
+		case "trapezoid": return /*#__PURE__*/ import_react.createElement(Trapezoid, elementProps);
+		case "sector": return /*#__PURE__*/ import_react.createElement(Sector, elementProps);
 		case "symbols":
-			if (isSymbolsProps(shapeType, elementProps)) return /* @__PURE__ */ import_react.createElement(Symbols, elementProps);
+			if (isSymbolsProps(shapeType, elementProps)) return /*#__PURE__*/ import_react.createElement(Symbols, elementProps);
 			break;
-		case "curve": return /* @__PURE__ */ import_react.createElement(Curve, elementProps);
+		case "curve": return /*#__PURE__*/ import_react.createElement(Curve, elementProps);
 		default: return null;
 	}
 }
 function getPropsFromShapeOption(option) {
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(option)) return option.props;
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(option)) return option.props;
 	return option;
 }
 function Shape(_ref2) {
 	var { option, shapeType, activeClassName = "recharts-active-shape", inActiveClassName = "recharts-shape" } = _ref2, props = _objectWithoutProperties$23(_ref2, _excluded$23);
 	var shape;
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(option)) shape = /* @__PURE__ */ (0, import_react.cloneElement)(option, _objectSpread$37(_objectSpread$37({}, props), getPropsFromShapeOption(option)));
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(option)) shape = /*#__PURE__*/ (0, import_react.cloneElement)(option, _objectSpread$37(_objectSpread$37({}, props), getPropsFromShapeOption(option)));
 	else if (typeof option === "function") shape = option(props, props.index);
 	else if ((0, import_isPlainObject.default)(option) && typeof option !== "boolean") {
 		var nextProps = defaultPropTransformer(option, props);
-		shape = /* @__PURE__ */ import_react.createElement(ShapeSelector, {
+		shape = /*#__PURE__*/ import_react.createElement(ShapeSelector, {
 			shapeType,
 			elementProps: nextProps
 		});
 	} else {
 		var elementProps = props;
-		shape = /* @__PURE__ */ import_react.createElement(ShapeSelector, {
+		shape = /*#__PURE__*/ import_react.createElement(ShapeSelector, {
 			shapeType,
 			elementProps
 		});
 	}
-	if (props.isActive) return /* @__PURE__ */ import_react.createElement(Layer, { className: activeClassName }, shape);
-	return /* @__PURE__ */ import_react.createElement(Layer, { className: inActiveClassName }, shape);
+	if (props.isActive) return /*#__PURE__*/ import_react.createElement(Layer, { className: activeClassName }, shape);
+	return /*#__PURE__*/ import_react.createElement(Layer, { className: inActiveClassName }, shape);
 }
 //#endregion
 //#region node_modules/recharts/es6/context/tooltipContext.js
@@ -20725,11 +21719,11 @@ function useUniqueId(prefix, customId) {
 */
 //#endregion
 //#region node_modules/recharts/es6/context/RegisterGraphicalItemId.js
-var GraphicalItemIdContext = /* @__PURE__ */ (0, import_react.createContext)(void 0);
+var GraphicalItemIdContext = /*#__PURE__*/ (0, import_react.createContext)(void 0);
 var RegisterGraphicalItemId = (_ref) => {
 	var { id, type, children } = _ref;
 	var resolvedId = useUniqueId("recharts-".concat(type), id);
-	return /* @__PURE__ */ import_react.createElement(GraphicalItemIdContext.Provider, { value: resolvedId }, children(resolvedId));
+	return /*#__PURE__*/ import_react.createElement(GraphicalItemIdContext.Provider, { value: resolvedId }, children(resolvedId));
 };
 function useGraphicalItemId() {
 	return (0, import_react.useContext)(GraphicalItemIdContext);
@@ -20812,7 +21806,7 @@ var SetCartesianGraphicalItemImpl = (props) => {
 	}, [dispatch]);
 	return null;
 };
-var SetCartesianGraphicalItem = /* @__PURE__ */ (0, import_react.memo)(SetCartesianGraphicalItemImpl);
+var SetCartesianGraphicalItem = /*#__PURE__*/ (0, import_react.memo)(SetCartesianGraphicalItemImpl);
 var SetPolarGraphicalItemImpl = (props) => {
 	var dispatch = useAppDispatch();
 	var prevPropsRef = (0, import_react.useRef)(null);
@@ -20834,7 +21828,7 @@ var SetPolarGraphicalItemImpl = (props) => {
 	}, [dispatch]);
 	return null;
 };
-var SetPolarGraphicalItem = /* @__PURE__ */ (0, import_react.memo)(SetPolarGraphicalItemImpl);
+var SetPolarGraphicalItem = /*#__PURE__*/ (0, import_react.memo)(SetPolarGraphicalItemImpl);
 //#endregion
 //#region node_modules/recharts/es6/polar/Pie.js
 var _excluded$22 = ["key"], _excluded2$11 = [
@@ -20932,11 +21926,11 @@ function SetPiePayloadLegend(props) {
 	var cells = (0, import_react.useMemo)(() => findAllByType(props.children, Cell), [props.children]);
 	var legendPayload = useAppSelector((state) => selectPieLegend(state, props.id, cells));
 	if (legendPayload == null) return null;
-	return /* @__PURE__ */ import_react.createElement(SetPolarLegendPayload, { legendPayload });
+	return /*#__PURE__*/ import_react.createElement(SetPolarLegendPayload, { legendPayload });
 }
 function getActiveShapeFill(activeShape) {
 	if (activeShape == null || typeof activeShape === "boolean" || typeof activeShape === "function") return;
-	if (/* @__PURE__ */ import_react.isValidElement(activeShape)) {
+	if (/*#__PURE__*/ import_react.isValidElement(activeShape)) {
 		var _activeShape$props;
 		var _fill = (_activeShape$props = activeShape.props) === null || _activeShape$props === void 0 ? void 0 : _activeShape$props.fill;
 		return typeof _fill === "string" ? _fill : void 0;
@@ -20944,7 +21938,7 @@ function getActiveShapeFill(activeShape) {
 	var { fill } = activeShape;
 	return typeof fill === "string" ? fill : void 0;
 }
-var SetPieTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
+var SetPieTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref) => {
 	var { dataKey, nameKey, sectors, stroke, strokeWidth, fill, name, hide, tooltipType, id, activeShape } = _ref;
 	var activeShapeFill = getActiveShapeFill(activeShape);
 	var tooltipEntrySettings = {
@@ -20974,7 +21968,7 @@ var SetPieTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
 			graphicalItemId: id
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 var getTextAnchor = (x, cx) => {
 	if (x > cx) return "start";
@@ -21000,24 +21994,24 @@ var parseDeltaAngle = (startAngle, endAngle) => {
 	return mathSign(endAngle - startAngle) * Math.min(Math.abs(endAngle - startAngle), 360);
 };
 var renderLabelLineItem = (option, props) => {
-	if (/* @__PURE__ */ import_react.isValidElement(option)) return /* @__PURE__ */ import_react.cloneElement(option, props);
+	if (/*#__PURE__*/ import_react.isValidElement(option)) return /*#__PURE__*/ import_react.cloneElement(option, props);
 	if (typeof option === "function") return option(props);
 	var className = clsx("recharts-pie-label-line", typeof option !== "boolean" ? option.className : "");
 	var { key } = props, otherProps = _objectWithoutProperties$22(props, _excluded$22);
-	return /* @__PURE__ */ import_react.createElement(Curve, _extends$31({}, otherProps, {
+	return /*#__PURE__*/ import_react.createElement(Curve, _extends$31({}, otherProps, {
 		type: "linear",
 		className
 	}));
 };
 var renderLabelItem = (option, props, value) => {
-	if (/* @__PURE__ */ import_react.isValidElement(option)) return /* @__PURE__ */ import_react.cloneElement(option, props);
+	if (/*#__PURE__*/ import_react.isValidElement(option)) return /*#__PURE__*/ import_react.cloneElement(option, props);
 	var label = value;
 	if (typeof option === "function") {
 		label = option(props);
-		if (/* @__PURE__ */ import_react.isValidElement(label)) return label;
+		if (/*#__PURE__*/ import_react.isValidElement(label)) return label;
 	}
 	var className = clsx("recharts-pie-label-text", getClassNameFromUnknown(option));
-	return /* @__PURE__ */ import_react.createElement(Text, _extends$31({}, props, {
+	return /*#__PURE__*/ import_react.createElement(Text, _extends$31({}, props, {
 		alignmentBaseline: "middle",
 		className
 	}), label);
@@ -21045,18 +22039,18 @@ function PieLabels(_ref2) {
 			points: [polarToCartesian(entry.cx, entry.cy, entry.outerRadius, midAngle), endPoint],
 			key: "line"
 		});
-		return /* @__PURE__ */ import_react.createElement(ZIndexLayer, {
+		return /*#__PURE__*/ import_react.createElement(ZIndexLayer, {
 			zIndex: DefaultZIndexes.label,
 			key: "label-".concat(entry.startAngle, "-").concat(entry.endAngle, "-").concat(entry.midAngle, "-").concat(i)
-		}, /* @__PURE__ */ import_react.createElement(Layer, null, labelLine && renderLabelLineItem(labelLine, lineProps), renderLabelItem(label, labelProps, getValueByDataKey(entry, dataKey))));
+		}, /*#__PURE__*/ import_react.createElement(Layer, null, labelLine && renderLabelLineItem(labelLine, lineProps), renderLabelItem(label, labelProps, getValueByDataKey(entry, dataKey))));
 	});
-	return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-pie-labels" }, labels);
+	return /*#__PURE__*/ import_react.createElement(Layer, { className: "recharts-pie-labels" }, labels);
 }
 function PieLabelList(_ref3) {
 	var { sectors, props, showLabels } = _ref3;
 	var { label } = props;
-	if (typeof label === "object" && label != null && "position" in label) return /* @__PURE__ */ import_react.createElement(LabelListFromLabelProp, { label });
-	return /* @__PURE__ */ import_react.createElement(PieLabels, {
+	if (typeof label === "object" && label != null && "position" in label) return /*#__PURE__*/ import_react.createElement(LabelListFromLabelProp, { label });
+	return /*#__PURE__*/ import_react.createElement(PieLabels, {
 		sectors,
 		props,
 		showLabels
@@ -21072,7 +22066,7 @@ function PieSectors(props) {
 	var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
 	var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, allOtherPieProps.dataKey, id);
 	if (sectors == null || sectors.length === 0) return null;
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, sectors.map((entry, i) => {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, sectors.map((entry, i) => {
 		if ((entry === null || entry === void 0 ? void 0 : entry.startAngle) === 0 && (entry === null || entry === void 0 ? void 0 : entry.endAngle) === 0 && sectors.length !== 1) return null;
 		var graphicalItemMatches = activeGraphicalItemId == null || activeGraphicalItemId === id;
 		var isActive = String(i) === activeIndex && (activeDataKey == null || allOtherPieProps.dataKey === activeDataKey) && graphicalItemMatches;
@@ -21083,7 +22077,7 @@ function PieSectors(props) {
 			[DATA_ITEM_INDEX_ATTRIBUTE_NAME]: i,
 			[DATA_ITEM_GRAPHICAL_ITEM_ID_ATTRIBUTE_NAME]: id
 		});
-		return /* @__PURE__ */ import_react.createElement(Layer, _extends$31({
+		return /*#__PURE__*/ import_react.createElement(Layer, _extends$31({
 			key: "sector-".concat(entry === null || entry === void 0 ? void 0 : entry.startAngle, "-").concat(entry === null || entry === void 0 ? void 0 : entry.endAngle, "-").concat(entry.midAngle, "-").concat(i),
 			tabIndex: -1,
 			className: "recharts-pie-sector"
@@ -21091,7 +22085,7 @@ function PieSectors(props) {
 			onMouseEnter: onMouseEnterFromContext(entry, i),
 			onMouseLeave: onMouseLeaveFromContext(entry, i),
 			onClick: onClickFromContext(entry, i)
-		}), /* @__PURE__ */ import_react.createElement(Shape, _extends$31({
+		}), /*#__PURE__*/ import_react.createElement(Shape, _extends$31({
 			option: shape !== null && shape !== void 0 ? shape : sectorOptions,
 			index: i,
 			shapeType: "sector",
@@ -21109,11 +22103,16 @@ function computePieSectors(_ref4) {
 	var paddingAngle = displayedData.length <= 1 ? 0 : (_pieSettings$paddingA = pieSettings.paddingAngle) !== null && _pieSettings$paddingA !== void 0 ? _pieSettings$paddingA : 0;
 	var notZeroItemCount = displayedData.filter((entry) => getValueByDataKey(entry, dataKey, 0) !== 0).length;
 	var totalPaddingAngle = (absDeltaAngle >= 360 ? notZeroItemCount : notZeroItemCount - 1) * paddingAngle;
-	var realTotalAngle = absDeltaAngle - notZeroItemCount * minAngle - totalPaddingAngle;
 	var sum = displayedData.reduce((result, entry) => {
 		var val = getValueByDataKey(entry, dataKey, 0);
 		return result + (isNumber(val) ? val : 0);
 	}, 0);
+	var effectiveMinAngle = minAngle > 0 && sum > 0 && displayedData.some((entry) => {
+		var val = getValueByDataKey(entry, dataKey, 0);
+		var percent = (isNumber(val) ? val : 0) / sum;
+		return val !== 0 && percent * absDeltaAngle < minAngle;
+	}) ? minAngle : 0;
+	var realTotalAngle = absDeltaAngle - notZeroItemCount * effectiveMinAngle - totalPaddingAngle;
 	var sectors;
 	if (sum > 0) {
 		var prev;
@@ -21127,7 +22126,7 @@ function computePieSectors(_ref4) {
 			var sectorColor = entryWithCellInfo != null && "fill" in entryWithCellInfo && typeof entryWithCellInfo.fill === "string" ? entryWithCellInfo.fill : pieSettings.fill;
 			if (i) tempStartAngle = prev.endAngle + mathSign(deltaAngle) * paddingAngle * (val !== 0 ? 1 : 0);
 			else tempStartAngle = startAngle;
-			var tempEndAngle = tempStartAngle + mathSign(deltaAngle) * ((val !== 0 ? minAngle : 0) + percent * realTotalAngle);
+			var tempEndAngle = tempStartAngle + mathSign(deltaAngle) * ((val !== 0 ? effectiveMinAngle : 0) + percent * realTotalAngle);
 			var midAngle = (tempStartAngle + tempEndAngle) / 2;
 			var middleRadius = (coordinate.innerRadius + coordinate.outerRadius) / 2;
 			var tooltipPayload = [{
@@ -21155,7 +22154,7 @@ function computePieSectors(_ref4) {
 				startAngle: tempStartAngle,
 				endAngle: tempEndAngle,
 				payload: entryWithCellInfo,
-				paddingAngle: mathSign(deltaAngle) * paddingAngle
+				paddingAngle: val !== 0 ? mathSign(deltaAngle) * paddingAngle : 0
 			});
 			return prev;
 		});
@@ -21183,7 +22182,7 @@ function PieLabelListProvider(_ref5) {
 			fill: entry.fill
 		}));
 	}, [sectors, showLabels]);
-	return /* @__PURE__ */ import_react.createElement(PolarLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
+	return /*#__PURE__*/ import_react.createElement(PolarLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
 }
 function SectorsWithAnimation$1(_ref6) {
 	var { props, previousSectorsRef, id } = _ref6;
@@ -21199,10 +22198,10 @@ function SectorsWithAnimation$1(_ref6) {
 		if (typeof onAnimationStart === "function") onAnimationStart();
 		setIsAnimating(true);
 	}, [onAnimationStart]);
-	return /* @__PURE__ */ import_react.createElement(PieLabelListProvider, {
+	return /*#__PURE__*/ import_react.createElement(PieLabelListProvider, {
 		showLabels: !isAnimating,
 		sectors
-	}, /* @__PURE__ */ import_react.createElement(JavascriptAnimate, {
+	}, /*#__PURE__*/ import_react.createElement(JavascriptAnimate, {
 		animationId,
 		begin: animationBegin,
 		duration: animationDuration,
@@ -21239,7 +22238,7 @@ function SectorsWithAnimation$1(_ref6) {
 			}
 		});
 		previousSectorsRef.current = stepData;
-		return /* @__PURE__ */ import_react.createElement(Layer, null, /* @__PURE__ */ import_react.createElement(PieSectors, {
+		return /*#__PURE__*/ import_react.createElement(Layer, null, /*#__PURE__*/ import_react.createElement(PieSectors, {
 			sectors: stepData,
 			activeShape,
 			inactiveShape,
@@ -21247,7 +22246,7 @@ function SectorsWithAnimation$1(_ref6) {
 			shape: props.shape,
 			id
 		}));
-	}), /* @__PURE__ */ import_react.createElement(PieLabelList, {
+	}), /*#__PURE__*/ import_react.createElement(PieLabelList, {
 		showLabels: !isAnimating,
 		sectors,
 		props
@@ -21286,12 +22285,12 @@ function PieImpl(props) {
 	var layerClass = clsx("recharts-pie", className);
 	if (hide || sectors == null) {
 		previousSectorsRef.current = null;
-		return /* @__PURE__ */ import_react.createElement(Layer, {
+		return /*#__PURE__*/ import_react.createElement(Layer, {
 			tabIndex: rootTabIndex,
 			className: layerClass
 		});
 	}
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(SetPieTooltipEntrySettings, {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(SetPieTooltipEntrySettings, {
 		dataKey: props.dataKey,
 		nameKey: props.nameKey,
 		sectors,
@@ -21303,10 +22302,10 @@ function PieImpl(props) {
 		tooltipType: props.tooltipType,
 		id,
 		activeShape: props.activeShape
-	}), /* @__PURE__ */ import_react.createElement(Layer, {
+	}), /*#__PURE__*/ import_react.createElement(Layer, {
 		tabIndex: rootTabIndex,
 		className: layerClass
-	}, /* @__PURE__ */ import_react.createElement(SectorsWithAnimation$1, {
+	}, /*#__PURE__*/ import_react.createElement(SectorsWithAnimation$1, {
 		props: _objectSpread$36(_objectSpread$36({}, propsWithoutId), {}, { sectors }),
 		previousSectorsRef,
 		id
@@ -21321,10 +22320,10 @@ function PieFn(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, defaultPieProps);
 	var { id: externalId } = props, propsWithoutId = _objectWithoutProperties$22(props, _excluded4$3);
 	var presentationProps = svgPropertiesNoEvents(propsWithoutId);
-	return /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	return /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: externalId,
 		type: "pie"
-	}, (id) => /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetPolarGraphicalItem, {
+	}, (id) => /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetPolarGraphicalItem, {
 		type: "pie",
 		id,
 		data: propsWithoutId.data,
@@ -21348,14 +22347,35 @@ function PieFn(outsideProps) {
 		cornerRadius: propsWithoutId.cornerRadius,
 		presentationProps,
 		maxRadius: props.maxRadius
-	}), /* @__PURE__ */ import_react.createElement(SetPiePayloadLegend, _extends$31({}, propsWithoutId, { id })), /* @__PURE__ */ import_react.createElement(PieImpl, _extends$31({}, propsWithoutId, { id }))));
+	}), /*#__PURE__*/ import_react.createElement(SetPiePayloadLegend, _extends$31({}, propsWithoutId, { id })), /*#__PURE__*/ import_react.createElement(PieImpl, _extends$31({}, propsWithoutId, { id }))));
 }
 var Pie = PieFn;
 Pie.displayName = "Pie";
 //#endregion
 //#region node_modules/es-toolkit/dist/array/last.js
-var require_last$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_last$3 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	/**
+	* Returns the last element of an array.
+	*
+	* This function takes an array and returns the last element of the array.
+	* If the array is empty, the function returns `undefined`.
+	*
+	* Unlike some implementations, this function is optimized for performance
+	* by directly accessing the last index of the array.
+	*
+	* @template T - The type of elements in the array.
+	* @param {T[]} arr - The array from which to get the last element.
+	* @returns {T | undefined} The last element of the array, or `undefined` if the array is empty.
+	*
+	* @example
+	* const arr = [1, 2, 3];
+	* const lastElement = last(arr);
+	* // lastElement will be 3
+	*
+	* const emptyArr: number[] = [];
+	* const noElement = last(emptyArr);
+	* // noElement will be undefined
+	*/
 	function last(arr) {
 		return arr[arr.length - 1];
 	}
@@ -21363,8 +22383,7 @@ var require_last$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/_internal/toArray.js
-var require_toArray = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var require_toArray$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	function toArray(value) {
 		return Array.isArray(value) ? value : Array.from(value);
 	}
@@ -21372,21 +22391,42 @@ var require_toArray = /* @__PURE__ */ __commonJSMin(((exports) => {
 }));
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/array/last.js
-var require_last$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var last$1 = require_last$2();
-	var toArray = require_toArray();
-	var isArrayLike = require_isArrayLike();
+var require_last$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_last$1 = require_last$3();
+	var require_toArray = require_toArray$1();
+	var require_isArrayLike$2 = require_isArrayLike$5();
+	/**
+	* Returns the last element of an array.
+	*
+	* This function takes an array and returns the last element of the array.
+	* If the array is empty, the function returns `undefined`.
+	*
+	* Unlike some implementations, this function is optimized for performance
+	* by directly accessing the last index of the array.
+	*
+	* @template T - The type of elements in the array.
+	* @param {ArrayLike<T> | null | undefined} arr - The array from which to get the last element.
+	* @returns {T | undefined} The last element of the array, or `undefined` if the array is empty.
+	*
+	* @example
+	* const arr = [1, 2, 3];
+	* const lastElement = last(arr);
+	* // lastElement will be 3
+	*
+	* const emptyArr: number[] = [];
+	* const noElement = last(emptyArr);
+	* // noElement will be undefined
+	*/
 	function last(array) {
-		if (!isArrayLike.isArrayLike(array)) return;
-		return last$1.last(toArray.toArray(array));
+		if (!require_isArrayLike$2.isArrayLike(array)) return;
+		return require_last$1.last(require_toArray.toArray(array));
 	}
 	exports.last = last;
 }));
 //#endregion
 //#region node_modules/recharts/es6/component/Dots.js
 var import_last = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
-	module.exports = require_last$1().last;
+	module.exports = require_last$2().last;
 })))());
 var _excluded$21 = ["points"];
 function ownKeys$35(e, r) {
@@ -21461,11 +22501,11 @@ function _objectWithoutPropertiesLoose$21(r, e) {
 }
 function DotItem(_ref) {
 	var { option, dotProps, className } = _ref;
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(option)) return /* @__PURE__ */ (0, import_react.cloneElement)(option, dotProps);
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(option)) return /*#__PURE__*/ (0, import_react.cloneElement)(option, dotProps);
 	if (typeof option === "function") return option(dotProps);
 	var finalClassName = clsx(className, typeof option !== "boolean" ? option.className : "");
 	var _ref2 = dotProps !== null && dotProps !== void 0 ? dotProps : {}, { points } = _ref2, props = _objectWithoutProperties$21(_ref2, _excluded$21);
-	return /* @__PURE__ */ import_react.createElement(Dot, _extends$30({}, props, { className: finalClassName }));
+	return /*#__PURE__*/ import_react.createElement(Dot, _extends$30({}, props, { className: finalClassName }));
 }
 function shouldRenderDots(points, dot) {
 	if (points == null) return false;
@@ -21488,7 +22528,7 @@ function Dots(_ref3) {
 			payload: entry.payload,
 			points
 		});
-		return /* @__PURE__ */ import_react.createElement(DotItem, {
+		return /*#__PURE__*/ import_react.createElement(DotItem, {
 			key: "dot-".concat(i),
 			option: dot,
 			dotProps,
@@ -21497,7 +22537,7 @@ function Dots(_ref3) {
 	});
 	var layerProps = {};
 	if (needClip && clipPathId != null) layerProps.clipPath = "url(#clipPath-".concat(clipDot ? "" : "dots-").concat(clipPathId, ")");
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex }, /* @__PURE__ */ import_react.createElement(Layer, _extends$30({ className }, layerProps), dots));
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex }, /*#__PURE__*/ import_react.createElement(Layer, _extends$30({ className }, layerProps), dots));
 }
 //#endregion
 //#region node_modules/recharts/es6/state/cartesianAxisSlice.js
@@ -22178,10 +23218,10 @@ var ActivePoint = (_ref) => {
 		value: point.value
 	}), svgPropertiesNoEventsFromUnknown(activeDot)), adaptEventHandlers(activeDot));
 	var dot;
-	if (/* @__PURE__ */ (0, import_react.isValidElement)(activeDot)) dot = /* @__PURE__ */ (0, import_react.cloneElement)(activeDot, dotProps);
+	if (/*#__PURE__*/ (0, import_react.isValidElement)(activeDot)) dot = /*#__PURE__*/ (0, import_react.cloneElement)(activeDot, dotProps);
 	else if (typeof activeDot === "function") dot = activeDot(dotProps);
-	else dot = /* @__PURE__ */ import_react.createElement(Dot, dotProps);
-	return /* @__PURE__ */ import_react.createElement(Layer, {
+	else dot = /*#__PURE__*/ import_react.createElement(Dot, dotProps);
+	return /*#__PURE__*/ import_react.createElement(Layer, {
 		className: "recharts-active-dot",
 		clipPath
 	}, dot);
@@ -22193,7 +23233,7 @@ function ActivePoints(_ref2) {
 	if (points == null || activeDataPoints == null) return null;
 	var activePoint = points.find((p) => activeDataPoints.includes(p.payload));
 	if (isNullish(activePoint)) return null;
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex }, /* @__PURE__ */ import_react.createElement(ActivePoint, {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex }, /*#__PURE__*/ import_react.createElement(ActivePoint, {
 		point: activePoint,
 		childIndex: Number(activeTooltipIndex),
 		mainColor,
@@ -22401,7 +23441,7 @@ var computeLegendPayloadFromRadarSectors = (props) => {
 		payload: props
 	}];
 };
-var SetRadarTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
+var SetRadarTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref) => {
 	var { dataKey, stroke, strokeWidth, fill, name, hide, tooltipType, id } = _ref;
 	var tooltipEntrySettings = {
 		dataDefinedOnItem: void 0,
@@ -22420,14 +23460,14 @@ var SetRadarTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
 			graphicalItemId: id
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 function RadarDotsWrapper(_ref2) {
 	var { points, props } = _ref2;
 	var { dot, dataKey } = props;
 	var { id } = props;
 	var baseProps = svgPropertiesNoEvents(_objectWithoutProperties$20(props, _excluded$20));
-	return /* @__PURE__ */ import_react.createElement(Dots, {
+	return /*#__PURE__*/ import_react.createElement(Dots, {
 		points,
 		dot,
 		className: "recharts-radar-dots",
@@ -22495,7 +23535,7 @@ function RadarLabelListProvider(_ref4) {
 			fill: void 0
 		});
 	});
-	return /* @__PURE__ */ import_react.createElement(CartesianLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
+	return /*#__PURE__*/ import_react.createElement(CartesianLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
 }
 function StaticPolygon(_ref5) {
 	var { points, baseLinePoints, props } = _ref5;
@@ -22510,16 +23550,16 @@ function StaticPolygon(_ref5) {
 		if (onMouseLeave) onMouseLeave(props, e);
 	};
 	var radar;
-	if (/* @__PURE__ */ import_react.isValidElement(shape)) radar = /* @__PURE__ */ import_react.cloneElement(shape, _objectSpread$31(_objectSpread$31({}, props), {}, { points }));
+	if (/*#__PURE__*/ import_react.isValidElement(shape)) radar = /*#__PURE__*/ import_react.cloneElement(shape, _objectSpread$31(_objectSpread$31({}, props), {}, { points }));
 	else if (typeof shape === "function") radar = shape(_objectSpread$31(_objectSpread$31({}, props), {}, { points }));
-	else radar = /* @__PURE__ */ import_react.createElement(Polygon, _extends$29({}, svgPropertiesAndEvents(props), {
+	else radar = /*#__PURE__*/ import_react.createElement(Polygon, _extends$29({}, svgPropertiesAndEvents(props), {
 		onMouseEnter: handleMouseEnter,
 		onMouseLeave: handleMouseLeave,
 		points,
 		baseLinePoints: isRange ? baseLinePoints : void 0,
 		connectNulls
 	}));
-	return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-radar-polygon" }, radar, /* @__PURE__ */ import_react.createElement(RadarDotsWrapper, {
+	return /*#__PURE__*/ import_react.createElement(Layer, { className: "recharts-radar-polygon" }, radar, /*#__PURE__*/ import_react.createElement(RadarDotsWrapper, {
 		props,
 		points
 	}));
@@ -22553,10 +23593,10 @@ function PolygonWithAnimation(_ref6) {
 		if (typeof onAnimationStart === "function") onAnimationStart();
 		setIsAnimating(true);
 	}, [onAnimationStart]);
-	return /* @__PURE__ */ import_react.createElement(RadarLabelListProvider, {
+	return /*#__PURE__*/ import_react.createElement(RadarLabelListProvider, {
 		showLabels,
 		points
-	}, /* @__PURE__ */ import_react.createElement(JavascriptAnimate, {
+	}, /*#__PURE__*/ import_react.createElement(JavascriptAnimate, {
 		animationId,
 		begin: animationBegin,
 		duration: animationDuration,
@@ -22572,17 +23612,17 @@ function PolygonWithAnimation(_ref6) {
 			previousPointsRef.current = stepData;
 			previousBaseLinePointsRef.current = stepBaseLinePoints;
 		}
-		return /* @__PURE__ */ import_react.createElement(StaticPolygon, {
+		return /*#__PURE__*/ import_react.createElement(StaticPolygon, {
 			points: stepData,
 			baseLinePoints: stepBaseLinePoints,
 			props
 		});
-	}), /* @__PURE__ */ import_react.createElement(LabelListFromLabelProp, { label: props.label }), props.children);
+	}), /*#__PURE__*/ import_react.createElement(LabelListFromLabelProp, { label: props.label }), props.children);
 }
 function RenderPolygon(props) {
 	var previousPointsRef = (0, import_react.useRef)(void 0);
 	var previousBaseLinePointsRef = (0, import_react.useRef)(void 0);
-	return /* @__PURE__ */ import_react.createElement(PolygonWithAnimation, {
+	return /*#__PURE__*/ import_react.createElement(PolygonWithAnimation, {
 		props,
 		previousPointsRef,
 		previousBaseLinePointsRef
@@ -22606,7 +23646,7 @@ function RadarWithState(props) {
 	var { hide, className, points } = props;
 	if (hide) return null;
 	var layerClass = clsx("recharts-radar", className);
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(Layer, { className: layerClass }, /* @__PURE__ */ import_react.createElement(RenderPolygon, props)), /* @__PURE__ */ import_react.createElement(ActivePoints, {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(Layer, { className: layerClass }, /*#__PURE__*/ import_react.createElement(RenderPolygon, props)), /*#__PURE__*/ import_react.createElement(ActivePoints, {
 		points,
 		mainColor: getLegendItemColor$1(props.stroke, props.fill),
 		itemDataKey: props.dataKey,
@@ -22617,7 +23657,7 @@ function RadarImpl(props) {
 	var isPanorama = useIsPanorama();
 	var radarPoints = useAppSelector((state) => selectRadarPoints(state, props.radiusAxisId, props.angleAxisId, isPanorama, props.id));
 	if ((radarPoints === null || radarPoints === void 0 ? void 0 : radarPoints.points) == null) return null;
-	return /* @__PURE__ */ import_react.createElement(RadarWithState, _extends$29({}, props, {
+	return /*#__PURE__*/ import_react.createElement(RadarWithState, _extends$29({}, props, {
 		points: radarPoints === null || radarPoints === void 0 ? void 0 : radarPoints.points,
 		baseLinePoints: radarPoints === null || radarPoints === void 0 ? void 0 : radarPoints.baseLinePoints,
 		isRange: radarPoints === null || radarPoints === void 0 ? void 0 : radarPoints.isRange
@@ -22629,10 +23669,10 @@ function RadarImpl(props) {
 */
 function Radar(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, defaultRadarProps);
-	return /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	return /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: props.id,
 		type: "radar"
-	}, (id) => /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetPolarGraphicalItem, {
+	}, (id) => /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetPolarGraphicalItem, {
 		type: "radar",
 		id,
 		data: void 0,
@@ -22640,7 +23680,7 @@ function Radar(outsideProps) {
 		hide: props.hide,
 		angleAxisId: props.angleAxisId,
 		radiusAxisId: props.radiusAxisId
-	}), /* @__PURE__ */ import_react.createElement(SetPolarLegendPayload, { legendPayload: computeLegendPayloadFromRadarSectors(props) }), /* @__PURE__ */ import_react.createElement(SetRadarTooltipEntrySettings, {
+	}), /*#__PURE__*/ import_react.createElement(SetPolarLegendPayload, { legendPayload: computeLegendPayloadFromRadarSectors(props) }), /*#__PURE__*/ import_react.createElement(SetRadarTooltipEntrySettings, {
 		dataKey: props.dataKey,
 		stroke: props.stroke,
 		strokeWidth: props.strokeWidth,
@@ -22649,7 +23689,7 @@ function Radar(outsideProps) {
 		hide: props.hide,
 		tooltipType: props.tooltipType,
 		id
-	}), /* @__PURE__ */ import_react.createElement(RadarImpl, _extends$29({}, props, { id }))));
+	}), /*#__PURE__*/ import_react.createElement(RadarImpl, _extends$29({}, props, { id }))));
 }
 Radar.displayName = "Radar";
 //#endregion
@@ -22668,7 +23708,7 @@ function parseCornerRadius(cornerRadius) {
 	return cornerRadius;
 }
 function RadialBarSector(props) {
-	return /* @__PURE__ */ import_react.createElement(Shape, _extends$28({ shapeType: "sector" }, props));
+	return /*#__PURE__*/ import_react.createElement(Shape, _extends$28({ shapeType: "sector" }, props));
 }
 //#endregion
 //#region node_modules/recharts/es6/state/selectors/combiners/combineBarSizeList.js
@@ -23148,7 +24188,7 @@ function RadialBarLabelListProvider(_ref) {
 		},
 		fill: sector.fill
 	}));
-	return /* @__PURE__ */ import_react.createElement(PolarLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
+	return /*#__PURE__*/ import_react.createElement(PolarLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
 }
 function RadialBarSectors(_ref2) {
 	var { sectors, allOtherRadialBarProps, showLabels } = _ref2;
@@ -23160,7 +24200,7 @@ function RadialBarSectors(_ref2) {
 	var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
 	var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, allOtherRadialBarProps.dataKey, id);
 	if (sectors == null) return null;
-	return /* @__PURE__ */ import_react.createElement(RadialBarLabelListProvider, {
+	return /*#__PURE__*/ import_react.createElement(RadialBarLabelListProvider, {
 		showLabels,
 		sectors
 	}, sectors.map((entry, i) => {
@@ -23179,12 +24219,12 @@ function RadialBarSectors(_ref2) {
 			option: isActive ? activeShape : shape,
 			index: i
 		});
-		if (isActive) return /* @__PURE__ */ import_react.createElement(ZIndexLayer, {
+		if (isActive) return /*#__PURE__*/ import_react.createElement(ZIndexLayer, {
 			zIndex: DefaultZIndexes.activeBar,
 			key: "sector-".concat(entry.cx, "-").concat(entry.cy, "-").concat(entry.innerRadius, "-").concat(entry.outerRadius, "-").concat(entry.startAngle, "-").concat(entry.endAngle, "-").concat(i)
-		}, /* @__PURE__ */ import_react.createElement(RadialBarSector, radialBarSectorProps));
-		return /* @__PURE__ */ import_react.createElement(RadialBarSector, _extends$27({ key: "sector-".concat(entry.cx, "-").concat(entry.cy, "-").concat(entry.innerRadius, "-").concat(entry.outerRadius, "-").concat(entry.startAngle, "-").concat(entry.endAngle, "-").concat(i) }, radialBarSectorProps));
-	}), /* @__PURE__ */ import_react.createElement(LabelListFromLabelProp, { label: allOtherRadialBarProps.label }), allOtherRadialBarProps.children);
+		}, /*#__PURE__*/ import_react.createElement(RadialBarSector, radialBarSectorProps));
+		return /*#__PURE__*/ import_react.createElement(RadialBarSector, _extends$27({ key: "sector-".concat(entry.cx, "-").concat(entry.cy, "-").concat(entry.innerRadius, "-").concat(entry.outerRadius, "-").concat(entry.startAngle, "-").concat(entry.endAngle, "-").concat(i) }, radialBarSectorProps));
+	}), /*#__PURE__*/ import_react.createElement(LabelListFromLabelProp, { label: allOtherRadialBarProps.label }), allOtherRadialBarProps.children);
 }
 function SectorsWithAnimation(_ref3) {
 	var { props, previousSectorsRef } = _ref3;
@@ -23200,7 +24240,7 @@ function SectorsWithAnimation(_ref3) {
 		if (typeof onAnimationStart === "function") onAnimationStart();
 		setIsAnimating(true);
 	}, [onAnimationStart]);
-	return /* @__PURE__ */ import_react.createElement(JavascriptAnimate, {
+	return /*#__PURE__*/ import_react.createElement(JavascriptAnimate, {
 		animationId,
 		begin: animationBegin,
 		duration: animationDuration,
@@ -23220,7 +24260,7 @@ function SectorsWithAnimation(_ref3) {
 			return _objectSpread$28(_objectSpread$28({}, entry), {}, { endAngle: interpolate(startAngle, endAngle, t) });
 		});
 		if (t > 0) previousSectorsRef.current = stepData !== null && stepData !== void 0 ? stepData : null;
-		return /* @__PURE__ */ import_react.createElement(RadialBarSectors, {
+		return /*#__PURE__*/ import_react.createElement(RadialBarSectors, {
 			sectors: stepData !== null && stepData !== void 0 ? stepData : STABLE_EMPTY_ARRAY,
 			allOtherRadialBarProps: props,
 			showLabels: !isAnimating
@@ -23229,16 +24269,16 @@ function SectorsWithAnimation(_ref3) {
 }
 function RenderSectors(props) {
 	var previousSectorsRef = (0, import_react.useRef)(null);
-	return /* @__PURE__ */ import_react.createElement(SectorsWithAnimation, {
+	return /*#__PURE__*/ import_react.createElement(SectorsWithAnimation, {
 		props,
 		previousSectorsRef
 	});
 }
 function SetRadialBarPayloadLegend(props) {
 	var legendPayload = useAppSelector((state) => selectRadialBarLegendPayload(state, props.legendType));
-	return /* @__PURE__ */ import_react.createElement(SetPolarLegendPayload, { legendPayload: legendPayload !== null && legendPayload !== void 0 ? legendPayload : [] });
+	return /*#__PURE__*/ import_react.createElement(SetPolarLegendPayload, { legendPayload: legendPayload !== null && legendPayload !== void 0 ? legendPayload : [] });
 }
-var SetRadialBarTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref4) => {
+var SetRadialBarTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref4) => {
 	var { dataKey, sectors, stroke, strokeWidth, name, hide, fill, tooltipType, id } = _ref4;
 	var tooltipEntrySettings = {
 		dataDefinedOnItem: sectors,
@@ -23257,14 +24297,14 @@ var SetRadialBarTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref4)
 			unit: ""
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 var RadialBarWithState = class extends import_react.PureComponent {
 	renderBackground(sectors) {
 		if (sectors == null) return null;
 		var { cornerRadius } = this.props;
 		var backgroundProps = svgPropertiesNoEventsFromUnknown(this.props.background);
-		return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: getZIndexFromUnknown(this.props.background, DefaultZIndexes.barBackground) }, sectors.map((entry, i) => {
+		return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: getZIndexFromUnknown(this.props.background, DefaultZIndexes.barBackground) }, sectors.map((entry, i) => {
 			var { value, background } = entry, rest = _objectWithoutProperties$19(entry, _excluded3$7);
 			if (!background) return null;
 			var props = _objectSpread$28(_objectSpread$28(_objectSpread$28(_objectSpread$28(_objectSpread$28({ cornerRadius: parseCornerRadius(cornerRadius) }, rest), {}, { fill: "#eee" }, background), backgroundProps), adaptEventsOfChild(this.props, entry, i)), {}, {
@@ -23273,14 +24313,14 @@ var RadialBarWithState = class extends import_react.PureComponent {
 				option: background,
 				isActive: false
 			});
-			return /* @__PURE__ */ import_react.createElement(RadialBarSector, _extends$27({ key: "background-".concat(rest.cx, "-").concat(rest.cy, "-").concat(rest.innerRadius, "-").concat(rest.outerRadius, "-").concat(rest.startAngle, "-").concat(rest.endAngle, "-").concat(i) }, props));
+			return /*#__PURE__*/ import_react.createElement(RadialBarSector, _extends$27({ key: "background-".concat(rest.cx, "-").concat(rest.cy, "-").concat(rest.innerRadius, "-").concat(rest.outerRadius, "-").concat(rest.startAngle, "-").concat(rest.endAngle, "-").concat(i) }, props));
 		}));
 	}
 	render() {
 		var { hide, sectors, className, background } = this.props;
 		if (hide) return null;
 		var layerClass = clsx("recharts-area", className);
-		return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: this.props.zIndex }, /* @__PURE__ */ import_react.createElement(Layer, { className: layerClass }, background && /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-radial-bar-background" }, this.renderBackground(sectors)), /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-radial-bar-sectors" }, /* @__PURE__ */ import_react.createElement(RenderSectors, this.props))));
+		return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: this.props.zIndex }, /*#__PURE__*/ import_react.createElement(Layer, { className: layerClass }, background && /*#__PURE__*/ import_react.createElement(Layer, { className: "recharts-radial-bar-background" }, this.renderBackground(sectors)), /*#__PURE__*/ import_react.createElement(Layer, { className: "recharts-radial-bar-sectors" }, /*#__PURE__*/ import_react.createElement(RenderSectors, this.props))));
 	}
 };
 function RadialBarImpl(props) {
@@ -23309,7 +24349,7 @@ function RadialBarImpl(props) {
 		props.radiusAxisId
 	]);
 	var sectors = (_useAppSelector = useAppSelector((state) => selectRadialBarSectors(state, props.radiusAxisId, props.angleAxisId, radialBarSettings, cells))) !== null && _useAppSelector !== void 0 ? _useAppSelector : STABLE_EMPTY_ARRAY;
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetRadialBarTooltipEntrySettings, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetRadialBarTooltipEntrySettings, {
 		dataKey: props.dataKey,
 		sectors,
 		stroke: props.stroke,
@@ -23319,7 +24359,7 @@ function RadialBarImpl(props) {
 		fill: props.fill,
 		tooltipType: props.tooltipType,
 		id: props.id
-	}), /* @__PURE__ */ import_react.createElement(RadialBarWithState, _extends$27({}, props, { sectors })));
+	}), /*#__PURE__*/ import_react.createElement(RadialBarWithState, _extends$27({}, props, { sectors })));
 }
 var defaultRadialBarProps = {
 	angleAxisId: 0,
@@ -23415,12 +24455,12 @@ function computeRadialBarDataItems(_ref5) {
 */
 function RadialBar(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, defaultRadialBarProps);
-	return /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	return /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: props.id,
 		type: "radialBar"
 	}, (id) => {
 		var _props$hide, _props$angleAxisId, _props$radiusAxisId;
-		return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetPolarGraphicalItem, {
+		return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetPolarGraphicalItem, {
 			type: "radialBar",
 			id,
 			data: void 0,
@@ -23432,7 +24472,7 @@ function RadialBar(outsideProps) {
 			barSize: props.barSize,
 			minPointSize: props.minPointSize,
 			maxBarSize: props.maxBarSize
-		}), /* @__PURE__ */ import_react.createElement(SetRadialBarPayloadLegend, props), /* @__PURE__ */ import_react.createElement(RadialBarImpl, _extends$27({}, props, { id })));
+		}), /*#__PURE__*/ import_react.createElement(SetRadialBarPayloadLegend, props), /*#__PURE__*/ import_react.createElement(RadialBarImpl, _extends$27({}, props, { id })));
 	});
 }
 RadialBar.displayName = "RadialBar";
@@ -23562,7 +24602,7 @@ var useDataIndex = () => {
 };
 //#endregion
 //#region node_modules/recharts/es6/context/brushUpdateContext.js
-var BrushUpdateDispatchContext = /* @__PURE__ */ (0, import_react.createContext)(() => {});
+var BrushUpdateDispatchContext = /*#__PURE__*/ (0, import_react.createContext)(() => {});
 //#endregion
 //#region node_modules/recharts/es6/state/brushSlice.js
 /**
@@ -23648,21 +24688,21 @@ function _toPrimitive$26(t, r) {
 function DefaultTraveller(props) {
 	var { x, y, width, height, stroke } = props;
 	var lineY = Math.floor(y + height / 2) - 1;
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement("rect", {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement("rect", {
 		x,
 		y,
 		width,
 		height,
 		fill: stroke,
 		stroke: "none"
-	}), /* @__PURE__ */ import_react.createElement("line", {
+	}), /*#__PURE__*/ import_react.createElement("line", {
 		x1: x + 1,
 		y1: lineY,
 		x2: x + width - 1,
 		y2: lineY,
 		fill: "none",
 		stroke: "#fff"
-	}), /* @__PURE__ */ import_react.createElement("line", {
+	}), /*#__PURE__*/ import_react.createElement("line", {
 		x1: x + 1,
 		y1: lineY + 2,
 		x2: x + width - 1,
@@ -23673,9 +24713,9 @@ function DefaultTraveller(props) {
 }
 function Traveller(props) {
 	var { travellerProps, travellerType } = props;
-	if (/* @__PURE__ */ import_react.isValidElement(travellerType)) return /* @__PURE__ */ import_react.cloneElement(travellerType, travellerProps);
+	if (/*#__PURE__*/ import_react.isValidElement(travellerType)) return /*#__PURE__*/ import_react.cloneElement(travellerType, travellerProps);
 	if (typeof travellerType === "function") return travellerType(travellerProps);
-	return /* @__PURE__ */ import_react.createElement(DefaultTraveller, travellerProps);
+	return /*#__PURE__*/ import_react.createElement(DefaultTraveller, travellerProps);
 }
 function getNameFromUnknown(value) {
 	if (isNotNil(value) && typeof value === "object" && "name" in value && typeof value.name === "string") return value.name;
@@ -23696,7 +24736,7 @@ function TravellerLayer(_ref) {
 		height
 	});
 	var ariaLabelBrush = ariaLabel || getAriaLabel(data, startIndex, endIndex);
-	return /* @__PURE__ */ import_react.createElement(Layer, {
+	return /*#__PURE__*/ import_react.createElement(Layer, {
 		tabIndex: 0,
 		role: "slider",
 		"aria-label": ariaLabelBrush,
@@ -23715,7 +24755,7 @@ function TravellerLayer(_ref) {
 		onFocus,
 		onBlur,
 		style: { cursor: "col-resize" }
-	}, /* @__PURE__ */ import_react.createElement(Traveller, {
+	}, /*#__PURE__*/ import_react.createElement(Traveller, {
 		travellerType: traveller,
 		travellerProps
 	}));
@@ -23752,7 +24792,7 @@ function getIndex(_ref2) {
 }
 function Background$1(_ref3) {
 	var { x, y, width, height, fill, stroke } = _ref3;
-	return /* @__PURE__ */ import_react.createElement("rect", {
+	return /*#__PURE__*/ import_react.createElement("rect", {
 		stroke,
 		fill,
 		x,
@@ -23768,7 +24808,7 @@ function BrushText(_ref4) {
 		pointerEvents: "none",
 		fill: stroke
 	};
-	return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-brush-texts" }, /* @__PURE__ */ import_react.createElement(Text, _extends$26({
+	return /*#__PURE__*/ import_react.createElement(Layer, { className: "recharts-brush-texts" }, /*#__PURE__*/ import_react.createElement(Text, _extends$26({
 		textAnchor: "end",
 		verticalAnchor: "middle",
 		x: Math.min(startX, endX) - offset,
@@ -23778,7 +24818,7 @@ function BrushText(_ref4) {
 		tickFormatter,
 		dataKey,
 		data
-	})), /* @__PURE__ */ import_react.createElement(Text, _extends$26({
+	})), /*#__PURE__*/ import_react.createElement(Text, _extends$26({
 		textAnchor: "start",
 		verticalAnchor: "middle",
 		x: Math.max(startX, endX) + travellerWidth + offset,
@@ -23794,7 +24834,7 @@ function Slide(_ref5) {
 	var { y, height, stroke, travellerWidth, startX, endX, onMouseEnter, onMouseLeave, onMouseDown, onTouchStart } = _ref5;
 	var x = Math.min(startX, endX) + travellerWidth;
 	var width = Math.max(Math.abs(endX - startX) - travellerWidth, 0);
-	return /* @__PURE__ */ import_react.createElement("rect", {
+	return /*#__PURE__*/ import_react.createElement("rect", {
 		className: "recharts-brush-slide",
 		onMouseEnter,
 		onMouseLeave,
@@ -23815,7 +24855,7 @@ function Panorama(_ref6) {
 	if (!(import_react.Children.count(children) === 1)) return null;
 	var chartElement = import_react.Children.only(children);
 	if (!chartElement) return null;
-	return /* @__PURE__ */ import_react.cloneElement(chartElement, {
+	return /*#__PURE__*/ import_react.cloneElement(chartElement, {
 		x,
 		y,
 		width,
@@ -24058,26 +25098,26 @@ var BrushWithState = class extends import_react.PureComponent {
 		var layerClass = clsx("recharts-brush", className);
 		var style = generatePrefixStyle("userSelect", "none");
 		var calculatedY = y + (dy !== null && dy !== void 0 ? dy : 0);
-		return /* @__PURE__ */ import_react.createElement(Layer, {
+		return /*#__PURE__*/ import_react.createElement(Layer, {
 			className: layerClass,
 			onMouseLeave: this.handleLeaveWrapper,
 			onTouchMove: this.handleTouchMove,
 			style
-		}, /* @__PURE__ */ import_react.createElement(Background$1, {
+		}, /*#__PURE__*/ import_react.createElement(Background$1, {
 			x,
 			y: calculatedY,
 			width,
 			height,
 			fill,
 			stroke
-		}), /* @__PURE__ */ import_react.createElement(PanoramaContextProvider, null, /* @__PURE__ */ import_react.createElement(Panorama, {
+		}), /*#__PURE__*/ import_react.createElement(PanoramaContextProvider, null, /*#__PURE__*/ import_react.createElement(Panorama, {
 			x,
 			y: calculatedY,
 			width,
 			height,
 			data,
 			padding
-		}, children)), /* @__PURE__ */ import_react.createElement(Slide, {
+		}, children)), /*#__PURE__*/ import_react.createElement(Slide, {
 			y: calculatedY,
 			height,
 			stroke,
@@ -24088,7 +25128,7 @@ var BrushWithState = class extends import_react.PureComponent {
 			onMouseLeave: this.handleLeaveSlideOrTraveller,
 			onMouseDown: this.handleSlideDragStart,
 			onTouchStart: this.handleSlideDragStart
-		}), /* @__PURE__ */ import_react.createElement(TravellerLayer, {
+		}), /*#__PURE__*/ import_react.createElement(TravellerLayer, {
 			travellerX: startX,
 			id: "startX",
 			otherProps: _objectSpread$26(_objectSpread$26({}, this.props), {}, { y: calculatedY }),
@@ -24103,7 +25143,7 @@ var BrushWithState = class extends import_react.PureComponent {
 			onBlur: () => {
 				this.setState({ isTravellerFocused: false });
 			}
-		}), /* @__PURE__ */ import_react.createElement(TravellerLayer, {
+		}), /*#__PURE__*/ import_react.createElement(TravellerLayer, {
 			travellerX: endX,
 			id: "endX",
 			otherProps: _objectSpread$26(_objectSpread$26({}, this.props), {}, { y: calculatedY }),
@@ -24118,7 +25158,7 @@ var BrushWithState = class extends import_react.PureComponent {
 			onBlur: () => {
 				this.setState({ isTravellerFocused: false });
 			}
-		}), (isTextActive || isSlideMoving || isTravellerMoving || isTravellerFocused || alwaysShowText) && /* @__PURE__ */ import_react.createElement(BrushText, {
+		}), (isTextActive || isSlideMoving || isTravellerMoving || isTravellerFocused || alwaysShowText) && /*#__PURE__*/ import_react.createElement(BrushText, {
 			startIndex,
 			endIndex,
 			y: calculatedY,
@@ -24178,7 +25218,7 @@ function BrushInternal(props) {
 		endIndex,
 		onChange
 	};
-	return /* @__PURE__ */ import_react.createElement(BrushWithState, _extends$26({}, props, contextProperties, {
+	return /*#__PURE__*/ import_react.createElement(BrushWithState, _extends$26({}, props, contextProperties, {
 		startIndexControlledFromProps: startIndexFromProps !== null && startIndexFromProps !== void 0 ? startIndexFromProps : void 0,
 		endIndexControlledFromProps: endIndexFromProps !== null && endIndexFromProps !== void 0 ? endIndexFromProps : void 0
 	}));
@@ -24223,13 +25263,13 @@ var defaultBrushProps = {
 */
 function Brush(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, defaultBrushProps);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(BrushSettingsDispatcher, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(BrushSettingsDispatcher, {
 		height: props.height,
 		x: props.x,
 		y: props.y,
 		width: props.width,
 		padding: props.padding
-	}), /* @__PURE__ */ import_react.createElement(BrushInternal, props));
+	}), /*#__PURE__*/ import_react.createElement(BrushInternal, props));
 }
 Brush.displayName = "Brush";
 //#endregion
@@ -24312,7 +25352,7 @@ var { addDot, removeDot, addArea, removeArea, addLine, removeLine } = referenceE
 var referenceElementsReducer = referenceElementsSlice.reducer;
 //#endregion
 //#region node_modules/recharts/es6/container/ClipPathProvider.js
-var ClipPathIdContext = /* @__PURE__ */ (0, import_react.createContext)(void 0);
+var ClipPathIdContext = /*#__PURE__*/ (0, import_react.createContext)(void 0);
 /**
 * Generates a unique clip path ID for use in SVG elements,
 * and puts it in a context provider.
@@ -24329,7 +25369,7 @@ var ClipPathProvider = (_ref) => {
 	var plotArea = usePlotArea();
 	if (plotArea == null) return null;
 	var { x, y, width, height } = plotArea;
-	return /* @__PURE__ */ import_react.createElement(ClipPathIdContext.Provider, { value: clipPathId }, /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement("clipPath", { id: clipPathId }, /* @__PURE__ */ import_react.createElement("rect", {
+	return /*#__PURE__*/ import_react.createElement(ClipPathIdContext.Provider, { value: clipPathId }, /*#__PURE__*/ import_react.createElement("defs", null, /*#__PURE__*/ import_react.createElement("clipPath", { id: clipPathId }, /*#__PURE__*/ import_react.createElement("rect", {
 		x,
 		y,
 		height,
@@ -24457,11 +25497,11 @@ function _extends$25() {
 */
 var renderLine = (option, props) => {
 	var line;
-	if (/* @__PURE__ */ import_react.isValidElement(option)) line = /* @__PURE__ */ import_react.cloneElement(option, props);
+	if (/*#__PURE__*/ import_react.isValidElement(option)) line = /*#__PURE__*/ import_react.cloneElement(option, props);
 	else if (typeof option === "function") line = option(props);
 	else {
 		if (!isWellBehavedNumber(props.x1) || !isWellBehavedNumber(props.y1) || !isWellBehavedNumber(props.x2) || !isWellBehavedNumber(props.y2)) return null;
-		line = /* @__PURE__ */ import_react.createElement("line", _extends$25({}, props, { className: "recharts-reference-line-line" }));
+		line = /*#__PURE__*/ import_react.createElement("line", _extends$25({}, props, { className: "recharts-reference-line-line" }));
 	}
 	return line;
 };
@@ -24554,10 +25594,10 @@ function ReferenceLineImpl(props) {
 		x2,
 		y2
 	});
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(Layer, { className: clsx("recharts-reference-line", className) }, renderLine(shape, lineProps), /* @__PURE__ */ import_react.createElement(CartesianLabelContextProvider, _extends$25({}, rect, {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(Layer, { className: clsx("recharts-reference-line", className) }, renderLine(shape, lineProps), /*#__PURE__*/ import_react.createElement(CartesianLabelContextProvider, _extends$25({}, rect, {
 		lowerWidth: rect.width,
 		upperWidth: rect.width
-	}), /* @__PURE__ */ import_react.createElement(CartesianLabelFromLabelProp, { label: props.label }), props.children)));
+	}), /*#__PURE__*/ import_react.createElement(CartesianLabelFromLabelProp, { label: props.label }), props.children)));
 }
 var referenceLineDefaultProps = {
 	ifOverflow: "discard",
@@ -24587,14 +25627,14 @@ var referenceLineDefaultProps = {
 */
 function ReferenceLine(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, referenceLineDefaultProps);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(ReportReferenceLine, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(ReportReferenceLine, {
 		yAxisId: props.yAxisId,
 		xAxisId: props.xAxisId,
 		ifOverflow: props.ifOverflow,
 		x: props.x,
 		y: props.y,
 		segment: props.segment
-	}), /* @__PURE__ */ import_react.createElement(ReferenceLineImpl, props));
+	}), /*#__PURE__*/ import_react.createElement(ReferenceLineImpl, props));
 }
 ReferenceLine.displayName = "ReferenceLine";
 //#endregion
@@ -24681,9 +25721,9 @@ function ReportReferenceDot(props) {
 }
 var renderDot = (option, props) => {
 	var dot;
-	if (/* @__PURE__ */ import_react.isValidElement(option)) dot = /* @__PURE__ */ import_react.cloneElement(option, props);
+	if (/*#__PURE__*/ import_react.isValidElement(option)) dot = /*#__PURE__*/ import_react.cloneElement(option, props);
 	else if (typeof option === "function") dot = option(props);
-	else dot = /* @__PURE__ */ import_react.createElement(Dot, _extends$24({}, props, {
+	else dot = /*#__PURE__*/ import_react.createElement(Dot, _extends$24({}, props, {
 		cx: props.cx,
 		cy: props.cy,
 		className: "recharts-reference-dot-dot"
@@ -24701,14 +25741,14 @@ function ReferenceDotImpl(props) {
 		cx: cx !== null && cx !== void 0 ? cx : void 0,
 		cy: cy !== null && cy !== void 0 ? cy : void 0
 	});
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(Layer, { className: clsx("recharts-reference-dot", className) }, renderDot(shape, dotProps), /* @__PURE__ */ import_react.createElement(CartesianLabelContextProvider, {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(Layer, { className: clsx("recharts-reference-dot", className) }, renderDot(shape, dotProps), /*#__PURE__*/ import_react.createElement(CartesianLabelContextProvider, {
 		x: cx - r,
 		y: cy - r,
 		width: 2 * r,
 		height: 2 * r,
 		upperWidth: 2 * r,
 		lowerWidth: 2 * r
-	}, /* @__PURE__ */ import_react.createElement(CartesianLabelFromLabelProp, { label: props.label }), props.children)));
+	}, /*#__PURE__*/ import_react.createElement(CartesianLabelFromLabelProp, { label: props.label }), props.children)));
 }
 var referenceDotDefaultProps = {
 	ifOverflow: "discard",
@@ -24739,14 +25779,14 @@ var referenceDotDefaultProps = {
 function ReferenceDot(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, referenceDotDefaultProps);
 	var { x, y, r, ifOverflow, yAxisId, xAxisId } = props;
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(ReportReferenceDot, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(ReportReferenceDot, {
 		y,
 		x,
 		r,
 		yAxisId,
 		xAxisId,
 		ifOverflow
-	}), /* @__PURE__ */ import_react.createElement(ReferenceDotImpl, props));
+	}), /*#__PURE__*/ import_react.createElement(ReferenceDotImpl, props));
 }
 ReferenceDot.displayName = "ReferenceDot";
 //#endregion
@@ -24824,9 +25864,9 @@ var getRect = (hasX1, hasX2, hasY1, hasY2, xAxisScale, yAxisScale, props) => {
 };
 var renderRect = (option, props) => {
 	var rect;
-	if (/* @__PURE__ */ import_react.isValidElement(option)) rect = /* @__PURE__ */ import_react.cloneElement(option, props);
+	if (/*#__PURE__*/ import_react.isValidElement(option)) rect = /*#__PURE__*/ import_react.cloneElement(option, props);
 	else if (typeof option === "function") rect = option(props);
-	else rect = /* @__PURE__ */ import_react.createElement(Rectangle, _extends$23({}, props, { className: "recharts-reference-area-rect" }));
+	else rect = /*#__PURE__*/ import_react.createElement(Rectangle, _extends$23({}, props, { className: "recharts-reference-area-rect" }));
 	return rect;
 };
 function ReportReferenceArea(props) {
@@ -24854,10 +25894,10 @@ function ReferenceAreaImpl(props) {
 	var rect = getRect(hasX1, hasX2, hasY1, hasY2, xAxisScale, yAxisScale, props);
 	if (!rect && !shape) return null;
 	var clipPath = props.ifOverflow === "hidden" ? "url(#".concat(clipPathId, ")") : void 0;
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(Layer, { className: clsx("recharts-reference-area", className) }, renderRect(shape, _objectSpread$23(_objectSpread$23({ clipPath }, svgPropertiesAndEvents(props)), rect)), rect != null && /* @__PURE__ */ import_react.createElement(CartesianLabelContextProvider, _extends$23({}, rect, {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(Layer, { className: clsx("recharts-reference-area", className) }, renderRect(shape, _objectSpread$23(_objectSpread$23({ clipPath }, svgPropertiesAndEvents(props)), rect)), rect != null && /*#__PURE__*/ import_react.createElement(CartesianLabelContextProvider, _extends$23({}, rect, {
 		lowerWidth: rect.width,
 		upperWidth: rect.width
-	}), /* @__PURE__ */ import_react.createElement(CartesianLabelFromLabelProp, { label: props.label }), props.children)));
+	}), /*#__PURE__*/ import_react.createElement(CartesianLabelFromLabelProp, { label: props.label }), props.children)));
 }
 var referenceAreaDefaultProps = {
 	ifOverflow: "discard",
@@ -24887,7 +25927,7 @@ var referenceAreaDefaultProps = {
 */
 function ReferenceArea(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, referenceAreaDefaultProps);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(ReportReferenceArea, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(ReportReferenceArea, {
 		yAxisId: props.yAxisId,
 		xAxisId: props.xAxisId,
 		ifOverflow: props.ifOverflow,
@@ -24895,7 +25935,7 @@ function ReferenceArea(outsideProps) {
 		x2: props.x2,
 		y1: props.y1,
 		y2: props.y2
-	}), /* @__PURE__ */ import_react.createElement(ReferenceAreaImpl, props));
+	}), /*#__PURE__*/ import_react.createElement(ReferenceAreaImpl, props));
 }
 ReferenceArea.displayName = "ReferenceArea";
 //#endregion
@@ -25357,7 +26397,7 @@ function AxisLine(axisLineProps) {
 			y2: y + height
 		});
 	}
-	return /* @__PURE__ */ import_react.createElement("line", _extends$22({}, props, { className: clsx("recharts-cartesian-axis-line", (0, import_get.default)(axisLine, "className")) }));
+	return /*#__PURE__*/ import_react.createElement("line", _extends$22({}, props, { className: clsx("recharts-cartesian-axis-line", (0, import_get.default)(axisLine, "className")) }));
 }
 /**
 * Calculate the coordinates of endpoints in ticks.
@@ -25450,12 +26490,12 @@ function TickItem(props) {
 	var { option, tickProps, value } = props;
 	var tickItem;
 	var combinedClassName = clsx(tickProps.className, "recharts-cartesian-axis-tick-value");
-	if (/* @__PURE__ */ import_react.isValidElement(option)) tickItem = /* @__PURE__ */ import_react.cloneElement(option, _objectSpread$21(_objectSpread$21({}, tickProps), {}, { className: combinedClassName }));
+	if (/*#__PURE__*/ import_react.isValidElement(option)) tickItem = /*#__PURE__*/ import_react.cloneElement(option, _objectSpread$21(_objectSpread$21({}, tickProps), {}, { className: combinedClassName }));
 	else if (typeof option === "function") tickItem = option(_objectSpread$21(_objectSpread$21({}, tickProps), {}, { className: combinedClassName }));
 	else {
 		var className = "recharts-cartesian-axis-tick-value";
 		if (typeof option !== "boolean") className = clsx(className, getClassNameFromUnknown(option));
-		tickItem = /* @__PURE__ */ import_react.createElement(Text, _extends$22({}, tickProps, { className }), value);
+		tickItem = /*#__PURE__*/ import_react.createElement(Text, _extends$22({}, tickProps, { className }), value);
 	}
 	return tickItem;
 }
@@ -25488,7 +26528,7 @@ function RenderedTicksReporter(_ref) {
 	]);
 	return null;
 }
-var Ticks = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var Ticks = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var { ticks = [], tick, tickLine, stroke, tickFormatter, unit, padding, tickTextProps, orientation, mirror, x, y, width, height, tickSize, tickMargin, fontSize, letterSpacing, getTicksConfig, events, axisType, axisId } = props;
 	var finalTicks = getTicks(_objectSpread$21(_objectSpread$21({}, getTicksConfig), {}, { ticks }), fontSize, letterSpacing);
 	var axisProps = svgPropertiesNoEvents(getTicksConfig);
@@ -25501,10 +26541,10 @@ var Ticks = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
 	var tickLineCoords = finalTicks.map((entry) => _objectSpread$21({ entry }, getTickLineCoord(entry, x, y, width, height, orientation, tickSize, mirror, tickMargin)));
 	var tickLines = tickLineCoords.map((_ref2) => {
 		var { entry, line: lineCoord } = _ref2;
-		return /* @__PURE__ */ import_react.createElement(Layer, {
+		return /*#__PURE__*/ import_react.createElement(Layer, {
 			className: "recharts-cartesian-axis-tick",
 			key: "tick-".concat(entry.value, "-").concat(entry.coordinate, "-").concat(entry.tickCoord)
-		}, tickLine && /* @__PURE__ */ import_react.createElement("line", _extends$22({}, tickLineProps, lineCoord, { className: clsx("recharts-cartesian-axis-tick-line", (0, import_get.default)(tickLine, "className")) })));
+		}, tickLine && /*#__PURE__*/ import_react.createElement("line", _extends$22({}, tickLineProps, lineCoord, { className: clsx("recharts-cartesian-axis-tick-line", (0, import_get.default)(tickLine, "className")) })));
 	});
 	var tickLabels = tickLineCoords.map((_ref3, i) => {
 		var _ref4, _tickTextProps$angle;
@@ -25520,25 +26560,25 @@ var Ticks = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
 			tickFormatter,
 			padding
 		}, tickTextProps), {}, { angle: (_ref4 = (_tickTextProps$angle = tickTextProps === null || tickTextProps === void 0 ? void 0 : tickTextProps.angle) !== null && _tickTextProps$angle !== void 0 ? _tickTextProps$angle : axisProps.angle) !== null && _ref4 !== void 0 ? _ref4 : 0 })), customTickProps);
-		return /* @__PURE__ */ import_react.createElement(Layer, _extends$22({
+		return /*#__PURE__*/ import_react.createElement(Layer, _extends$22({
 			className: "recharts-cartesian-axis-tick-label",
 			key: "tick-label-".concat(entry.value, "-").concat(entry.coordinate, "-").concat(entry.tickCoord)
-		}, adaptEventsOfChild(events, entry, i)), tick && /* @__PURE__ */ import_react.createElement(TickItem, {
+		}, adaptEventsOfChild(events, entry, i)), tick && /*#__PURE__*/ import_react.createElement(TickItem, {
 			option: tick,
 			tickProps: finalTickProps,
 			value: "".concat(typeof tickFormatter === "function" ? tickFormatter(entry.value, i) : entry.value).concat(unit || "")
 		}));
 	});
-	return /* @__PURE__ */ import_react.createElement("g", { className: "recharts-cartesian-axis-ticks recharts-".concat(axisType, "-ticks") }, /* @__PURE__ */ import_react.createElement(RenderedTicksReporter, {
+	return /*#__PURE__*/ import_react.createElement("g", { className: "recharts-cartesian-axis-ticks recharts-".concat(axisType, "-ticks") }, /*#__PURE__*/ import_react.createElement(RenderedTicksReporter, {
 		ticks: finalTicks,
 		axisId,
 		axisType
-	}), tickLabels.length > 0 && /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: DefaultZIndexes.label }, /* @__PURE__ */ import_react.createElement("g", {
+	}), tickLabels.length > 0 && /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: DefaultZIndexes.label }, /*#__PURE__*/ import_react.createElement("g", {
 		className: "recharts-cartesian-axis-tick-labels recharts-".concat(axisType, "-tick-labels"),
 		ref
-	}, tickLabels)), tickLines.length > 0 && /* @__PURE__ */ import_react.createElement("g", { className: "recharts-cartesian-axis-tick-lines recharts-".concat(axisType, "-tick-lines") }, tickLines));
+	}, tickLabels)), tickLines.length > 0 && /*#__PURE__*/ import_react.createElement("g", { className: "recharts-cartesian-axis-tick-lines recharts-".concat(axisType, "-tick-lines") }, tickLines));
 });
-var CartesianAxisComponent = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var CartesianAxisComponent = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var { axisLine, width, height, className, hide, ticks, axisType, axisId } = props, rest = _objectWithoutProperties$18(props, _excluded$18);
 	var [fontSize, setFontSize] = (0, import_react.useState)("");
 	var [letterSpacing, setLetterSpacing] = (0, import_react.useState)("");
@@ -25571,7 +26611,7 @@ var CartesianAxisComponent = /* @__PURE__ */ (0, import_react.forwardRef)((props
 	}, [fontSize, letterSpacing]);
 	if (hide) return null;
 	if (width != null && width <= 0 || height != null && height <= 0) return null;
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(Layer, { className: clsx("recharts-cartesian-axis", className) }, /* @__PURE__ */ import_react.createElement(AxisLine, {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(Layer, { className: clsx("recharts-cartesian-axis", className) }, /*#__PURE__*/ import_react.createElement(AxisLine, {
 		x: props.x,
 		y: props.y,
 		width,
@@ -25580,7 +26620,7 @@ var CartesianAxisComponent = /* @__PURE__ */ (0, import_react.forwardRef)((props
 		mirror: props.mirror,
 		axisLine,
 		otherSvgProps: svgPropertiesNoEvents(props)
-	}), /* @__PURE__ */ import_react.createElement(Ticks, {
+	}), /*#__PURE__*/ import_react.createElement(Ticks, {
 		ref: layerRef,
 		axisType,
 		events: rest,
@@ -25604,14 +26644,14 @@ var CartesianAxisComponent = /* @__PURE__ */ (0, import_react.forwardRef)((props
 		x: props.x,
 		y: props.y,
 		axisId
-	}), /* @__PURE__ */ import_react.createElement(CartesianLabelContextProvider, {
+	}), /*#__PURE__*/ import_react.createElement(CartesianLabelContextProvider, {
 		x: props.x,
 		y: props.y,
 		width: props.width,
 		height: props.height,
 		lowerWidth: props.width,
 		upperWidth: props.width
-	}, /* @__PURE__ */ import_react.createElement(CartesianLabelFromLabelProp, {
+	}, /*#__PURE__*/ import_react.createElement(CartesianLabelFromLabelProp, {
 		label: props.label,
 		labelRef: props.labelRef
 	}), props.children)));
@@ -25624,9 +26664,9 @@ var CartesianAxisComponent = /* @__PURE__ */ (0, import_react.forwardRef)((props
 *
 * Starting from Recharts v4.0 we will make this component internal only.
 */
-var CartesianAxis = /* @__PURE__ */ import_react.forwardRef((outsideProps, ref) => {
+var CartesianAxis = /*#__PURE__*/ import_react.forwardRef((outsideProps, ref) => {
 	var props = resolveDefaultProps(outsideProps, defaultCartesianAxisProps);
-	return /* @__PURE__ */ import_react.createElement(CartesianAxisComponent, _extends$22({}, props, { ref }));
+	return /*#__PURE__*/ import_react.createElement(CartesianAxisComponent, _extends$22({}, props, { ref }));
 });
 CartesianAxis.displayName = "CartesianAxis";
 //#endregion
@@ -25715,7 +26755,7 @@ var Background = (props) => {
 	var { fill } = props;
 	if (!fill || fill === "none") return null;
 	var { fillOpacity, x, y, width, height, ry } = props;
-	return /* @__PURE__ */ import_react.createElement("rect", {
+	return /*#__PURE__*/ import_react.createElement("rect", {
 		x,
 		y,
 		ry,
@@ -25730,13 +26770,13 @@ var Background = (props) => {
 function LineItem(_ref) {
 	var { option, lineItemProps } = _ref;
 	var lineItem;
-	if (/* @__PURE__ */ import_react.isValidElement(option)) lineItem = /* @__PURE__ */ import_react.cloneElement(option, lineItemProps);
+	if (/*#__PURE__*/ import_react.isValidElement(option)) lineItem = /*#__PURE__*/ import_react.cloneElement(option, lineItemProps);
 	else if (typeof option === "function") lineItem = option(lineItemProps);
 	else {
 		var _svgPropertiesNoEvent;
 		var { x1, y1, x2, y2, key } = lineItemProps;
 		var _ref2 = (_svgPropertiesNoEvent = svgPropertiesNoEvents(_objectWithoutProperties$17(lineItemProps, _excluded$17))) !== null && _svgPropertiesNoEvent !== void 0 ? _svgPropertiesNoEvent : {}, { offset: __ } = _ref2, restOfFilteredProps = _objectWithoutProperties$17(_ref2, _excluded2$9);
-		lineItem = /* @__PURE__ */ import_react.createElement("line", _extends$21({}, restOfFilteredProps, {
+		lineItem = /*#__PURE__*/ import_react.createElement("line", _extends$21({}, restOfFilteredProps, {
 			x1,
 			y1,
 			x2,
@@ -25760,13 +26800,13 @@ function HorizontalGridLines(props) {
 			key: "line-".concat(i),
 			index: i
 		});
-		return /* @__PURE__ */ import_react.createElement(LineItem, {
+		return /*#__PURE__*/ import_react.createElement(LineItem, {
 			key: "line-".concat(i),
 			option: horizontal,
 			lineItemProps
 		});
 	});
-	return /* @__PURE__ */ import_react.createElement("g", { className: "recharts-cartesian-grid-horizontal" }, items);
+	return /*#__PURE__*/ import_react.createElement("g", { className: "recharts-cartesian-grid-horizontal" }, items);
 }
 function VerticalGridLines(props) {
 	var { y, height, vertical = true, verticalPoints } = props;
@@ -25781,13 +26821,13 @@ function VerticalGridLines(props) {
 			key: "line-".concat(i),
 			index: i
 		});
-		return /* @__PURE__ */ import_react.createElement(LineItem, {
+		return /*#__PURE__*/ import_react.createElement(LineItem, {
 			option: vertical,
 			lineItemProps,
 			key: "line-".concat(i)
 		});
 	});
-	return /* @__PURE__ */ import_react.createElement("g", { className: "recharts-cartesian-grid-vertical" }, items);
+	return /*#__PURE__*/ import_react.createElement("g", { className: "recharts-cartesian-grid-vertical" }, items);
 }
 function HorizontalStripes(props) {
 	var { horizontalFill, fillOpacity, x, y, width, height, horizontalPoints, horizontal = true } = props;
@@ -25799,7 +26839,7 @@ function HorizontalStripes(props) {
 		var lineHeight = nextPoint == null ? y + height - entry : nextPoint - entry;
 		if (lineHeight <= 0) return null;
 		var colorIndex = i % horizontalFill.length;
-		return /* @__PURE__ */ import_react.createElement("rect", {
+		return /*#__PURE__*/ import_react.createElement("rect", {
 			key: "react-".concat(i),
 			y: entry,
 			x,
@@ -25811,7 +26851,7 @@ function HorizontalStripes(props) {
 			className: "recharts-cartesian-grid-bg"
 		});
 	});
-	return /* @__PURE__ */ import_react.createElement("g", { className: "recharts-cartesian-gridstripes-horizontal" }, items);
+	return /*#__PURE__*/ import_react.createElement("g", { className: "recharts-cartesian-gridstripes-horizontal" }, items);
 }
 function VerticalStripes(props) {
 	var { vertical = true, verticalFill, fillOpacity, x, y, width, height, verticalPoints } = props;
@@ -25823,7 +26863,7 @@ function VerticalStripes(props) {
 		var lineWidth = nextPoint == null ? x + width - entry : nextPoint - entry;
 		if (lineWidth <= 0) return null;
 		var colorIndex = i % verticalFill.length;
-		return /* @__PURE__ */ import_react.createElement("rect", {
+		return /*#__PURE__*/ import_react.createElement("rect", {
 			key: "react-".concat(i),
 			x: entry,
 			y,
@@ -25835,7 +26875,7 @@ function VerticalStripes(props) {
 			className: "recharts-cartesian-grid-bg"
 		});
 	});
-	return /* @__PURE__ */ import_react.createElement("g", { className: "recharts-cartesian-gridstripes-vertical" }, items);
+	return /*#__PURE__*/ import_react.createElement("g", { className: "recharts-cartesian-gridstripes-vertical" }, items);
 }
 var defaultVerticalCoordinatesGenerator = (_ref3, syncWithTicks) => {
 	var { xAxis, width, height, offset } = _ref3;
@@ -25920,7 +26960,7 @@ function CartesianGrid(props) {
 		warn(Array.isArray(_generatorResult), "verticalCoordinatesGenerator should return Array but instead it returned [".concat(typeof _generatorResult, "]"));
 		if (Array.isArray(_generatorResult)) verticalPoints = _generatorResult;
 	}
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: propsIncludingDefaults.zIndex }, /* @__PURE__ */ import_react.createElement("g", { className: "recharts-cartesian-grid" }, /* @__PURE__ */ import_react.createElement(Background, {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: propsIncludingDefaults.zIndex }, /*#__PURE__*/ import_react.createElement("g", { className: "recharts-cartesian-grid" }, /*#__PURE__*/ import_react.createElement(Background, {
 		fill: propsIncludingDefaults.fill,
 		fillOpacity: propsIncludingDefaults.fillOpacity,
 		x: propsIncludingDefaults.x,
@@ -25928,12 +26968,12 @@ function CartesianGrid(props) {
 		width: propsIncludingDefaults.width,
 		height: propsIncludingDefaults.height,
 		ry: propsIncludingDefaults.ry
-	}), /* @__PURE__ */ import_react.createElement(HorizontalStripes, _extends$21({}, propsIncludingDefaults, { horizontalPoints })), /* @__PURE__ */ import_react.createElement(VerticalStripes, _extends$21({}, propsIncludingDefaults, { verticalPoints })), /* @__PURE__ */ import_react.createElement(HorizontalGridLines, _extends$21({}, propsIncludingDefaults, {
+	}), /*#__PURE__*/ import_react.createElement(HorizontalStripes, _extends$21({}, propsIncludingDefaults, { horizontalPoints })), /*#__PURE__*/ import_react.createElement(VerticalStripes, _extends$21({}, propsIncludingDefaults, { verticalPoints })), /*#__PURE__*/ import_react.createElement(HorizontalGridLines, _extends$21({}, propsIncludingDefaults, {
 		offset,
 		horizontalPoints,
 		xAxis,
 		yAxis
-	})), /* @__PURE__ */ import_react.createElement(VerticalGridLines, _extends$21({}, propsIncludingDefaults, {
+	})), /*#__PURE__*/ import_react.createElement(VerticalGridLines, _extends$21({}, propsIncludingDefaults, {
 		offset,
 		verticalPoints,
 		xAxis,
@@ -25985,7 +27025,7 @@ function _objectWithoutPropertiesLoose$16(r, e) {
 	}
 	return t;
 }
-var ErrorBarContext = /* @__PURE__ */ (0, import_react.createContext)({
+var ErrorBarContext = /*#__PURE__*/ (0, import_react.createContext)({
 	data: [],
 	xAxisId: "xAxis-0",
 	yAxisId: "yAxis-0",
@@ -25998,7 +27038,7 @@ var ErrorBarContext = /* @__PURE__ */ (0, import_react.createContext)({
 });
 function SetErrorBarContext(props) {
 	var { children } = props, rest = _objectWithoutProperties$16(props, _excluded$16);
-	return /* @__PURE__ */ import_react.createElement(ErrorBarContext.Provider, { value: rest }, children);
+	return /*#__PURE__*/ import_react.createElement(ErrorBarContext.Provider, { value: rest }, children);
 }
 var useErrorBarContext = () => (0, import_react.useContext)(ErrorBarContext);
 function ReportErrorBarSettings(props) {
@@ -26055,7 +27095,7 @@ function GraphicalItemClipPath(_ref) {
 	var { needClipX, needClipY, needClip } = useNeedsClip(xAxisId, yAxisId);
 	if (!needClip || !plotArea) return null;
 	var { x, y, width, height } = plotArea;
-	return /* @__PURE__ */ import_react.createElement("clipPath", { id: "clipPath-".concat(clipPathId) }, /* @__PURE__ */ import_react.createElement("rect", {
+	return /*#__PURE__*/ import_react.createElement("clipPath", { id: "clipPath-".concat(clipPathId) }, /*#__PURE__*/ import_react.createElement("rect", {
 		x: needClipX ? x : x - width / 2,
 		y: needClipY ? y : y - height / 2,
 		width: needClipX ? width : width * 2,
@@ -26246,7 +27286,7 @@ var computeLegendPayloadFromAreaData$1 = (props) => {
 		payload: props
 	}];
 };
-var SetLineTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
+var SetLineTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref) => {
 	var { dataKey, data, stroke, strokeWidth, fill, name, hide, unit, tooltipType, id } = _ref;
 	var tooltipEntrySettings = {
 		dataDefinedOnItem: data,
@@ -26265,7 +27305,7 @@ var SetLineTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
 			graphicalItemId: id
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 /**
 * Generates a simple stroke-dasharray string for animating a line draw effect.
@@ -26341,7 +27381,7 @@ function LineDotsWrapper(_ref2) {
 	var { dot, dataKey, needClip } = props;
 	var { id } = props;
 	var lineProps = svgPropertiesNoEvents(_objectWithoutProperties$15(props, _excluded$15));
-	return /* @__PURE__ */ import_react.createElement(Dots, {
+	return /*#__PURE__*/ import_react.createElement(Dots, {
 		points,
 		dot,
 		className: "recharts-line-dots",
@@ -26374,7 +27414,7 @@ function LineLabelListProvider(_ref3) {
 			});
 		});
 	}, [points]);
-	return /* @__PURE__ */ import_react.createElement(CartesianLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
+	return /*#__PURE__*/ import_react.createElement(CartesianLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
 }
 function StaticCurve(_ref4) {
 	var { clipPathId, pathRef, points, strokeDasharray, props } = _ref4;
@@ -26389,10 +27429,10 @@ function StaticCurve(_ref4) {
 		connectNulls,
 		strokeDasharray: strokeDasharray !== null && strokeDasharray !== void 0 ? strokeDasharray : props.strokeDasharray
 	});
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, (points === null || points === void 0 ? void 0 : points.length) > 1 && /* @__PURE__ */ import_react.createElement(Shape, _extends$20({
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, (points === null || points === void 0 ? void 0 : points.length) > 1 && /*#__PURE__*/ import_react.createElement(Shape, _extends$20({
 		shapeType: "curve",
 		option: shape
-	}, curveProps, { pathRef })), /* @__PURE__ */ import_react.createElement(LineDotsWrapper, {
+	}, curveProps, { pathRef })), /*#__PURE__*/ import_react.createElement(LineDotsWrapper, {
 		points,
 		clipPathId,
 		props
@@ -26428,10 +27468,10 @@ function CurveWithAnimation(_ref5) {
 		animationIdRef.current = animationId;
 	}
 	var startingPoint = startingPointRef.current;
-	return /* @__PURE__ */ import_react.createElement(LineLabelListProvider, {
+	return /*#__PURE__*/ import_react.createElement(LineLabelListProvider, {
 		points,
 		showLabels
-	}, props.children, /* @__PURE__ */ import_react.createElement(JavascriptAnimate, {
+	}, props.children, /*#__PURE__*/ import_react.createElement(JavascriptAnimate, {
 		animationId,
 		begin: animationBegin,
 		duration: animationDuration,
@@ -26472,7 +27512,7 @@ function CurveWithAnimation(_ref5) {
 				});
 			});
 			previousPointsRef.current = stepData;
-			return /* @__PURE__ */ import_react.createElement(StaticCurve, {
+			return /*#__PURE__*/ import_react.createElement(StaticCurve, {
 				props,
 				points: stepData,
 				clipPathId,
@@ -26480,21 +27520,21 @@ function CurveWithAnimation(_ref5) {
 				strokeDasharray: currentStrokeDasharray
 			});
 		}
-		return /* @__PURE__ */ import_react.createElement(StaticCurve, {
+		return /*#__PURE__*/ import_react.createElement(StaticCurve, {
 			props,
 			points,
 			clipPathId,
 			pathRef,
 			strokeDasharray: currentStrokeDasharray
 		});
-	}), /* @__PURE__ */ import_react.createElement(LabelListFromLabelProp, { label: props.label }));
+	}), /*#__PURE__*/ import_react.createElement(LabelListFromLabelProp, { label: props.label }));
 }
 function RenderCurve(_ref6) {
 	var { clipPathId, props } = _ref6;
 	var previousPointsRef = (0, import_react.useRef)(null);
 	var longestAnimatedLengthRef = (0, import_react.useRef)(0);
 	var pathRef = (0, import_react.useRef)(null);
-	return /* @__PURE__ */ import_react.createElement(CurveWithAnimation, {
+	return /*#__PURE__*/ import_react.createElement(CurveWithAnimation, {
 		props,
 		clipPathId,
 		previousPointsRef,
@@ -26521,25 +27561,25 @@ var LineWithState = class extends import_react.Component {
 		var clipDot = isClipDot(dot);
 		var dotSize = r * 2 + strokeWidth;
 		var activePointsClipPath = needClip ? "url(#clipPath-".concat(clipDot ? "" : "dots-").concat(clipPathId, ")") : void 0;
-		return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex }, /* @__PURE__ */ import_react.createElement(Layer, { className: layerClass }, needClip && /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement(GraphicalItemClipPath, {
+		return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex }, /*#__PURE__*/ import_react.createElement(Layer, { className: layerClass }, needClip && /*#__PURE__*/ import_react.createElement("defs", null, /*#__PURE__*/ import_react.createElement(GraphicalItemClipPath, {
 			clipPathId,
 			xAxisId,
 			yAxisId
-		}), !clipDot && /* @__PURE__ */ import_react.createElement("clipPath", { id: "clipPath-dots-".concat(clipPathId) }, /* @__PURE__ */ import_react.createElement("rect", {
+		}), !clipDot && /*#__PURE__*/ import_react.createElement("clipPath", { id: "clipPath-dots-".concat(clipPathId) }, /*#__PURE__*/ import_react.createElement("rect", {
 			x: left - dotSize / 2,
 			y: top - dotSize / 2,
 			width: width + dotSize,
 			height: height + dotSize
-		}))), /* @__PURE__ */ import_react.createElement(SetErrorBarContext, {
+		}))), /*#__PURE__*/ import_react.createElement(SetErrorBarContext, {
 			xAxisId,
 			yAxisId,
 			data: points,
 			dataPointFormatter: errorBarDataPointFormatter$2,
 			errorBarOffset: 0
-		}, /* @__PURE__ */ import_react.createElement(RenderCurve, {
+		}, /*#__PURE__*/ import_react.createElement(RenderCurve, {
 			props: this.props,
 			clipPathId
-		}))), /* @__PURE__ */ import_react.createElement(ActivePoints, {
+		}))), /*#__PURE__*/ import_react.createElement(ActivePoints, {
 			activeDot: this.props.activeDot,
 			points,
 			mainColor: this.props.stroke,
@@ -26577,7 +27617,7 @@ function LineImpl(props) {
 	var points = useAppSelector((state) => selectLinePoints(state, xAxisId, yAxisId, isPanorama, id));
 	if (layout !== "horizontal" && layout !== "vertical" || points == null || plotArea == null) return null;
 	var { height, width, x: left, y: top } = plotArea;
-	return /* @__PURE__ */ import_react.createElement(LineWithState, _extends$20({}, everythingElse, {
+	return /*#__PURE__*/ import_react.createElement(LineWithState, _extends$20({}, everythingElse, {
 		id,
 		connectNulls,
 		dot,
@@ -26641,10 +27681,10 @@ function computeLinePoints(_ref7) {
 function LineFn(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, defaultLineProps);
 	var isPanorama = useIsPanorama();
-	return /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	return /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: props.id,
 		type: "line"
-	}, (id) => /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetLegendPayload, { legendPayload: computeLegendPayloadFromAreaData$1(props) }), /* @__PURE__ */ import_react.createElement(SetLineTooltipEntrySettings, {
+	}, (id) => /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetLegendPayload, { legendPayload: computeLegendPayloadFromAreaData$1(props) }), /*#__PURE__*/ import_react.createElement(SetLineTooltipEntrySettings, {
 		dataKey: props.dataKey,
 		data: props.data,
 		stroke: props.stroke,
@@ -26655,7 +27695,7 @@ function LineFn(outsideProps) {
 		unit: props.unit,
 		tooltipType: props.tooltipType,
 		id
-	}), /* @__PURE__ */ import_react.createElement(SetCartesianGraphicalItem, {
+	}), /*#__PURE__*/ import_react.createElement(SetCartesianGraphicalItem, {
 		type: "line",
 		id,
 		data: props.data,
@@ -26665,14 +27705,14 @@ function LineFn(outsideProps) {
 		dataKey: props.dataKey,
 		hide: props.hide,
 		isPanorama
-	}), /* @__PURE__ */ import_react.createElement(LineImpl, _extends$20({}, props, { id }))));
+	}), /*#__PURE__*/ import_react.createElement(LineImpl, _extends$20({}, props, { id }))));
 }
 /**
 * @provides LabelListContext
 * @provides ErrorBarContext
 * @consumes CartesianChartContext
 */
-var Line = /* @__PURE__ */ import_react.memo(LineFn, propsAreEqual);
+var Line = /*#__PURE__*/ import_react.memo(LineFn, propsAreEqual);
 Line.displayName = "Line";
 //#endregion
 //#region node_modules/recharts/es6/state/selectors/graphicalItemSelectors.js
@@ -26870,7 +27910,7 @@ var computeLegendPayloadFromAreaData = (props) => {
 		payload: props
 	}];
 };
-var SetAreaTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
+var SetAreaTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref) => {
 	var { dataKey, data, stroke, strokeWidth, fill, name, hide, unit, tooltipType, id } = _ref;
 	var tooltipEntrySettings = {
 		dataDefinedOnItem: data,
@@ -26889,13 +27929,13 @@ var SetAreaTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
 			graphicalItemId: id
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 function AreaDotsWrapper(_ref2) {
 	var { clipPathId, points, props } = _ref2;
 	var { needClip, dot, dataKey } = props;
 	var areaProps = svgPropertiesNoEvents(props);
-	return /* @__PURE__ */ import_react.createElement(Dots, {
+	return /*#__PURE__*/ import_react.createElement(Dots, {
 		points,
 		dot,
 		className: "recharts-area-dots",
@@ -26926,7 +27966,7 @@ function AreaLabelListProvider(_ref3) {
 			fill: void 0
 		});
 	});
-	return /* @__PURE__ */ import_react.createElement(CartesianLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
+	return /*#__PURE__*/ import_react.createElement(CartesianLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
 }
 function StaticArea(_ref4) {
 	var { points, baseLine, needClip, clipPathId, props } = _ref4;
@@ -26934,7 +27974,7 @@ function StaticArea(_ref4) {
 	var { id } = props, propsWithoutId = _objectWithoutProperties$14(props, _excluded$14);
 	var allOtherProps = svgPropertiesNoEvents(propsWithoutId);
 	var propsWithEvents = svgPropertiesAndEvents(propsWithoutId);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, (points === null || points === void 0 ? void 0 : points.length) > 1 && /* @__PURE__ */ import_react.createElement(Layer, { clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : void 0 }, /* @__PURE__ */ import_react.createElement(Curve, _extends$19({}, propsWithEvents, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, (points === null || points === void 0 ? void 0 : points.length) > 1 && /*#__PURE__*/ import_react.createElement(Layer, { clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : void 0 }, /*#__PURE__*/ import_react.createElement(Curve, _extends$19({}, propsWithEvents, {
 		id,
 		points,
 		connectNulls,
@@ -26943,21 +27983,21 @@ function StaticArea(_ref4) {
 		layout,
 		stroke: "none",
 		className: "recharts-area-area"
-	})), stroke !== "none" && /* @__PURE__ */ import_react.createElement(Curve, _extends$19({}, allOtherProps, {
+	})), stroke !== "none" && /*#__PURE__*/ import_react.createElement(Curve, _extends$19({}, allOtherProps, {
 		className: "recharts-area-curve",
 		layout,
 		type,
 		connectNulls,
 		fill: "none",
 		points
-	})), stroke !== "none" && isRange && Array.isArray(baseLine) && /* @__PURE__ */ import_react.createElement(Curve, _extends$19({}, allOtherProps, {
+	})), stroke !== "none" && isRange && Array.isArray(baseLine) && /*#__PURE__*/ import_react.createElement(Curve, _extends$19({}, allOtherProps, {
 		className: "recharts-area-curve",
 		layout,
 		type,
 		connectNulls,
 		fill: "none",
 		points: baseLine
-	}))), /* @__PURE__ */ import_react.createElement(AreaDotsWrapper, {
+	}))), /*#__PURE__*/ import_react.createElement(AreaDotsWrapper, {
 		points,
 		props: propsWithoutId,
 		clipPathId
@@ -26973,7 +28013,7 @@ function VerticalRect(_ref5) {
 	var maxX = Math.max(...points.map((entry) => entry.x || 0));
 	if (isNumber(baseLine)) maxX = Math.max(baseLine, maxX);
 	else if (baseLine && Array.isArray(baseLine) && baseLine.length) maxX = Math.max(...baseLine.map((entry) => entry.x || 0), maxX);
-	if (isNumber(maxX)) return /* @__PURE__ */ import_react.createElement("rect", {
+	if (isNumber(maxX)) return /*#__PURE__*/ import_react.createElement("rect", {
 		x: 0,
 		y: startY < endY ? startY : startY - height,
 		width: maxX + (strokeWidth ? parseInt("".concat(strokeWidth), 10) : 1),
@@ -26991,7 +28031,7 @@ function HorizontalRect(_ref6) {
 	var maxY = Math.max(...points.map((entry) => entry.y || 0));
 	if (isNumber(baseLine)) maxY = Math.max(baseLine, maxY);
 	else if (baseLine && Array.isArray(baseLine) && baseLine.length) maxY = Math.max(...baseLine.map((entry) => entry.y || 0), maxY);
-	if (isNumber(maxY)) return /* @__PURE__ */ import_react.createElement("rect", {
+	if (isNumber(maxY)) return /*#__PURE__*/ import_react.createElement("rect", {
 		x: startX < endX ? startX : startX - width,
 		y: 0,
 		width,
@@ -27001,13 +28041,13 @@ function HorizontalRect(_ref6) {
 }
 function ClipRect(_ref7) {
 	var { alpha, layout, points, baseLine, strokeWidth } = _ref7;
-	if (layout === "vertical") return /* @__PURE__ */ import_react.createElement(VerticalRect, {
+	if (layout === "vertical") return /*#__PURE__*/ import_react.createElement(VerticalRect, {
 		alpha,
 		points,
 		baseLine,
 		strokeWidth
 	});
-	return /* @__PURE__ */ import_react.createElement(HorizontalRect, {
+	return /*#__PURE__*/ import_react.createElement(HorizontalRect, {
 		alpha,
 		points,
 		baseLine,
@@ -27035,10 +28075,10 @@ function AreaWithAnimation(_ref8) {
 	if (layout == null) return null;
 	var prevPoints = previousPointsRef.current;
 	var prevBaseLine = previousBaselineRef.current;
-	return /* @__PURE__ */ import_react.createElement(AreaLabelListProvider, {
+	return /*#__PURE__*/ import_react.createElement(AreaLabelListProvider, {
 		showLabels,
 		points
-	}, props.children, /* @__PURE__ */ import_react.createElement(JavascriptAnimate, {
+	}, props.children, /*#__PURE__*/ import_react.createElement(JavascriptAnimate, {
 		animationId,
 		begin: animationBegin,
 		duration: animationDuration,
@@ -27079,7 +28119,7 @@ function AreaWithAnimation(_ref8) {
 				previousPointsRef.current = stepPoints;
 				previousBaselineRef.current = stepBaseLine;
 			}
-			return /* @__PURE__ */ import_react.createElement(StaticArea, {
+			return /*#__PURE__*/ import_react.createElement(StaticArea, {
 				points: stepPoints,
 				baseLine: stepBaseLine,
 				needClip,
@@ -27091,26 +28131,26 @@ function AreaWithAnimation(_ref8) {
 			previousPointsRef.current = points;
 			previousBaselineRef.current = baseLine;
 		}
-		return /* @__PURE__ */ import_react.createElement(Layer, null, isAnimationActive && /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement("clipPath", { id: "animationClipPath-".concat(clipPathId) }, /* @__PURE__ */ import_react.createElement(ClipRect, {
+		return /*#__PURE__*/ import_react.createElement(Layer, null, isAnimationActive && /*#__PURE__*/ import_react.createElement("defs", null, /*#__PURE__*/ import_react.createElement("clipPath", { id: "animationClipPath-".concat(clipPathId) }, /*#__PURE__*/ import_react.createElement(ClipRect, {
 			alpha: t,
 			points,
 			baseLine,
 			layout,
 			strokeWidth: props.strokeWidth
-		}))), /* @__PURE__ */ import_react.createElement(Layer, { clipPath: "url(#animationClipPath-".concat(clipPathId, ")") }, /* @__PURE__ */ import_react.createElement(StaticArea, {
+		}))), /*#__PURE__*/ import_react.createElement(Layer, { clipPath: "url(#animationClipPath-".concat(clipPathId, ")") }, /*#__PURE__*/ import_react.createElement(StaticArea, {
 			points,
 			baseLine,
 			needClip,
 			clipPathId,
 			props
 		})));
-	}), /* @__PURE__ */ import_react.createElement(LabelListFromLabelProp, { label: props.label }));
+	}), /*#__PURE__*/ import_react.createElement(LabelListFromLabelProp, { label: props.label }));
 }
 function RenderArea(_ref9) {
 	var { needClip, clipPathId, props } = _ref9;
 	var previousPointsRef = (0, import_react.useRef)(null);
 	var previousBaselineRef = (0, import_react.useRef)();
-	return /* @__PURE__ */ import_react.createElement(AreaWithAnimation, {
+	return /*#__PURE__*/ import_react.createElement(AreaWithAnimation, {
 		needClip,
 		clipPathId,
 		props,
@@ -27128,26 +28168,26 @@ var AreaWithState = class extends import_react.PureComponent {
 		var clipDot = isClipDot(dot);
 		var dotSize = r * 2 + strokeWidth;
 		var activePointsClipPath = needClip ? "url(#clipPath-".concat(clipDot ? "" : "dots-").concat(clipPathId, ")") : void 0;
-		return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex }, /* @__PURE__ */ import_react.createElement(Layer, { className: layerClass }, needClip && /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement(GraphicalItemClipPath, {
+		return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex }, /*#__PURE__*/ import_react.createElement(Layer, { className: layerClass }, needClip && /*#__PURE__*/ import_react.createElement("defs", null, /*#__PURE__*/ import_react.createElement(GraphicalItemClipPath, {
 			clipPathId,
 			xAxisId,
 			yAxisId
-		}), !clipDot && /* @__PURE__ */ import_react.createElement("clipPath", { id: "clipPath-dots-".concat(clipPathId) }, /* @__PURE__ */ import_react.createElement("rect", {
+		}), !clipDot && /*#__PURE__*/ import_react.createElement("clipPath", { id: "clipPath-dots-".concat(clipPathId) }, /*#__PURE__*/ import_react.createElement("rect", {
 			x: left - dotSize / 2,
 			y: top - dotSize / 2,
 			width: width + dotSize,
 			height: height + dotSize
-		}))), /* @__PURE__ */ import_react.createElement(RenderArea, {
+		}))), /*#__PURE__*/ import_react.createElement(RenderArea, {
 			needClip,
 			clipPathId,
 			props: this.props
-		})), /* @__PURE__ */ import_react.createElement(ActivePoints, {
+		})), /*#__PURE__*/ import_react.createElement(ActivePoints, {
 			points,
 			mainColor: getLegendItemColor(this.props.stroke, this.props.fill),
 			itemDataKey: this.props.dataKey,
 			activeDot: this.props.activeDot,
 			clipPath: activePointsClipPath
-		}), this.props.isRange && Array.isArray(baseLine) && /* @__PURE__ */ import_react.createElement(ActivePoints, {
+		}), this.props.isRange && Array.isArray(baseLine) && /*#__PURE__*/ import_react.createElement(ActivePoints, {
 			points: baseLine,
 			mainColor: getLegendItemColor(this.props.stroke, this.props.fill),
 			itemDataKey: this.props.dataKey,
@@ -27189,7 +28229,7 @@ function AreaImpl(props) {
 	if (chartName !== "AreaChart" && chartName !== "ComposedChart") return null;
 	var { height, width, x: left, y: top } = plotArea;
 	if (!points || !points.length) return null;
-	return /* @__PURE__ */ import_react.createElement(AreaWithState, _extends$19({}, everythingElse, {
+	return /*#__PURE__*/ import_react.createElement(AreaWithState, _extends$19({}, everythingElse, {
 		activeDot,
 		animationBegin,
 		animationDuration,
@@ -27307,10 +28347,10 @@ function computeArea(_ref0) {
 function AreaFn(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, defaultAreaProps);
 	var isPanorama = useIsPanorama();
-	return /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	return /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: props.id,
 		type: "area"
-	}, (id) => /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetLegendPayload, { legendPayload: computeLegendPayloadFromAreaData(props) }), /* @__PURE__ */ import_react.createElement(SetAreaTooltipEntrySettings, {
+	}, (id) => /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetLegendPayload, { legendPayload: computeLegendPayloadFromAreaData(props) }), /*#__PURE__*/ import_react.createElement(SetAreaTooltipEntrySettings, {
 		dataKey: props.dataKey,
 		data: props.data,
 		stroke: props.stroke,
@@ -27321,7 +28361,7 @@ function AreaFn(outsideProps) {
 		unit: props.unit,
 		tooltipType: props.tooltipType,
 		id
-	}), /* @__PURE__ */ import_react.createElement(SetCartesianGraphicalItem, {
+	}), /*#__PURE__*/ import_react.createElement(SetCartesianGraphicalItem, {
 		type: "area",
 		id,
 		data: props.data,
@@ -27335,13 +28375,13 @@ function AreaFn(outsideProps) {
 		baseValue: props.baseValue,
 		isPanorama,
 		connectNulls: props.connectNulls
-	}), /* @__PURE__ */ import_react.createElement(AreaImpl, _extends$19({}, props, { id }))));
+	}), /*#__PURE__*/ import_react.createElement(AreaImpl, _extends$19({}, props, { id }))));
 }
 /**
 * @provides LabelListContext
 * @consumes CartesianChartContext
 */
-var Area = /* @__PURE__ */ import_react.memo(AreaFn, propsAreEqual);
+var Area = /*#__PURE__*/ import_react.memo(AreaFn, propsAreEqual);
 Area.displayName = "Area";
 //#endregion
 //#region node_modules/tiny-invariant/dist/esm/tiny-invariant.js
@@ -27366,7 +28406,7 @@ function _extends$18() {
 	}, _extends$18.apply(null, arguments);
 }
 function BarRectangle(props) {
-	return /* @__PURE__ */ import_react.createElement(Shape, _extends$18({
+	return /*#__PURE__*/ import_react.createElement(Shape, _extends$18({
 		shapeType: "rectangle",
 		activeClassName: "recharts-active-bar",
 		inActiveClassName: "recharts-inactive-bar"
@@ -27611,7 +28651,7 @@ function _objectWithoutPropertiesLoose$13(r, e) {
 	}
 	return t;
 }
-var BarStackContext = /* @__PURE__ */ (0, import_react.createContext)(void 0);
+var BarStackContext = /*#__PURE__*/ (0, import_react.createContext)(void 0);
 /**
 * Hook to resolve the stack ID for a Bar component.
 * If a stack ID is provided via props, it is used directly.
@@ -27638,7 +28678,7 @@ var useBarStackClipPathUrl = (index) => {
 var BarStackClipLayer = (_ref) => {
 	var { index } = _ref, rest = _objectWithoutProperties$13(_ref, _excluded$13);
 	var clipPathUrl = useBarStackClipPathUrl(index);
-	return /* @__PURE__ */ import_react.createElement(Layer, _extends$17({
+	return /*#__PURE__*/ import_react.createElement(Layer, _extends$17({
 		className: "recharts-bar-stack-layer",
 		clipPath: clipPathUrl
 	}, rest));
@@ -27652,13 +28692,13 @@ var BarStackClipPath = (_ref2) => {
 	var isPanorama = useIsPanorama();
 	var positions = useAppSelector((state) => selectStackRects(state, stackId, isPanorama));
 	if (positions == null || positions.length === 0) return null;
-	return /* @__PURE__ */ import_react.createElement("defs", null, positions.map((pos, index) => {
+	return /*#__PURE__*/ import_react.createElement("defs", null, positions.map((pos, index) => {
 		if (pos == null) return null;
 		var clipPathId = getClipPathId(stackId, index);
-		return /* @__PURE__ */ import_react.createElement("clipPath", {
+		return /*#__PURE__*/ import_react.createElement("clipPath", {
 			key: clipPathId,
 			id: clipPathId
-		}, /* @__PURE__ */ import_react.createElement(Rectangle, {
+		}, /*#__PURE__*/ import_react.createElement(Rectangle, {
 			isAnimationActive: false,
 			isUpdateAnimationActive: false,
 			x: pos.x,
@@ -27676,7 +28716,7 @@ var BarStackImpl = (props) => {
 		stackId: resolvedStackId,
 		radius
 	}), [resolvedStackId, radius]);
-	return /* @__PURE__ */ import_react.createElement(BarStackContext.Provider, { value: context }, /* @__PURE__ */ import_react.createElement(BarStackClipPath, {
+	return /*#__PURE__*/ import_react.createElement(BarStackContext.Provider, { value: context }, /*#__PURE__*/ import_react.createElement(BarStackClipPath, {
 		stackId: resolvedStackId,
 		radius
 	}), children);
@@ -27685,7 +28725,7 @@ var BarStackImpl = (props) => {
 * @provides BarStackContext
 * @since 3.6
 */
-var BarStack = /* @__PURE__ */ import_react.memo(BarStackImpl, propsAreEqual);
+var BarStack = /*#__PURE__*/ import_react.memo(BarStackImpl, propsAreEqual);
 //#endregion
 //#region node_modules/recharts/es6/cartesian/Bar.js
 var _excluded$12 = [
@@ -27782,7 +28822,7 @@ var computeLegendPayloadFromBarData = (props) => {
 		payload: props
 	}];
 };
-var SetBarTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
+var SetBarTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref) => {
 	var { dataKey, stroke, strokeWidth, fill, name, hide, unit, tooltipType, id } = _ref;
 	var tooltipEntrySettings = {
 		dataDefinedOnItem: void 0,
@@ -27801,7 +28841,7 @@ var SetBarTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
 			graphicalItemId: id
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 function BarBackground(props) {
 	var activeIndex = useAppSelector(selectActiveTooltipIndex);
@@ -27812,7 +28852,7 @@ function BarBackground(props) {
 	var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, dataKey, allOtherBarProps.id);
 	if (!backgroundFromProps || data == null) return null;
 	var backgroundProps = svgPropertiesNoEventsFromUnknown(backgroundFromProps);
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: getZIndexFromUnknown(backgroundFromProps, DefaultZIndexes.barBackground) }, data.map((entry, i) => {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: getZIndexFromUnknown(backgroundFromProps, DefaultZIndexes.barBackground) }, data.map((entry, i) => {
 		var { value, background: backgroundFromDataEntry, tooltipPosition } = entry, rest = _objectWithoutProperties$12(entry, _excluded2$6);
 		if (!backgroundFromDataEntry) return null;
 		var onMouseEnter = onMouseEnterFromContext(entry, i);
@@ -27829,7 +28869,7 @@ function BarBackground(props) {
 			index: i,
 			className: "recharts-bar-background-rectangle"
 		});
-		return /* @__PURE__ */ import_react.createElement(BarRectangle, _extends$16({ key: "background-bar-".concat(i) }, barRectangleProps));
+		return /*#__PURE__*/ import_react.createElement(BarRectangle, _extends$16({ key: "background-bar-".concat(i) }, barRectangleProps));
 	}));
 }
 function BarLabelListProvider(_ref2) {
@@ -27851,7 +28891,7 @@ function BarLabelListProvider(_ref2) {
 			fill: entry.fill
 		});
 	});
-	return /* @__PURE__ */ import_react.createElement(CartesianLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
+	return /*#__PURE__*/ import_react.createElement(CartesianLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
 }
 function BarRectangleWithActiveState(props) {
 	var { shape, activeBar, baseProps, entry, index, dataKey } = props;
@@ -27881,19 +28921,19 @@ function BarRectangleWithActiveState(props) {
 	if (isActive) if (activeBar === true) option = shape;
 	else option = activeBar;
 	else option = shape;
-	var content = /* @__PURE__ */ import_react.createElement(BarRectangle, _extends$16({}, baseProps, { name: String(baseProps.name) }, entry, {
+	var content = /*#__PURE__*/ import_react.createElement(BarRectangle, _extends$16({}, baseProps, { name: String(baseProps.name) }, entry, {
 		isActive: isVisuallyActive,
 		option,
 		index,
 		dataKey,
 		onTransitionEnd: handleTransitionEnd
 	}));
-	if (shouldRenderInLayer) return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: DefaultZIndexes.activeBar }, /* @__PURE__ */ import_react.createElement(BarStackClipLayer, { index: entry.originalDataIndex }, content));
+	if (shouldRenderInLayer) return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: DefaultZIndexes.activeBar }, /*#__PURE__*/ import_react.createElement(BarStackClipLayer, { index: entry.originalDataIndex }, content));
 	return content;
 }
 function BarRectangleNeverActive(props) {
 	var { shape, baseProps, entry, index, dataKey } = props;
-	return /* @__PURE__ */ import_react.createElement(BarRectangle, _extends$16({}, baseProps, { name: String(baseProps.name) }, entry, {
+	return /*#__PURE__*/ import_react.createElement(BarRectangle, _extends$16({}, baseProps, { name: String(baseProps.name) }, entry, {
 		isActive: false,
 		option: shape,
 		index,
@@ -27910,8 +28950,8 @@ function BarRectangles(_ref3) {
 	var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
 	var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, dataKey, id);
 	if (!data) return null;
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, data.map((entry, i) => {
-		return /* @__PURE__ */ import_react.createElement(BarStackClipLayer, _extends$16({
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, data.map((entry, i) => {
+		return /*#__PURE__*/ import_react.createElement(BarStackClipLayer, _extends$16({
 			index: entry.originalDataIndex,
 			key: "rectangle-".concat(entry === null || entry === void 0 ? void 0 : entry.x, "-").concat(entry === null || entry === void 0 ? void 0 : entry.y, "-").concat(entry === null || entry === void 0 ? void 0 : entry.value, "-").concat(i),
 			className: "recharts-bar-rectangle"
@@ -27919,14 +28959,14 @@ function BarRectangles(_ref3) {
 			onMouseEnter: onMouseEnterFromContext(entry, i),
 			onMouseLeave: onMouseLeaveFromContext(entry, i),
 			onClick: onClickFromContext(entry, i)
-		}), activeBar ? /* @__PURE__ */ import_react.createElement(BarRectangleWithActiveState, {
+		}), activeBar ? /*#__PURE__*/ import_react.createElement(BarRectangleWithActiveState, {
 			shape,
 			activeBar,
 			baseProps,
 			entry,
 			index: i,
 			dataKey
-		}) : /* @__PURE__ */ import_react.createElement(BarRectangleNeverActive, {
+		}) : /*#__PURE__*/ import_react.createElement(BarRectangleNeverActive, {
 			shape,
 			baseProps,
 			entry,
@@ -27950,10 +28990,10 @@ function RectanglesWithAnimation(_ref5) {
 		if (typeof onAnimationStart === "function") onAnimationStart();
 		setIsAnimating(true);
 	}, [onAnimationStart]);
-	return /* @__PURE__ */ import_react.createElement(BarLabelListProvider, {
+	return /*#__PURE__*/ import_react.createElement(BarLabelListProvider, {
 		showLabels,
 		rects: data
-	}, /* @__PURE__ */ import_react.createElement(JavascriptAnimate, {
+	}, /*#__PURE__*/ import_react.createElement(JavascriptAnimate, {
 		animationId,
 		begin: animationBegin,
 		duration: animationDuration,
@@ -27988,15 +29028,15 @@ function RectanglesWithAnimation(_ref5) {
 		});
 		if (t > 0) previousRectanglesRef.current = stepData !== null && stepData !== void 0 ? stepData : null;
 		if (stepData == null) return null;
-		return /* @__PURE__ */ import_react.createElement(Layer, null, /* @__PURE__ */ import_react.createElement(BarRectangles, {
+		return /*#__PURE__*/ import_react.createElement(Layer, null, /*#__PURE__*/ import_react.createElement(BarRectangles, {
 			props,
 			data: stepData
 		}));
-	}), /* @__PURE__ */ import_react.createElement(LabelListFromLabelProp, { label: props.label }), props.children);
+	}), /*#__PURE__*/ import_react.createElement(LabelListFromLabelProp, { label: props.label }), props.children);
 }
 function RenderRectangles(props) {
 	var previousRectanglesRef = (0, import_react.useRef)(null);
-	return /* @__PURE__ */ import_react.createElement(RectanglesWithAnimation, {
+	return /*#__PURE__*/ import_react.createElement(RectanglesWithAnimation, {
 		previousRectanglesRef,
 		props
 	});
@@ -28021,22 +29061,22 @@ var BarWithState = class extends import_react.PureComponent {
 		if (hide || data == null) return null;
 		var layerClass = clsx("recharts-bar", className);
 		var clipPathId = id;
-		return /* @__PURE__ */ import_react.createElement(Layer, {
+		return /*#__PURE__*/ import_react.createElement(Layer, {
 			className: layerClass,
 			id
-		}, needClip && /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement(GraphicalItemClipPath, {
+		}, needClip && /*#__PURE__*/ import_react.createElement("defs", null, /*#__PURE__*/ import_react.createElement(GraphicalItemClipPath, {
 			clipPathId,
 			xAxisId,
 			yAxisId
-		})), /* @__PURE__ */ import_react.createElement(Layer, {
+		})), /*#__PURE__*/ import_react.createElement(Layer, {
 			className: "recharts-bar-rectangles",
 			clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : void 0
-		}, /* @__PURE__ */ import_react.createElement(BarBackground, {
+		}, /*#__PURE__*/ import_react.createElement(BarBackground, {
 			data,
 			dataKey,
 			background,
 			allOtherBarProps: this.props
-		}), /* @__PURE__ */ import_react.createElement(RenderRectangles, this.props)));
+		}), /*#__PURE__*/ import_react.createElement(RenderRectangles, this.props)));
 	}
 };
 var defaultBarProps = {
@@ -28066,13 +29106,13 @@ function BarImpl(props) {
 	var firstDataPoint = rects === null || rects === void 0 ? void 0 : rects[0];
 	if (firstDataPoint == null || firstDataPoint.height == null || firstDataPoint.width == null) errorBarOffset = 0;
 	else errorBarOffset = layout === "vertical" ? firstDataPoint.height / 2 : firstDataPoint.width / 2;
-	return /* @__PURE__ */ import_react.createElement(SetErrorBarContext, {
+	return /*#__PURE__*/ import_react.createElement(SetErrorBarContext, {
 		xAxisId,
 		yAxisId,
 		data: rects,
 		dataPointFormatter: errorBarDataPointFormatter$1,
 		errorBarOffset
-	}, /* @__PURE__ */ import_react.createElement(BarWithState, _extends$16({}, props, {
+	}, /*#__PURE__*/ import_react.createElement(BarWithState, _extends$16({}, props, {
 		layout,
 		needClip,
 		data: rects,
@@ -28182,10 +29222,10 @@ function BarFn(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, defaultBarProps);
 	var stackId = useStackId(props.stackId);
 	var isPanorama = useIsPanorama();
-	return /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	return /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: props.id,
 		type: "bar"
-	}, (id) => /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetLegendPayload, { legendPayload: computeLegendPayloadFromBarData(props) }), /* @__PURE__ */ import_react.createElement(SetBarTooltipEntrySettings, {
+	}, (id) => /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetLegendPayload, { legendPayload: computeLegendPayloadFromBarData(props) }), /*#__PURE__*/ import_react.createElement(SetBarTooltipEntrySettings, {
 		dataKey: props.dataKey,
 		stroke: props.stroke,
 		strokeWidth: props.strokeWidth,
@@ -28195,7 +29235,7 @@ function BarFn(outsideProps) {
 		unit: props.unit,
 		tooltipType: props.tooltipType,
 		id
-	}), /* @__PURE__ */ import_react.createElement(SetCartesianGraphicalItem, {
+	}), /*#__PURE__*/ import_react.createElement(SetCartesianGraphicalItem, {
 		type: "bar",
 		id,
 		data: void 0,
@@ -28210,7 +29250,7 @@ function BarFn(outsideProps) {
 		maxBarSize: props.maxBarSize,
 		isPanorama,
 		hasCustomShape: props.shape != null
-	}), /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(BarImpl, _extends$16({}, props, { id })))));
+	}), /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(BarImpl, _extends$16({}, props, { id })))));
 }
 /**
 * @provides ErrorBarContext
@@ -28219,7 +29259,7 @@ function BarFn(outsideProps) {
 * @consumes CartesianChartContext
 * @consumes BarStackContext
 */
-var Bar = /* @__PURE__ */ import_react.memo(BarFn, propsAreEqual);
+var Bar = /*#__PURE__*/ import_react.memo(BarFn, propsAreEqual);
 Bar.displayName = "Bar";
 //#endregion
 //#region node_modules/recharts/es6/util/ScatterUtils.js
@@ -28253,12 +29293,12 @@ function _objectWithoutPropertiesLoose$11(r, e) {
 }
 function ScatterSymbol(_ref) {
 	var { option, isActive } = _ref, props = _objectWithoutProperties$11(_ref, _excluded$11);
-	if (typeof option === "string") return /* @__PURE__ */ import_react.createElement(Shape, _extends$15({
-		option: /* @__PURE__ */ import_react.createElement(Symbols, _extends$15({ type: option }, props)),
+	if (typeof option === "string") return /*#__PURE__*/ import_react.createElement(Shape, _extends$15({
+		option: /*#__PURE__*/ import_react.createElement(Symbols, _extends$15({ type: option }, props)),
 		isActive,
 		shapeType: "symbols"
 	}, props));
-	return /* @__PURE__ */ import_react.createElement(Shape, _extends$15({
+	return /*#__PURE__*/ import_react.createElement(Shape, _extends$15({
 		option,
 		isActive,
 		shapeType: "symbols"
@@ -28420,7 +29460,7 @@ var computeLegendPayloadFromScatterProps = (props) => {
 		payload: props
 	}];
 };
-var SetScatterTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
+var SetScatterTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref) => {
 	var { dataKey, points, stroke, strokeWidth, fill, name, hide, tooltipType, id } = _ref;
 	var tooltipEntrySettings = {
 		dataDefinedOnItem: points === null || points === void 0 ? void 0 : points.map((p) => p.tooltipPayload),
@@ -28442,7 +29482,7 @@ var SetScatterTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) =>
 			graphicalItemId: id
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 function ScatterLine(_ref2) {
 	var { points, props } = _ref2;
@@ -28473,10 +29513,10 @@ function ScatterLine(_ref2) {
 		fill: "none",
 		stroke: scatterProps && scatterProps.fill
 	}, customLineProps), {}, { points: linePoints });
-	if (/* @__PURE__ */ import_react.isValidElement(line)) lineItem = /* @__PURE__ */ import_react.cloneElement(line, lineProps);
+	if (/*#__PURE__*/ import_react.isValidElement(line)) lineItem = /*#__PURE__*/ import_react.cloneElement(line, lineProps);
 	else if (typeof line === "function") lineItem = line(lineProps);
-	else lineItem = /* @__PURE__ */ import_react.createElement(Curve, _extends$14({}, lineProps, { type: lineJointType }));
-	return /* @__PURE__ */ import_react.createElement(Layer, {
+	else lineItem = /*#__PURE__*/ import_react.createElement(Curve, _extends$14({}, lineProps, { type: lineJointType }));
+	return /*#__PURE__*/ import_react.createElement(Layer, {
 		className: "recharts-scatter-line",
 		key: "recharts-scatter-line"
 	}, lineItem);
@@ -28504,7 +29544,7 @@ function ScatterLabelListProvider(_ref3) {
 			});
 		});
 	}, [chartViewBox, points]);
-	return /* @__PURE__ */ import_react.createElement(CartesianLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
+	return /*#__PURE__*/ import_react.createElement(CartesianLabelListContextProvider, { value: showLabels ? labelListEntries : void 0 }, children);
 }
 function ScatterSymbols(props) {
 	var { points, allOtherScatterProps } = props;
@@ -28517,7 +29557,7 @@ function ScatterSymbols(props) {
 	var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, dataKey, id);
 	if (!isNonEmptyArray(points)) return null;
 	var baseProps = svgPropertiesNoEvents(allOtherPropsWithoutId);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(ScatterLine, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(ScatterLine, {
 		points,
 		props: allOtherPropsWithoutId
 	}), points.map((entry, i) => {
@@ -28528,14 +29568,14 @@ function ScatterSymbols(props) {
 			index: i,
 			[DATA_ITEM_GRAPHICAL_ITEM_ID_ATTRIBUTE_NAME]: String(id)
 		});
-		return /* @__PURE__ */ import_react.createElement(ZIndexLayer, {
+		return /*#__PURE__*/ import_react.createElement(ZIndexLayer, {
 			key: "symbol-".concat(entry === null || entry === void 0 ? void 0 : entry.cx, "-").concat(entry === null || entry === void 0 ? void 0 : entry.cy, "-").concat(entry === null || entry === void 0 ? void 0 : entry.size, "-").concat(i),
 			zIndex: isActive ? DefaultZIndexes.activeDot : void 0
-		}, /* @__PURE__ */ import_react.createElement(Layer, _extends$14({ className: "recharts-scatter-symbol" }, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
+		}, /*#__PURE__*/ import_react.createElement(Layer, _extends$14({ className: "recharts-scatter-symbol" }, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
 			onMouseEnter: onMouseEnterFromContext(entry, i),
 			onMouseLeave: onMouseLeaveFromContext(entry, i),
 			onClick: onClickFromContext(entry, i)
-		}), /* @__PURE__ */ import_react.createElement(ScatterSymbol, _extends$14({
+		}), /*#__PURE__*/ import_react.createElement(ScatterSymbol, _extends$14({
 			option,
 			isActive
 		}, symbolProps))));
@@ -28554,10 +29594,10 @@ function SymbolsWithAnimation(_ref4) {
 		setIsAnimating(true);
 	}, []);
 	var showLabels = !isAnimating;
-	return /* @__PURE__ */ import_react.createElement(ScatterLabelListProvider, {
+	return /*#__PURE__*/ import_react.createElement(ScatterLabelListProvider, {
 		showLabels,
 		points
-	}, props.children, /* @__PURE__ */ import_react.createElement(JavascriptAnimate, {
+	}, props.children, /*#__PURE__*/ import_react.createElement(JavascriptAnimate, {
 		animationId,
 		begin: animationBegin,
 		duration: animationDuration,
@@ -28577,12 +29617,12 @@ function SymbolsWithAnimation(_ref4) {
 			return _objectSpread$16(_objectSpread$16({}, entry), {}, { size: interpolate(0, entry.size, t) });
 		});
 		if (t > 0) previousPointsRef.current = stepData;
-		return /* @__PURE__ */ import_react.createElement(Layer, null, /* @__PURE__ */ import_react.createElement(ScatterSymbols, {
+		return /*#__PURE__*/ import_react.createElement(Layer, null, /*#__PURE__*/ import_react.createElement(ScatterSymbols, {
 			points: stepData,
 			allOtherScatterProps: props,
 			showLabels
 		}));
-	}), /* @__PURE__ */ import_react.createElement(LabelListFromLabelProp, { label: props.label }));
+	}), /*#__PURE__*/ import_react.createElement(LabelListFromLabelProp, { label: props.label }));
 }
 function computeScatterPoints(_ref5) {
 	var { displayedData, xAxis, yAxis, zAxis, scatterSettings, xAxisTicks, yAxisTicks, cells } = _ref5;
@@ -28677,21 +29717,21 @@ function ScatterWithId(props) {
 	if (hide) return null;
 	var layerClass = clsx("recharts-scatter", className);
 	var clipPathId = id;
-	return /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /* @__PURE__ */ import_react.createElement(Layer, {
+	return /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex: props.zIndex }, /*#__PURE__*/ import_react.createElement(Layer, {
 		className: layerClass,
 		clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : void 0,
 		id
-	}, needClip && /* @__PURE__ */ import_react.createElement("defs", null, /* @__PURE__ */ import_react.createElement(GraphicalItemClipPath, {
+	}, needClip && /*#__PURE__*/ import_react.createElement("defs", null, /*#__PURE__*/ import_react.createElement(GraphicalItemClipPath, {
 		clipPathId,
 		xAxisId,
 		yAxisId
-	})), /* @__PURE__ */ import_react.createElement(SetErrorBarContext, {
+	})), /*#__PURE__*/ import_react.createElement(SetErrorBarContext, {
 		xAxisId,
 		yAxisId,
 		data: points,
 		dataPointFormatter: errorBarDataPointFormatter,
 		errorBarOffset: 0
-	}, /* @__PURE__ */ import_react.createElement(Layer, { key: "recharts-scatter-symbols" }, /* @__PURE__ */ import_react.createElement(SymbolsWithAnimation, {
+	}, /*#__PURE__*/ import_react.createElement(Layer, { key: "recharts-scatter-symbols" }, /*#__PURE__*/ import_react.createElement(SymbolsWithAnimation, {
 		props,
 		previousPointsRef
 	})))));
@@ -28723,7 +29763,7 @@ function ScatterImpl(props) {
 	});
 	if (needClip == null) return null;
 	if (points == null) return null;
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetScatterTooltipEntrySettings, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetScatterTooltipEntrySettings, {
 		dataKey: props.dataKey,
 		points,
 		stroke: props.stroke,
@@ -28733,7 +29773,7 @@ function ScatterImpl(props) {
 		hide: props.hide,
 		tooltipType: props.tooltipType,
 		id: props.id
-	}), /* @__PURE__ */ import_react.createElement(ScatterWithId, _extends$14({}, everythingElse, {
+	}), /*#__PURE__*/ import_react.createElement(ScatterWithId, _extends$14({}, everythingElse, {
 		xAxisId,
 		yAxisId,
 		zAxisId,
@@ -28753,10 +29793,10 @@ function ScatterImpl(props) {
 function ScatterFn(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, defaultScatterProps);
 	var isPanorama = useIsPanorama();
-	return /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	return /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: props.id,
 		type: "scatter"
-	}, (id) => /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetLegendPayload, { legendPayload: computeLegendPayloadFromScatterProps(props) }), /* @__PURE__ */ import_react.createElement(SetCartesianGraphicalItem, {
+	}, (id) => /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetLegendPayload, { legendPayload: computeLegendPayloadFromScatterProps(props) }), /*#__PURE__*/ import_react.createElement(SetCartesianGraphicalItem, {
 		type: "scatter",
 		id,
 		data: props.data,
@@ -28768,7 +29808,7 @@ function ScatterFn(outsideProps) {
 		name: props.name,
 		tooltipType: props.tooltipType,
 		isPanorama
-	}), /* @__PURE__ */ import_react.createElement(ScatterImpl, _extends$14({}, props, { id }))));
+	}), /*#__PURE__*/ import_react.createElement(ScatterImpl, _extends$14({}, props, { id }))));
 }
 /**
 * @provides LabelListContext
@@ -28776,7 +29816,7 @@ function ScatterFn(outsideProps) {
 * @provides CellReader
 * @consumes CartesianChartContext
 */
-var Scatter = /* @__PURE__ */ import_react.memo(ScatterFn, propsAreEqual);
+var Scatter = /*#__PURE__*/ import_react.memo(ScatterFn, propsAreEqual);
 Scatter.displayName = "Scatter";
 //#endregion
 //#region node_modules/recharts/es6/util/axisPropsAreEqual.js
@@ -28941,7 +29981,7 @@ var XAxisImpl = (props) => {
 	if (axisSize == null || position == null || synchronizedSettings == null) return null;
 	var { dangerouslySetInnerHTML, ticks, scale: del } = props, allOtherProps = _objectWithoutProperties$8(props, _excluded2$3);
 	var { id, scale: del2 } = synchronizedSettings, restSynchronizedSettings = _objectWithoutProperties$8(synchronizedSettings, _excluded3$2);
-	return /* @__PURE__ */ import_react.createElement(CartesianAxis, _extends$13({}, allOtherProps, restSynchronizedSettings, {
+	return /*#__PURE__*/ import_react.createElement(CartesianAxis, _extends$13({}, allOtherProps, restSynchronizedSettings, {
 		x: position.x,
 		y: position.y,
 		width: axisSize.width,
@@ -28980,7 +30020,7 @@ var xAxisDefaultProps = {
 };
 var XAxisSettingsDispatcher = (outsideProps) => {
 	var props = resolveDefaultProps(outsideProps, xAxisDefaultProps);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetXAxisSettings, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetXAxisSettings, {
 		allowDataOverflow: props.allowDataOverflow,
 		allowDecimals: props.allowDecimals,
 		allowDuplicatedCategory: props.allowDuplicatedCategory,
@@ -29006,13 +30046,13 @@ var XAxisSettingsDispatcher = (outsideProps) => {
 		type: props.type,
 		unit: props.unit,
 		niceTicks: props.niceTicks
-	}), /* @__PURE__ */ import_react.createElement(XAxisImpl, props));
+	}), /*#__PURE__*/ import_react.createElement(XAxisImpl, props));
 };
 /**
 * @consumes CartesianViewBoxContext
 * @provides CartesianLabelContext
 */
-var XAxis = /* @__PURE__ */ import_react.memo(XAxisSettingsDispatcher, axisPropsAreEqual);
+var XAxis = /*#__PURE__*/ import_react.memo(XAxisSettingsDispatcher, axisPropsAreEqual);
 XAxis.displayName = "XAxis";
 //#endregion
 //#region node_modules/recharts/es6/cartesian/YAxis.js
@@ -29133,7 +30173,7 @@ function YAxisImpl(props) {
 	var cartesianTickItems = useAppSelector((state) => selectTicksOfAxis(state, axisType, yAxisId, isPanorama));
 	var synchronizedSettings = useAppSelector((state) => selectYAxisSettingsNoDefaults(state, yAxisId));
 	(0, import_react.useLayoutEffect)(() => {
-		if (width !== "auto" || !axisSize || isLabelContentAFunction(label) || /* @__PURE__ */ (0, import_react.isValidElement)(label) || synchronizedSettings == null) return;
+		if (width !== "auto" || !axisSize || isLabelContentAFunction(label) || /*#__PURE__*/ (0, import_react.isValidElement)(label) || synchronizedSettings == null) return;
 		var axisComponent = cartesianAxisRef.current;
 		if (!axisComponent) return;
 		var updatedYAxisWidth = axisComponent.getCalculatedWidth();
@@ -29153,7 +30193,7 @@ function YAxisImpl(props) {
 	if (axisSize == null || position == null || synchronizedSettings == null) return null;
 	var { dangerouslySetInnerHTML, ticks, scale: del } = props, allOtherProps = _objectWithoutProperties$7(props, _excluded2$2);
 	var { id, scale: del2 } = synchronizedSettings, restSynchronizedSettings = _objectWithoutProperties$7(synchronizedSettings, _excluded3$1);
-	return /* @__PURE__ */ import_react.createElement(CartesianAxis, _extends$12({}, allOtherProps, restSynchronizedSettings, {
+	return /*#__PURE__*/ import_react.createElement(CartesianAxis, _extends$12({}, allOtherProps, restSynchronizedSettings, {
 		ref: cartesianAxisRef,
 		labelRef,
 		x: position.x,
@@ -29195,7 +30235,7 @@ var yAxisDefaultProps = {
 };
 var YAxisSettingsDispatcher = (outsideProps) => {
 	var props = resolveDefaultProps(outsideProps, yAxisDefaultProps);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetYAxisSettings, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetYAxisSettings, {
 		interval: props.interval,
 		id: props.yAxisId,
 		scale: props.scale,
@@ -29221,13 +30261,13 @@ var YAxisSettingsDispatcher = (outsideProps) => {
 		tick: props.tick,
 		tickFormatter: props.tickFormatter,
 		niceTicks: props.niceTicks
-	}), /* @__PURE__ */ import_react.createElement(YAxisImpl, props));
+	}), /*#__PURE__*/ import_react.createElement(YAxisImpl, props));
 };
 /**
 * @consumes CartesianViewBoxContext
 * @provides CartesianLabelContext
 */
-var YAxis = /* @__PURE__ */ import_react.memo(YAxisSettingsDispatcher, axisPropsAreEqual);
+var YAxis = /*#__PURE__*/ import_react.memo(YAxisSettingsDispatcher, axisPropsAreEqual);
 YAxis.displayName = "YAxis";
 //#endregion
 //#region node_modules/recharts/es6/cartesian/ZAxis.js
@@ -29266,7 +30306,7 @@ var zAxisDefaultProps = {
 */
 function ZAxis(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, zAxisDefaultProps);
-	return /* @__PURE__ */ import_react.createElement(SetZAxisSettings, {
+	return /*#__PURE__*/ import_react.createElement(SetZAxisSettings, {
 		domain: props.domain,
 		id: props.zAxisId,
 		dataKey: props.dataKey,
@@ -29519,12 +30559,12 @@ function ErrorBarImpl(props) {
 		}
 		var scaleDirection = direction === "x" ? "scaleX" : "scaleY";
 		var transformOrigin = "".concat(x + offset, "px ").concat(y + offset, "px");
-		return /* @__PURE__ */ import_react.createElement(Layer, _extends$11({
+		return /*#__PURE__*/ import_react.createElement(Layer, _extends$11({
 			className: "recharts-errorBar",
 			key: "bar-".concat(x, "-").concat(y, "-").concat(value, "-").concat(dataIndex)
 		}, svgProps), lineCoordinates.map((c, lineIndex) => {
 			var lineStyle = isAnimationActive ? { transformOrigin } : void 0;
-			return /* @__PURE__ */ import_react.createElement(CSSTransitionAnimate, {
+			return /*#__PURE__*/ import_react.createElement(CSSTransitionAnimate, {
 				animationId: "error-bar-".concat(direction, "_").concat(c.x1, "-").concat(c.x2, "-").concat(c.y1, "-").concat(c.y2),
 				from: "".concat(scaleDirection, "(0)"),
 				to: "".concat(scaleDirection, "(1)"),
@@ -29534,10 +30574,10 @@ function ErrorBarImpl(props) {
 				isActive: isAnimationActive,
 				duration: animationDuration,
 				key: "errorbar-".concat(dataIndex, "-").concat(c.x1, "-").concat(c.y1, "-").concat(c.x2, "-").concat(c.y2, "-").concat(lineIndex)
-			}, (style) => /* @__PURE__ */ import_react.createElement("line", _extends$11({}, c, { style: _objectSpread$13(_objectSpread$13({}, lineStyle), style) })));
+			}, (style) => /*#__PURE__*/ import_react.createElement("line", _extends$11({}, c, { style: _objectSpread$13(_objectSpread$13({}, lineStyle), style) })));
 		}));
 	});
-	return /* @__PURE__ */ import_react.createElement(Layer, { className: "recharts-errorBars" }, errorBars);
+	return /*#__PURE__*/ import_react.createElement(Layer, { className: "recharts-errorBars" }, errorBars);
 }
 function useErrorBarDirection(directionFromProps) {
 	var layout = useChartLayout();
@@ -29582,10 +30622,10 @@ function ErrorBar(outsideProps) {
 	var realDirection = useErrorBarDirection(outsideProps.direction);
 	var props = resolveDefaultProps(outsideProps, errorBarDefaultProps);
 	var { width, isAnimationActive, animationBegin, animationDuration, animationEasing, zIndex } = props;
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(ReportErrorBarSettings, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(ReportErrorBarSettings, {
 		dataKey: props.dataKey,
 		direction: realDirection
-	}), /* @__PURE__ */ import_react.createElement(ZIndexLayer, { zIndex }, /* @__PURE__ */ import_react.createElement(ErrorBarImpl, _extends$11({}, props, {
+	}), /*#__PURE__*/ import_react.createElement(ZIndexLayer, { zIndex }, /*#__PURE__*/ import_react.createElement(ErrorBarImpl, _extends$11({}, props, {
 		direction: realDirection,
 		width,
 		isAnimationActive,
@@ -29851,10 +30891,13 @@ keyboardEventsMiddleware.startListening({
 				if (key !== "ArrowRight" && key !== "ArrowLeft" && key !== "Enter") return;
 				var resolvedIndex = combineActiveTooltipIndex(keyboardInteraction, selectTooltipDisplayedData(currentState), selectTooltipAxisDataKey(currentState), selectTooltipAxisDomain(currentState));
 				var currentIndex = resolvedIndex == null ? -1 : Number(resolvedIndex);
-				if (!Number.isFinite(currentIndex) || currentIndex < 0) return;
+				var isOutsideDomain = !Number.isFinite(currentIndex) || currentIndex < 0;
 				var tooltipTicks = selectTooltipAxisTicks(currentState);
+				var displayedData = selectTooltipDisplayedData(currentState);
+				var tooltipEventType = selectTooltipEventType$1(currentState, currentState.tooltip.settings.shared);
 				if (key === "Enter") {
-					var _coordinate = selectCoordinateForDefaultIndex(currentState, "axis", "hover", String(keyboardInteraction.index));
+					if (isOutsideDomain) return;
+					var _coordinate = selectCoordinateForDefaultIndex(currentState, tooltipEventType, "hover", String(keyboardInteraction.index));
 					listenerApi.dispatch(setKeyboardInteraction({
 						active: !keyboardInteraction.active,
 						activeIndex: keyboardInteraction.index,
@@ -29863,9 +30906,36 @@ keyboardEventsMiddleware.startListening({
 					return;
 				}
 				var directionMultiplier = selectChartDirection(currentState) === "left-to-right" ? 1 : -1;
-				var nextIndex = currentIndex + (key === "ArrowRight" ? 1 : -1) * directionMultiplier;
-				if (tooltipTicks == null || nextIndex >= tooltipTicks.length || nextIndex < 0) return;
-				var coordinate = selectCoordinateForDefaultIndex(currentState, "axis", "hover", String(nextIndex));
+				var movement = key === "ArrowRight" ? 1 : -1;
+				var nextIndex;
+				if (isOutsideDomain) {
+					var axisDataKey = selectTooltipAxisDataKey(currentState);
+					var domain = selectTooltipAxisDomain(currentState);
+					var effectiveMovement = movement * directionMultiplier;
+					var mkInteraction = (i) => ({
+						active: false,
+						index: String(i),
+						dataKey: void 0,
+						graphicalItemId: void 0,
+						coordinate: void 0
+					});
+					nextIndex = -1;
+					if (effectiveMovement > 0) {
+						for (var i = 0; i < displayedData.length; i++) if (combineActiveTooltipIndex(mkInteraction(i), displayedData, axisDataKey, domain) != null) {
+							nextIndex = i;
+							break;
+						}
+					} else for (var _i = displayedData.length - 1; _i >= 0; _i--) if (combineActiveTooltipIndex(mkInteraction(_i), displayedData, axisDataKey, domain) != null) {
+						nextIndex = _i;
+						break;
+					}
+					if (nextIndex < 0) return;
+				} else {
+					nextIndex = currentIndex + movement * directionMultiplier;
+					var dataLength = (tooltipTicks === null || tooltipTicks === void 0 ? void 0 : tooltipTicks.length) || displayedData.length;
+					if (dataLength === 0 || nextIndex >= dataLength || nextIndex < 0) return;
+				}
+				var coordinate = selectCoordinateForDefaultIndex(currentState, tooltipEventType, "hover", String(nextIndex));
 				listenerApi.dispatch(setKeyboardInteraction({
 					active: true,
 					activeIndex: nextIndex.toString(),
@@ -29905,7 +30975,7 @@ keyboardEventsMiddleware.startListening({
 		if (keyboardInteraction.active) return;
 		if (keyboardInteraction.index == null) {
 			var nextIndex = "0";
-			var coordinate = selectCoordinateForDefaultIndex(state, "axis", "hover", String(nextIndex));
+			var coordinate = selectCoordinateForDefaultIndex(state, selectTooltipEventType$1(state, state.tooltip.settings.shared), "hover", String(nextIndex));
 			listenerApi.dispatch(setKeyboardInteraction({
 				active: true,
 				activeIndex: nextIndex,
@@ -30194,7 +31264,7 @@ function RechartsStoreProvider(_ref) {
 	if (isPanorama) return children;
 	if (storeRef.current == null) storeRef.current = createRechartsStore(preloadedState, reduxStoreName);
 	var nonNullContext = RechartsReduxContext;
-	return /* @__PURE__ */ import_react.createElement(Provider_default, {
+	return /*#__PURE__*/ import_react.createElement(Provider_default, {
 		context: nonNullContext,
 		store: storeRef.current
 	}, children);
@@ -30222,7 +31292,7 @@ function ReportMainChartPropsImpl(_ref) {
 	]);
 	return null;
 }
-var ReportMainChartProps = /* @__PURE__ */ (0, import_react.memo)(ReportMainChartPropsImpl, propsAreEqual);
+var ReportMainChartProps = /*#__PURE__*/ (0, import_react.memo)(ReportMainChartPropsImpl, propsAreEqual);
 //#endregion
 //#region node_modules/recharts/es6/state/ReportChartProps.js
 function ReportChartProps(props) {
@@ -30241,7 +31311,7 @@ var ReportEventSettingsImpl = (props) => {
 	}, [dispatch, props]);
 	return null;
 };
-var ReportEventSettings = /* @__PURE__ */ (0, import_react.memo)(ReportEventSettingsImpl, propsAreEqual);
+var ReportEventSettings = /*#__PURE__*/ (0, import_react.memo)(ReportEventSettingsImpl, propsAreEqual);
 //#endregion
 //#region node_modules/recharts/es6/zIndex/ZIndexPortal.js
 function ZIndexSvgPortal(_ref) {
@@ -30265,7 +31335,7 @@ function ZIndexSvgPortal(_ref) {
 		zIndex,
 		isPanorama
 	]);
-	return /* @__PURE__ */ import_react.createElement("g", {
+	return /*#__PURE__*/ import_react.createElement("g", {
 		tabIndex: -1,
 		ref,
 		className: "recharts-zIndex-layer_".concat(zIndex)
@@ -30277,11 +31347,11 @@ function AllZIndexPortals(_ref2) {
 	if (!allRegisteredZIndexes || allRegisteredZIndexes.length === 0) return children;
 	var allNegativeZIndexes = allRegisteredZIndexes.filter((zIndex) => zIndex < 0);
 	var allPositiveZIndexes = allRegisteredZIndexes.filter((zIndex) => zIndex > 0);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, allNegativeZIndexes.map((zIndex) => /* @__PURE__ */ import_react.createElement(ZIndexSvgPortal, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, allNegativeZIndexes.map((zIndex) => /*#__PURE__*/ import_react.createElement(ZIndexSvgPortal, {
 		key: zIndex,
 		zIndex,
 		isPanorama
-	})), children, allPositiveZIndexes.map((zIndex) => /* @__PURE__ */ import_react.createElement(ZIndexSvgPortal, {
+	})), children, allPositiveZIndexes.map((zIndex) => /*#__PURE__*/ import_react.createElement(ZIndexSvgPortal, {
 		key: zIndex,
 		zIndex,
 		isPanorama
@@ -30322,7 +31392,7 @@ var FULL_WIDTH_AND_HEIGHT = {
 	height: "100%",
 	display: "block"
 };
-var MainChartSurface = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var MainChartSurface = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var width = useChartWidth();
 	var height = useChartHeight();
 	var hasAccessibilityLayer = useAccessibilityLayer();
@@ -30335,7 +31405,7 @@ var MainChartSurface = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref)
 		if (typeof otherAttributes.role === "string") role = otherAttributes.role;
 		else role = hasAccessibilityLayer ? "application" : void 0;
 	}
-	return /* @__PURE__ */ import_react.createElement(Surface, _extends$10({}, otherAttributes, {
+	return /*#__PURE__*/ import_react.createElement(Surface, _extends$10({}, otherAttributes, {
 		title,
 		desc,
 		role,
@@ -30351,17 +31421,17 @@ var BrushPanoramaSurface = (_ref) => {
 	var brushDimensions = useAppSelector(selectBrushDimensions);
 	if (!brushDimensions) return null;
 	var { width, height, y, x } = brushDimensions;
-	return /* @__PURE__ */ import_react.createElement(Surface, {
+	return /*#__PURE__*/ import_react.createElement(Surface, {
 		width,
 		height,
 		x,
 		y
 	}, children);
 };
-var RootSurface = /* @__PURE__ */ (0, import_react.forwardRef)((_ref2, ref) => {
+var RootSurface = /*#__PURE__*/ (0, import_react.forwardRef)((_ref2, ref) => {
 	var { children } = _ref2, rest = _objectWithoutProperties$5(_ref2, _excluded$5);
-	if (useIsPanorama()) return /* @__PURE__ */ import_react.createElement(BrushPanoramaSurface, null, /* @__PURE__ */ import_react.createElement(AllZIndexPortals, { isPanorama: true }, children));
-	return /* @__PURE__ */ import_react.createElement(MainChartSurface, _extends$10({ ref }, rest), /* @__PURE__ */ import_react.createElement(AllZIndexPortals, { isPanorama: false }, children));
+	if (useIsPanorama()) return /*#__PURE__*/ import_react.createElement(BrushPanoramaSurface, null, /*#__PURE__*/ import_react.createElement(AllZIndexPortals, { isPanorama: true }, children));
+	return /*#__PURE__*/ import_react.createElement(MainChartSurface, _extends$10({ ref }, rest), /*#__PURE__*/ import_react.createElement(AllZIndexPortals, { isPanorama: false }, children));
 });
 //#endregion
 //#region node_modules/recharts/es6/util/useReportScale.js
@@ -30446,7 +31516,7 @@ function getNumberOrZero(value) {
 	}
 	return 0;
 }
-var ResponsiveDiv = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var ResponsiveDiv = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var _props$style, _props$style2;
 	var observerRef = (0, import_react.useRef)(null);
 	var [sizes, setSizes] = (0, import_react.useState)({
@@ -30466,6 +31536,10 @@ var ResponsiveDiv = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) =>
 	}, []);
 	var innerRef = (0, import_react.useCallback)((node) => {
 		if (typeof ref === "function") ref(node);
+		if (observerRef.current != null) {
+			observerRef.current.disconnect();
+			observerRef.current = null;
+		}
 		if (node != null && typeof ResizeObserver !== "undefined") {
 			var { width: containerWidth, height: containerHeight } = node.getBoundingClientRect();
 			setContainerSize(containerWidth, containerHeight);
@@ -30486,12 +31560,12 @@ var ResponsiveDiv = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) =>
 			if (observer != null) observer.disconnect();
 		};
 	}, [setContainerSize]);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(ReportChartSize, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(ReportChartSize, {
 		width: sizes.containerWidth,
 		height: sizes.containerHeight
-	}), /* @__PURE__ */ import_react.createElement("div", _extends$9({ ref: innerRef }, props)));
+	}), /*#__PURE__*/ import_react.createElement("div", _extends$9({ ref: innerRef }, props)));
 });
-var ReadSizeOnceDiv = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var ReadSizeOnceDiv = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var { width, height } = props;
 	var [sizes, setSizes] = (0, import_react.useState)({
 		containerWidth: getNumberOrZero(width),
@@ -30515,35 +31589,35 @@ var ReadSizeOnceDiv = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) 
 			setContainerSize(containerWidth, containerHeight);
 		}
 	}, [ref, setContainerSize]);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(ReportChartSize, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(ReportChartSize, {
 		width: sizes.containerWidth,
 		height: sizes.containerHeight
-	}), /* @__PURE__ */ import_react.createElement("div", _extends$9({ ref: innerRef }, props)));
+	}), /*#__PURE__*/ import_react.createElement("div", _extends$9({ ref: innerRef }, props)));
 });
-var StaticDiv = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var StaticDiv = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var { width, height } = props;
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(ReportChartSize, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(ReportChartSize, {
 		width,
 		height
-	}), /* @__PURE__ */ import_react.createElement("div", _extends$9({ ref }, props)));
+	}), /*#__PURE__*/ import_react.createElement("div", _extends$9({ ref }, props)));
 });
-var NonResponsiveDiv = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var NonResponsiveDiv = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var { width, height } = props;
-	if (typeof width === "string" || typeof height === "string") return /* @__PURE__ */ import_react.createElement(ReadSizeOnceDiv, _extends$9({}, props, { ref }));
-	if (typeof width === "number" && typeof height === "number") return /* @__PURE__ */ import_react.createElement(StaticDiv, _extends$9({}, props, {
+	if (typeof width === "string" || typeof height === "string") return /*#__PURE__*/ import_react.createElement(ReadSizeOnceDiv, _extends$9({}, props, { ref }));
+	if (typeof width === "number" && typeof height === "number") return /*#__PURE__*/ import_react.createElement(StaticDiv, _extends$9({}, props, {
 		width,
 		height,
 		ref
 	}));
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(ReportChartSize, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(ReportChartSize, {
 		width,
 		height
-	}), /* @__PURE__ */ import_react.createElement("div", _extends$9({ ref }, props)));
+	}), /*#__PURE__*/ import_react.createElement("div", _extends$9({ ref }, props)));
 });
 function getWrapperDivComponent(responsive) {
 	return responsive ? ResponsiveDiv : NonResponsiveDiv;
 }
-var RechartsWrapper = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var RechartsWrapper = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var { children, className, height: heightFromProps, onClick, onContextMenu, onDoubleClick, onMouseDown, onMouseEnter, onMouseLeave, onMouseMove, onMouseUp, onTouchEnd, onTouchMove, onTouchStart, style, width: widthFromProps, responsive, dispatchTouchEvents = true } = props;
 	var containerRef = (0, import_react.useRef)(null);
 	var dispatch = useAppDispatch();
@@ -30650,7 +31724,7 @@ var RechartsWrapper = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) 
 		}));
 	}, [dispatch, onTouchEnd]);
 	var WrapperDiv = getWrapperDivComponent(responsive);
-	return /* @__PURE__ */ import_react.createElement(TooltipPortalContext.Provider, { value: tooltipPortal }, /* @__PURE__ */ import_react.createElement(LegendPortalContext.Provider, { value: legendPortal }, /* @__PURE__ */ import_react.createElement(WrapperDiv, {
+	return /*#__PURE__*/ import_react.createElement(TooltipPortalContext.Provider, { value: tooltipPortal }, /*#__PURE__*/ import_react.createElement(LegendPortalContext.Provider, { value: legendPortal }, /*#__PURE__*/ import_react.createElement(WrapperDiv, {
 		width: width !== null && width !== void 0 ? width : style === null || style === void 0 ? void 0 : style.width,
 		height: height !== null && height !== void 0 ? height : style === null || style === void 0 ? void 0 : style.height,
 		className: clsx("recharts-wrapper", className),
@@ -30675,7 +31749,7 @@ var RechartsWrapper = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) 
 		onTouchMove: myOnTouchMove,
 		onTouchStart: myOnTouchStart,
 		ref: innerRef
-	}, /* @__PURE__ */ import_react.createElement(EventSynchronizer, null), children)));
+	}, /*#__PURE__*/ import_react.createElement(EventSynchronizer, null), children)));
 });
 //#endregion
 //#region node_modules/recharts/es6/chart/CategoricalChart.js
@@ -30708,18 +31782,18 @@ function _objectWithoutPropertiesLoose$4(r, e) {
 	}
 	return t;
 }
-var CategoricalChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var CategoricalChart = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var { width, height, responsive, children, className, style, compact, title, desc } = props;
 	var attrs = svgPropertiesNoEvents(_objectWithoutProperties$4(props, _excluded$4));
-	if (compact) return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(ReportChartSize, {
+	if (compact) return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(ReportChartSize, {
 		width,
 		height
-	}), /* @__PURE__ */ import_react.createElement(RootSurface, {
+	}), /*#__PURE__*/ import_react.createElement(RootSurface, {
 		otherAttributes: attrs,
 		title,
 		desc
 	}, children));
-	return /* @__PURE__ */ import_react.createElement(RechartsWrapper, {
+	return /*#__PURE__*/ import_react.createElement(RechartsWrapper, {
 		className,
 		style,
 		width,
@@ -30736,12 +31810,12 @@ var CategoricalChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref)
 		onTouchStart: props.onTouchStart,
 		onTouchMove: props.onTouchMove,
 		onTouchEnd: props.onTouchEnd
-	}, /* @__PURE__ */ import_react.createElement(RootSurface, {
+	}, /*#__PURE__*/ import_react.createElement(RootSurface, {
 		otherAttributes: attrs,
 		title,
 		desc,
 		ref
-	}, /* @__PURE__ */ import_react.createElement(ClipPathProvider, null, children)));
+	}, /*#__PURE__*/ import_react.createElement(ClipPathProvider, null, children)));
 });
 //#endregion
 //#region node_modules/recharts/es6/chart/CartesianChart.js
@@ -30818,7 +31892,7 @@ var defaultCartesianChartProps = _objectSpread$11({
 * Users who wish to call CartesianChart may decide to pass these options explicitly,
 * but usually we would expect that they use one of the convenience components like BarChart, LineChart, etc.
 */
-var CartesianChart = /* @__PURE__ */ (0, import_react.forwardRef)(function CartesianChart(props, ref) {
+var CartesianChart = /*#__PURE__*/ (0, import_react.forwardRef)(function CartesianChart(props, ref) {
 	var _categoricalChartProp;
 	var rootChartProps = resolveDefaultProps(props.categoricalChartProps, defaultCartesianChartProps);
 	var { chartName, defaultTooltipEventType, validateTooltipEventTypes, tooltipPayloadSearcher, categoricalChartProps } = props;
@@ -30829,16 +31903,16 @@ var CartesianChart = /* @__PURE__ */ (0, import_react.forwardRef)(function Carte
 		tooltipPayloadSearcher,
 		eventEmitter: void 0
 	};
-	return /* @__PURE__ */ import_react.createElement(RechartsStoreProvider, {
+	return /*#__PURE__*/ import_react.createElement(RechartsStoreProvider, {
 		preloadedState: { options },
 		reduxStoreName: (_categoricalChartProp = categoricalChartProps.id) !== null && _categoricalChartProp !== void 0 ? _categoricalChartProp : chartName
-	}, /* @__PURE__ */ import_react.createElement(ChartDataContextProvider, { chartData: categoricalChartProps.data }), /* @__PURE__ */ import_react.createElement(ReportMainChartProps, {
+	}, /*#__PURE__*/ import_react.createElement(ChartDataContextProvider, { chartData: categoricalChartProps.data }), /*#__PURE__*/ import_react.createElement(ReportMainChartProps, {
 		layout: rootChartProps.layout,
 		margin: rootChartProps.margin
-	}), /* @__PURE__ */ import_react.createElement(ReportEventSettings, {
+	}), /*#__PURE__*/ import_react.createElement(ReportEventSettings, {
 		throttleDelay: rootChartProps.throttleDelay,
 		throttledEvents: rootChartProps.throttledEvents
-	}), /* @__PURE__ */ import_react.createElement(ReportChartProps, {
+	}), /*#__PURE__*/ import_react.createElement(ReportChartProps, {
 		baseValue: rootChartProps.baseValue,
 		accessibilityLayer: rootChartProps.accessibilityLayer,
 		barCategoryGap: rootChartProps.barCategoryGap,
@@ -30850,7 +31924,7 @@ var CartesianChart = /* @__PURE__ */ (0, import_react.forwardRef)(function Carte
 		syncMethod: rootChartProps.syncMethod,
 		className: rootChartProps.className,
 		reverseStackOrder: rootChartProps.reverseStackOrder
-	}), /* @__PURE__ */ import_react.createElement(CategoricalChart, _extends$8({}, rootChartProps, { ref })));
+	}), /*#__PURE__*/ import_react.createElement(CategoricalChart, _extends$8({}, rootChartProps, { ref })));
 });
 //#endregion
 //#region node_modules/recharts/es6/chart/LineChart.js
@@ -30860,8 +31934,8 @@ var allowedTooltipTypes$8 = ["axis"];
 * @provides CartesianViewBoxContext
 * @provides CartesianChartContext
 */
-var LineChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
-	return /* @__PURE__ */ import_react.createElement(CartesianChart, {
+var LineChart = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
+	return /*#__PURE__*/ import_react.createElement(CartesianChart, {
 		chartName: "LineChart",
 		defaultTooltipEventType: "axis",
 		validateTooltipEventTypes: allowedTooltipTypes$8,
@@ -30878,8 +31952,8 @@ var allowedTooltipTypes$7 = ["axis", "item"];
 * @provides CartesianViewBoxContext
 * @provides CartesianChartContext
 */
-var BarChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
-	return /* @__PURE__ */ import_react.createElement(CartesianChart, {
+var BarChart = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
+	return /*#__PURE__*/ import_react.createElement(CartesianChart, {
 		chartName: "BarChart",
 		defaultTooltipEventType: "axis",
 		validateTooltipEventTypes: allowedTooltipTypes$7,
@@ -31006,7 +32080,7 @@ var defaultPolarChartProps = _objectSpread$10({
 * Users who wish to call CartesianChart may decide to pass these options explicitly,
 * but usually we would expect that they use one of the convenience components like PieChart, RadarChart, etc.
 */
-var PolarChart = /* @__PURE__ */ (0, import_react.forwardRef)(function PolarChart(props, ref) {
+var PolarChart = /*#__PURE__*/ (0, import_react.forwardRef)(function PolarChart(props, ref) {
 	var _polarChartProps$id;
 	var polarChartProps = resolveDefaultProps(props.categoricalChartProps, defaultPolarChartProps);
 	var { layout } = polarChartProps, otherCategoricalProps = _objectWithoutProperties$3(polarChartProps, _excluded$3);
@@ -31018,16 +32092,16 @@ var PolarChart = /* @__PURE__ */ (0, import_react.forwardRef)(function PolarChar
 		tooltipPayloadSearcher,
 		eventEmitter: void 0
 	};
-	return /* @__PURE__ */ import_react.createElement(RechartsStoreProvider, {
+	return /*#__PURE__*/ import_react.createElement(RechartsStoreProvider, {
 		preloadedState: { options },
 		reduxStoreName: (_polarChartProps$id = polarChartProps.id) !== null && _polarChartProps$id !== void 0 ? _polarChartProps$id : chartName
-	}, /* @__PURE__ */ import_react.createElement(ChartDataContextProvider, { chartData: polarChartProps.data }), /* @__PURE__ */ import_react.createElement(ReportMainChartProps, {
+	}, /*#__PURE__*/ import_react.createElement(ChartDataContextProvider, { chartData: polarChartProps.data }), /*#__PURE__*/ import_react.createElement(ReportMainChartProps, {
 		layout,
 		margin: polarChartProps.margin
-	}), /* @__PURE__ */ import_react.createElement(ReportEventSettings, {
+	}), /*#__PURE__*/ import_react.createElement(ReportEventSettings, {
 		throttleDelay: polarChartProps.throttleDelay,
 		throttledEvents: polarChartProps.throttledEvents
-	}), /* @__PURE__ */ import_react.createElement(ReportChartProps, {
+	}), /*#__PURE__*/ import_react.createElement(ReportChartProps, {
 		baseValue: void 0,
 		accessibilityLayer: polarChartProps.accessibilityLayer,
 		barCategoryGap: polarChartProps.barCategoryGap,
@@ -31039,14 +32113,14 @@ var PolarChart = /* @__PURE__ */ (0, import_react.forwardRef)(function PolarChar
 		syncMethod: polarChartProps.syncMethod,
 		className: polarChartProps.className,
 		reverseStackOrder: polarChartProps.reverseStackOrder
-	}), /* @__PURE__ */ import_react.createElement(ReportPolarOptions, {
+	}), /*#__PURE__*/ import_react.createElement(ReportPolarOptions, {
 		cx: polarChartProps.cx,
 		cy: polarChartProps.cy,
 		startAngle: polarChartProps.startAngle,
 		endAngle: polarChartProps.endAngle,
 		innerRadius: polarChartProps.innerRadius,
 		outerRadius: polarChartProps.outerRadius
-	}), /* @__PURE__ */ import_react.createElement(CategoricalChart, _extends$7({}, otherCategoricalProps, { ref })));
+	}), /*#__PURE__*/ import_react.createElement(CategoricalChart, _extends$7({}, otherCategoricalProps, { ref })));
 });
 //#endregion
 //#region node_modules/recharts/es6/chart/PieChart.js
@@ -31104,9 +32178,9 @@ var defaultPieChartProps = _objectSpread$9(_objectSpread$9({}, defaultPolarChart
 * @provides PolarViewBoxContext
 * @provides PolarChartContext
 */
-var PieChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var PieChart = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var propsWithDefaults = resolveDefaultProps(props, defaultPieChartProps);
-	return /* @__PURE__ */ import_react.createElement(PolarChart, {
+	return /*#__PURE__*/ import_react.createElement(PolarChart, {
 		chartName: "PieChart",
 		defaultTooltipEventType: "item",
 		validateTooltipEventTypes: allowedTooltipTypes$6,
@@ -31116,182 +32190,13 @@ var PieChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
 	});
 });
 //#endregion
-//#region node_modules/es-toolkit/dist/predicate/isBuffer.js
-var require_isBuffer = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	function isBuffer(x) {
-		return typeof Buffer !== "undefined" && Buffer.isBuffer(x);
-	}
-	exports.isBuffer = isBuffer;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/_internal/isPrototype.js
-var require_isPrototype = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	function isPrototype(value) {
-		const constructor = value?.constructor;
-		return value === (typeof constructor === "function" ? constructor.prototype : Object.prototype);
-	}
-	exports.isPrototype = isPrototype;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/predicate/isTypedArray.js
-var require_isTypedArray = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isTypedArray$1 = require_isTypedArray$1();
-	function isTypedArray(x) {
-		return isTypedArray$1.isTypedArray(x);
-	}
-	exports.isTypedArray = isTypedArray;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/util/toInteger.js
-var require_toInteger = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var toFinite = require_toFinite();
-	function toInteger(value) {
-		const finite = toFinite.toFinite(value);
-		const remainder = finite % 1;
-		return remainder ? finite - remainder : finite;
-	}
-	exports.toInteger = toInteger;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/util/times.js
-var require_times = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var toInteger = require_toInteger();
-	function times(n, getValue) {
-		n = toInteger.toInteger(n);
-		if (n < 1 || !Number.isSafeInteger(n)) return [];
-		const result = new Array(n);
-		for (let i = 0; i < n; i++) result[i] = typeof getValue === "function" ? getValue(i) : i;
-		return result;
-	}
-	exports.times = times;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/object/keysIn.js
-var require_keysIn = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isBuffer = require_isBuffer();
-	var isPrototype = require_isPrototype();
-	var isArrayLike = require_isArrayLike();
-	var isTypedArray = require_isTypedArray();
-	var times = require_times();
-	function keysIn(object) {
-		if (object == null) return [];
-		switch (typeof object) {
-			case "object":
-			case "function":
-				if (isArrayLike.isArrayLike(object)) return arrayLikeKeysIn(object);
-				if (isPrototype.isPrototype(object)) return prototypeKeysIn(object);
-				return keysInImpl(object);
-			default: return keysInImpl(Object(object));
-		}
-	}
-	function keysInImpl(object) {
-		const result = [];
-		for (const key in object) result.push(key);
-		return result;
-	}
-	function prototypeKeysIn(object) {
-		return keysInImpl(object).filter((key) => key !== "constructor");
-	}
-	function arrayLikeKeysIn(object) {
-		const indices = times.times(object.length, (index) => `${index}`);
-		const filteredKeys = new Set(indices);
-		if (isBuffer.isBuffer(object)) {
-			filteredKeys.add("offset");
-			filteredKeys.add("parent");
-		}
-		if (isTypedArray.isTypedArray(object)) {
-			filteredKeys.add("buffer");
-			filteredKeys.add("byteLength");
-			filteredKeys.add("byteOffset");
-		}
-		const inheritedKeys = keysInImpl(object).filter((key) => !filteredKeys.has(key));
-		if (Array.isArray(object)) return [...indices, ...inheritedKeys];
-		return [...indices.filter((index) => Object.hasOwn(object, index)), ...inheritedKeys];
-	}
-	exports.keysIn = keysIn;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/object/unset.js
-var require_unset = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var get = require_get$1();
-	var isUnsafeProperty = require_isUnsafeProperty();
-	var isDeepKey = require_isDeepKey();
-	var toKey = require_toKey();
-	var toPath = require_toPath();
-	function unset(obj, path) {
-		if (obj == null) return true;
-		switch (typeof path) {
-			case "symbol":
-			case "number":
-			case "object":
-				if (Array.isArray(path)) return unsetWithPath(obj, path);
-				if (typeof path === "number") path = toKey.toKey(path);
-				else if (typeof path === "object") if (Object.is(path?.valueOf(), -0)) path = "-0";
-				else path = String(path);
-				if (isUnsafeProperty.isUnsafeProperty(path)) return false;
-				if (obj?.[path] === void 0) return true;
-				try {
-					delete obj[path];
-					return true;
-				} catch {
-					return false;
-				}
-			case "string":
-				if (obj?.[path] === void 0 && isDeepKey.isDeepKey(path)) return unsetWithPath(obj, toPath.toPath(path));
-				if (isUnsafeProperty.isUnsafeProperty(path)) return false;
-				try {
-					delete obj[path];
-					return true;
-				} catch {
-					return false;
-				}
-		}
-	}
-	function unsetWithPath(obj, path) {
-		const parent = path.length === 1 ? obj : get.get(obj, path.slice(0, -1));
-		const lastKey = path[path.length - 1];
-		if (parent?.[lastKey] === void 0) return true;
-		if (isUnsafeProperty.isUnsafeProperty(lastKey)) return false;
-		try {
-			delete parent[lastKey];
-			return true;
-		} catch {
-			return false;
-		}
-	}
-	exports.unset = unset;
-}));
-//#endregion
-//#region node_modules/es-toolkit/dist/compat/_internal/getSymbolsIn.js
-var require_getSymbolsIn = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var getSymbols = require_getSymbols();
-	function getSymbolsIn(object) {
-		const result = [];
-		while (object) {
-			result.push(...getSymbols.getSymbols(object));
-			object = Object.getPrototypeOf(object);
-		}
-		return result;
-	}
-	exports.getSymbolsIn = getSymbolsIn;
-}));
-//#endregion
 //#region node_modules/es-toolkit/dist/compat/array/flatten.js
-var require_flatten = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var isArrayLike = require_isArrayLike();
+var require_flatten$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isArrayLike$1 = require_isArrayLike$5();
 	function flatten(value, depth = 1) {
 		const result = [];
 		const flooredDepth = Math.floor(depth);
-		if (!isArrayLike.isArrayLike(value)) return result;
+		if (!require_isArrayLike$1.isArrayLike(value)) return result;
 		const recursive = (arr, currentDepth) => {
 			for (let i = 0; i < arr.length; i++) {
 				const item = arr[i];
@@ -31306,19 +32211,273 @@ var require_flatten = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.flatten = flatten;
 }));
 //#endregion
+//#region node_modules/es-toolkit/dist/compat/object/unset.js
+var require_unset$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isUnsafeProperty = require_isUnsafeProperty$2();
+	var require_isDeepKey$1 = require_isDeepKey$4();
+	var require_toKey = require_toKey$4();
+	var require_toPath = require_toPath$4();
+	var require_get = require_get$4();
+	/**
+	* Removes the property at the given path of the object.
+	*
+	* @param {unknown} obj - The object to modify.
+	* @param {PropertyKey | readonly PropertyKey[]} path - The path of the property to unset.
+	* @returns {boolean} - Returns true if the property is deleted, else false.
+	*
+	* @example
+	* const obj = { a: { b: { c: 42 } } };
+	* unset(obj, 'a.b.c'); // true
+	* console.log(obj); // { a: { b: {} } }
+	*
+	* @example
+	* const obj = { a: { b: { c: 42 } } };
+	* unset(obj, ['a', 'b', 'c']); // true
+	* console.log(obj); // { a: { b: {} } }
+	*/
+	function unset(obj, path) {
+		if (obj == null) return true;
+		switch (typeof path) {
+			case "symbol":
+			case "number":
+			case "object":
+				if (Array.isArray(path)) return unsetWithPath(obj, path);
+				if (typeof path === "number") path = require_toKey.toKey(path);
+				else if (typeof path === "object") if (Object.is(path?.valueOf(), -0)) path = "-0";
+				else path = String(path);
+				if (require_isUnsafeProperty.isUnsafeProperty(path)) return false;
+				if (obj?.[path] === void 0) return true;
+				try {
+					delete obj[path];
+					return true;
+				} catch {
+					return false;
+				}
+			case "string":
+				if (obj?.[path] === void 0 && require_isDeepKey$1.isDeepKey(path)) return unsetWithPath(obj, require_toPath.toPath(path));
+				if (require_isUnsafeProperty.isUnsafeProperty(path)) return false;
+				try {
+					delete obj[path];
+					return true;
+				} catch {
+					return false;
+				}
+		}
+	}
+	function unsetWithPath(obj, path) {
+		const parent = path.length === 1 ? obj : require_get.get(obj, path.slice(0, -1));
+		const lastKey = path[path.length - 1];
+		if (parent?.[lastKey] === void 0) return true;
+		if (require_isUnsafeProperty.isUnsafeProperty(lastKey)) return false;
+		try {
+			delete parent[lastKey];
+			return true;
+		} catch {
+			return false;
+		}
+	}
+	exports.unset = unset;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/_internal/isPrototype.js
+var require_isPrototype$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	function isPrototype(value) {
+		const constructor = value?.constructor;
+		return value === (typeof constructor === "function" ? constructor.prototype : Object.prototype);
+	}
+	exports.isPrototype = isPrototype;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/predicate/isTypedArray.js
+var require_isTypedArray$2 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isTypedArray$1 = require_isTypedArray$4();
+	/**
+	* Checks if a value is a TypedArray.
+	* @param {any} x The value to check.
+	* @returns {boolean} Returns true if `x` is a TypedArray, false otherwise.
+	*
+	* @example
+	* const arr = new Uint8Array([1, 2, 3]);
+	* isTypedArray(arr); // true
+	*
+	* const regularArray = [1, 2, 3];
+	* isTypedArray(regularArray); // false
+	*
+	* const buffer = new ArrayBuffer(16);
+	* isTypedArray(buffer); // false
+	*/
+	function isTypedArray(x) {
+		return require_isTypedArray$1.isTypedArray(x);
+	}
+	exports.isTypedArray = isTypedArray;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/util/toInteger.js
+var require_toInteger$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_toFinite = require_toFinite$2();
+	/**
+	* Converts `value` to an integer.
+	*
+	* This function first converts `value` to a finite number. If the result has any decimal places,
+	* they are removed by rounding down to the nearest whole number.
+	*
+	* @param {unknown} value - The value to convert.
+	* @returns {number} Returns the number.
+	*
+	* @example
+	* toInteger(3.2); // => 3
+	* toInteger(Number.MIN_VALUE); // => 0
+	* toInteger(Infinity); // => 1.7976931348623157e+308
+	* toInteger('3.2'); // => 3
+	* toInteger(Symbol.iterator); // => 0
+	* toInteger(NaN); // => 0
+	*/
+	function toInteger(value) {
+		const finite = require_toFinite.toFinite(value);
+		const remainder = finite % 1;
+		return remainder ? finite - remainder : finite;
+	}
+	exports.toInteger = toInteger;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/util/times.js
+var require_times$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_toInteger = require_toInteger$1();
+	/**
+	* Invokes the getValue function n times, returning an array of the results.
+	*
+	* @template R The return type of the getValue function.
+	* @param {number} n - The number of times to invoke getValue.
+	* @param {(index: number) => R} getValue - The function to invoke for each index.
+	* @returns {R[]} An array containing the results of invoking getValue n times.
+	* @example
+	* times(3, (i) => i * 2); // => [0, 2, 4]
+	* times(2, () => 'es-toolkit'); // => ['es-toolkit', 'es-toolkit']
+	*/
+	function times(n, getValue) {
+		n = require_toInteger.toInteger(n);
+		if (n < 1 || !Number.isSafeInteger(n)) return [];
+		const result = new Array(n);
+		for (let i = 0; i < n; i++) result[i] = typeof getValue === "function" ? getValue(i) : i;
+		return result;
+	}
+	exports.times = times;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/object/keysIn.js
+var require_keysIn$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_isBuffer = require_isBuffer$2();
+	var require_isArrayLike = require_isArrayLike$5();
+	var require_isPrototype = require_isPrototype$1();
+	var require_isTypedArray = require_isTypedArray$2();
+	var require_times = require_times$1();
+	/**
+	* This function retrieves the names of string-keyed properties from an object, including those inherited from its prototype.
+	*
+	* - If the value is not an object, it is converted to an object.
+	* - Array-like objects are treated like arrays.
+	* - Sparse arrays with some missing indices are treated like dense arrays.
+	* - If the value is `null` or `undefined`, an empty array is returned.
+	* - When handling prototype objects, the `constructor` property is excluded from the results.
+	*
+	* @param {any} [object] - The object to inspect for keys.
+	* @returns {string[]} An array of string keys from the object.
+	*
+	* @example
+	* const obj = { a: 1, b: 2 };
+	* console.log(keysIn(obj)); // ['a', 'b']
+	*
+	* const arr = [1, 2, 3];
+	* console.log(keysIn(arr)); // ['0', '1', '2']
+	*
+	* function Foo() {}
+	* Foo.prototype.a = 1;
+	* console.log(keysIn(new Foo())); // ['a']
+	*/
+	function keysIn(object) {
+		if (object == null) return [];
+		switch (typeof object) {
+			case "object":
+			case "function":
+				if (require_isArrayLike.isArrayLike(object)) return arrayLikeKeysIn(object);
+				if (require_isPrototype.isPrototype(object)) return prototypeKeysIn(object);
+				return keysInImpl(object);
+			default: return keysInImpl(Object(object));
+		}
+	}
+	function keysInImpl(object) {
+		const result = [];
+		for (const key in object) result.push(key);
+		return result;
+	}
+	function prototypeKeysIn(object) {
+		return keysInImpl(object).filter((key) => key !== "constructor");
+	}
+	function arrayLikeKeysIn(object) {
+		const indices = require_times.times(object.length, (index) => `${index}`);
+		const filteredKeys = new Set(indices);
+		if (require_isBuffer.isBuffer(object)) {
+			filteredKeys.add("offset");
+			filteredKeys.add("parent");
+		}
+		if (require_isTypedArray.isTypedArray(object)) {
+			filteredKeys.add("buffer");
+			filteredKeys.add("byteLength");
+			filteredKeys.add("byteOffset");
+		}
+		const inheritedKeys = keysInImpl(object).filter((key) => !filteredKeys.has(key));
+		if (Array.isArray(object)) return [...indices, ...inheritedKeys];
+		return [...indices.filter((index) => Object.hasOwn(object, index)), ...inheritedKeys];
+	}
+	exports.keysIn = keysIn;
+}));
+//#endregion
+//#region node_modules/es-toolkit/dist/compat/_internal/getSymbolsIn.js
+var require_getSymbolsIn$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
+	var require_getSymbols = require_getSymbols$2();
+	function getSymbolsIn(object) {
+		const result = [];
+		while (object) {
+			result.push(...require_getSymbols.getSymbols(object));
+			object = Object.getPrototypeOf(object);
+		}
+		return result;
+	}
+	exports.getSymbolsIn = getSymbolsIn;
+}));
+//#endregion
 //#region node_modules/es-toolkit/dist/compat/object/omit.js
 var require_omit$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var cloneDeepWith = require_cloneDeepWith();
-	var keysIn = require_keysIn();
-	var unset = require_unset();
-	var getSymbolsIn = require_getSymbolsIn();
-	var isDeepKey = require_isDeepKey();
-	var flatten = require_flatten();
-	var isPlainObject = require_isPlainObject$1();
+	var require_isPlainObject = require_isPlainObject$2();
+	var require_isDeepKey = require_isDeepKey$4();
+	var require_cloneDeepWith = require_cloneDeepWith$3();
+	var require_flatten = require_flatten$1();
+	var require_unset = require_unset$1();
+	var require_keysIn = require_keysIn$1();
+	var require_getSymbolsIn = require_getSymbolsIn$1();
+	/**
+	* Creates a new object with specified keys omitted.
+	*
+	* This function takes an object and a variable number of keys, and returns a new object that
+	* excludes the properties corresponding to the specified keys. Note that keys can be deep.
+	*
+	* Deep keys can be specified for keys.
+	*
+	* @template T - The type of object.
+	* @param {T | null | undefined} obj - The object to omit keys from.
+	* @param {...Array<Many<PropertyKey>> | Array<Many<PropertyKey[]>>} keysArr - A variable number of keys to be omitted from the object.
+	* @returns {Partial<T>} A new object with the specified keys omitted.
+	*
+	* @example
+	* omit({ a: 1, b: 2, c: 3 }, 'a', 'b');
+	* // => { c: 3 }
+	*
+	* omit({ a: { b: 1, c: 2 }, d: 3 }, 'a.b', 'd');
+	* // => { a: { c: 2 } }
+	*/
 	function omit(obj, ...keysArr) {
 		if (obj == null) return {};
-		keysArr = flatten.flatten(keysArr);
+		keysArr = require_flatten.flatten(keysArr);
 		const result = cloneInOmit(obj, keysArr);
 		for (let i = 0; i < keysArr.length; i++) {
 			let keys = keysArr[i];
@@ -31327,25 +32486,25 @@ var require_omit$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 					if (!Array.isArray(keys)) keys = Array.from(keys);
 					for (let j = 0; j < keys.length; j++) {
 						const key = keys[j];
-						unset.unset(result, key);
+						require_unset.unset(result, key);
 					}
 					break;
 				case "string":
 				case "symbol":
 				case "number":
-					unset.unset(result, keys);
+					require_unset.unset(result, keys);
 					break;
 			}
 		}
 		return result;
 	}
 	function cloneInOmit(obj, keys) {
-		if (keys.some((key) => Array.isArray(key) || isDeepKey.isDeepKey(key))) return deepCloneInOmit(obj);
+		if (keys.some((key) => Array.isArray(key) || require_isDeepKey.isDeepKey(key))) return deepCloneInOmit(obj);
 		return shallowCloneInOmit(obj);
 	}
 	function shallowCloneInOmit(obj) {
 		const result = {};
-		const keysToCopy = [...keysIn.keysIn(obj), ...getSymbolsIn.getSymbolsIn(obj)];
+		const keysToCopy = [...require_keysIn.keysIn(obj), ...require_getSymbolsIn.getSymbolsIn(obj)];
 		for (let i = 0; i < keysToCopy.length; i++) {
 			const key = keysToCopy[i];
 			result[key] = obj[key];
@@ -31354,11 +32513,11 @@ var require_omit$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	}
 	function deepCloneInOmit(obj) {
 		const result = {};
-		const keysToCopy = [...keysIn.keysIn(obj), ...getSymbolsIn.getSymbolsIn(obj)];
+		const keysToCopy = [...require_keysIn.keysIn(obj), ...require_getSymbolsIn.getSymbolsIn(obj)];
 		for (let i = 0; i < keysToCopy.length; i++) {
 			const key = keysToCopy[i];
-			result[key] = cloneDeepWith.cloneDeepWith(obj[key], (valueToClone) => {
-				if (isPlainObject.isPlainObject(valueToClone)) return;
+			result[key] = require_cloneDeepWith.cloneDeepWith(obj[key], (valueToClone) => {
+				if (require_isPlainObject.isPlainObject(valueToClone)) return;
 				return valueToClone;
 			});
 		}
@@ -31631,19 +32790,19 @@ var defaultState = {
 };
 function ContentItem(_ref2) {
 	var { content, nodeProps, type, colorPanel, onMouseEnter, onMouseLeave, onClick } = _ref2;
-	if (/* @__PURE__ */ import_react.isValidElement(content)) return /* @__PURE__ */ import_react.createElement(Layer, {
+	if (/*#__PURE__*/ import_react.isValidElement(content)) return /*#__PURE__*/ import_react.createElement(Layer, {
 		onMouseEnter,
 		onMouseLeave,
 		onClick
-	}, /* @__PURE__ */ import_react.cloneElement(content, nodeProps));
-	if (typeof content === "function") return /* @__PURE__ */ import_react.createElement(Layer, {
+	}, /*#__PURE__*/ import_react.cloneElement(content, nodeProps));
+	if (typeof content === "function") return /*#__PURE__*/ import_react.createElement(Layer, {
 		onMouseEnter,
 		onMouseLeave,
 		onClick
 	}, content(nodeProps));
 	var { x, y, width, height, index } = nodeProps;
 	var arrow = null;
-	if (width > 10 && height > 10 && nodeProps.children && type === "nest") arrow = /* @__PURE__ */ import_react.createElement(Polygon, { points: [
+	if (width > 10 && height > 10 && nodeProps.children && type === "nest") arrow = /*#__PURE__*/ import_react.createElement(Polygon, { points: [
 		{
 			x: x + 2,
 			y: y + height / 2
@@ -31659,13 +32818,13 @@ function ContentItem(_ref2) {
 	] });
 	var text = null;
 	var nameSize = getStringSize(nodeProps.name);
-	if (width > 20 && height > 20 && nameSize.width < width && nameSize.height < height) text = /* @__PURE__ */ import_react.createElement("text", {
+	if (width > 20 && height > 20 && nameSize.width < width && nameSize.height < height) text = /*#__PURE__*/ import_react.createElement("text", {
 		x: x + 8,
 		y: y + height / 2 + 7,
 		fontSize: 14
 	}, nodeProps.name);
 	var colors = colorPanel || COLOR_PANEL;
-	return /* @__PURE__ */ import_react.createElement("g", null, /* @__PURE__ */ import_react.createElement(Rectangle, _extends$6({
+	return /*#__PURE__*/ import_react.createElement("g", null, /*#__PURE__*/ import_react.createElement(Rectangle, _extends$6({
 		fill: nodeProps.depth < 2 ? colors[index % colors.length] : "rgba(255,255,255,0)",
 		stroke: "#fff"
 	}, (0, import_omit.default)(nodeProps, ["children"]), {
@@ -31698,13 +32857,13 @@ function ContentItemWithEvents(props) {
 			activeGraphicalItemId: props.id
 		}));
 	};
-	return /* @__PURE__ */ import_react.createElement(ContentItem, _extends$6({}, props, {
+	return /*#__PURE__*/ import_react.createElement(ContentItem, _extends$6({}, props, {
 		onMouseEnter,
 		onMouseLeave,
 		onClick
 	}));
 }
-var SetTreemapTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref3) => {
+var SetTreemapTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref3) => {
 	var { dataKey, nameKey, stroke, fill, currentRoot, id } = _ref3;
 	var tooltipEntrySettings = {
 		dataDefinedOnItem: currentRoot,
@@ -31723,7 +32882,7 @@ var SetTreemapTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref3) =
 			graphicalItemId: id
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 var defaultTreemapMargin = {
 	top: 0,
@@ -31753,7 +32912,7 @@ function TreemapItem(_ref4) {
 	var handleAnimationStart = (0, import_react.useCallback)(() => {
 		if (typeof onAnimationStart === "function") onAnimationStart();
 	}, [onAnimationStart]);
-	return /* @__PURE__ */ import_react.createElement(CSSTransitionAnimate, {
+	return /*#__PURE__*/ import_react.createElement(CSSTransitionAnimate, {
 		animationId: "treemap-".concat(nodeProps.tooltipIndex),
 		from: "translate(".concat(translateX, "px, ").concat(translateY, "px)"),
 		to: "translate(0, 0)",
@@ -31764,12 +32923,12 @@ function TreemapItem(_ref4) {
 		duration: animationDuration,
 		onAnimationStart: handleAnimationStart,
 		onAnimationEnd: handleAnimationEnd
-	}, (style) => /* @__PURE__ */ import_react.createElement(Layer, {
+	}, (style) => /*#__PURE__*/ import_react.createElement(Layer, {
 		onMouseEnter,
 		onMouseLeave,
 		onClick,
 		style: _objectSpread$8(_objectSpread$8({}, style), {}, { transformOrigin: "".concat(x, " ").concat(y) })
-	}, /* @__PURE__ */ import_react.createElement(ContentItemWithEvents, {
+	}, /*#__PURE__*/ import_react.createElement(ContentItemWithEvents, {
 		id,
 		content,
 		dataKey,
@@ -31896,10 +33055,10 @@ var TreemapWithState = class extends import_react.PureComponent {
 		var isLeaf = !node.children || !node.children.length;
 		var { currentRoot } = this.state;
 		if (!((currentRoot === null || currentRoot === void 0 ? void 0 : currentRoot.children) || []).filter((item) => item.depth === node.depth && item.name === node.name).length && root.depth && type === "nest") return null;
-		return /* @__PURE__ */ import_react.createElement(Layer, {
+		return /*#__PURE__*/ import_react.createElement(Layer, {
 			key: "recharts-treemap-node-".concat(nodeProps.x, "-").concat(nodeProps.y, "-").concat(nodeProps.name),
 			className: "recharts-treemap-depth-".concat(node.depth)
-		}, /* @__PURE__ */ import_react.createElement(TreemapItem, {
+		}, /*#__PURE__*/ import_react.createElement(TreemapItem, {
 			isLeaf,
 			content,
 			nodeProps,
@@ -31915,7 +33074,7 @@ var TreemapWithState = class extends import_react.PureComponent {
 	renderNestIndex() {
 		var { nameKey, nestIndexContent } = this.props;
 		var { nestIndex } = this.state;
-		return /* @__PURE__ */ import_react.createElement("div", {
+		return /*#__PURE__*/ import_react.createElement("div", {
 			className: "recharts-treemap-nest-index-wrapper",
 			style: {
 				marginTop: "8px",
@@ -31925,10 +33084,10 @@ var TreemapWithState = class extends import_react.PureComponent {
 			var rawName = (0, import_get.default)(item, nameKey, "root");
 			var name = typeof rawName === "string" ? rawName : "root";
 			var content;
-			if (/* @__PURE__ */ import_react.isValidElement(nestIndexContent)) content = /* @__PURE__ */ import_react.cloneElement(nestIndexContent, item, i);
+			if (/*#__PURE__*/ import_react.isValidElement(nestIndexContent)) content = /*#__PURE__*/ import_react.cloneElement(nestIndexContent, item, i);
 			if (typeof nestIndexContent === "function") content = nestIndexContent(item, i);
 			else content = name;
-			return /* @__PURE__ */ import_react.createElement("div", {
+			return /*#__PURE__*/ import_react.createElement("div", {
 				onClick: this.handleNestIndex.bind(this, item, i),
 				key: "nest-index-".concat(uniqueId()),
 				className: "recharts-treemap-nest-index-box",
@@ -31946,14 +33105,14 @@ var TreemapWithState = class extends import_react.PureComponent {
 	render() {
 		var _this$props = this.props, { width, height, className, style, children, type } = _this$props;
 		var attrs = svgPropertiesNoEvents(_objectWithoutProperties$2(_this$props, _excluded$2));
-		return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetTreemapTooltipEntrySettings, {
+		return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetTreemapTooltipEntrySettings, {
 			dataKey: this.props.dataKey,
 			nameKey: this.props.nameKey,
 			stroke: this.props.stroke,
 			fill: this.props.fill,
 			currentRoot: this.state.currentRoot,
 			id: this.props.id
-		}), /* @__PURE__ */ import_react.createElement(Surface, _extends$6({}, attrs, {
+		}), /*#__PURE__*/ import_react.createElement(Surface, _extends$6({}, attrs, {
 			width,
 			height: type === "nest" ? height - 30 : height,
 			onTouchMove: this.handleTouchMove
@@ -31967,10 +33126,10 @@ function TreemapDispatchInject(props) {
 	var height = useChartHeight();
 	if (!isPositiveNumber(width) || !isPositiveNumber(height)) return null;
 	var { id: externalId } = props;
-	return /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	return /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: externalId,
 		type: "treemap"
-	}, (id) => /* @__PURE__ */ import_react.createElement(TreemapWithState, _extends$6({}, props, {
+	}, (id) => /*#__PURE__*/ import_react.createElement(TreemapWithState, _extends$6({}, props, {
 		id,
 		width,
 		height,
@@ -31988,13 +33147,13 @@ function Treemap(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, defaultTreeMapProps);
 	var { className, style, width, height, throttleDelay, throttledEvents } = props;
 	var [tooltipPortal, setTooltipPortal] = (0, import_react.useState)(null);
-	return /* @__PURE__ */ import_react.createElement(RechartsStoreProvider, {
+	return /*#__PURE__*/ import_react.createElement(RechartsStoreProvider, {
 		preloadedState: { options: options$1 },
 		reduxStoreName: (_props$className = props.className) !== null && _props$className !== void 0 ? _props$className : "Treemap"
-	}, /* @__PURE__ */ import_react.createElement(ReportChartMargin, { margin: defaultTreemapMargin }), /* @__PURE__ */ import_react.createElement(ReportEventSettings, {
+	}, /*#__PURE__*/ import_react.createElement(ReportChartMargin, { margin: defaultTreemapMargin }), /*#__PURE__*/ import_react.createElement(ReportEventSettings, {
 		throttleDelay,
 		throttledEvents
-	}), /* @__PURE__ */ import_react.createElement(RechartsWrapper, {
+	}), /*#__PURE__*/ import_react.createElement(RechartsWrapper, {
 		dispatchTouchEvents: false,
 		className,
 		style,
@@ -32015,16 +33174,33 @@ function Treemap(outsideProps) {
 		onTouchStart: void 0,
 		onTouchMove: void 0,
 		onTouchEnd: void 0
-	}, /* @__PURE__ */ import_react.createElement(TooltipPortalContext.Provider, { value: tooltipPortal }, /* @__PURE__ */ import_react.createElement(TreemapDispatchInject, props))));
+	}, /*#__PURE__*/ import_react.createElement(TooltipPortalContext.Provider, { value: tooltipPortal }, /*#__PURE__*/ import_react.createElement(TreemapDispatchInject, props))));
 }
 //#endregion
 //#region node_modules/es-toolkit/dist/compat/math/sumBy.js
 var require_sumBy$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
-	Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-	var iteratee = require_iteratee();
+	var require_iteratee = require_iteratee$4();
+	/**
+	* Computes the sum of the values that are returned by the `iteratee` function.
+	*
+	* It does not coerce values to `number`.
+	*
+	* @template T - The type of the array elements.
+	* @param {ArrayLike<T> | null | undefined} array - The array to iterate over.
+	* @param {((value: T) => number) | string} iteratee - The function invoked per iteration.
+	* @returns {number} Returns the sum.
+	*
+	* @example
+	* sumBy([1, undefined, 2], value => value); // => 3
+	* sumBy(null); // => 0
+	* sumBy(undefined); // => 0
+	* sumBy([1, 2, 3]); // => 6
+	* sumBy([1n, 2n, 3n]); // => 6n
+	* sumBy([{ a: "1" }, { a: "2" }], object => object.a); // => "12"
+	*/
 	function sumBy(array, iteratee$1) {
 		if (!array || !array.length) return 0;
-		if (iteratee$1 != null) iteratee$1 = iteratee.iteratee(iteratee$1);
+		if (iteratee$1 != null) iteratee$1 = require_iteratee.iteratee(iteratee$1);
 		let result = void 0;
 		for (let i = 0; i < array.length; i++) {
 			const current = iteratee$1 ? iteratee$1(array[i]) : array[i];
@@ -32416,7 +33592,7 @@ var options = {
 	tooltipPayloadSearcher: sankeyPayloadSearcher,
 	eventEmitter: void 0
 };
-var SetSankeyTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref3) => {
+var SetSankeyTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref3) => {
 	var { dataKey, nameKey, stroke, strokeWidth, fill, name, data, id } = _ref3;
 	var tooltipEntrySettings = {
 		dataDefinedOnItem: data,
@@ -32435,13 +33611,13 @@ var SetSankeyTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref3) =>
 			graphicalItemId: id
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 function renderLinkItem(option, props) {
-	if (/* @__PURE__ */ import_react.isValidElement(option)) return /* @__PURE__ */ import_react.cloneElement(option, props);
+	if (/*#__PURE__*/ import_react.isValidElement(option)) return /*#__PURE__*/ import_react.cloneElement(option, props);
 	if (typeof option === "function") return option(props);
 	var { sourceX, sourceY, sourceControlX, targetX, targetY, targetControlX, linkWidth } = props, others = _objectWithoutProperties$1(props, _excluded$1);
-	return /* @__PURE__ */ import_react.createElement("path", _extends$5({
+	return /*#__PURE__*/ import_react.createElement("path", _extends$5({
 		className: "recharts-sankey-link",
 		d: "\n          M".concat(sourceX, ",").concat(sourceY, "\n          C").concat(sourceControlX, ",").concat(sourceY, " ").concat(targetControlX, ",").concat(targetY, " ").concat(targetX, ",").concat(targetY, "\n        "),
 		fill: "none",
@@ -32483,7 +33659,7 @@ function SankeyLinkElement(_ref5) {
 	var activeCoordinate = getLinkCoordinateOfTooltip(props);
 	var activeIndex = "link-".concat(i);
 	var dispatch = useAppDispatch();
-	return /* @__PURE__ */ import_react.createElement(Layer, {
+	return /*#__PURE__*/ import_react.createElement(Layer, {
 		onMouseEnter: (e) => {
 			dispatch(setActiveMouseOverItemIndex({
 				activeIndex,
@@ -32510,13 +33686,13 @@ function SankeyLinkElement(_ref5) {
 }
 function AllSankeyLinkElements(_ref6) {
 	var { graphicalItemId, modifiedLinks, links, linkContent, onMouseEnter, onMouseLeave, onClick, dataKey } = _ref6;
-	return /* @__PURE__ */ import_react.createElement(Layer, {
+	return /*#__PURE__*/ import_react.createElement(Layer, {
 		className: "recharts-sankey-links",
 		key: "recharts-sankey-links"
 	}, links.map((link, i) => {
 		var linkProps = modifiedLinks[i];
 		if (linkProps == null) return null;
-		return /* @__PURE__ */ import_react.createElement(SankeyLinkElement, {
+		return /*#__PURE__*/ import_react.createElement(SankeyLinkElement, {
 			graphicalItemId,
 			key: "link-".concat(link.source, "-").concat(link.target, "-").concat(link.value),
 			props: linkProps,
@@ -32530,9 +33706,9 @@ function AllSankeyLinkElements(_ref6) {
 	}));
 }
 function renderNodeItem(option, props) {
-	if (/* @__PURE__ */ import_react.isValidElement(option)) return /* @__PURE__ */ import_react.cloneElement(option, props);
+	if (/*#__PURE__*/ import_react.isValidElement(option)) return /*#__PURE__*/ import_react.cloneElement(option, props);
 	if (typeof option === "function") return option(props);
-	return /* @__PURE__ */ import_react.createElement(Rectangle, _extends$5({
+	return /*#__PURE__*/ import_react.createElement(Rectangle, _extends$5({
 		className: "recharts-sankey-node",
 		fill: "#0088fe",
 		fillOpacity: "0.8"
@@ -32555,7 +33731,7 @@ function NodeElement(_ref8) {
 	var dispatch = useAppDispatch();
 	var activeCoordinate = getNodeCoordinateOfTooltip(props);
 	var activeIndex = "node-".concat(i);
-	return /* @__PURE__ */ import_react.createElement(Layer, {
+	return /*#__PURE__*/ import_react.createElement(Layer, {
 		onMouseEnter: (e) => {
 			dispatch(setActiveMouseOverItemIndex({
 				activeIndex,
@@ -32582,11 +33758,11 @@ function NodeElement(_ref8) {
 }
 function AllNodeElements(_ref9) {
 	var { graphicalItemId, modifiedNodes, nodeContent, onMouseEnter, onMouseLeave, onClick, dataKey } = _ref9;
-	return /* @__PURE__ */ import_react.createElement(Layer, {
+	return /*#__PURE__*/ import_react.createElement(Layer, {
 		className: "recharts-sankey-nodes",
 		key: "recharts-sankey-nodes"
 	}, modifiedNodes.map((modifiedNode, i) => {
-		return /* @__PURE__ */ import_react.createElement(NodeElement, {
+		return /*#__PURE__*/ import_react.createElement(NodeElement, {
 			graphicalItemId,
 			key: "node-".concat(modifiedNode.index, "-").concat(modifiedNode.x, "-").concat(modifiedNode.y),
 			props: modifiedNode,
@@ -32694,13 +33870,13 @@ function SankeyImpl(props) {
 		if (onClick) onClick(item, type, e);
 	}, [onClick]);
 	if (!isPositiveNumber(width) || !isPositiveNumber(height) || !data || !data.links || !data.nodes) return null;
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetComputedData, { computedData: {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetComputedData, { computedData: {
 		links: modifiedLinks,
 		nodes: modifiedNodes
-	} }), /* @__PURE__ */ import_react.createElement(Surface, _extends$5({}, attrs, {
+	} }), /*#__PURE__*/ import_react.createElement(Surface, _extends$5({}, attrs, {
 		width,
 		height
-	}), children, /* @__PURE__ */ import_react.createElement(AllSankeyLinkElements, {
+	}), children, /*#__PURE__*/ import_react.createElement(AllSankeyLinkElements, {
 		graphicalItemId: id,
 		links,
 		modifiedLinks,
@@ -32709,7 +33885,7 @@ function SankeyImpl(props) {
 		onMouseEnter: (linkProps, e) => handleMouseEnter(linkProps, "link", e),
 		onMouseLeave: (linkProps, e) => handleMouseLeave(linkProps, "link", e),
 		onClick: (linkProps, e) => handleClick(linkProps, "link", e)
-	}), /* @__PURE__ */ import_react.createElement(AllNodeElements, {
+	}), /*#__PURE__*/ import_react.createElement(AllNodeElements, {
 		graphicalItemId: id,
 		modifiedNodes,
 		nodeContent: node,
@@ -32730,16 +33906,16 @@ function Sankey(outsideProps) {
 	var props = resolveDefaultProps(outsideProps, sankeyDefaultProps);
 	var { width, height, style, className, id: externalId, throttleDelay, throttledEvents } = props;
 	var [tooltipPortal, setTooltipPortal] = (0, import_react.useState)(null);
-	return /* @__PURE__ */ import_react.createElement(RechartsStoreProvider, {
+	return /*#__PURE__*/ import_react.createElement(RechartsStoreProvider, {
 		preloadedState: { options },
 		reduxStoreName: className !== null && className !== void 0 ? className : "Sankey"
-	}, /* @__PURE__ */ import_react.createElement(ReportChartSize, {
+	}, /*#__PURE__*/ import_react.createElement(ReportChartSize, {
 		width,
 		height
-	}), /* @__PURE__ */ import_react.createElement(ReportChartMargin, { margin: props.margin }), /* @__PURE__ */ import_react.createElement(ReportEventSettings, {
+	}), /*#__PURE__*/ import_react.createElement(ReportChartMargin, { margin: props.margin }), /*#__PURE__*/ import_react.createElement(ReportEventSettings, {
 		throttleDelay,
 		throttledEvents
-	}), /* @__PURE__ */ import_react.createElement(RechartsWrapper, {
+	}), /*#__PURE__*/ import_react.createElement(RechartsWrapper, {
 		className,
 		style,
 		width,
@@ -32759,10 +33935,10 @@ function Sankey(outsideProps) {
 		onTouchStart: void 0,
 		onTouchMove: void 0,
 		onTouchEnd: void 0
-	}, /* @__PURE__ */ import_react.createElement(TooltipPortalContext.Provider, { value: tooltipPortal }, /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	}, /*#__PURE__*/ import_react.createElement(TooltipPortalContext.Provider, { value: tooltipPortal }, /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: externalId,
 		type: "sankey"
-	}, (id) => /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetSankeyTooltipEntrySettings, {
+	}, (id) => /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetSankeyTooltipEntrySettings, {
 		dataKey: props.dataKey,
 		nameKey: props.nameKey,
 		stroke: props.stroke,
@@ -32771,7 +33947,7 @@ function Sankey(outsideProps) {
 		name: props.name,
 		data: props.data,
 		id
-	}), /* @__PURE__ */ import_react.createElement(SankeyImpl, _extends$5({}, props, { id })))))));
+	}), /*#__PURE__*/ import_react.createElement(SankeyImpl, _extends$5({}, props, { id })))))));
 }
 Sankey.displayName = "Sankey";
 //#endregion
@@ -32830,9 +34006,9 @@ var defaultRadarChartProps = _objectSpread$6(_objectSpread$6({}, defaultPolarCha
 * @provides PolarViewBoxContext
 * @provides PolarChartContext
 */
-var RadarChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var RadarChart = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var propsWithDefaults = resolveDefaultProps(props, defaultRadarChartProps);
-	return /* @__PURE__ */ import_react.createElement(PolarChart, {
+	return /*#__PURE__*/ import_react.createElement(PolarChart, {
 		chartName: "RadarChart",
 		defaultTooltipEventType: "axis",
 		validateTooltipEventTypes: allowedTooltipTypes$5,
@@ -32849,8 +34025,8 @@ var allowedTooltipTypes$4 = ["item"];
 * @provides CartesianViewBoxContext
 * @provides CartesianChartContext
 */
-var ScatterChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
-	return /* @__PURE__ */ import_react.createElement(CartesianChart, {
+var ScatterChart = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
+	return /*#__PURE__*/ import_react.createElement(CartesianChart, {
 		chartName: "ScatterChart",
 		defaultTooltipEventType: "item",
 		validateTooltipEventTypes: allowedTooltipTypes$4,
@@ -32867,8 +34043,8 @@ var allowedTooltipTypes$3 = ["axis"];
 * @provides CartesianViewBoxContext
 * @provides CartesianChartContext
 */
-var AreaChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
-	return /* @__PURE__ */ import_react.createElement(CartesianChart, {
+var AreaChart = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
+	return /*#__PURE__*/ import_react.createElement(CartesianChart, {
 		chartName: "AreaChart",
 		defaultTooltipEventType: "axis",
 		validateTooltipEventTypes: allowedTooltipTypes$3,
@@ -32933,9 +34109,9 @@ var defaultRadialBarChartProps = _objectSpread$5(_objectSpread$5({}, defaultPola
 * @provides PolarViewBoxContext
 * @provides PolarChartContext
 */
-var RadialBarChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
+var RadialBarChart = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
 	var propsWithDefaults = resolveDefaultProps(props, defaultRadialBarChartProps);
-	return /* @__PURE__ */ import_react.createElement(PolarChart, {
+	return /*#__PURE__*/ import_react.createElement(PolarChart, {
 		chartName: "RadialBarChart",
 		defaultTooltipEventType: "axis",
 		validateTooltipEventTypes: allowedTooltipTypes$2,
@@ -32952,8 +34128,8 @@ var allowedTooltipTypes$1 = ["axis"];
 * @provides CartesianViewBoxContext
 * @provides CartesianChartContext
 */
-var ComposedChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
-	return /* @__PURE__ */ import_react.createElement(CartesianChart, {
+var ComposedChart = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
+	return /*#__PURE__*/ import_react.createElement(CartesianChart, {
 		chartName: "ComposedChart",
 		defaultTooltipEventType: "axis",
 		validateTooltipEventTypes: allowedTooltipTypes$1,
@@ -33033,7 +34209,7 @@ function getMaxDepthOf(node) {
 	var childDepths = node.children.map((d) => getMaxDepthOf(d));
 	return 1 + Math.max(...childDepths);
 }
-var SetSunburstTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
+var SetSunburstTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref) => {
 	var { dataKey, nameKey, data, stroke, fill, positions, id } = _ref;
 	var tooltipEntrySettings = {
 		dataDefinedOnItem: data.children,
@@ -33052,7 +34228,7 @@ var SetSunburstTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) =
 			graphicalItemId: id
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 var defaultSunburstMargin = {
 	top: 0,
@@ -33138,7 +34314,7 @@ var SunburstChartImpl = (_ref2) => {
 			var fillColor = (_ref3 = (_d$fill = d === null || d === void 0 ? void 0 : d.fill) !== null && _d$fill !== void 0 ? _d$fill : childColor) !== null && _ref3 !== void 0 ? _ref3 : fill;
 			var { x: textX, y: textY } = polarToCartesian(0, 0, innerR + radius / 2, -(start + arcLength - arcLength / 2));
 			currentAngle += arcLength;
-			sectors.push(/* @__PURE__ */ import_react.createElement("g", { key: "sunburst-sector-".concat(d.name, "-").concat(i) }, /* @__PURE__ */ import_react.createElement(Sector, {
+			sectors.push(/*#__PURE__*/ import_react.createElement("g", { key: "sunburst-sector-".concat(d.name, "-").concat(i) }, /*#__PURE__*/ import_react.createElement(Sector, {
 				onClick: () => handleClick(nodeWithIndex),
 				onMouseEnter: (e) => handleMouseEnter(nodeWithIndex, e),
 				onMouseLeave: (e) => handleMouseLeave(nodeWithIndex, e),
@@ -33151,7 +34327,7 @@ var SunburstChartImpl = (_ref2) => {
 				outerRadius: innerR + radius,
 				cx,
 				cy
-			}), /* @__PURE__ */ import_react.createElement(Text, _extends$4({}, textOptions, {
+			}), /*#__PURE__*/ import_react.createElement(Text, _extends$4({}, textOptions, {
 				alignmentBaseline: "middle",
 				textAnchor: "middle",
 				x: textX + cx,
@@ -33177,10 +34353,10 @@ var SunburstChartImpl = (_ref2) => {
 		initialAngle: startAngle
 	});
 	var layerClass = clsx("recharts-sunburst", className);
-	return /* @__PURE__ */ import_react.createElement(Surface, {
+	return /*#__PURE__*/ import_react.createElement(Surface, {
 		width,
 		height
-	}, /* @__PURE__ */ import_react.createElement(Layer, { className: layerClass }, sectors), /* @__PURE__ */ import_react.createElement(SetSunburstTooltipEntrySettings, {
+	}, /*#__PURE__*/ import_react.createElement(Layer, { className: layerClass }, sectors), /*#__PURE__*/ import_react.createElement(SetSunburstTooltipEntrySettings, {
 		dataKey,
 		nameKey,
 		data,
@@ -33203,16 +34379,16 @@ var SunburstChart = (outsideProps) => {
 	var props = resolveDefaultProps(outsideProps, defaultSunburstChartProps);
 	var { className, width, height, responsive, style, id: externalId, throttleDelay, throttledEvents } = props;
 	var [tooltipPortal, setTooltipPortal] = (0, import_react.useState)(null);
-	return /* @__PURE__ */ import_react.createElement(RechartsStoreProvider, {
+	return /*#__PURE__*/ import_react.createElement(RechartsStoreProvider, {
 		preloadedState,
 		reduxStoreName: className !== null && className !== void 0 ? className : "SunburstChart"
-	}, /* @__PURE__ */ import_react.createElement(ReportChartSize, {
+	}, /*#__PURE__*/ import_react.createElement(ReportChartSize, {
 		width,
 		height
-	}), /* @__PURE__ */ import_react.createElement(ReportChartMargin, { margin: defaultSunburstMargin }), /* @__PURE__ */ import_react.createElement(ReportEventSettings, {
+	}), /*#__PURE__*/ import_react.createElement(ReportChartMargin, { margin: defaultSunburstMargin }), /*#__PURE__*/ import_react.createElement(ReportEventSettings, {
 		throttleDelay,
 		throttledEvents
-	}), /* @__PURE__ */ import_react.createElement(TooltipPortalContext.Provider, { value: tooltipPortal }, /* @__PURE__ */ import_react.createElement(RechartsWrapper, {
+	}), /*#__PURE__*/ import_react.createElement(TooltipPortalContext.Provider, { value: tooltipPortal }, /*#__PURE__*/ import_react.createElement(RechartsWrapper, {
 		className,
 		width,
 		height,
@@ -33232,10 +34408,10 @@ var SunburstChart = (outsideProps) => {
 		onTouchStart: void 0,
 		onTouchMove: void 0,
 		onTouchEnd: void 0
-	}, /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	}, /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: externalId,
 		type: "sunburst"
-	}, (id) => /* @__PURE__ */ import_react.createElement(SunburstChartImpl, _extends$4({}, props, { id }))))));
+	}, (id) => /*#__PURE__*/ import_react.createElement(SunburstChartImpl, _extends$4({}, props, { id }))))));
 };
 //#endregion
 //#region node_modules/recharts/es6/util/FunnelUtils.js
@@ -33249,7 +34425,7 @@ function _extends$3() {
 	}, _extends$3.apply(null, arguments);
 }
 function FunnelTrapezoid(props) {
-	return /* @__PURE__ */ import_react.createElement(Shape, _extends$3({ shapeType: "trapezoid" }, props));
+	return /*#__PURE__*/ import_react.createElement(Shape, _extends$3({ shapeType: "trapezoid" }, props));
 }
 //#endregion
 //#region node_modules/recharts/es6/state/selectors/funnelSelectors.js
@@ -33419,7 +34595,7 @@ function _toPrimitive$2(t, r) {
 /**
 * External props, intended for end users to fill in
 */
-var SetFunnelTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => {
+var SetFunnelTooltipEntrySettings = /*#__PURE__*/ import_react.memo((_ref) => {
 	var { dataKey, nameKey, stroke, strokeWidth, fill, name, hide, tooltipType, data, trapezoids, id } = _ref;
 	var tooltipEntrySettings = {
 		dataDefinedOnItem: data,
@@ -33441,7 +34617,7 @@ var SetFunnelTooltipEntrySettings = /* @__PURE__ */ import_react.memo((_ref) => 
 			graphicalItemId: id
 		}
 	};
-	return /* @__PURE__ */ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
+	return /*#__PURE__*/ import_react.createElement(SetTooltipEntrySettings, { tooltipEntrySettings });
 });
 function FunnelLabelListProvider(_ref2) {
 	var { showLabels, trapezoids, children } = _ref2;
@@ -33458,7 +34634,7 @@ function FunnelLabelListProvider(_ref2) {
 			});
 		});
 	}, [showLabels, trapezoids]);
-	return /* @__PURE__ */ import_react.createElement(CartesianLabelListContextProvider, { value: labelListEntries }, children);
+	return /*#__PURE__*/ import_react.createElement(CartesianLabelListContextProvider, { value: labelListEntries }, children);
 }
 function FunnelTrapezoids(props) {
 	var { trapezoids, allOtherFunnelProps } = props;
@@ -33467,7 +34643,7 @@ function FunnelTrapezoids(props) {
 	var onMouseEnterFromContext = useMouseEnterItemDispatch(onMouseEnterFromProps, allOtherFunnelProps.dataKey, allOtherFunnelProps.id);
 	var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
 	var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, allOtherFunnelProps.dataKey, allOtherFunnelProps.id);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, trapezoids.map((entry, i) => {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, trapezoids.map((entry, i) => {
 		var isActiveIndex = Boolean(activeShape) && activeItemIndex === String(i);
 		var trapezoidOptions = isActiveIndex ? activeShape : shape;
 		var _entry$option$isActiv = _objectSpread$2(_objectSpread$2({}, entry), {}, {
@@ -33475,14 +34651,14 @@ function FunnelTrapezoids(props) {
 			isActive: isActiveIndex,
 			stroke: entry.stroke
 		}), { id } = _entry$option$isActiv, trapezoidProps = _objectWithoutProperties(_entry$option$isActiv, _excluded2);
-		return /* @__PURE__ */ import_react.createElement(Layer, _extends$2({
+		return /*#__PURE__*/ import_react.createElement(Layer, _extends$2({
 			key: "trapezoid-".concat(entry === null || entry === void 0 ? void 0 : entry.x, "-").concat(entry === null || entry === void 0 ? void 0 : entry.y, "-").concat(entry === null || entry === void 0 ? void 0 : entry.name, "-").concat(entry === null || entry === void 0 ? void 0 : entry.value),
 			className: "recharts-funnel-trapezoid"
 		}, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
 			onMouseEnter: onMouseEnterFromContext(entry, i),
 			onMouseLeave: onMouseLeaveFromContext(entry, i),
 			onClick: onClickFromContext(entry, i)
-		}), /* @__PURE__ */ import_react.createElement(FunnelTrapezoid, trapezoidProps));
+		}), /*#__PURE__*/ import_react.createElement(FunnelTrapezoid, trapezoidProps));
 	}));
 }
 function TrapezoidsWithAnimation(_ref3) {
@@ -33500,10 +34676,10 @@ function TrapezoidsWithAnimation(_ref3) {
 		if (typeof onAnimationStart === "function") onAnimationStart();
 		setIsAnimating(true);
 	}, [onAnimationStart]);
-	return /* @__PURE__ */ import_react.createElement(FunnelLabelListProvider, {
+	return /*#__PURE__*/ import_react.createElement(FunnelLabelListProvider, {
 		showLabels,
 		trapezoids
-	}, /* @__PURE__ */ import_react.createElement(JavascriptAnimate, {
+	}, /*#__PURE__*/ import_react.createElement(JavascriptAnimate, {
 		animationId,
 		begin: animationBegin,
 		duration: animationDuration,
@@ -33531,15 +34707,15 @@ function TrapezoidsWithAnimation(_ref3) {
 			});
 		});
 		if (t > 0) previousTrapezoidsRef.current = stepData;
-		return /* @__PURE__ */ import_react.createElement(Layer, null, /* @__PURE__ */ import_react.createElement(FunnelTrapezoids, {
+		return /*#__PURE__*/ import_react.createElement(Layer, null, /*#__PURE__*/ import_react.createElement(FunnelTrapezoids, {
 			trapezoids: stepData,
 			allOtherFunnelProps: props
 		}));
-	}), /* @__PURE__ */ import_react.createElement(LabelListFromLabelProp, { label: props.label }), props.children);
+	}), /*#__PURE__*/ import_react.createElement(LabelListFromLabelProp, { label: props.label }), props.children);
 }
 function RenderTrapezoids(props) {
 	var previousTrapezoidsRef = (0, import_react.useRef)(void 0);
-	return /* @__PURE__ */ import_react.createElement(TrapezoidsWithAnimation, {
+	return /*#__PURE__*/ import_react.createElement(TrapezoidsWithAnimation, {
 		props,
 		previousTrapezoidsRef
 	});
@@ -33598,7 +34774,7 @@ function FunnelImpl(props) {
 	if (hide || !trapezoids || !trapezoids.length || !plotArea) return null;
 	var { height, width } = plotArea;
 	var layerClass = clsx("recharts-trapezoids", props.className);
-	return /* @__PURE__ */ import_react.createElement(import_react.Fragment, null, /* @__PURE__ */ import_react.createElement(SetFunnelTooltipEntrySettings, {
+	return /*#__PURE__*/ import_react.createElement(import_react.Fragment, null, /*#__PURE__*/ import_react.createElement(SetFunnelTooltipEntrySettings, {
 		dataKey: props.dataKey,
 		nameKey: props.nameKey,
 		stroke: props.stroke,
@@ -33610,7 +34786,7 @@ function FunnelImpl(props) {
 		data: props.data,
 		trapezoids,
 		id
-	}), /* @__PURE__ */ import_react.createElement(Layer, { className: layerClass }, /* @__PURE__ */ import_react.createElement(RenderTrapezoids, _extends$2({}, everythingElse, {
+	}), /*#__PURE__*/ import_react.createElement(Layer, { className: layerClass }, /*#__PURE__*/ import_react.createElement(RenderTrapezoids, _extends$2({}, everythingElse, {
 		id,
 		stroke,
 		fill,
@@ -33720,10 +34896,10 @@ function computeFunnelTrapezoids(_ref4) {
 */
 function FunnelFn(outsideProps) {
 	var _resolveDefaultProps = resolveDefaultProps(outsideProps, defaultFunnelProps), { id: externalId } = _resolveDefaultProps, props = _objectWithoutProperties(_resolveDefaultProps, _excluded4);
-	return /* @__PURE__ */ import_react.createElement(RegisterGraphicalItemId, {
+	return /*#__PURE__*/ import_react.createElement(RegisterGraphicalItemId, {
 		id: externalId,
 		type: "funnel"
-	}, (id) => /* @__PURE__ */ import_react.createElement(FunnelImpl, _extends$2({}, props, { id })));
+	}, (id) => /*#__PURE__*/ import_react.createElement(FunnelImpl, _extends$2({}, props, { id })));
 }
 var Funnel = FunnelFn;
 Funnel.displayName = "Funnel";
@@ -33735,8 +34911,8 @@ var allowedTooltipTypes = ["item"];
 * @provides CartesianViewBoxContext
 * @provides CartesianChartContext
 */
-var FunnelChart = /* @__PURE__ */ (0, import_react.forwardRef)((props, ref) => {
-	return /* @__PURE__ */ import_react.createElement(CartesianChart, {
+var FunnelChart = /*#__PURE__*/ (0, import_react.forwardRef)((props, ref) => {
+	return /*#__PURE__*/ import_react.createElement(CartesianChart, {
 		chartName: "FunnelChart",
 		defaultTooltipEventType: "item",
 		validateTooltipEventTypes: allowedTooltipTypes,
@@ -33800,11 +34976,11 @@ function _extends$1() {
 	}, _extends$1.apply(null, arguments);
 }
 var createCartesianCharts = (layout) => ({
-	AreaChart: (props) => /* @__PURE__ */ import_react.createElement(AreaChart, _extends$1({}, props, { layout })),
-	BarChart: (props) => /* @__PURE__ */ import_react.createElement(BarChart, _extends$1({}, props, { layout })),
-	LineChart: (props) => /* @__PURE__ */ import_react.createElement(LineChart, _extends$1({}, props, { layout })),
-	ComposedChart: (props) => /* @__PURE__ */ import_react.createElement(ComposedChart, _extends$1({}, props, { layout })),
-	ScatterChart: (props) => /* @__PURE__ */ import_react.createElement(ScatterChart, _extends$1({}, props, { layout }))
+	AreaChart: (props) => /*#__PURE__*/ import_react.createElement(AreaChart, _extends$1({}, props, { layout })),
+	BarChart: (props) => /*#__PURE__*/ import_react.createElement(BarChart, _extends$1({}, props, { layout })),
+	LineChart: (props) => /*#__PURE__*/ import_react.createElement(LineChart, _extends$1({}, props, { layout })),
+	ComposedChart: (props) => /*#__PURE__*/ import_react.createElement(ComposedChart, _extends$1({}, props, { layout })),
+	ScatterChart: (props) => /*#__PURE__*/ import_react.createElement(ScatterChart, _extends$1({}, props, { layout }))
 });
 /**
 * Creates a typed context for horizontal Cartesian charts.
@@ -33879,7 +35055,7 @@ function createHorizontalChart() {
 */
 function createVerticalChart() {
 	return function withComponents(components) {
-		return _objectSpread$1(_objectSpread$1({}, createCartesianCharts("vertical")), {}, { FunnelChart: (props) => /* @__PURE__ */ import_react.createElement(FunnelChart, _extends$1({}, props, { layout: "vertical" })) }, components);
+		return _objectSpread$1(_objectSpread$1({}, createCartesianCharts("vertical")), {}, { FunnelChart: (props) => /*#__PURE__*/ import_react.createElement(FunnelChart, _extends$1({}, props, { layout: "vertical" })) }, components);
 	};
 }
 //#endregion
@@ -33968,7 +35144,7 @@ function _toPrimitive(t, r) {
 */
 function createCentricChart() {
 	return function withComponents(components) {
-		return _objectSpread({ RadarChart: (props) => /* @__PURE__ */ import_react.createElement(RadarChart, _extends({}, props, { layout: "centric" })) }, components);
+		return _objectSpread({ RadarChart: (props) => /*#__PURE__*/ import_react.createElement(RadarChart, _extends({}, props, { layout: "centric" })) }, components);
 	};
 }
 /**
@@ -34004,8 +35180,8 @@ function createCentricChart() {
 function createRadialChart() {
 	return function withComponents(components) {
 		return _objectSpread({
-			RadialBarChart: (props) => /* @__PURE__ */ import_react.createElement(RadialBarChart, _extends({}, props, { layout: "radial" })),
-			PieChart: (props) => /* @__PURE__ */ import_react.createElement(PieChart, _extends({}, props, { layout: "radial" }))
+			RadialBarChart: (props) => /*#__PURE__*/ import_react.createElement(RadialBarChart, _extends({}, props, { layout: "radial" })),
+			PieChart: (props) => /*#__PURE__*/ import_react.createElement(PieChart, _extends({}, props, { layout: "radial" }))
 		}, components);
 	};
 }
