@@ -230,6 +230,7 @@ export function Home() {
               exit={{ opacity: 0, scale: 1.01, x: -8 }}
               transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 w-full h-full object-cover will-change-transform" 
+              style={{ objectFit: 'cover' }}
             />
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-r from-ureport-dark/90 via-ureport-dark/70 to-transparent" />
@@ -336,6 +337,7 @@ export function Home() {
                       src={event.image}
                       alt={event.title}
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" 
+                      style={{ objectFit: 'cover' }}
                     />
                     <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-ureport-blue">
                       {event.category}
@@ -392,6 +394,7 @@ export function Home() {
                       src={event.image}
                       alt={event.title}
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" 
+                      style={{ objectFit: 'cover' }}
                     />
                     <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-ureport-blue">
                       {event.category}
@@ -516,6 +519,7 @@ export function Home() {
                         src={testimonials[activeTestimonialIndex]?.avatar || testimonials[activeTestimonialIndex]?.avatar_url || "https://images.unsplash.com/photo-1529390079861-591de354faf5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}
                         alt={testimonials[activeTestimonialIndex]?.full_name || "Communauté U-Report"}
                         className="w-full h-full object-cover object-top opacity-70" 
+                        style={{ objectFit: 'cover', objectPosition: 'top' }}
                       />
                       
                       <div className="absolute inset-0 bg-gradient-to-t from-ureport-dark via-ureport-dark/30 to-transparent flex items-end p-6">
@@ -525,6 +529,7 @@ export function Home() {
                               src={testimonials[activeTestimonialIndex]?.avatar || testimonials[activeTestimonialIndex]?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonials[activeTestimonialIndex]?.full_name || 'U')}&background=0099DC&color=fff`} 
                               alt={testimonials[activeTestimonialIndex]?.full_name} 
                               className="w-12 h-12 rounded-full object-cover border-2 border-white/25"
+                              style={{ objectFit: 'cover' }}
                             />
                             <div className="text-left">
                               <h5 className="font-bold text-white text-base leading-tight">{testimonials[activeTestimonialIndex]?.full_name}</h5>
@@ -593,6 +598,7 @@ export function Home() {
                         src={article.image}
                         alt={article.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
                     <div className="p-6 flex-grow flex flex-col justify-between">
@@ -635,6 +641,7 @@ export function Home() {
                         src={article.image}
                         alt={article.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
                     <div className="p-6 flex-grow flex flex-col justify-between">
