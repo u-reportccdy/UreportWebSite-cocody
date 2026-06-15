@@ -31,7 +31,23 @@ export const resizeImageToDataUrl = (file: File, dimensions?: ImageDimensions): 
           return;
         }
 
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const imgRatio = img.width / img.height;
+        const canvasRatio = canvas.width / canvas.height;
+
+        let sWidth = img.width;
+        let sHeight = img.height;
+        let sx = 0;
+        let sy = 0;
+
+        if (imgRatio > canvasRatio) {
+          sWidth = img.height * canvasRatio;
+          sx = (img.width - sWidth) / 2;
+        } else {
+          sHeight = img.width / canvasRatio;
+          sy = (img.height - sHeight) / 2;
+        }
+
+        ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
         resolve(canvas.toDataURL('image/jpeg', 0.9));
       };
       img.onerror = () => reject(new Error('Image decode failed'));
