@@ -40,9 +40,6 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
-      - name: Install dependencies (backend)
-        working-directory: ./backend
-        run: npm install
 
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v4
