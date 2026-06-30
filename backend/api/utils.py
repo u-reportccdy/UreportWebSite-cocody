@@ -108,7 +108,7 @@ def _is_admin_request(path: str, method: str) -> bool:
             return True
         if path.startswith("/api/members"):
             import re
-            member_detail_pattern = r"^/api/members/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/activities|/contributions)?$"
+            member_detail_pattern = r"^/api/members/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/activities|/contributions|/awards(/[0-9a-f-]+)?)?$"
             if re.match(member_detail_pattern, path):
                 return False
             return True
