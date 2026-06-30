@@ -53,6 +53,7 @@ create table if not exists members (
   tshirt_received boolean default false,
   is_pco boolean default false,
   commission text default '',
+  avatar_url text default '',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
