@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   User,
@@ -574,10 +575,19 @@ export function MemberProfile() {
             {activeTab === 'contributions' && (
               <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
                 <div className="bg-white rounded-3xl border border-gray-100 shadow-xl p-8">
-                  <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                    <CreditCard className="w-5 h-5 text-[#0099DC]" />
-                    <span>Historique de mes cotisations</span>
-                  </h2>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                      <CreditCard className="w-5 h-5 text-[#0099DC]" />
+                      <span>Historique de mes cotisations</span>
+                    </h2>
+                    <a
+                      href={PATHS.PUBLIC.CONTRIBUTION_PAYMENT}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0099DC] text-white rounded-xl font-bold text-sm shadow hover:bg-[#007cb0] transition-all whitespace-nowrap"
+                    >
+                      <CreditCard className="w-4 h-4" />
+                      Payer ma cotisation
+                    </a>
+                  </div>
                   {contributions.length === 0 ? (
                     <div className="text-center py-12 text-gray-500 font-semibold space-y-4">
                       <p>Vous n'avez effectué aucune cotisation pour le moment.</p>

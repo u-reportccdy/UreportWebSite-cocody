@@ -16,6 +16,7 @@ import { EventDetail } from '../pages/public/EventDetail';
 import { CotisationPayment } from '../pages/public/CotisationPayment';
 import { MemberProfile } from '../pages/public/MemberProfile';
 import { EventCheckIn } from '../pages/public/EventCheckIn';
+import { Contact } from '../pages/public/Contact';
 
 // Pages Admin
 import { Dashboard } from '../pages/admin/Dashboard';
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
       { path: '/articles/:id', element: <ArticleDetail /> },
       { path: '/events/:id', element: <EventDetail /> },
       { path: '/events/:id/checkin', element: <EventCheckIn /> },
+      { path: PATHS.PUBLIC.CONTACT, element: <Contact /> },
     ]
   },
   {

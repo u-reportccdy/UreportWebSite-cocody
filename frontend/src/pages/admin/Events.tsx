@@ -8,7 +8,26 @@ import { fetchMemberActivities, fetchMembers } from '../../services/member.servi
 import { useConfirm } from '../../components/ui/ConfirmDialog';
 import { resizeImageToDataUrl } from '../../utils/imageResize';
 
-const quillModules = { toolbar: [['bold', 'italic', 'underline'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']] };
+const quillModules = {
+  toolbar: [['bold', 'italic', 'underline'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']],
+  clipboard: {
+    matchVisual: false,
+    matchers: [
+      [
+        1, // Node.ELEMENT_NODE
+        (node: any, delta: any) => {
+          delta.ops.forEach((op: any) => {
+            if (op.attributes) {
+              delete op.attributes.color;
+              delete op.attributes.background;
+            }
+          });
+          return delta;
+        }
+      ]
+    ]
+  }
+};
 
 const sanitizeImageSrc = (value: string): string => {
   const trimmed = value.trim();

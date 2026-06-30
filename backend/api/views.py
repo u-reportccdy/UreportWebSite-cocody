@@ -1324,6 +1324,47 @@ def newsletter_subscribers(request):
     return data_response(supabase.select("newsletter_subscribers", "select=*&order=created_at.desc"))
 
 
+@api_view(["POST"])
+def newsletter_send(request):
+    """Send a mass newsletter email to all active subscribers."""
+    token_data = parse_admin_token(request.headers.get("Authorization") or request.COOKIES.get(ADMIN_COOKIE_NAME))
+    if not token_data or token_data.get("role") not in {"superadmin", "admin", "communication", "president", "secretariat"}:
+        return error_response("Accès non autorisé.", 403)
+
+    payload = body_json(request)
+    subject = str(payload.get("subject") or "").strip()
+    body_text = str(payload.get("body") or "").strip()
+
+    if not subject or not body_text:
+        return error_response("Objet et message sont requis.", 422)
+
+    try:
+        subscribers = supabase.select("newsletter_subscribers", "select=email&status=eq.active")
+        emails = [s["email"].strip() for s in subscribers if s.get("email")]
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Error fetching subscribers for newsletter: {e}")
+        return error_response("Impossible de récupérer les abonnés.", 500)
+
+    if not emails:
+        return error_response("Aucun abonné actif trouvé.", 404)
+
+    try:
+        send_mail(
+            subject=subject,
+            message=body_text,
+            from_email=None,
+            recipient_list=emails,
+            fail_silently=False,
+        )
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Failed to send newsletter: {e}")
+        return error_response(f"Erreur lors de l'envoi de la newsletter. Vérifiez la configuration SMTP: {str(e)}", 500)
+
+    return data_response({"sent_to": len(emails), "message": f"Newsletter envoyée à {len(emails)} abonné(s)."})
+
+
 @api_view(["GET"])
 def stats(request):
     members_rows = supabase.select("members", "select=id")

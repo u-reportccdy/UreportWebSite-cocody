@@ -47,6 +47,7 @@ urlpatterns = [
     path("team-members/<uuid:record_id>", views.team_member_detail),
     path("newsletter/subscribe", views.newsletter_subscribe),
     path("newsletter/subscribers", views.newsletter_subscribers),
+    path("newsletter/send", views.newsletter_send),
     path("stats", views.stats),
     path("settings", views.site_settings),
     path("materials", views.materials),
