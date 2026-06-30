@@ -54,6 +54,41 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     }
   }, [isOpen]);
 
+  const handleSwitchToRegister = () => {
+    const full = (formData.fullName || '').trim();
+    if (full) {
+      const parts = full.split(/\s+/);
+      if (parts.length > 1) {
+        // Nom de famille (last name) is the first part, Prénom (first name) is the rest
+        const name = parts[0];
+        const firstname = parts.slice(1).join(' ');
+        setFormData(prev => ({
+          ...prev,
+          name: name,
+          firstname: firstname
+        }));
+      } else {
+        setFormData(prev => ({
+          ...prev,
+          name: full,
+          firstname: ''
+        }));
+      }
+    }
+    setMode('register');
+    setError('');
+  };
+
+  const handleSwitchToLogin = () => {
+    const full = `${formData.name} ${formData.firstname}`.trim();
+    setFormData(prev => ({
+      ...prev,
+      fullName: full || prev.fullName
+    }));
+    setMode('login');
+    setError('');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -302,7 +337,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                       Nouveau dans la communauté ?{' '}
                       <button
                         type="button"
-                        onClick={() => { setMode('register'); setError(''); }}
+                        onClick={handleSwitchToRegister}
                         className="text-ureport-blue font-bold hover:underline"
                       >
                         Rejoignez-nous ici !
@@ -313,7 +348,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                       Déjà membre ?{' '}
                       <button
                         type="button"
-                        onClick={() => { setMode('login'); setError(''); }}
+                        onClick={handleSwitchToLogin}
                         className="text-ureport-blue font-bold hover:underline"
                       >
                         Connectez-vous ici !
