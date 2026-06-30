@@ -37,3 +37,4 @@ export const deleteAdminAccount = async (adminId: string) => {
   const response = await api.delete(`/superadmin/admins/${adminId}`);
   return response.data.data;
 };
+

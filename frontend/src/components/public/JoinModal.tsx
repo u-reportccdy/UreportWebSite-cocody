@@ -106,6 +106,13 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
         }
         onClose();
       } else {
+        const motivation = (formData.motivation || '').trim();
+        if (motivation.length < 100) {
+          setError(`Votre motivation doit contenir au moins 100 caractères (actuellement ${motivation.length} caractères).`);
+          setIsSubmitting(false);
+          return;
+        }
+
         const created = await createMember({
           full_name: `${formData.firstname} ${formData.name}`.trim(),
           email: formData.email,
@@ -306,7 +313,12 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
 
 
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-700">Motivation</label>
+                      <div className="flex justify-between items-center">
+                        <label className="text-sm font-semibold text-gray-700">Motivation</label>
+                        <span className={`text-xs font-semibold ${formData.motivation.trim().length >= 100 ? 'text-green-600' : 'text-gray-400'}`}>
+                          {formData.motivation.trim().length} / 100 caractères min.
+                        </span>
+                      </div>
                       <textarea
                         required
                         rows={2}
