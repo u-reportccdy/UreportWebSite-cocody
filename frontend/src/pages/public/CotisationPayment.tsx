@@ -16,51 +16,29 @@ const DEFAULT_PAYMENT_METHODS = [
   {
     id: 'wave',
     label: 'Wave',
-    color: 'from-blue-500 to-blue-600',
-    logo: (
-      <svg viewBox="0 0 40 40" className="w-8 h-8" fill="none">
-        <circle cx="20" cy="20" r="20" fill="#1B9AF5"/>
-        <path d="M10 20c2-4 5-6 8-6s5 3 6 5 3 5 6 5" stroke="white" strokeWidth="3" strokeLinecap="round" fill="none"/>
-        <path d="M8 24c2-4 5-6 8-6s5 3 6 5 3 5 6 5" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.5"/>
-      </svg>
-    ),
+    color: 'bg-[#1B9AF5]/10',
+    logo: <img src="/images/wave.png" alt="Wave" className="w-10 h-10 object-contain" />,
     description: 'Paiement instantané via Wave',
   },
   {
     id: 'orange_money',
     label: 'Orange Money',
-    color: 'from-orange-500 to-orange-600',
-    logo: (
-      <svg viewBox="0 0 40 40" className="w-8 h-8" fill="none">
-        <circle cx="20" cy="20" r="20" fill="#FF7900"/>
-        <circle cx="20" cy="20" r="10" fill="white"/>
-        <circle cx="20" cy="20" r="5" fill="#FF7900"/>
-      </svg>
-    ),
+    color: 'bg-orange-50',
+    logo: <img src="/images/orange.png" alt="Orange Money" className="w-10 h-10 object-contain" />,
     description: 'Paiement via Orange Money',
   },
   {
     id: 'mtn',
     label: 'MTN Mobile Money',
-    color: 'from-yellow-400 to-yellow-500',
-    logo: (
-      <svg viewBox="0 0 40 40" className="w-8 h-8" fill="none">
-        <circle cx="20" cy="20" r="20" fill="#FFCC00"/>
-        <text x="20" y="25" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#333">MTN</text>
-      </svg>
-    ),
+    color: 'bg-yellow-50',
+    logo: <img src="/images/mtn.png" alt="MTN MoMo" className="w-10 h-10 object-contain" />,
     description: 'Paiement via MTN MoMo',
   },
   {
     id: 'moov',
     label: 'Moov Money',
-    color: 'from-blue-700 to-blue-800',
-    logo: (
-      <svg viewBox="0 0 40 40" className="w-8 h-8" fill="none">
-        <circle cx="20" cy="20" r="20" fill="#003087"/>
-        <text x="20" y="25" textAnchor="middle" fontSize="9" fontWeight="bold" fill="white">MOOV</text>
-      </svg>
-    ),
+    color: 'bg-blue-50',
+    logo: <img src="/images/moov.png" alt="Moov Money" className="w-10 h-10 object-contain" />,
     description: 'Paiement via Moov Money',
   },
 ];
@@ -313,7 +291,7 @@ export function CotisationPayment() {
                         : 'border-gray-200 hover:border-[#0099DC]/50 hover:bg-gray-50'
                     }`}
                   >
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${method.color} flex items-center justify-center shrink-0 shadow`}>
+                    <div className={`w-12 h-12 rounded-xl ${method.color} flex items-center justify-center shrink-0 shadow p-1`}>
                       {method.logo}
                     </div>
                     <div className="min-w-0">
