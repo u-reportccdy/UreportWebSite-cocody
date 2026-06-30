@@ -20,6 +20,7 @@ import { fetchSiteSettings, updateSiteSettings } from '../../services/content.se
 import { useConfirm } from '../../components/ui/ConfirmDialog';
 import {
   createAdminAccount,
+  deleteAdminAccount,
   fetchAdmins,
   fetchSuperadminDashboard,
   fetchSuperadminLogs,
@@ -433,6 +434,29 @@ export function SuperAdmin() {
                         >
                           {admin.active ? 'Désactiver' : 'Activer'}
                         </button>
+                        {(admin.email || '').trim().toLowerCase() !== currentSuperadminEmail && (
+                          <button
+                            className="sa-btn sa-btn-icon sa-btn-danger"
+                            style={{ fontSize: 12, width: 'auto', padding: '0 10px' }}
+                            onClick={async () => {
+                              if (!(await confirmDialog({
+                                title: 'Suppression définitive',
+                                message: `Voulez-vous vraiment supprimer définitivement l'administrateur ${admin.email} ? Cette action est irréversible.`,
+                                danger: true
+                              }))) return;
+                              try {
+                                await deleteAdminAccount(admin.id);
+                                await load();
+                                await confirmDialog({ title: 'Succès', message: 'Administrateur supprimé avec succès.', confirmText: 'OK', cancelText: 'Fermer' });
+                              } catch (err: any) {
+                                const detail = err?.response?.data?.detail || "Impossible de supprimer cet admin.";
+                                await confirmDialog({ title: 'Erreur', message: detail, danger: true, confirmText: 'Compris', cancelText: 'Fermer' });
+                              }
+                            }}
+                          >
+                            Supprimer
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
