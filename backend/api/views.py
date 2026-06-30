@@ -874,7 +874,7 @@ def member_login(request):
         (
             row
             for row in members_rows
-            if _phones_match(row.get("phone"), phone) and _normalize_name(row.get("full_name")) == full_name
+            if _phones_match(row.get("phone"), phone) and set(_normalize_name(row.get("full_name")).split()) == set(full_name.split())
         ),
         None,
     )
