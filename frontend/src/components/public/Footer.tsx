@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { fetchSiteSettings } from '../../services/content.service';
 import { Link } from './Link';
@@ -85,6 +85,7 @@ export function Footer() {
               <li><Link href="/articles" className="group flex items-center justify-between rounded-2xl px-4 py-3 text-slate-300 transition-all hover:bg-white/10 hover:text-white"><span>Actualités</span><span className="opacity-0 transition-opacity group-hover:opacity-100">→</span></Link></li>
               <li><Link href="/gallery" className="group flex items-center justify-between rounded-2xl px-4 py-3 text-slate-300 transition-all hover:bg-white/10 hover:text-white"><span>Galerie</span><span className="opacity-0 transition-opacity group-hover:opacity-100">→</span></Link></li>
               <li><Link href="/about" className="group flex items-center justify-between rounded-2xl px-4 py-3 text-slate-300 transition-all hover:bg-white/10 hover:text-white"><span>À Propos</span><span className="opacity-0 transition-opacity group-hover:opacity-100">→</span></Link></li>
+              <li><Link href="/contact" className="group flex items-center justify-between rounded-2xl px-4 py-3 text-slate-300 transition-all hover:bg-white/10 hover:text-white"><span>Contact</span><span className="opacity-0 transition-opacity group-hover:opacity-100">→</span></Link></li>
             </ul>
           </div>
 

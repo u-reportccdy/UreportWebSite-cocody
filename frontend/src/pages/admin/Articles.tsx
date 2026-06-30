@@ -9,6 +9,23 @@ import { resizeImageToDataUrl } from '../../utils/imageResize';
 
 const quillModules = {
   toolbar: [[{ header: [2, 3, false] }], ['bold', 'italic', 'underline'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']],
+  clipboard: {
+    matchVisual: false,
+    matchers: [
+      [
+        1, // Node.ELEMENT_NODE
+        (node: any, delta: any) => {
+          delta.ops.forEach((op: any) => {
+            if (op.attributes) {
+              delete op.attributes.color;
+              delete op.attributes.background;
+            }
+          });
+          return delta;
+        }
+      ]
+    ]
+  }
 };
 
 export function Articles() {

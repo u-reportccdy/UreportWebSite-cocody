@@ -113,3 +113,22 @@ export const updateMemberLogistics = async (
   return Array.isArray(payload) ? payload[0] : payload;
 };
 
+// ---------------------------------------------------------------------------
+// Contributions / Paiement Cotisation
+// ---------------------------------------------------------------------------
+
+export const initiateContribution = async (payload: {
+  member_id: string;
+  full_name: string;
+  phone: string;
+  email: string;
+  amount: number;
+}) => {
+  const response = await api.post('/contributions/initiate', payload);
+  return response.data.data;
+};
+
+export const fetchPaymentLinks = async () => {
+  const response = await api.get('/contributions/payment-links');
+  return response.data.data as Array<{ id: string; label: string; min_amount: number | null; max_amount: number | null; url: string; active: boolean }>;
+};
