@@ -484,7 +484,7 @@ export function MemberProfile() {
                     <div className="flex flex-col gap-2">
                       <label className="text-sm font-semibold text-gray-700">Sexe</label>
                       <select required value={formData.sex} onChange={e => setFormData({ ...formData, sex: e.target.value as any })} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent bg-white transition-all">
-                        <option value="non_precise">Non précisé</option>
+                        <option value="non_precise">Préfère ne pas préciser</option>
                         <option value="homme">Homme</option>
                         <option value="femme">Femme</option>
                       </select>
