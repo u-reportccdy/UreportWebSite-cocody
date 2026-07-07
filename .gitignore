@@ -31,3 +31,8 @@ backend/superadmin_logs.json
 *.sln
 *.sw?
 .DS_Store
+
+# CSV Databases / Sensitive Personal Data
+*.csv
+backend/*.csv
+
