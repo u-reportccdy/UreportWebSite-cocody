@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XIcon, User, Mail, Phone, MapPin, AlertCircle } from 'lucide-react';
 import { Button } from '../ui/Button';
@@ -8,6 +9,8 @@ import { fetchSiteSettings } from '../../services/content.service';
 import { WhatsAppRedirectModal } from './WhatsAppRedirectModal';
 import { buildWhatsAppLink, fillTemplate, memberStatusLabel } from '../../utils/whatsapp';
 import { saveMemberSession } from '../../utils/memberSession';
+import { PATHS } from '../../routes/paths';
+
 
 interface JoinModalProps {
   isOpen: boolean;
@@ -17,6 +20,7 @@ interface JoinModalProps {
 }
 
 export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }: JoinModalProps) {
+  const navigate = useNavigate();
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -105,6 +109,13 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
           onSuccess(auth.member);
         }
         onClose();
+        
+        // Redirect to profile page if email, sex or birth date is missing/default
+        const member = auth.member;
+        const hasMissingFields = !member.email || member.sex === 'non_precise' || !member.birth_date;
+        if (hasMissingFields) {
+          navigate(PATHS.PUBLIC.MEMBER_PROFILE + '?complete=true');
+        }
       } else {
         const motivation = (formData.motivation || '').trim();
         if (motivation.length < 100) {

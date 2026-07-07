@@ -87,6 +87,7 @@ export function MemberProfile() {
   if (!session) return <Navigate to={PATHS.PUBLIC.HOME} replace />;
 
   const [activeTab, setActiveTab] = useState<'profile' | 'activities' | 'contributions' | 'certificat'>('profile');
+  const [showWelcomeModal, setShowWelcomeModal] = useState(() => window.location.search.includes('complete=true'));
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -453,6 +454,23 @@ export function MemberProfile() {
             {/* ── 1. MON PROFIL ── */}
             {activeTab === 'profile' && (
               <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl border border-gray-100 shadow-xl p-8">
+                {memberData && (!memberData.email || memberData.sex === 'non_precise' || !memberData.birth_date) && (
+                  <div className="mb-6 p-5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 space-y-2">
+                    <div className="flex items-center gap-2 font-black text-sm text-amber-900">
+                      <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
+                      <span>Complétez votre profil</span>
+                    </div>
+                    <p className="text-xs font-medium leading-relaxed">
+                      Bienvenue sur la plateforme U-Report Cocody ! Pour finaliser la configuration de votre compte et recevoir vos certificats et informations, veuillez s'il vous plaît renseigner vos informations manquantes :
+                    </p>
+                    <ul className="list-disc pl-5 text-[11px] font-bold space-y-1">
+                      {!memberData.email && <li>Adresse email</li>}
+                      {memberData.sex === 'non_precise' && <li>Genre (sexe)</li>}
+                      {!memberData.birth_date && <li>Date de naissance</li>}
+                    </ul>
+                  </div>
+                )}
+                
                 <h2 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <User className="w-5 h-5 text-[#0099DC]" />
                   <span>Modifier mes informations personnelles</span>
@@ -481,10 +499,10 @@ export function MemberProfile() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Input label="Nom Complet" required value={formData.full_name} onChange={e => setFormData({ ...formData, full_name: e.target.value })} />
                     <Input label="Numéro de Téléphone (Non modifiable)" required disabled value={formData.phone} inputClassName="bg-gray-50 cursor-not-allowed text-gray-500 border-gray-200" />
-                    <Input label="Adresse Email" type="email" required value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                    <Input label="Adresse Email" type="email" required value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} inputClassName={!formData.email ? 'border-amber-300 focus:ring-amber-500 focus:border-amber-500 bg-amber-50/20' : ''} />
                     <div className="flex flex-col gap-2">
                       <label className="text-sm font-semibold text-gray-700">Sexe</label>
-                      <select required value={formData.sex} onChange={e => setFormData({ ...formData, sex: e.target.value as any })} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent bg-white transition-all">
+                      <select required value={formData.sex} onChange={e => setFormData({ ...formData, sex: e.target.value as any })} className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent bg-white transition-all ${formData.sex === 'non_precise' ? 'border-amber-300 bg-amber-50/20' : 'border-gray-200'}`}>
                         <option value="non_precise">Préfère ne pas préciser</option>
                         <option value="homme">Homme</option>
                         <option value="femme">Femme</option>
@@ -492,7 +510,7 @@ export function MemberProfile() {
                     </div>
                     <div className="flex flex-col gap-2">
                       <label className="text-sm font-semibold text-gray-700">Date de naissance</label>
-                      <input type="date" required value={formData.birth_date} onChange={e => setFormData({ ...formData, birth_date: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent bg-white transition-all" />
+                      <input type="date" required value={formData.birth_date} onChange={e => setFormData({ ...formData, birth_date: e.target.value })} className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent bg-white transition-all ${!formData.birth_date ? 'border-amber-300 bg-amber-50/20' : 'border-gray-200'}`} />
                     </div>
                     <Input label="Quartier / Commune (Cocody)" required value={formData.commune} onChange={e => setFormData({ ...formData, commune: e.target.value })} />
                   </div>
@@ -920,6 +938,50 @@ export function MemberProfile() {
                 </a>
               )}
             </div>
+          </motion.div>
+        </div>
+      )}
+
+      {showWelcomeModal && (
+        <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-gray-100 text-center space-y-6 animate-in fade-in zoom-in-95 duration-200"
+          >
+            <div className="w-16 h-16 bg-[#0099DC]/10 text-[#0099DC] rounded-full flex items-center justify-center mx-auto text-3xl">
+              🎉
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-xl font-black text-gray-900">Bienvenue U-Reporter !</h3>
+              <p className="text-xs text-gray-500 font-semibold leading-relaxed">
+                Ravis de vous connecter pour la première fois ! Pour finaliser la configuration de votre espace membre et pouvoir générer vos certificats de formation ou reçus de cotisations, veuillez s'il vous plaît compléter vos informations manquantes :
+              </p>
+            </div>
+            
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-left space-y-2">
+              <span className="text-[11px] font-bold text-amber-900 flex items-center gap-1.5">
+                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                Données requises :
+              </span>
+              <ul className="list-disc pl-5 text-[10px] font-black text-amber-800 space-y-0.5">
+                {memberData && !memberData.email && <li>Adresse email</li>}
+                {memberData && memberData.sex === 'non_precise' && <li>Genre (sexe)</li>}
+                {memberData && !memberData.birth_date && <li>Date de naissance</li>}
+              </ul>
+            </div>
+
+            <button
+              onClick={() => {
+                setShowWelcomeModal(false);
+                // Clear the query parameter so the modal doesn't show again on refresh
+                window.history.replaceState(null, '', window.location.pathname);
+              }}
+              className="w-full py-3.5 bg-[#0099DC] hover:bg-[#007cb0] text-white rounded-2xl font-black text-sm transition-all shadow-md"
+            >
+              Compléter mon profil maintenant
+            </button>
           </motion.div>
         </div>
       )}
