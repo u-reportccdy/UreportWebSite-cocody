@@ -14,17 +14,17 @@ jobs:
       - name: "📦 Checkout du code"
         uses: actions/checkout@v4
 
-      - name: "⚙️ Configuration de Node.js (v24)"
+      - name: "⚙️ Configuration de Node.js (v20)"
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
       # --- FRONTEND ---
       - name: "🎨 Installation des dépendances (Frontend)"
         working-directory: ./frontend
-        run: npm ci
+        run: npm install
 
       - name: "🏗️ Build du Frontend"
         working-directory: ./frontend
