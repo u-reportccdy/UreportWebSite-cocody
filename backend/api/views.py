@@ -873,7 +873,11 @@ def member_login_request(request):
     if not full_name or not phone:
         return error_response("Nom complet et numéro de téléphone requis.", 422)
 
-    members_rows = supabase.select("members", "select=*&order=created_at.desc")
+    # Extraire les 9 derniers chiffres pour faire un filtre de base
+    last_9 = phone[-9:] if len(phone) >= 9 else phone
+    # Requête filtrée à la source sur Supabase
+    members_rows = supabase.select("members", f"select=*&phone=ilike.*{last_9}")
+    
     match = next(
         (
             row
@@ -955,7 +959,11 @@ def member_login(request):
     if not full_name or not phone:
         return error_response("Nom complet et numéro de téléphone requis.", 422)
 
-    members_rows = supabase.select("members", "select=*&order=created_at.desc")
+    # Extraire les 9 derniers chiffres pour faire un filtre de base
+    last_9 = phone[-9:] if len(phone) >= 9 else phone
+    # Requête filtrée à la source sur Supabase
+    members_rows = supabase.select("members", f"select=*&phone=ilike.*{last_9}")
+    
     match = next(
         (
             row
