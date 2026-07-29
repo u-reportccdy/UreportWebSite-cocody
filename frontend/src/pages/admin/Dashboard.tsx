@@ -302,7 +302,7 @@ export function Dashboard() {
       const paidSum = contributions.filter(c => c.status === 'paid').reduce((sum, c) => sum + Number(c.amount || 0), 0);
       return [
         { title: 'Événements', value: events.length.toString(), icon: CalendarIcon, color: '#0099DC' },
-        { title: 'U-Reports', value: members.length.toLocaleString('fr-FR'), icon: UsersIcon, color: '#6CC24A' },
+        { title: 'U-Reporters', value: members.length.toLocaleString('fr-FR'), icon: UsersIcon, color: '#6CC24A' },
         { title: 'Articles', value: articles.length.toString(), icon: FileTextIcon, color: '#8B5CF6' },
         { title: 'Cotisations', value: `${paidSum.toLocaleString('fr-FR')} FCFA`, icon: BarChart2, color: '#FFC107' }
       ];
@@ -331,7 +331,7 @@ export function Dashboard() {
         ];
       case 'secretariat':
         return [
-          { title: 'Membres U-Report', value: members.length.toLocaleString('fr-FR'), icon: UsersIcon, color: '#6CC24A' },
+          { title: 'U-Reporters', value: members.length.toLocaleString('fr-FR'), icon: UsersIcon, color: '#6CC24A' },
           { title: 'Abonnés Newsletter', value: subscribers.length.toString(), icon: Mail, color: '#8B5CF6' }
         ];
       case 'communication':
