@@ -356,21 +356,21 @@ export function MemberProfile() {
   const currentStatus = memberData?.status || session.status || 'aspirant';
 
   return (
-    <div className="bg-gradient-to-b from-[#0099DC]/5 via-white to-gray-50 min-h-[90vh] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto space-y-8">
+    <div className="bg-gradient-to-b from-[#0099DC]/5 via-white to-gray-50 min-h-[90vh] py-6 sm:py-12 px-3 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
 
         {/* ── Profile Header Card ── */}
-        <div className="bg-white rounded-3xl border border-gray-100 shadow-xl overflow-hidden">
-          <div className="h-32 bg-gradient-to-r from-[#0099DC] to-[#007cb0] relative">
+        <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xl overflow-hidden">
+          <div className="h-28 sm:h-32 bg-gradient-to-r from-[#0099DC] to-[#007cb0] relative">
             {/* Avatar zone */}
-            <div className="absolute -bottom-12 left-8">
-              <div className="relative w-24 h-24">
-                <div className="w-24 h-24 rounded-2xl bg-white p-1 shadow-md overflow-hidden">
+            <div className="absolute -bottom-10 sm:-bottom-12 left-4 sm:left-8">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white p-1 shadow-md overflow-hidden">
                   {avatarPreview ? (
                     <img src={avatarPreview} alt="Avatar" className="w-full h-full rounded-xl object-cover" />
                   ) : (
                     <div className="w-full h-full bg-[#0099DC]/10 rounded-xl flex items-center justify-center text-[#0099DC]">
-                      <User className="w-12 h-12" />
+                      <User className="w-10 h-10 sm:w-12 sm:h-12" />
                     </div>
                   )}
                 </div>
@@ -378,43 +378,50 @@ export function MemberProfile() {
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isSavingAvatar}
-                  className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#0099DC] text-white rounded-full shadow-md flex items-center justify-center hover:bg-[#007cb0] transition-colors disabled:opacity-60"
+                  className="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 w-7 h-7 sm:w-8 sm:h-8 bg-[#0099DC] text-white rounded-full shadow-md flex items-center justify-center hover:bg-[#007cb0] transition-colors disabled:opacity-60"
                   title="Changer la photo"
                 >
-                  {isSavingAvatar ? <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Camera className="w-3.5 h-3.5" />}
+                  {isSavingAvatar ? <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Camera className="w-3.5 h-3.5" />}
                 </button>
                 <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
               </div>
             </div>
             {/* Status badge */}
-            <div className="absolute bottom-4 right-8 bg-white/20 backdrop-blur-md rounded-full px-4 py-1.5 text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 border border-white/20">
-              <Award className="w-4 h-4" />
+            <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-8 bg-white/20 backdrop-blur-md rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider flex items-center gap-1 sm:gap-1.5 border border-white/20">
+              <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>{getStatusLabel(currentStatus)}</span>
             </div>
           </div>
-          <div className="pt-16 pb-8 px-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <h1 className="text-3xl font-black text-gray-900 tracking-tight">{memberData?.full_name || session.full_name}</h1>
-              <p className="text-gray-500 font-semibold text-sm flex items-center gap-1 mt-1">
-                <Phone className="w-4 h-4 text-gray-400" /> {memberData?.phone || session.phone}
-                {memberData?.email && (<><span className="text-gray-300">•</span><Mail className="w-4 h-4 text-gray-400" /> {memberData.email}</>)}
-              </p>
+          <div className="pt-14 sm:pt-16 pb-6 sm:pb-8 px-4 sm:px-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight break-words">{memberData?.full_name || session.full_name}</h1>
+              <div className="text-gray-500 font-semibold text-xs sm:text-sm flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 break-all">
+                <span className="flex items-center gap-1 shrink-0">
+                  <Phone className="w-3.5 h-3.5 text-gray-400 shrink-0" /> {memberData?.phone || session.phone}
+                </span>
+                {memberData?.email && (
+                  <span className="flex items-center gap-1 break-all">
+                    <span className="text-gray-300 mr-1">•</span>
+                    <Mail className="w-3.5 h-3.5 text-gray-400 shrink-0" /> {memberData.email}
+                  </span>
+                )}
+              </div>
             </div>
             {summary && (
-              <div className="flex gap-4 sm:gap-6 bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                <div className="text-center px-4 border-r border-gray-200">
-                  <span className="block text-2xl font-black text-[#0099DC]">{summary.registrations_total}</span>
-                  <span className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Inscriptions</span>
+              <div className="grid grid-cols-3 divide-x divide-gray-200 bg-gray-50 p-3 sm:p-4 rounded-2xl border border-gray-100 w-full md:w-auto shrink-0">
+                <div className="text-center px-1 sm:px-4">
+                  <span className="block text-xl sm:text-2xl font-black text-[#0099DC]">{summary.registrations_total}</span>
+                  <span className="text-[9px] sm:text-[10px] uppercase font-bold text-gray-500 tracking-wider">Inscriptions</span>
                 </div>
-                <div className="text-center px-4 border-r border-gray-200">
-                  <span className="block text-2xl font-black text-emerald-600">{summary.activities_participated}</span>
-                  <span className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Présences</span>
+                <div className="text-center px-1 sm:px-4">
+                  <span className="block text-xl sm:text-2xl font-black text-emerald-600">{summary.activities_participated}</span>
+                  <span className="text-[9px] sm:text-[10px] uppercase font-bold text-gray-500 tracking-wider">Présences</span>
                 </div>
-                <div className="text-center px-4">
-                  <span className="block text-2xl font-black text-purple-600">
+                <div className="text-center px-1 sm:px-4">
+                  <span className="block text-xl sm:text-2xl font-black text-purple-600">
                     {summary.registrations_total ? Math.round((summary.activities_participated / summary.registrations_total) * 100) : 0}%
                   </span>
-                  <span className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Assiduité</span>
+                  <span className="text-[9px] sm:text-[10px] uppercase font-bold text-gray-500 tracking-wider">Assiduité</span>
                 </div>
               </div>
             )}
@@ -422,7 +429,7 @@ export function MemberProfile() {
         </div>
 
         {/* ── Tab Navigation ── */}
-        <div className="flex flex-wrap bg-white p-1.5 rounded-2xl border border-gray-100 shadow-md gap-1">
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap bg-white p-1.5 rounded-2xl border border-gray-100 shadow-md gap-1.5">
           {([
             { key: 'profile', icon: Settings, label: 'Mon Profil' },
             { key: 'activities', icon: Activity, label: `Activités (${activities.length})` },
@@ -432,32 +439,32 @@ export function MemberProfile() {
             <button
               key={key}
               onClick={() => setActiveTab(key)}
-              className={`flex-1 min-w-max flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-sm font-bold transition-all ${
+              className={`flex items-center justify-center gap-1.5 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all sm:flex-1 ${
                 activeTab === key ? 'bg-[#0099DC] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50'
               }`}
             >
-              <Icon className="w-4 h-4" />
-              <span>{label}</span>
+              <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+              <span className="truncate">{label}</span>
             </button>
           ))}
         </div>
 
         {/* ── Content ── */}
         {loading ? (
-          <div className="bg-white rounded-3xl border border-gray-100 shadow-xl p-16 text-center">
+          <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xl p-8 sm:p-16 text-center">
             <div className="w-12 h-12 border-4 border-[#0099DC] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-gray-500 font-semibold">Chargement de votre espace membre...</p>
+            <p className="text-gray-500 font-semibold text-sm">Chargement de votre espace membre...</p>
           </div>
         ) : (
           <div className="space-y-6">
 
             {/* ── 1. MON PROFIL ── */}
             {activeTab === 'profile' && (
-              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl border border-gray-100 shadow-xl p-8">
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xl p-4 sm:p-8">
                 {memberData && (!memberData.email || memberData.sex === 'non_precise' || !memberData.birth_date) && (
-                  <div className="mb-6 p-5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 space-y-2">
-                    <div className="flex items-center gap-2 font-black text-sm text-amber-900">
-                      <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
+                  <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 space-y-2">
+                    <div className="flex items-center gap-2 font-black text-xs sm:text-sm text-amber-900">
+                      <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 shrink-0" />
                       <span>Complétez votre profil</span>
                     </div>
                     <p className="text-xs font-medium leading-relaxed">
@@ -531,8 +538,8 @@ export function MemberProfile() {
 
             {/* Awards card (visible in profile tab) */}
             {activeTab === 'profile' && awards.length > 0 && (
-              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-white rounded-3xl border border-gray-100 shadow-xl p-8">
-                <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xl p-4 sm:p-8">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2">
                   <Heart className="w-5 h-5 text-pink-500" />
                   <span>Mes Prix & Distinctions</span>
                   <span className="ml-auto text-xs font-bold px-2.5 py-1 bg-pink-50 text-pink-600 rounded-full border border-pink-100">{awards.length}</span>
@@ -555,8 +562,8 @@ export function MemberProfile() {
             {/* ── 2. MES ACTIVITÉS ── */}
             {activeTab === 'activities' && (
               <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                <div className="bg-white rounded-3xl border border-gray-100 shadow-xl p-8">
-                  <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xl p-4 sm:p-8">
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2">
                     <Activity className="w-5 h-5 text-[#0099DC]" />
                     <span>Historique de mes inscriptions</span>
                   </h2>
@@ -565,12 +572,12 @@ export function MemberProfile() {
                   ) : (
                     <div className="space-y-4">
                       {activities.map(act => (
-                        <div key={act.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-2xl border border-gray-100 hover:border-[#0099DC]/25 bg-white transition-all shadow-sm gap-4">
+                        <div key={act.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 rounded-2xl border border-gray-100 hover:border-[#0099DC]/25 bg-white transition-all shadow-sm gap-4">
                           <div className="space-y-1">
                             <h3 className="text-base font-bold text-gray-900">{act.event_title}</h3>
-                            <div className="flex items-center gap-3 text-xs text-gray-500 font-medium">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-gray-500 font-medium">
                               <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5 text-gray-400" />{act.event_date ? new Date(act.event_date).toLocaleDateString('fr-FR') : 'N/A'}</span>
-                              <span className="text-gray-300">•</span>
+                              <span className="text-gray-300 hidden sm:inline">•</span>
                               <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-gray-400" />{act.event_location || 'Lieu non défini'}</span>
                             </div>
                           </div>
@@ -592,15 +599,15 @@ export function MemberProfile() {
             {/* ── 3. MES COTISATIONS ── */}
             {activeTab === 'contributions' && (
               <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                <div className="bg-white rounded-3xl border border-gray-100 shadow-xl p-8">
+                <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xl p-4 sm:p-8">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                    <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center gap-2">
                       <CreditCard className="w-5 h-5 text-[#0099DC]" />
                       <span>Historique de mes cotisations</span>
                     </h2>
                     <a
                       href={PATHS.PUBLIC.CONTRIBUTION_PAYMENT}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0099DC] text-white rounded-xl font-bold text-sm shadow hover:bg-[#007cb0] transition-all whitespace-nowrap"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#0099DC] text-white rounded-xl font-bold text-sm shadow hover:bg-[#007cb0] transition-all whitespace-nowrap"
                     >
                       <CreditCard className="w-4 h-4" />
                       Payer ma cotisation
