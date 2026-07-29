@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { fetchSiteSettings } from '../../services/content.service';
+import { DEFAULT_SITE_CONTACT } from '../../constants/site';
 
 export function Contact() {
   const [settings, setSettings] = useState({
-    footer_contact_address: "Mairie de Cocody,\nAbidjan, Côte d'Ivoire",
-    footer_contact_phone: '+225 00 00 00 00 00',
-    footer_contact_email: 'contact@ureportcocody.ci',
-    facebook_url: 'https://www.facebook.com/share/1DoAeSBX6n/',
-    instagram_url: 'https://www.instagram.com/communaute_ureportcocody',
-    tiktok_url: 'https://www.tiktok.com/@ureportcocody',
+    footer_contact_address: DEFAULT_SITE_CONTACT.address,
+    footer_contact_phone: DEFAULT_SITE_CONTACT.phone,
+    footer_contact_email: DEFAULT_SITE_CONTACT.email,
+    facebook_url: DEFAULT_SITE_CONTACT.facebook_url,
+    instagram_url: DEFAULT_SITE_CONTACT.instagram_url,
+    tiktok_url: DEFAULT_SITE_CONTACT.tiktok_url,
   });
 
   const [form, setForm] = useState({ full_name: '', email: '', subject: '', message: '' });
@@ -20,7 +21,27 @@ export function Contact() {
 
   useEffect(() => {
     fetchSiteSettings().then(data => {
-      if (data) setSettings(prev => ({ ...prev, ...data }));
+      if (data) {
+        const address = data.footer_contact_address && !data.footer_contact_address.includes('Mairie de Cocody')
+          ? data.footer_contact_address
+          : DEFAULT_SITE_CONTACT.address;
+
+        const email = data.footer_contact_email && data.footer_contact_email !== 'contact@ureportcocody.ci'
+          ? data.footer_contact_email
+          : DEFAULT_SITE_CONTACT.email;
+
+        const phone = data.footer_contact_phone && data.footer_contact_phone !== '+225 00 00 00 00 00'
+          ? data.footer_contact_phone
+          : DEFAULT_SITE_CONTACT.phone;
+
+        setSettings(prev => ({
+          ...prev,
+          ...data,
+          footer_contact_address: address,
+          footer_contact_email: email,
+          footer_contact_phone: phone,
+        }));
+      }
     }).catch(() => {});
   }, []);
 

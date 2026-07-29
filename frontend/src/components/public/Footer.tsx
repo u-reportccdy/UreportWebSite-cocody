@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Mail, MapPin, Phone } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { fetchSiteSettings } from '../../services/content.service';
 import { Link } from './Link';
+import { DEFAULT_SITE_CONTACT } from '../../constants/site';
 
 export function Footer() {
+  const location = useLocation();
+  const isContactPage = location.pathname === '/contact';
+
   const [footerSettings, setFooterSettings] = useState({
-    facebook_url: 'https://www.facebook.com/share/1DoAeSBX6n/?mibextid=wwXIfr',
-    instagram_url: 'https://www.instagram.com/communaute_ureportcocody?igsh=cDk4Nm0wcDdyZThs',
-    tiktok_url: 'https://www.tiktok.com/@ureportcocody?_r=1&_t=ZS-96SxX2CetXu',
+    facebook_url: DEFAULT_SITE_CONTACT.facebook_url,
+    instagram_url: DEFAULT_SITE_CONTACT.instagram_url,
+    tiktok_url: DEFAULT_SITE_CONTACT.tiktok_url,
     footer_contact_title: 'Contact',
-    footer_contact_address: "Mairie de Cocody,\nAbidjan, Côte d'Ivoire",
-    footer_contact_phone: '+225 00 00 00 00 00',
-    footer_contact_email: 'contact@ureportcocody.ci',
+    footer_contact_address: DEFAULT_SITE_CONTACT.address,
+    footer_contact_phone: DEFAULT_SITE_CONTACT.phone,
+    footer_contact_email: DEFAULT_SITE_CONTACT.email,
     footer_newsletter_title: 'Newsletter',
     footer_newsletter_text: "Restez informé de nos prochaines activités et opportunités d'engagement.",
     footer_newsletter_placeholder: 'Votre adresse email',
@@ -22,14 +27,26 @@ export function Footer() {
     const load = async () => {
       try {
         const data = await fetchSiteSettings();
+        const address = data?.footer_contact_address && !data.footer_contact_address.includes('Mairie de Cocody')
+          ? data.footer_contact_address
+          : DEFAULT_SITE_CONTACT.address;
+
+        const email = data?.footer_contact_email && data.footer_contact_email !== 'contact@ureportcocody.ci'
+          ? data.footer_contact_email
+          : DEFAULT_SITE_CONTACT.email;
+
+        const phone = data?.footer_contact_phone && data.footer_contact_phone !== '+225 00 00 00 00 00'
+          ? data.footer_contact_phone
+          : DEFAULT_SITE_CONTACT.phone;
+
         setFooterSettings((prev) => ({
           facebook_url: data?.facebook_url || prev.facebook_url,
           instagram_url: data?.instagram_url || prev.instagram_url,
           tiktok_url: data?.tiktok_url || prev.tiktok_url,
           footer_contact_title: data?.footer_contact_title || prev.footer_contact_title,
-          footer_contact_address: data?.footer_contact_address || prev.footer_contact_address,
-          footer_contact_phone: data?.footer_contact_phone || prev.footer_contact_phone,
-          footer_contact_email: data?.footer_contact_email || prev.footer_contact_email,
+          footer_contact_address: address,
+          footer_contact_phone: phone,
+          footer_contact_email: email,
           footer_newsletter_title: data?.footer_newsletter_title || prev.footer_newsletter_title,
           footer_newsletter_text: data?.footer_newsletter_text || prev.footer_newsletter_text,
           footer_newsletter_placeholder: data?.footer_newsletter_placeholder || prev.footer_newsletter_placeholder,
@@ -49,7 +66,7 @@ export function Footer() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.14),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(245,158,11,0.10),transparent_28%)]" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_0.8fr_1fr] mb-12">
+        <div className={`grid grid-cols-1 gap-8 ${isContactPage ? 'lg:grid-cols-2' : 'lg:grid-cols-[1.2fr_0.8fr_1fr]'} mb-12`}>
           <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-sm">
             <div className="flex items-center gap-2 bg-white/95 p-3 rounded-2xl w-fit shadow-sm" translate="no">
               <div className="flex flex-col items-start select-none">
@@ -89,23 +106,25 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
-            <h3 className="font-heading font-bold text-xl mb-6 text-white">{footerSettings.footer_contact_title}</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-slate-300">
-                <MapPin className="h-5 w-5 text-ureport-blue shrink-0 mt-1" />
-                <span className="whitespace-pre-line leading-7">{footerSettings.footer_contact_address}</span>
-              </li>
-              <li className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-slate-300">
-                <Phone className="h-5 w-5 text-ureport-blue shrink-0" />
-                <span>{footerSettings.footer_contact_phone}</span>
-              </li>
-              <li className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-slate-300">
-                <Mail className="h-5 w-5 text-ureport-blue shrink-0" />
-                <span>{footerSettings.footer_contact_email}</span>
-              </li>
-            </ul>
-          </div>
+          {!isContactPage && (
+            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
+              <h3 className="font-heading font-bold text-xl mb-6 text-white">{footerSettings.footer_contact_title}</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-slate-300">
+                  <MapPin className="h-5 w-5 text-ureport-blue shrink-0 mt-1" />
+                  <span className="whitespace-pre-line leading-7">{footerSettings.footer_contact_address}</span>
+                </li>
+                <li className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-slate-300">
+                  <Phone className="h-5 w-5 text-ureport-blue shrink-0" />
+                  <span>{footerSettings.footer_contact_phone}</span>
+                </li>
+                <li className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-slate-300">
+                  <Mail className="h-5 w-5 text-ureport-blue shrink-0" />
+                  <span>{footerSettings.footer_contact_email}</span>
+                </li>
+              </ul>
+            </div>
+          )}
 
           {/* Newsletter masquée temporairement */}
         </div>

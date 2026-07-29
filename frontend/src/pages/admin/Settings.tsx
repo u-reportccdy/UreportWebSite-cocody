@@ -1,9 +1,10 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { SaveIcon, Loader2 } from 'lucide-react';
 import { changeAdminCredentials, fetchSiteSettings, updateSiteSettings } from '../../services/content.service';
 import { useConfirm } from '../../components/ui/ConfirmDialog';
 import { readFileAsDataUrl } from '../../utils/imageResize';
+import { DEFAULT_SITE_CONTACT } from '../../constants/site';
 
 export function Settings() {
   const confirm = useConfirm();
@@ -25,22 +26,22 @@ export function Settings() {
     hero_image_url: '',
     about_title: '',
     about_description: '',
-    facebook_url: '',
-    instagram_url: '',
-    tiktok_url: '',
+    facebook_url: DEFAULT_SITE_CONTACT.facebook_url,
+    instagram_url: DEFAULT_SITE_CONTACT.instagram_url,
+    tiktok_url: DEFAULT_SITE_CONTACT.tiktok_url,
     whatsapp_group_link: '',
     whatsapp_manager_link: '',
     whatsapp_message_aspirant: '',
     whatsapp_message_advanced: '',
-    footer_contact_title: '',
-    footer_contact_address: '',
-    footer_contact_phone: '',
-    footer_contact_email: '',
-    footer_newsletter_title: '',
-    footer_newsletter_text: '',
-    footer_newsletter_placeholder: '',
-    footer_newsletter_button: '',
-    newsletter_receiver_email: '',
+    footer_contact_title: 'Contact',
+    footer_contact_address: DEFAULT_SITE_CONTACT.address,
+    footer_contact_phone: DEFAULT_SITE_CONTACT.phone,
+    footer_contact_email: DEFAULT_SITE_CONTACT.email,
+    footer_newsletter_title: 'Newsletter',
+    footer_newsletter_text: "Restez informé de nos prochaines activités et opportunités d'engagement.",
+    footer_newsletter_placeholder: 'Votre adresse email',
+    footer_newsletter_button: "S'abonner",
+    newsletter_receiver_email: DEFAULT_SITE_CONTACT.email,
     site_under_maintenance: false,
     maintenance_message: '',
   });
@@ -96,14 +97,14 @@ export function Settings() {
             whatsapp_message_aspirant: data.whatsapp_message_aspirant || "Bonjour, je suis {name} ({status_label}) et je viens de m'inscrire à l'activité \"{event_title}\". Merci de m'ajouter au groupe d'intégration.",
             whatsapp_message_advanced: data.whatsapp_message_advanced || "Bonjour, je suis {name} ({status_label}) et je viens de m'inscrire à l'activité \"{event_title}\". Je souhaite finaliser mon intégration.",
             footer_contact_title: data.footer_contact_title || 'Contact',
-            footer_contact_address: data.footer_contact_address || "Mairie de Cocody,\nAbidjan, Côte d'Ivoire",
+            footer_contact_address: data.footer_contact_address || "Abidjan, Cocody",
             footer_contact_phone: data.footer_contact_phone || '+225 00 00 00 00 00',
-            footer_contact_email: data.footer_contact_email || 'contact@ureportcocody.ci',
+            footer_contact_email: data.footer_contact_email || 'ucocody.communication@gmail.com',
             footer_newsletter_title: data.footer_newsletter_title || 'Newsletter',
             footer_newsletter_text: data.footer_newsletter_text || "Restez informé de nos prochaines activités et opportunités d'engagement.",
             footer_newsletter_placeholder: data.footer_newsletter_placeholder || 'Votre adresse email',
             footer_newsletter_button: data.footer_newsletter_button || "S'abonner",
-            newsletter_receiver_email: data.newsletter_receiver_email || data.footer_contact_email || 'contact@ureportcocody.ci',
+            newsletter_receiver_email: data.newsletter_receiver_email || data.footer_contact_email || 'ucocody.communication@gmail.com',
             site_under_maintenance: !!data.site_under_maintenance,
             maintenance_message: data.maintenance_message || 'Le site est temporairement en maintenance.',
           });
