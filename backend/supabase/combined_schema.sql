@@ -183,7 +183,7 @@ create table if not exists settings (
   whatsapp_message_advanced text not null default 'Bonjour, je suis {name} ({status_label}) et je viens de m''inscrire à l''activité "{event_title}". Je souhaite finaliser mon intégration.',
   footer_contact_title text not null default 'Contact',
   footer_contact_address text not null default 'Mairie de Cocody,\nAbidjan, Côte d''Ivoire',
-  footer_contact_phone text not null default '+225 00 00 00 00 00',
+  footer_contact_phone text not null default '+225 07 89 69 40 03',
   footer_contact_email text not null default 'ucocody.communication@gmail.com',
   footer_newsletter_title text not null default 'Newsletter',
   footer_newsletter_text text not null default 'Restez informé de nos prochaines activités et opportunités d''engagement.',

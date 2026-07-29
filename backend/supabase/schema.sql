@@ -187,7 +187,7 @@ alter table settings add column if not exists whatsapp_message_aspirant text not
 alter table settings add column if not exists whatsapp_message_advanced text not null default 'Bonjour, je suis {name} ({status_label}) et je viens de m''inscrire à l''activité "{event_title}". Je souhaite finaliser mon intégration.';
 alter table settings add column if not exists footer_contact_title text not null default 'Contact';
 alter table settings add column if not exists footer_contact_address text not null default 'Mairie de Cocody,\nAbidjan, Côte d''Ivoire';
-alter table settings add column if not exists footer_contact_phone text not null default '+225 00 00 00 00 00';
+alter table settings add column if not exists footer_contact_phone text not null default '+225 07 89 69 40 03';
 alter table settings add column if not exists footer_contact_email text not null default 'ucocody.communication@gmail.com';
 alter table settings add column if not exists footer_newsletter_title text not null default 'Newsletter';
 alter table settings add column if not exists footer_newsletter_text text not null default 'Restez informé de nos prochaines activités et opportunités d''engagement.';

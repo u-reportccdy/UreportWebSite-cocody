@@ -1402,7 +1402,7 @@ DEFAULT_SETTINGS = {
     "whatsapp_message_advanced": "Bonjour, je suis {name} ({status_label}) et je viens de m'inscrire à l'activité \"{event_title}\". Je souhaite finaliser mon intégration.",
     "footer_contact_title": "Contact",
     "footer_contact_address": "Abidjan, Cocody",
-    "footer_contact_phone": "+225 00 00 00 00 00",
+    "footer_contact_phone": "+225 07 89 69 40 03",
     "footer_contact_email": "ucocody.communication@gmail.com",
     "footer_newsletter_title": "Newsletter",
     "footer_newsletter_text": "Restez informé de nos prochaines activités et opportunités d'engagement.",
