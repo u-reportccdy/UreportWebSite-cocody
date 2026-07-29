@@ -188,12 +188,12 @@ alter table settings add column if not exists whatsapp_message_advanced text not
 alter table settings add column if not exists footer_contact_title text not null default 'Contact';
 alter table settings add column if not exists footer_contact_address text not null default 'Mairie de Cocody,\nAbidjan, Côte d''Ivoire';
 alter table settings add column if not exists footer_contact_phone text not null default '+225 07 89 69 40 03';
-alter table settings add column if not exists footer_contact_email text not null default 'ucocody.communication@gmail.com';
+alter table settings add column if not exists footer_contact_email text not null default 'ureportcocody01@hotmail.com';
 alter table settings add column if not exists footer_newsletter_title text not null default 'Newsletter';
 alter table settings add column if not exists footer_newsletter_text text not null default 'Restez informé de nos prochaines activités et opportunités d''engagement.';
 alter table settings add column if not exists footer_newsletter_placeholder text not null default 'Votre adresse email';
 alter table settings add column if not exists footer_newsletter_button text not null default 'S''abonner';
-alter table settings add column if not exists newsletter_receiver_email text not null default 'ucocody.communication@gmail.com';
+alter table settings add column if not exists newsletter_receiver_email text not null default 'ureportcocody01@hotmail.com';
 alter table settings add column if not exists site_under_maintenance boolean not null default false;
 alter table settings add column if not exists maintenance_message text not null default 'Le site est temporairement en maintenance.';
 alter table settings add column if not exists maintenance_image_url text not null default '/images/logo-512.png';
