@@ -883,6 +883,41 @@ def member_login(request):
         return error_response("Aucun membre correspondant. Vérifiez le nom complet et le numéro.", 401)
 
     _LOGIN_ATTEMPTS.pop(rate_limit_key, None)
+    
+    # Welcome Email Logic for First Login
+    email = match.get("email") or ""
+    welcome_sent = bool(match.get("welcome_email_sent", False))
+    if email.strip() and not welcome_sent:
+        try:
+            # Extraire le prénom
+            first_name = match.get("full_name", "").split()[0] if match.get("full_name") else "U-Reporter"
+            subject = "Bienvenue dans la communauté U-Report Cocody ! 🎉"
+            message = (
+                f"Bonjour {first_name},\n\n"
+                "Nous sommes ravis de vous compter parmi les membres de la communauté U-Report Cocody.\n\n"
+                "Votre profil a bien été créé et vous pouvez désormais vous connecter à la plateforme pour :\n"
+                "- Suivre vos activités et votre progression\n"
+                "- Découvrir les prochains événements\n"
+                "- Contribuer au développement de notre commune\n\n"
+                "Pour toute question, contactez-nous à : ureportcocody01@hotmail.com\n\n"
+                "L'équipe U-Report Cocody"
+            )
+            # Envoi asynchrone / non bloquant (on essaie d'envoyer l'email)
+            send_mail(
+                subject,
+                message,
+                django_settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+            print(f"Welcome email successfully sent to {email}")
+            # Mettre à jour Supabase pour indiquer que l'email a été envoyé
+            supabase.update("members", "id", str(match.get("id")), {"welcome_email_sent": True})
+            match["welcome_email_sent"] = True  # Mettre à jour la variable locale pour le payload de réponse
+        except Exception as email_err:
+            # En cas d'erreur de mail (ex: mauvaise clé SMTP), on logge l'erreur mais on ne bloque pas la connexion
+            print(f"Failed to send welcome email to {email}: {email_err}")
+
     token = create_member_token(str(match.get("id")), str(match.get("phone") or ""))
     response = data_response({"member": _public_member_payload(match)})
     return _set_session_cookie(response, MEMBER_COOKIE_NAME, token, django_settings.MEMBER_TOKEN_TTL_SECONDS)
