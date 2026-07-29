@@ -8,7 +8,67 @@ from django.http import JsonResponse
 from django.conf import settings as django_settings
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import send_mail
+import httpx
 from . import supabase
+
+def _send_email_via_brevo(subject: str, text_content: str, to_email: str) -> bool:
+    """Envoie un email en utilisant l'API HTTP de Brevo (non bloquant par Render)."""
+    api_key = os.getenv("BREVO_API_KEY")
+    if not api_key:
+        # Repli sur le SMTP classique de Django si pas de clé API HTTP
+        print("BREVO_API_KEY not set. Falling back to classic SMTP send_mail.")
+        send_mail(
+            subject,
+            text_content,
+            django_settings.DEFAULT_FROM_EMAIL,
+            [to_email],
+            fail_silently=False,
+        )
+        return True
+        
+    url = "https://api.brevo.com/v3/smtp/email"
+    headers = {
+        "accept": "application/json",
+        "api-key": api_key,
+        "content-type": "application/json"
+    }
+    
+    # Formater le nom et l'email d'expéditeur depuis DEFAULT_FROM_EMAIL
+    # DEFAULT_FROM_EMAIL = "U-Report Cocody <ureportcocody01@hotmail.com>"
+    sender_name = "U-Report Cocody"
+    sender_email = "ureportcocody01@hotmail.com"
+    if "<" in django_settings.DEFAULT_FROM_EMAIL and ">" in django_settings.DEFAULT_FROM_EMAIL:
+        parts = django_settings.DEFAULT_FROM_EMAIL.split("<")
+        sender_name = parts[0].strip()
+        sender_email = parts[1].replace(">", "").strip()
+
+    data = {
+        "sender": {
+            "name": sender_name,
+            "email": sender_email
+        },
+        "to": [
+            {
+                "email": to_email
+            }
+        ],
+        "subject": subject,
+        "textContent": text_content
+    }
+    
+    try:
+        # Timeout court (10 secondes max) pour éviter de bloquer le serveur
+        response = httpx.post(url, json=data, headers=headers, timeout=10.0)
+        if response.status_code in [200, 201, 202]:
+            print(f"Email successfully sent via Brevo HTTP API to {to_email}")
+            return True
+        else:
+            print(f"Failed to send email via Brevo HTTP API: {response.status_code} - {response.text}")
+            return False
+    except Exception as e:
+        print(f"Exception while sending email via Brevo HTTP API: {e}")
+        return False
+
 from .utils import (
     api_view,
     body_json,
@@ -914,7 +974,7 @@ def member_login_request(request):
         masked_name = name_part[0] + "*" * (len(name_part) - 2) + name_part[-1] if len(name_part) > 2 else name_part[0] + "*"
         masked_email = f"{masked_name}@{domain_part}"
 
-        # Envoyer l'email
+        # Envoyer l'email via Brevo HTTP API
         first_name = match.get("full_name", "").split()[0] if match.get("full_name") else "U-Reporter"
         subject = f"Votre code de connexion U-Report Cocody : {otp_code} 🔑"
         message = (
@@ -925,12 +985,10 @@ def member_login_request(request):
             "Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.\n\n"
             "L'équipe U-Report Cocody"
         )
-        send_mail(
+        _send_email_via_brevo(
             subject,
             message,
-            django_settings.DEFAULT_FROM_EMAIL,
-            [email],
-            fail_silently=False,
+            email,
         )
         return data_response({
             "otp_required": True,
@@ -1030,12 +1088,10 @@ def member_login(request):
                 "Pour toute question, contactez-nous à : ureportcocody01@hotmail.com\n\n"
                 "L'équipe U-Report Cocody"
             )
-            send_mail(
+            _send_email_via_brevo(
                 subject,
                 message,
-                django_settings.DEFAULT_FROM_EMAIL,
-                [email],
-                fail_silently=False,
+                email,
             )
             print(f"Welcome email successfully sent to {email}")
             supabase.update("members", "id", str(match.get("id")), {"welcome_email_sent": True})
