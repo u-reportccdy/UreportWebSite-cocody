@@ -46,6 +46,7 @@ create table if not exists members (
   commune text not null default '',
   status text not null default 'aspirant' check (status in ('aspirant', 'ureporter', 'mentor')),
   integration_note text not null default '',
+  welcome_email_sent boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
