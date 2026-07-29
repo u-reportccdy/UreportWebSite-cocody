@@ -125,6 +125,8 @@ def _is_admin_request(path: str, method: str) -> bool:
         return False
     if path == "/api/members" and method == "POST":
         return False
+    if path == "/api/members/login/request" and method == "POST":
+        return False
     if path == "/api/members/login" and method == "POST":
         return False
     if path == "/api/members/logout" and method == "POST":

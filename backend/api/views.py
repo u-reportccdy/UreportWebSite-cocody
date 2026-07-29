@@ -857,12 +857,16 @@ def members(request):
 
 
 @api_view(["POST"])
-def member_login(request):
+def member_login_request(request):
+    import random
+    from datetime import datetime, timedelta, timezone
+    
     now_ts = time.time()
     _prune_login_attempts(now_ts)
-    rate_limit_key = f"member:{_get_client_ip(request)}"
+    rate_limit_key = f"member_otp_req:{_get_client_ip(request)}"
     if _is_rate_limited(rate_limit_key, now_ts):
-        return error_response("Trop de tentatives. Réessayez dans quelques minutes.", 429)
+        return error_response("Trop de requêtes. Réessayez dans quelques minutes.", 429)
+        
     payload = body_json(request)
     full_name = _normalize_name(payload.get("full_name"))
     phone = _normalize_phone(payload.get("phone"))
@@ -882,14 +886,130 @@ def member_login(request):
         _record_failed_attempt(rate_limit_key, now_ts)
         return error_response("Aucun membre correspondant. Vérifiez le nom complet et le numéro.", 401)
 
+    email = (match.get("email") or "").strip()
+    if not email:
+        # Option A : Pas d'email renseigné, connexion directe autorisée sans OTP
+        return data_response({"otp_required": False})
+
+    # Générer le code OTP
+    otp_code = f"{random.randint(100000, 999999)}"
+    # Expiration dans 10 minutes (format ISO)
+    otp_expires_at = (datetime.now(timezone.utc) + timedelta(minutes=10)).isoformat()
+
+    try:
+        # Enregistrer l'OTP en base
+        supabase.update("members", "id", str(match.get("id")), {
+            "otp_code": otp_code,
+            "otp_expires_at": otp_expires_at
+        })
+        
+        # Masquer l'email pour des raisons de confidentialité (ex: u***y@hotmail.com)
+        parts = email.split("@")
+        name_part = parts[0]
+        domain_part = parts[1]
+        masked_name = name_part[0] + "*" * (len(name_part) - 2) + name_part[-1] if len(name_part) > 2 else name_part[0] + "*"
+        masked_email = f"{masked_name}@{domain_part}"
+
+        # Envoyer l'email
+        first_name = match.get("full_name", "").split()[0] if match.get("full_name") else "U-Reporter"
+        subject = f"Votre code de connexion U-Report Cocody : {otp_code} 🔑"
+        message = (
+            f"Bonjour {first_name},\n\n"
+            f"Voici votre code de validation à usage unique pour vous connecter à votre espace membre :\n\n"
+            f"👉 {otp_code}\n\n"
+            f"Ce code est valable pendant 10 minutes.\n\n"
+            "Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.\n\n"
+            "L'équipe U-Report Cocody"
+        )
+        send_mail(
+            subject,
+            message,
+            django_settings.DEFAULT_FROM_EMAIL,
+            [email],
+            fail_silently=False,
+        )
+        return data_response({
+            "otp_required": True,
+            "masked_email": masked_email
+        })
+    except Exception as e:
+        print(f"Failed to process OTP request for {email}: {e}")
+        # En cas d'erreur SMTP ou Supabase lors de la génération, on bascule en secours sur connexion directe
+        return data_response({"otp_required": False, "warning": "Impossible d'envoyer l'email de validation. Connexion temporaire de secours autorisée."})
+
+
+@api_view(["POST"])
+def member_login(request):
+    from datetime import datetime, timezone
+    
+    now_ts = time.time()
+    _prune_login_attempts(now_ts)
+    rate_limit_key = f"member:{_get_client_ip(request)}"
+    if _is_rate_limited(rate_limit_key, now_ts):
+        return error_response("Trop de tentatives. Réessayez dans quelques minutes.", 429)
+    payload = body_json(request)
+    full_name = _normalize_name(payload.get("full_name"))
+    phone = _normalize_phone(payload.get("phone"))
+    otp_code_submitted = (payload.get("otp_code") or "").strip()
+    
+    if not full_name or not phone:
+        return error_response("Nom complet et numéro de téléphone requis.", 422)
+
+    members_rows = supabase.select("members", "select=*&order=created_at.desc")
+    match = next(
+        (
+            row
+            for row in members_rows
+            if _phones_match(row.get("phone"), phone) and set(_normalize_name(row.get("full_name")).split()) == set(full_name.split())
+        ),
+        None,
+    )
+    if not match:
+        _record_failed_attempt(rate_limit_key, now_ts)
+        return error_response("Aucun membre correspondant. Vérifiez le nom complet et le numéro.", 401)
+
+    # Validation OTP si le membre a un email enregistré
+    email = (match.get("email") or "").strip()
+    if email:
+        db_otp_code = match.get("otp_code")
+        db_otp_expires = match.get("otp_expires_at")
+        
+        if not db_otp_code:
+            return error_response("Veuillez d'abord demander un code de validation.", 400)
+            
+        if not otp_code_submitted:
+            return error_response("Code de validation requis.", 400)
+            
+        if db_otp_code != otp_code_submitted:
+            _record_failed_attempt(rate_limit_key, now_ts)
+            return error_response("Le code de validation est incorrect.", 401)
+            
+        if db_otp_expires:
+            # Comparer les dates d'expiration (ISO string vers datetime)
+            try:
+                # Remplacer le Z à la fin par +00:00 si présent pour le parsing natif Python
+                expires_str = db_otp_expires.replace("Z", "+00:00")
+                expires_dt = datetime.fromisoformat(expires_str)
+                if datetime.now(timezone.utc) > expires_dt:
+                    return error_response("Le code de validation a expiré. Veuillez en demander un nouveau.", 401)
+            except Exception as dt_err:
+                print("Error parsing expiration date:", dt_err)
+
+        # Effacer l'OTP consommé en base
+        try:
+            supabase.update("members", "id", str(match.get("id")), {
+                "otp_code": None,
+                "otp_expires_at": None
+            })
+        except Exception as e:
+            print("Failed to reset OTP after login:", e)
+
     _LOGIN_ATTEMPTS.pop(rate_limit_key, None)
     
     # Welcome Email Logic for First Login
-    email = match.get("email") or ""
     welcome_sent = bool(match.get("welcome_email_sent", False))
-    if email.strip() and not welcome_sent:
+    if email and not welcome_sent:
         try:
-            # Extraire le prénom
             first_name = match.get("full_name", "").split()[0] if match.get("full_name") else "U-Reporter"
             subject = "Bienvenue dans la communauté U-Report Cocody ! 🎉"
             message = (
@@ -902,7 +1022,6 @@ def member_login(request):
                 "Pour toute question, contactez-nous à : ureportcocody01@hotmail.com\n\n"
                 "L'équipe U-Report Cocody"
             )
-            # Envoi asynchrone / non bloquant (on essaie d'envoyer l'email)
             send_mail(
                 subject,
                 message,
@@ -911,11 +1030,9 @@ def member_login(request):
                 fail_silently=False,
             )
             print(f"Welcome email successfully sent to {email}")
-            # Mettre à jour Supabase pour indiquer que l'email a été envoyé
             supabase.update("members", "id", str(match.get("id")), {"welcome_email_sent": True})
-            match["welcome_email_sent"] = True  # Mettre à jour la variable locale pour le payload de réponse
+            match["welcome_email_sent"] = True
         except Exception as email_err:
-            # En cas d'erreur de mail (ex: mauvaise clé SMTP), on logge l'erreur mais on ne bloque pas la connexion
             print(f"Failed to send welcome email to {email}: {email_err}")
 
     token = create_member_token(str(match.get("id")), str(match.get("phone") or ""))
