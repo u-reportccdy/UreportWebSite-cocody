@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { XIcon, User, Mail, Phone, MapPin, AlertCircle } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
-import { createMember, loginMember } from '../../services/member.service';
+import { createMember, loginMember, requestMemberLoginOtp } from '../../services/member.service';
 import { fetchSiteSettings } from '../../services/content.service';
 import { WhatsAppRedirectModal } from './WhatsAppRedirectModal';
 import { buildWhatsAppLink, fillTemplate, memberStatusLabel } from '../../utils/whatsapp';
@@ -27,6 +27,11 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
   const [siteSettings, setSiteSettings] = useState<any>(null);
   const [whatsAppPayload, setWhatsAppPayload] = useState<{ url: string; title: string; message: string; buttonLabel: string } | null>(null);
   
+  // OTP Verification States
+  const [otpRequired, setOtpRequired] = useState(false);
+  const [maskedEmail, setMaskedEmail] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  
   const [formData, setFormData] = useState({
     name: '',
     firstname: '',
@@ -44,6 +49,9 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     if (isOpen) {
       setMode(initialMode);
       setError('');
+      setOtpRequired(false);
+      setMaskedEmail('');
+      setOtpCode('');
     }
   }, [isOpen, initialMode]);
 
@@ -55,6 +63,9 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     if (!isOpen) {
       setIsSubmitting(false);
       setError('');
+      setOtpRequired(false);
+      setMaskedEmail('');
+      setOtpCode('');
     }
   }, [isOpen]);
 
@@ -81,6 +92,9 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     }
     setMode('register');
     setError('');
+    setOtpRequired(false);
+    setMaskedEmail('');
+    setOtpCode('');
   };
 
   const handleSwitchToLogin = () => {
@@ -91,6 +105,9 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     }));
     setMode('login');
     setError('');
+    setOtpRequired(false);
+    setMaskedEmail('');
+    setOtpCode('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -100,10 +117,31 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
 
     try {
       if (mode === 'login') {
+        if (!otpRequired) {
+          // Étape 1 : Demander l'OTP
+          const res = await requestMemberLoginOtp({
+            full_name: formData.fullName.trim(),
+            phone: formData.phone.trim(),
+          });
+          
+          if (res.otp_required) {
+            setOtpRequired(true);
+            setMaskedEmail(res.masked_email || '');
+            if (res.warning) {
+              setError(res.warning); // Optionnel : afficher s'il y a un avertissement
+            }
+            setIsSubmitting(false);
+            return; // On arrête là, on affiche le formulaire OTP
+          }
+        }
+        
+        // Étape 2 (ou direct si pas d'email/secours) : Valider la connexion
         const auth = await loginMember({
           full_name: formData.fullName.trim(),
           phone: formData.phone.trim(),
+          otp_code: otpRequired ? otpCode.trim() : undefined
         });
+        
         saveMemberSession(auth.member);
         if (onSuccess) {
           onSuccess(auth.member);
@@ -208,29 +246,62 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                 {mode === 'login' ? (
                   // --- CONNEXION (Nom & Numero uniquement) ---
                   <div className="space-y-4">
-                    <div className="relative">
-                      <User className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
-                      <Input 
-                        label="Nom Complet" 
-                        required 
-                        placeholder="Ex: Konan Koffi"
-                        inputClassName="pl-10"
-                        value={formData.fullName}
-                        onChange={e => setFormData({...formData, fullName: e.target.value, name: e.target.value})}
-                      />
-                    </div>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
-                      <Input 
-                        label="Numéro de Téléphone" 
-                        type="tel" 
-                        required 
-                        placeholder="Ex: +225 0707..."
-                        inputClassName="pl-10"
-                        value={formData.phone}
-                        onChange={e => setFormData({...formData, phone: e.target.value.replace(/[^\d+()\s-]/g, '')})}
-                      />
-                    </div>
+                    {otpRequired ? (
+                      <div className="space-y-4 animate-fade-in">
+                        <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-sm text-blue-800">
+                          Un code de validation à 6 chiffres a été envoyé par email à l'adresse <strong>{maskedEmail}</strong>. Veuillez le saisir ci-dessous.
+                        </div>
+                        <div className="relative">
+                          <Input 
+                            label="Code de validation (OTP)" 
+                            required 
+                            placeholder="Ex: 123456"
+                            value={otpCode}
+                            onChange={e => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                            inputClassName="text-center font-mono text-2xl tracking-[0.5em] h-14"
+                          />
+                        </div>
+                        <div className="text-center">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setOtpRequired(false);
+                              setOtpCode('');
+                              setError('');
+                            }}
+                            className="text-xs text-gray-500 hover:text-ureport-blue font-bold underline"
+                          >
+                            Modifier mes informations de connexion
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="relative">
+                          <User className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
+                          <Input 
+                            label="Nom Complet" 
+                            required 
+                            placeholder="Ex: Konan Koffi"
+                            inputClassName="pl-10"
+                            value={formData.fullName}
+                            onChange={e => setFormData({...formData, fullName: e.target.value, name: e.target.value})}
+                          />
+                        </div>
+                        <div className="relative">
+                          <Phone className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
+                          <Input 
+                            label="Numéro de Téléphone" 
+                            type="tel" 
+                            required 
+                            placeholder="Ex: +225 0707..."
+                            inputClassName="pl-10"
+                            value={formData.phone}
+                            onChange={e => setFormData({...formData, phone: e.target.value.replace(/[^\d+()\s-]/g, '')})}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 ) : (
                   // --- INSCRIPTION (Formulaire complet) ---
@@ -350,7 +421,9 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                     loading={isSubmitting}
                     className="h-14 text-lg font-bold"
                   >
-                    {mode === 'login' ? 'Se connecter' : "Valider mon inscription"}
+                    {mode === 'login' 
+                      ? (otpRequired ? 'Valider le code de connexion' : 'Se connecter') 
+                      : "Valider mon inscription"}
                   </Button>
                 </div>
 

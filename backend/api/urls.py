@@ -9,6 +9,7 @@ urlpatterns = [
     path("auth/portal/login", views.portal_login),
     path("auth/admin/change-credentials", views.admin_change_credentials),
     path("auth/admin/me", views.admin_me),
+    path("members/login/request", views.member_login_request),
     path("members/login", views.member_login),
     path("members/logout", views.member_logout),
     path("superadmin/dashboard", views.superadmin_dashboard),

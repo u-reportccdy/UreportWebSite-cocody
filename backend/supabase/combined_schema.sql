@@ -55,6 +55,8 @@ create table if not exists members (
   commission text default '',
   avatar_url text default '',
   welcome_email_sent boolean not null default false,
+  otp_code text default null,
+  otp_expires_at timestamptz default null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

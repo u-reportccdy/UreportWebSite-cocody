@@ -5,7 +5,12 @@ export const createMember = async (memberData: any) => {
   return response.data.data;
 };
 
-export const loginMember = async (credentials: { full_name: string; phone: string }) => {
+export const requestMemberLoginOtp = async (credentials: { full_name: string; phone: string }) => {
+  const response = await api.post('/members/login/request', credentials);
+  return response.data.data; // { otp_required: boolean, masked_email?: string, warning?: string }
+};
+
+export const loginMember = async (credentials: { full_name: string; phone: string; otp_code?: string }) => {
   const response = await api.post('/members/login', credentials);
   return response.data.data;
 };
