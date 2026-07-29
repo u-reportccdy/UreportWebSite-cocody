@@ -31,6 +31,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
   const [otpRequired, setOtpRequired] = useState(false);
   const [maskedEmail, setMaskedEmail] = useState('');
   const [otpCode, setOtpCode] = useState('');
+  const [resendCooldown, setResendCooldown] = useState(0);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -44,6 +45,14 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     motivation: '',
   });
 
+  // Cooldown timer for resending OTP
+  useEffect(() => {
+    if (resendCooldown > 0) {
+      const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendCooldown]);
+
   // Sync mode state when modal opens or initialMode changes
   useEffect(() => {
     if (isOpen) {
@@ -52,6 +61,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
       setOtpRequired(false);
       setMaskedEmail('');
       setOtpCode('');
+      setResendCooldown(0);
     }
   }, [isOpen, initialMode]);
 
@@ -66,6 +76,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
       setOtpRequired(false);
       setMaskedEmail('');
       setOtpCode('');
+      setResendCooldown(0);
     }
   }, [isOpen]);
 
@@ -108,6 +119,32 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     setOtpRequired(false);
     setMaskedEmail('');
     setOtpCode('');
+  };
+
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0 || isSubmitting) return;
+    setIsSubmitting(true);
+    setError('');
+    setOtpCode('');
+
+    try {
+      const res = await requestMemberLoginOtp({
+        full_name: formData.fullName.trim(),
+        phone: formData.phone.trim(),
+      });
+      if (res.otp_required) {
+        setMaskedEmail(res.masked_email || '');
+        setResendCooldown(60);
+        if (res.warning) {
+          setError(res.warning);
+        }
+      }
+    } catch (err) {
+      console.error('Erreur renvoi OTP:', err);
+      setError((err as any)?.response?.data?.detail || "Impossible de renvoyer le code. Veuillez réessayer.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -261,7 +298,22 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                             inputClassName="text-center font-mono text-2xl tracking-[0.5em] h-14"
                           />
                         </div>
-                        <div className="text-center">
+                        <div className="text-center flex flex-col items-center gap-3">
+                          <button
+                            type="button"
+                            disabled={resendCooldown > 0 || isSubmitting}
+                            onClick={handleResendOtp}
+                            className={`text-sm font-bold transition-all ${
+                              resendCooldown > 0 
+                                ? 'text-gray-400 cursor-not-allowed' 
+                                : 'text-ureport-blue hover:underline'
+                            }`}
+                          >
+                            {resendCooldown > 0 
+                              ? `Renvoyer le code (dans ${resendCooldown}s)` 
+                              : "Je n'ai pas reçu de code ? Renvoyer"}
+                          </button>
+                          
                           <button
                             type="button"
                             onClick={() => {
