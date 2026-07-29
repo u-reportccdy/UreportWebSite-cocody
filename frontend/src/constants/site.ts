@@ -1,0 +1,9 @@
+// Centralized site contact defaults and social links
+export const DEFAULT_SITE_CONTACT: Record<string, string> = {
+  address: 'Abidjan, Cocody',
+  email: 'ureportcocody01@hotmail.com',
+  phone: '+225 07 89 69 40 03',
+  facebook_url: 'https://www.facebook.com/share/1DoAeSBX6n/?mibextid=wwXIfr',
+  instagram_url: 'https://www.instagram.com/communaute_ureportcocody?igsh=cDk4Nm0wcDdyZThs',
+  tiktok_url: 'https://www.tiktok.com/@ureportcocody?_r=1&_t=ZS-96SxX2CetXu',
+};
