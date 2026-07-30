@@ -527,7 +527,7 @@ export function MemberProfile() {
                     <Award className="w-3.5 h-3.5" />
                     {getStatusLabel(currentStatus)}
                   </span>
-                  <span className="text-xs text-gray-400">(Géré par l'administration)</span>
+                  <span className="text-xs text-gray-400 font-semibold">(Calculé automatiquement selon votre date de naissance)</span>
                 </div>
 
                 <form onSubmit={handleUpdateProfile} className="space-y-6">
