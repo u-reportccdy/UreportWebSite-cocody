@@ -206,6 +206,10 @@ def _phones_match(phone1: str | None, phone2: str | None) -> bool:
     return p1 == p2
 
 
+def _normalize_name(value: str | None) -> str:
+    return " ".join(str(value or "").strip().lower().split())
+
+
 def _calculate_status_from_birth_date(birth_date_str: str | None) -> str:
     """Calcule l'âge et attribue le statut : 
     - Sans date de naissance -> aspirant
