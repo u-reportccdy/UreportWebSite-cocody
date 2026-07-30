@@ -67,3 +67,24 @@ def delete(table: str, field: str, value: str):
         timeout=20,
     )
     response.raise_for_status()
+
+
+def upload_avatar(file_name: str, file_bytes: bytes, content_type: str = "image/jpeg") -> str:
+    """Téléverse un fichier binaire dans le bucket public 'avatars' de Supabase Storage.
+    Retourne l'URL publique de l'image."""
+    # En-têtes pour l'upload de stockage
+    headers = {
+        "apikey": settings.SUPABASE_SERVICE_ROLE_KEY,
+        "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
+        "Content-Type": content_type,
+        "x-upsert": "true" # Écrase le fichier s'il existe déjà
+    }
+    
+    # URL de stockage Supabase
+    url = f"{_base_url()}/storage/v1/object/avatars/{file_name}"
+    
+    response = httpx.post(url, content=file_bytes, headers=headers, timeout=20)
+    response.raise_for_status()
+    
+    # URL publique pour accéder à l'image
+    return f"{_base_url()}/storage/v1/object/public/avatars/{file_name}"
