@@ -18,6 +18,8 @@ export function Login() {
       const response = await api.post('/auth/portal/login', { email, password });
       const data = response.data?.data;
       if (!data?.role) throw new Error('Invalid auth response');
+      localStorage.setItem('admin_access_token', data.access_token);
+      localStorage.setItem('admin_refresh_token', data.refresh_token);
       sessionStorage.setItem('admin_role', data.role || 'admin');
       sessionStorage.setItem('admin_email', data.email || email.trim().toLowerCase());
       navigate((data.role || 'admin') === 'superadmin' ? '/superadmin' : '/admin');

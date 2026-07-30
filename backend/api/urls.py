@@ -7,6 +7,7 @@ urlpatterns = [
     path("auth/admin/logout", views.admin_logout),
     path("auth/superadmin/login", views.superadmin_login),
     path("auth/portal/login", views.portal_login),
+    path("auth/token/refresh", views.token_refresh),
     path("auth/admin/change-credentials", views.admin_change_credentials),
     path("auth/admin/me", views.admin_me),
     path("members/login/request", views.member_login_request),

@@ -179,6 +179,13 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
           otp_code: otpRequired ? otpCode.trim() : undefined
         });
         
+        if (auth.access_token) {
+          localStorage.setItem('member_access_token', auth.access_token);
+        }
+        if (auth.refresh_token) {
+          localStorage.setItem('member_refresh_token', auth.refresh_token);
+        }
+
         saveMemberSession(auth.member);
         if (onSuccess) {
           onSuccess(auth.member);
