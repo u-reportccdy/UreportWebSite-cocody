@@ -12,12 +12,16 @@ import {
 
 const memberStatusLabel: Record<string, string> = {
   aspirant: 'Aspirant',
-  ureporter: 'U-Reporter',
+  junior: 'U-Reporter Junior',
+  senior: 'U-Reporter Senior',
+  ureporter: 'U-Reporter Actif',
   mentor: 'Mentor',
 };
 
 const memberStatusColors: Record<string, string> = {
-  aspirant: 'bg-gray-100 text-gray-600 border-gray-200',
+  aspirant: 'bg-amber-50 text-amber-700 border-amber-200',
+  junior: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+  senior: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   ureporter: 'bg-blue-100 text-blue-700 border-blue-200',
   mentor: 'bg-purple-100 text-purple-700 border-purple-200',
 };

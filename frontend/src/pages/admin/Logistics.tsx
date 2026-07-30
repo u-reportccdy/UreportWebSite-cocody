@@ -58,11 +58,11 @@ export function Logistics() {
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearchingMembers, setIsSearchingMembers] = useState(false);
-  
+
   const [selectedMember, setSelectedMember] = useState<any | null>(null);
   const [selectedMemberProfile, setSelectedMemberProfile] = useState<any | null>(null);
   const [isUpdatingMemberTshirt, setIsUpdatingMemberTshirt] = useState(false);
-  
+
   // Notes state
   const [notesText, setNotesText] = useState('');
   const [isSavingNotes, setIsSavingNotes] = useState(false);
@@ -122,14 +122,14 @@ export function Logistics() {
       setMaterials(materialsData || []);
       setRequests(requestsData || []);
       setEvents(eventsData || []);
-      
+
       // Load members to calculate stats
       const membersRes = await api.get('/members');
       const allMembers = membersRes.data.data || [];
       const activeUReporters = allMembers.filter((m: any) => m.status === 'ureporter' || m.status === 'mentor');
       const distributed = activeUReporters.filter((m: any) => m.tshirt_received);
       const pending = activeUReporters.filter((m: any) => !m.tshirt_received);
-      
+
       setGlobalStats({
         totalUReporters: activeUReporters.length,
         tshirtsDistributed: distributed.length,
@@ -390,11 +390,11 @@ export function Logistics() {
       const response = await api.patch(`/members/${selectedMember.id}`, { [field]: value });
       const updated = Array.isArray(response.data.data) ? response.data.data[0] : response.data.data;
       setSelectedMember(updated);
-      
+
       // Update local cache details
       const profileRes = await api.get(`/members/${selectedMember.id}/activities`);
       setSelectedMemberProfile(profileRes.data.data);
-      
+
       // Refresh global stats too
       await loadData();
     } catch (err) {
@@ -460,7 +460,7 @@ export function Logistics() {
       .filter((a: any) => a.event_date)
       .sort((a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime());
     for (let i = 0; i < sorted.length - 1; i++) {
-      if (sorted[i].attended && sorted[i+1].attended) {
+      if (sorted[i].attended && sorted[i + 1].attended) {
         return true;
       }
     }
@@ -506,10 +506,10 @@ export function Logistics() {
 
   return (
     <div className="flex flex-col lg:flex-row h-full min-h-[720px] bg-slate-50 border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-      
+
       {/* Looker Studio Left Vertical Sidebar */}
       <aside className="w-full lg:w-60 bg-white border-b lg:border-b-0 lg:border-r border-slate-200 flex flex-col shrink-0">
-        
+
         {/* Header Looker Studio Title */}
         <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
           <div className="flex items-center gap-2">
@@ -530,23 +530,21 @@ export function Logistics() {
         <nav className="flex-1 p-3 space-y-1">
           <button
             onClick={() => setActiveTab('fiche_individuelle')}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${
-              activeTab === 'fiche_individuelle'
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${activeTab === 'fiche_individuelle'
                 ? 'bg-[#0099DC]/10 text-[#0099DC]'
                 : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Users className="w-4 h-4 shrink-0" />
             <span>fiche individuelle</span>
           </button>
-          
+
           <button
             onClick={() => setActiveTab('overview')}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${
-              activeTab === 'overview'
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${activeTab === 'overview'
                 ? 'bg-[#0099DC]/10 text-[#0099DC]'
                 : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <LayoutDashboard className="w-4 h-4 shrink-0" />
             <span>vue d'ensemble</span>
@@ -554,26 +552,24 @@ export function Logistics() {
 
           <button
             onClick={() => setActiveTab('presences')}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${
-              activeTab === 'presences'
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${activeTab === 'presences'
                 ? 'bg-[#0099DC]/10 text-[#0099DC]'
                 : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <ClipboardList className="w-4 h-4 shrink-0" />
             <span>suivi des présences</span>
           </button>
-          
+
           <div className="h-px bg-slate-150 my-3" />
           <div className="px-4 py-1 text-[10px] font-black uppercase tracking-wider text-slate-400">Administration matériel</div>
 
           <button
             onClick={() => setActiveTab('inventory')}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${
-              activeTab === 'inventory'
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${activeTab === 'inventory'
                 ? 'bg-[#0099DC]/10 text-[#0099DC]'
                 : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Boxes className="w-4 h-4 shrink-0" />
             <span>Inventaire du Matériel</span>
@@ -581,11 +577,10 @@ export function Logistics() {
 
           <button
             onClick={() => setActiveTab('requests')}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${
-              activeTab === 'requests'
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${activeTab === 'requests'
                 ? 'bg-[#0099DC]/10 text-[#0099DC]'
                 : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Calendar className="w-4 h-4 shrink-0" />
             <span>Demandes Réservation</span>
@@ -595,7 +590,7 @@ export function Logistics() {
 
       {/* Main Content Pane */}
       <main className="flex-1 p-6 overflow-y-auto bg-slate-50 flex flex-col gap-6">
-        
+
         {isLoading ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-3 bg-white rounded-2xl border border-slate-200 p-20 shadow-xs">
             <Loader2 className="w-8 h-8 animate-spin text-[#0099DC]" />
@@ -611,11 +606,11 @@ export function Logistics() {
               transition={{ duration: 0.15 }}
               className="w-full space-y-6"
             >
-              
+
               {/* VIEW 1: FICHE INDIVIDUELLE */}
               {activeTab === 'fiche_individuelle' && (
                 <div className="space-y-6">
-                  
+
                   {/* Header Selector bar */}
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-white border border-slate-250 rounded-xl shadow-xs gap-4">
                     <div className="flex items-center gap-3">
@@ -653,7 +648,7 @@ export function Logistics() {
                           </button>
                         )}
                       </div>
-                      
+
                       {showSearchDropdown && (memberSearchQuery.trim() !== '') && (
                         <div className="absolute right-0 mt-1.5 w-full bg-white border border-slate-200 rounded-xl shadow-lg z-50 max-h-60 overflow-y-auto divide-y divide-slate-100">
                           {isSearchingMembers ? (
@@ -686,10 +681,10 @@ export function Logistics() {
 
                   {selectedMember ? (
                     <div className="space-y-6">
-                      
+
                       {/* Two Columns: Personal Info VS Participation */}
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        
+
                         {/* Demographic Box */}
                         <div className="bg-white border border-slate-250 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
                           <div className="space-y-6">
@@ -700,7 +695,7 @@ export function Logistics() {
 
                             {/* 4 Info Boxes Grid */}
                             <div className="grid grid-cols-2 gap-4">
-                              
+
                               {/* 1. Phone WhatsApp */}
                               <a
                                 href={`https://wa.me/${selectedMember.phone.replace(/[^0-9]/g, '')}`}
@@ -754,7 +749,7 @@ export function Logistics() {
                               </h5>
 
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                
+
                                 {/* Commission Selection */}
                                 <div className="bg-white p-2.5 rounded-lg border border-slate-150 flex flex-col gap-1.5 shadow-xs">
                                   <label className="text-[9px] font-black text-slate-400 uppercase tracking-wide">Assigner Département</label>
@@ -777,7 +772,7 @@ export function Logistics() {
 
                                 {/* Checklist checkboxes */}
                                 <div className="space-y-2 flex flex-col justify-center">
-                                  
+
                                   <label className="flex items-center gap-2.5 cursor-pointer">
                                     <input
                                       type="checkbox"
@@ -810,18 +805,17 @@ export function Logistics() {
                           <div className="pt-4 border-t border-slate-100 flex flex-col items-center gap-2 mt-4">
                             {selectedMember.status === 'aspirant' && (
                               <p className="text-[10px] text-red-500 font-bold bg-red-50 px-2 py-1 rounded border border-red-100">
-                                ⚠️ Le statut du membre doit être Actif (U-Reporter) ou Mentor.
+                                ⚠️ Le statut du membre doit être U-Reporter (Junior, Senior) ou Mentor.
                               </p>
                             )}
-                            
+
                             <button
                               disabled={selectedMember.tshirt_received || isUpdatingMemberTshirt}
                               onClick={() => handleUpdateMemberField('tshirt_received', true)}
-                              className={`w-full py-3 rounded-xl font-bold text-sm shadow-sm transition flex items-center justify-center gap-2 ${
-                                selectedMember.tshirt_received
+                              className={`w-full py-3 rounded-xl font-bold text-sm shadow-sm transition flex items-center justify-center gap-2 ${selectedMember.tshirt_received
                                   ? 'bg-green-100 text-green-700 border border-green-200 cursor-not-allowed'
                                   : 'bg-green-600 hover:bg-green-700 text-white'
-                              }`}
+                                }`}
                             >
                               <Shirt className="w-4.5 h-4.5" />
                               <span>
@@ -842,7 +836,7 @@ export function Logistics() {
                                 {totalActivities} activités
                               </span>
                             </div>
-                            
+
                             <div className="border border-slate-200 rounded-xl overflow-hidden bg-white">
                               <table className="w-full text-left text-xs border-collapse">
                                 <thead>
@@ -912,7 +906,7 @@ export function Logistics() {
 
                       {/* Bottom Layout: Metrics Box VS Notes Box */}
                       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        
+
                         {/* Decision metrics: column-span 2 */}
                         <div className="bg-white border border-slate-250 rounded-2xl p-6 shadow-xs lg:col-span-2 space-y-4">
                           <h4 className="text-sm font-black text-slate-900 uppercase tracking-wider text-center border-b border-slate-100 pb-3">
@@ -920,7 +914,7 @@ export function Logistics() {
                           </h4>
 
                           <div className="grid grid-cols-2 md:grid-cols-5 gap-3.5">
-                            
+
                             {/* 1. Ancienneté */}
                             {(() => {
                               const months = getMembershipDurationMonths(selectedMember.date_adhesion || selectedMember.created_at);
@@ -933,9 +927,8 @@ export function Logistics() {
                                       Membre depuis {getMembershipMonthYear(selectedMember.date_adhesion || selectedMember.created_at)}
                                     </span>
                                   </div>
-                                  <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${
-                                    eligible ? 'text-green-600' : 'text-red-500'
-                                  }`}>
+                                  <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${eligible ? 'text-green-600' : 'text-red-500'
+                                    }`}>
                                     <span>{eligible ? '✔' : '❌'}</span>
                                   </span>
                                 </div>
@@ -953,9 +946,8 @@ export function Logistics() {
                                       2 activités consécutives
                                     </span>
                                   </div>
-                                  <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${
-                                    eligible ? 'text-green-600' : 'text-red-500'
-                                  }`}>
+                                  <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${eligible ? 'text-green-600' : 'text-red-500'
+                                    }`}>
                                     <span>{eligible ? '✔' : '❌'}</span>
                                   </span>
                                 </div>
@@ -973,9 +965,8 @@ export function Logistics() {
                                       Vice PCO activité
                                     </span>
                                   </div>
-                                  <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${
-                                    eligible ? 'text-green-600' : 'text-red-500'
-                                  }`}>
+                                  <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${eligible ? 'text-green-600' : 'text-red-500'
+                                    }`}>
                                     <span>{eligible ? '✔' : '❌'}</span>
                                   </span>
                                 </div>
@@ -993,9 +984,8 @@ export function Logistics() {
                                       {eligible ? "Entretien validé" : "Pas d'entretien passé"}
                                     </span>
                                   </div>
-                                  <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${
-                                    eligible ? 'text-green-600' : 'text-red-500'
-                                  }`}>
+                                  <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${eligible ? 'text-green-600' : 'text-red-500'
+                                    }`}>
                                     <span>{eligible ? '✔' : '❌'}</span>
                                   </span>
                                 </div>
@@ -1013,9 +1003,8 @@ export function Logistics() {
                                       {eligible ? "Pas encore de t-shirt" : "T-shirt déjà reçu"}
                                     </span>
                                   </div>
-                                  <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${
-                                    eligible ? 'text-green-600' : 'text-red-500'
-                                  }`}>
+                                  <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${eligible ? 'text-green-600' : 'text-red-500'
+                                    }`}>
                                     <span>{eligible ? '✔' : '❌'}</span>
                                   </span>
                                 </div>
@@ -1038,7 +1027,7 @@ export function Logistics() {
                               className="w-full flex-1 p-3 text-xs border border-slate-200 rounded-xl outline-none resize-none focus:ring-1 focus:ring-[#0099DC] bg-slate-50/20 font-medium min-h-[120px]"
                             />
                           </div>
-                          
+
                           <button
                             onClick={handleSaveNotes}
                             disabled={isSavingNotes}
@@ -1072,10 +1061,10 @@ export function Logistics() {
               {activeTab === 'overview' && (
                 <div className="space-y-6">
                   <h3 className="font-extrabold text-slate-900 text-base border-b border-slate-200 pb-3">VUE D'ENSEMBLE LOGISTIQUE</h3>
-                  
+
                   {/* KPIs Summary widgets */}
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    
+
                     <div className="bg-white border border-slate-250 rounded-xl p-5 shadow-xs flex items-center justify-between">
                       <div>
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">U-Reporters Actifs</span>
@@ -1121,7 +1110,7 @@ export function Logistics() {
                   {/* Stock Materials summary cards */}
                   <div className="bg-white border border-slate-250 rounded-xl p-6 shadow-xs space-y-4">
                     <h4 className="text-sm font-black text-slate-850 uppercase tracking-wider">Résumé de l'Inventaire Matériel</h4>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {materials.slice(0, 6).map((m: any) => (
                         <div key={m.id} className="border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:border-slate-350 transition duration-200">
@@ -1206,9 +1195,9 @@ export function Logistics() {
                         <span className="text-xl font-black text-[#0099DC]">{eventRegSummary ? Math.round(eventRegSummary.percentage_attended) : 0}%</span>
                       </div>
                       <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden mt-2">
-                        <div 
-                          className="h-full bg-green-500 transition-all duration-300" 
-                          style={{ width: `${eventRegSummary ? Math.min(eventRegSummary.percentage_attended, 100) : 0}%` }} 
+                        <div
+                          className="h-full bg-green-500 transition-all duration-300"
+                          style={{ width: `${eventRegSummary ? Math.min(eventRegSummary.percentage_attended, 100) : 0}%` }}
                         />
                       </div>
                       <p className="mt-3 text-xs text-slate-450 font-bold">
@@ -1220,25 +1209,25 @@ export function Logistics() {
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div className="relative w-full sm:w-80">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                      <input 
-                        type="text" 
-                        placeholder="Filtrer les participants..." 
-                        value={regsSearchQuery} 
-                        onChange={e => setRegsSearchQuery(e.target.value)} 
-                        className="w-full pl-9 pr-4 py-2 border border-slate-300 text-xs font-bold text-slate-800 placeholder-slate-400 shadow-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC]" 
+                      <input
+                        type="text"
+                        placeholder="Filtrer les participants..."
+                        value={regsSearchQuery}
+                        onChange={e => setRegsSearchQuery(e.target.value)}
+                        className="w-full pl-9 pr-4 py-2 border border-slate-300 text-xs font-bold text-slate-800 placeholder-slate-400 shadow-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0099DC]"
                       />
                     </div>
                     <div className="flex gap-2 w-full sm:w-auto">
-                      <button 
-                        onClick={() => selectedRegEventId && loadEventRegistrations(selectedRegEventId)} 
+                      <button
+                        onClick={() => selectedRegEventId && loadEventRegistrations(selectedRegEventId)}
                         disabled={!selectedRegEventId}
                         className="flex items-center justify-center gap-1.5 bg-white border border-slate-250 text-slate-700 px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors w-full sm:w-auto text-xs font-bold disabled:opacity-50"
                       >
                         <RefreshCw className={`w-3.5 h-3.5 ${isRegsLoading ? 'animate-spin' : ''}`} />
                         <span>Actualiser</span>
                       </button>
-                      <button 
-                        onClick={handleExportRegsCSV} 
+                      <button
+                        onClick={handleExportRegsCSV}
                         disabled={!selectedRegEventId || eventRegs.length === 0}
                         className="flex items-center justify-center gap-1.5 bg-white border border-slate-250 text-slate-700 px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors w-full sm:w-auto text-xs font-bold disabled:opacity-50"
                       >
@@ -1271,42 +1260,41 @@ export function Logistics() {
                               </td>
                             </tr>
                           ) : eventRegs
-                              .filter(user => `${user.full_name || ''} ${user.email || ''} ${user.phone || ''}`.toLowerCase().includes(regsSearchQuery.toLowerCase()))
-                              .map(user => (
-                                <tr key={user.id} className="hover:bg-slate-50/50 transition-colors">
-                                  <td className="px-6 py-4 pl-6 font-bold text-slate-900">{user.full_name}</td>
-                                  <td className="px-6 py-4">
-                                    <div className="font-semibold text-slate-800">{user.email || 'Pas d\'email'}</div>
-                                    <div className="text-slate-400 font-bold mt-0.5">{user.phone}</div>
-                                  </td>
-                                  <td className="px-6 py-4 font-bold text-slate-450 uppercase">{user.member_status}</td>
-                                  <td className="px-6 py-4">
-                                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black border ${
-                                      user.attended 
-                                        ? 'bg-green-50 text-green-700 border-green-200' 
-                                        : 'bg-yellow-50 text-yellow-700 border-yellow-200'
+                            .filter(user => `${user.full_name || ''} ${user.email || ''} ${user.phone || ''}`.toLowerCase().includes(regsSearchQuery.toLowerCase()))
+                            .map(user => (
+                              <tr key={user.id} className="hover:bg-slate-50/50 transition-colors">
+                                <td className="px-6 py-4 pl-6 font-bold text-slate-900">{user.full_name}</td>
+                                <td className="px-6 py-4">
+                                  <div className="font-semibold text-slate-800">{user.email || 'Pas d\'email'}</div>
+                                  <div className="text-slate-400 font-bold mt-0.5">{user.phone}</div>
+                                </td>
+                                <td className="px-6 py-4 font-bold text-slate-450 uppercase">{user.member_status}</td>
+                                <td className="px-6 py-4">
+                                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black border ${user.attended
+                                      ? 'bg-green-50 text-green-700 border-green-200'
+                                      : 'bg-yellow-50 text-yellow-700 border-yellow-200'
                                     }`}>
-                                      {user.attended ? 'Présent' : 'Non marqué'}
-                                    </span>
-                                  </td>
-                                  <td className="px-6 py-4 pr-6 text-right space-x-2 whitespace-nowrap">
-                                    <button 
-                                      onClick={() => handleToggleAttendance(user.id, true)} 
-                                      className="p-1 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded border border-transparent hover:border-green-200 transition" 
-                                      title="Marquer présent"
-                                    >
-                                      <CheckCircle className="w-4 h-4" />
-                                    </button>
-                                    <button 
-                                      onClick={() => handleToggleAttendance(user.id, false)} 
-                                      className="p-1 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded border border-transparent hover:border-red-200 transition" 
-                                      title="Marquer absent"
-                                    >
-                                      <XCircle className="w-4 h-4" />
-                                    </button>
-                                  </td>
-                                </tr>
-                              ))}
+                                    {user.attended ? 'Présent' : 'Non marqué'}
+                                  </span>
+                                </td>
+                                <td className="px-6 py-4 pr-6 text-right space-x-2 whitespace-nowrap">
+                                  <button
+                                    onClick={() => handleToggleAttendance(user.id, true)}
+                                    className="p-1 text-slate-400 hover:text-green-600 hover:bg-green-50 rounded border border-transparent hover:border-green-200 transition"
+                                    title="Marquer présent"
+                                  >
+                                    <CheckCircle className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleToggleAttendance(user.id, false)}
+                                    className="p-1 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded border border-transparent hover:border-red-200 transition"
+                                    title="Marquer absent"
+                                  >
+                                    <XCircle className="w-4 h-4" />
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
                           {!isRegsLoading && eventRegs.length === 0 && (
                             <tr>
                               <td colSpan={5} className="px-6 py-10 text-center text-slate-400 font-bold bg-white">
