@@ -216,6 +216,7 @@ export function MemberProfile() {
         setAvatarPreview(compressedDataUrl);
         await api.patch(`/members/${session.id}`, { avatar_url: compressedDataUrl });
         setSuccessMsg('Photo de profil mise à jour !');
+        setTimeout(() => setSuccessMsg(''), 4000);
         setMemberData((prev: any) => prev ? { ...prev, avatar_url: compressedDataUrl } : prev);
       } catch (err) {
         console.error('Erreur compression avatar:', err);
@@ -251,6 +252,7 @@ export function MemberProfile() {
         full_name: updated.full_name,
       } as any);
       setSuccessMsg('Votre profil a été mis à jour avec succès !');
+      setTimeout(() => setSuccessMsg(''), 4000);
       loadData();
     } catch (err) {
       console.error(err);
@@ -477,7 +479,11 @@ export function MemberProfile() {
           ] as const).map(({ key, icon: Icon, label }) => (
             <button
               key={key}
-              onClick={() => setActiveTab(key)}
+              onClick={() => {
+                setActiveTab(key);
+                setSuccessMsg('');
+                setError('');
+              }}
               className={`flex items-center justify-center gap-1.5 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all sm:flex-1 ${
                 activeTab === key ? 'bg-[#0099DC] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50'
               }`}
