@@ -1154,14 +1154,36 @@ def member_login(request):
         try:
             first_name = match.get("full_name", "").split()[0] if match.get("full_name") else "U-Reporter"
             subject = "Bienvenue dans la communauté U-Report Cocody ! 🎉"
+            
+            # Détecter les informations manquantes sur le profil
+            missing_fields = []
+            if not match.get("birth_date"):
+                missing_fields.append("• Date de naissance (nécessaire pour attribuer votre statut Junior, Senior ou Mentor)")
+            if not match.get("sex") or match.get("sex") == "non_precise":
+                missing_fields.append("• Genre / Sexe")
+            if not match.get("commune"):
+                missing_fields.append("• Quartier ou commune de résidence")
+
+            missing_section = ""
+            if missing_fields:
+                missing_list_str = "\n".join(missing_fields)
+                missing_section = (
+                    "\n⚠️ ACTION REQUISE POUR FINALISER VOTRE INSCRIPTION :\n"
+                    "Il manque encore quelques informations sur votre profil. Merci de vous connecter à votre espace et de les compléter :\n"
+                    f"{missing_list_str}\n"
+                )
+
             message = (
                 f"Bonjour {first_name},\n\n"
-                "Nous sommes ravis de vous compter parmi les membres de la communauté U-Report Cocody.\n\n"
-                "Votre profil a bien été créé et vous pouvez désormais vous connecter à la plateforme pour :\n"
-                "- Suivre vos activités et votre progression\n"
-                "- Découvrir les prochains événements\n"
-                "- Contribuer au développement de notre commune\n\n"
-                "Pour toute question, contactez-nous à : ureportcocody01@hotmail.com\n\n"
+                "Nous sommes ravis de vous compter parmi les membres de la communauté U-Report Cocody ! 🥳\n\n"
+                "Votre espace membre est désormais actif. Vous pouvez vous y connecter dès maintenant pour :\n"
+                "- Découvrir et vous inscrire aux prochains événements\n"
+                "- Suivre votre participation et vos distinctions\n"
+                "- Mettre à jour votre profil\n"
+                f"{missing_section}\n"
+                "Accédez directement à votre espace membre : https://ureport-cocody.vercel.app\n\n"
+                "Pour toute question, vous pouvez nous écrire à : ureportcocody01@hotmail.com\n\n"
+                "Engagés pour Cocody,\n"
                 "L'équipe U-Report Cocody"
             )
             _send_email_via_brevo(
