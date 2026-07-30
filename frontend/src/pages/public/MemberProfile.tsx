@@ -171,20 +171,50 @@ export function MemberProfile() {
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      setError('La photo ne doit pas dépasser 2 Mo.');
+    if (file.size > 5 * 1024 * 1024) {
+      setError('La photo ne doit pas dépasser 5 Mo.');
       return;
     }
     const reader = new FileReader();
     reader.onload = async (ev) => {
-      const dataUrl = ev.target?.result as string;
-      setAvatarPreview(dataUrl);
+      const rawDataUrl = ev.target?.result as string;
       setIsSavingAvatar(true);
+      setError('');
+      
       try {
-        await api.patch(`/members/${session.id}`, { avatar_url: dataUrl });
+        // Redimensionner et compresser l'image à 250x250px en JPEG
+        const compressedDataUrl = await new Promise<string>((resolve, reject) => {
+          const img = new Image();
+          img.src = rawDataUrl;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const size = 250; // Carré parfait pour un avatar
+            canvas.width = size;
+            canvas.height = size;
+            
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+              resolve(rawDataUrl);
+              return;
+            }
+            
+            // Recadrer l'image au centre pour obtenir un carré parfait
+            const sourceSize = Math.min(img.width, img.height);
+            const sourceX = (img.width - sourceSize) / 2;
+            const sourceY = (img.height - sourceSize) / 2;
+            
+            ctx.drawImage(img, sourceX, sourceY, sourceSize, sourceSize, 0, 0, size, size);
+            resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compresse en JPEG à 70% de qualité
+          };
+          img.onerror = (err) => reject(err);
+        });
+
+        setAvatarPreview(compressedDataUrl);
+        await api.patch(`/members/${session.id}`, { avatar_url: compressedDataUrl });
         setSuccessMsg('Photo de profil mise à jour !');
-        setMemberData((prev: any) => prev ? { ...prev, avatar_url: dataUrl } : prev);
-      } catch {
+        setMemberData((prev: any) => prev ? { ...prev, avatar_url: compressedDataUrl } : prev);
+      } catch (err) {
+        console.error('Erreur compression avatar:', err);
         setError('Impossible de sauvegarder la photo.');
         setAvatarPreview(memberData?.avatar_url || null);
       } finally {

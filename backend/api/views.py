@@ -1195,7 +1195,7 @@ def member_detail(request, member_id):
             return error_response("Forbidden: Votre rôle ne vous permet pas de modifier les membres.", 403)
         
         if admin_role == "logistique":
-            allowed_fields = {"interview_passed", "tshirt_received", "is_pco", "commission", "integration_note"}
+            allowed_fields = {"interview_passed", "tshirt_received", "is_pco", "departement_commission", "integration_note"}
             payload = {k: v for k, v in payload.items() if k in allowed_fields}
     elif current_member:
         payload = {
@@ -1208,8 +1208,30 @@ def member_detail(request, member_id):
         }
         if "avatar_url" in body_json(request):
             raw = body_json(request).get("avatar_url")
-            if raw is None or (isinstance(raw, str) and len(raw) < 5_000_000):
-                payload["avatar_url"] = raw
+            if raw is not None:
+                if not isinstance(raw, str):
+                    return error_response("Format d'avatar invalide.", 400)
+                if len(raw) > 80000:
+                    return error_response("La photo de profil est trop lourde.", 400)
+                
+                # Si c'est une image Base64, on l'uploade dans le stockage Supabase
+                if raw.startswith("data:image/"):
+                    import base64
+                    try:
+                        header, encoded = raw.split(",", 1)
+                        content_type = header.split(";")[0].split(":")[1]
+                        file_bytes = base64.b64decode(encoded)
+                        file_ext = "jpg"
+                        if "png" in content_type:
+                            file_ext = "png"
+                        file_name = f"avatar_{member_id}.{file_ext}"
+                        
+                        # Upload dans le stockage public 'avatars' de Supabase
+                        raw = supabase.upload_avatar(file_name, file_bytes, content_type)
+                    except Exception as e:
+                        print("Erreur upload storage Supabase:", e)
+                        return error_response("Impossible d'enregistrer l'image dans le stockage en ligne.", 500)
+            payload["avatar_url"] = raw
     else:
         return error_response("Accès refusé.", 403)
 
