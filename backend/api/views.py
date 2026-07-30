@@ -221,8 +221,7 @@ def _public_member_payload(member: dict) -> dict:
         "commune": member.get("commune"),
         "birth_date": member.get("birth_date"),
         "avatar_url": member.get("avatar_url"),
-        "created_at": member.get("created_at"),
-        "date_adhesion": member.get("created_at"),
+        "date_adhesion": member.get("date_adhesion"),
     }
 
 
