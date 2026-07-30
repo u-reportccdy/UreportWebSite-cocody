@@ -44,6 +44,8 @@ export function saveMemberSession(session: MemberSession) {
 export function clearMemberSession() {
   if (typeof window === 'undefined') return;
   localStorage.removeItem(MEMBER_SESSION_KEY);
+  localStorage.removeItem('member_access_token');
+  localStorage.removeItem('member_refresh_token');
   dispatchMemberSessionChange();
 }
 
