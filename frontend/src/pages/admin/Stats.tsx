@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ImpactChart } from '../../components/admin/ImpactChart';
 import { fetchMembers } from '../../services/member.service';
@@ -58,7 +58,7 @@ export function Stats() {
   };
 
   const membersFiltered = useMemo(
-    () => filterBySelectedYear(members, m => m.created_at),
+    () => filterBySelectedYear(members, m => m.date_adhesion || m.created_at),
     [members, selectedYear]
   );
   const eventsFiltered = useMemo(
@@ -89,7 +89,7 @@ export function Stats() {
 
       points.push({
         name: months[month],
-        participants: countInMonth(membersFiltered, m => m.created_at),
+        participants: countInMonth(membersFiltered, m => m.date_adhesion || m.created_at),
         événements: countInMonth(eventsFiltered, e => e.created_at || e.date || e.event_date),
         partenaires: countInMonth(partnersFiltered, p => p.created_at),
       });
@@ -113,7 +113,7 @@ export function Stats() {
       }
 
       const cumulativeUsers = membersFiltered.filter(m => {
-        const md = new Date(m.created_at);
+        const md = new Date(m.date_adhesion || m.created_at);
         if (md.getFullYear() < targetYear) return true;
         if (md.getFullYear() === targetYear && md.getMonth() <= targetMonth) return true;
         return false;

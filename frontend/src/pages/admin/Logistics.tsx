@@ -200,7 +200,7 @@ export function Logistics() {
       escapeCsv(user.phone || user.telephone || ''),
       escapeCsv(user.member_status || user.status || ''),
       escapeCsv(user.attended ? 'Present' : 'Absent'),
-      escapeCsv(user.created_at || user.date_inscription || ''),
+      escapeCsv(user.date_adhesion || user.created_at || user.date_inscription || ''),
     ].join(';')).join('\r\n');
 
     const title = selectedEvent ? selectedEvent.title : 'activite';
@@ -923,14 +923,14 @@ export function Logistics() {
                             
                             {/* 1. Ancienneté */}
                             {(() => {
-                              const months = getMembershipDurationMonths(selectedMember.created_at);
+                              const months = getMembershipDurationMonths(selectedMember.date_adhesion || selectedMember.created_at);
                               const eligible = months >= 6;
                               return (
                                 <div className="bg-slate-50/50 rounded-xl border border-slate-200 p-4 flex flex-col items-center justify-between text-center gap-3.5 min-h-[160px]">
                                   <Hourglass className={`w-8 h-8 ${eligible ? 'text-green-600' : 'text-slate-400'}`} />
                                   <div className="space-y-1">
                                     <span className="block text-[10px] font-black text-slate-700 leading-snug">
-                                      Membre depuis {getMembershipMonthYear(selectedMember.created_at)}
+                                      Membre depuis {getMembershipMonthYear(selectedMember.date_adhesion || selectedMember.created_at)}
                                     </span>
                                   </div>
                                   <span className={`inline-flex items-center gap-1 text-xs font-black uppercase ${

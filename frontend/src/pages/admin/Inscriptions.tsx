@@ -103,7 +103,7 @@ export function Inscriptions() {
       escapeCsv(user.phone || user.telephone || ''),
       escapeCsv(user.member_status || user.status || ''),
       escapeCsv(user.attended ? 'Present' : 'Absent'),
-      escapeCsv(user.created_at || user.date_inscription || ''),
+      escapeCsv(user.date_adhesion || user.created_at || user.date_inscription || ''),
     ].join(';')).join('\r\n');
 
     const fullContent = '\uFEFF' + 'sep=;\r\n' + headers.join(';') + '\r\n' + csvContent;
