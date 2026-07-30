@@ -436,9 +436,9 @@ export function MemberProfile() {
                   </span>
                 )}
               </div>
-              {memberData?.created_at && (
+              {memberData?.date_adhesion && (
                 <div className="text-xs text-gray-400 font-bold mt-2 flex items-center gap-1">
-                  <span>🚀</span> Membre de U-Reporters depuis le {new Date(memberData.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  <span>🚀</span> Membre de U-Reporters depuis le {new Date(memberData.date_adhesion).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </div>
               )}
             </div>
