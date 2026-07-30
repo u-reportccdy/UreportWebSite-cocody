@@ -436,6 +436,11 @@ export function MemberProfile() {
                   </span>
                 )}
               </div>
+              {memberData?.created_at && (
+                <div className="text-xs text-gray-400 font-bold mt-2 flex items-center gap-1">
+                  <span>🚀</span> Membre de U-Reporters depuis le {new Date(memberData.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </div>
+              )}
             </div>
             {summary && (
               <div className="grid grid-cols-3 divide-x divide-gray-200 bg-gray-50 p-3 sm:p-4 rounded-2xl border border-gray-100 w-full md:w-auto shrink-0">
