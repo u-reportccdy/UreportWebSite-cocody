@@ -333,7 +333,7 @@ def _bootstrap_admins() -> list[dict]:
 def _get_admin_by_email(email: str) -> dict | None:
     normalized = _normalize_email(email)
     try:
-        rows = supabase.select("admins", f"select=*&email=eq.{normalized}")
+        rows = supabase.select("admins", f"select=*&email=ilike.{normalized}")
         if rows:
             return rows[0]
         
@@ -341,7 +341,7 @@ def _get_admin_by_email(email: str) -> dict | None:
         all_rows = supabase.select("admins", "select=id")
         if not all_rows:
             _bootstrap_admins()
-            rows = supabase.select("admins", f"select=*&email=eq.{normalized}")
+            rows = supabase.select("admins", f"select=*&email=ilike.{normalized}")
             if rows:
                 return rows[0]
     except Exception:
