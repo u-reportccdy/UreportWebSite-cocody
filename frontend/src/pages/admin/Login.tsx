@@ -51,7 +51,7 @@ export function Login() {
           )}
 
           <div className="space-y-1.5">
-            <label className="text-sm font-semibold text-gray-700 ml-1">Identifiant ou Email</label>
+            <label className="text-sm font-semibold text-gray-700 ml-1">Login</label>
             <input
               required
               type="text"
