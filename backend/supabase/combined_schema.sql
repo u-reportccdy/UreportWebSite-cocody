@@ -47,7 +47,7 @@ create table if not exists members (
   sex text not null default 'non_precise' check (sex in ('homme', 'femme', 'non_precise')),
   birth_date date,
   commune text not null default '',
-  status text not null default 'aspirant' check (status in ('aspirant', 'ureporter', 'mentor')),
+  status text not null default 'aspirant' check (status in ('aspirant', 'junior', 'senior', 'mentor')),
   integration_note text not null default '',
   interview_passed boolean default false,
   tshirt_received boolean default false,

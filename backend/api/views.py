@@ -208,10 +208,10 @@ def _phones_match(phone1: str | None, phone2: str | None) -> bool:
 
 def _calculate_status_from_birth_date(birth_date_str: str | None) -> str:
     """Calcule l'âge et attribue le statut : 
+    - Sans date de naissance -> aspirant
     - 15 à 18 ans -> junior
     - 19 à 25 ans -> senior
-    - 26 ans et + -> mentor
-    - sinon -> aspirant"""
+    - 26 ans et + -> mentor"""
     if not birth_date_str:
         return "aspirant"
     try:
