@@ -51,15 +51,15 @@ export function Login() {
           )}
 
           <div className="space-y-1.5">
-            <label className="text-sm font-semibold text-gray-700 ml-1">Adresse Email</label>
+            <label className="text-sm font-semibold text-gray-700 ml-1">Login</label>
             <input
               required
-              type="email"
+              type="text"
               name="admin_email_no_autofill"
               autoComplete="off"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@ureport.ci"
+              placeholder="Ex: LOGIS-URC.26"
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0099DC] focus:border-transparent transition-all placeholder:text-gray-400"
             />
           </div>
