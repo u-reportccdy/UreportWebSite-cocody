@@ -1195,7 +1195,7 @@ def member_detail(request, member_id):
             return error_response("Forbidden: Votre rôle ne vous permet pas de modifier les membres.", 403)
         
         if admin_role == "logistique":
-            allowed_fields = {"interview_passed", "tshirt_received", "is_pco", "commission", "integration_note"}
+            allowed_fields = {"interview_passed", "tshirt_received", "is_pco", "departement_commission", "integration_note"}
             payload = {k: v for k, v in payload.items() if k in allowed_fields}
     elif current_member:
         payload = {

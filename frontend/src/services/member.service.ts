@@ -43,7 +43,7 @@ export const updateMember = async (memberId: string, memberData: {
   birth_date: string | null;
   commune: string;
   status: 'aspirant' | 'ureporter' | 'mentor';
-  commission?: string;
+  departement_commission?: string;
 }) => {
   const response = await api.patch(`/members/${memberId}`, memberData);
   const payload = response.data.data;
@@ -109,7 +109,7 @@ export const updateMemberLogistics = async (
     interview_passed?: boolean;
     tshirt_received?: boolean;
     is_pco?: boolean;
-    commission?: string;
+    departement_commission?: string;
     integration_note?: string;
   }
 ) => {

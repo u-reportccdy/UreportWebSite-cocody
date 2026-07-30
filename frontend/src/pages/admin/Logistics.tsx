@@ -738,10 +738,10 @@ export function Logistics() {
                               {/* 4. Commission Role */}
                               <div className="bg-slate-50/50 border border-slate-200 rounded-xl p-4 flex flex-col gap-1.5">
                                 <div className="flex items-center justify-between text-slate-400">
-                                  <span className="text-[10px] font-black uppercase tracking-wider">Commission</span>
+                                  <span className="text-[10px] font-black uppercase tracking-wider">Département</span>
                                   <Briefcase className="w-4 h-4 text-amber-600 shrink-0" />
                                 </div>
-                                <span className="block font-black text-sm text-slate-850 truncate">{selectedMember.commission || 'Non assignée'}</span>
+                                <span className="block font-black text-sm text-slate-850 truncate">{selectedMember.departement_commission || 'Non assigné'}</span>
                               </div>
 
                             </div>
@@ -757,14 +757,14 @@ export function Logistics() {
                                 
                                 {/* Commission Selection */}
                                 <div className="bg-white p-2.5 rounded-lg border border-slate-150 flex flex-col gap-1.5 shadow-xs">
-                                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-wide">Assigner Commission</label>
+                                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-wide">Assigner Département</label>
                                   <select
-                                    value={selectedMember.commission || ''}
-                                    onChange={e => handleUpdateMemberField('commission', e.target.value)}
+                                    value={selectedMember.departement_commission || ''}
+                                    onChange={e => handleUpdateMemberField('departement_commission', e.target.value)}
                                     disabled={isUpdatingMemberTshirt}
                                     className="w-full text-xs font-bold bg-white text-slate-700 outline-none border border-slate-200 p-1.5 rounded"
                                   >
-                                    <option value="">Aucune</option>
+                                    <option value="">Aucun</option>
                                     <option value="Trésorerie">Trésorerie</option>
                                     <option value="Secrétariat Général">Secrétariat Général</option>
                                     <option value="Communication">Communication</option>

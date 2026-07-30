@@ -69,7 +69,7 @@ export function MemberSearch() {
     birth_date: '',
     commune: '',
     status: 'aspirant',
-    commission: '',
+    departement_commission: '',
   });
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export function MemberSearch() {
       birth_date: member.birth_date || '',
       commune: member.commune || '',
       status: member.status || 'aspirant',
-      commission: member.commission || '',
+      departement_commission: member.departement_commission || '',
     });
     const [data, awardsData] = await Promise.all([
       fetchMemberActivities(member.id),
@@ -125,7 +125,7 @@ export function MemberSearch() {
         birth_date: form.birth_date || null,
         commune: form.commune.trim(),
         status: form.status as 'aspirant' | 'ureporter' | 'mentor',
-        commission: form.commission.trim(),
+        departement_commission: form.departement_commission.trim(),
       });
       setSelected(updated);
       setMembers(prev => prev.map(m => (m.id === updated.id ? updated : m)));
@@ -254,9 +254,9 @@ export function MemberSearch() {
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${memberStatusColors[profile?.summary?.status || selected.status] || 'bg-gray-100 text-gray-600'}`}>
                         {memberStatusLabel[profile?.summary?.status || selected.status] || '-'}
                       </span>
-                      {selected.commission && (
+                      {selected.departement_commission && (
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-amber-50 text-amber-700 border-amber-200">
-                          {selected.commission}
+                          {selected.departement_commission}
                         </span>
                       )}
                     </div>
@@ -293,9 +293,9 @@ export function MemberSearch() {
                     </select>
                     {/* Commission */}
                     <div className="md:col-span-2">
-                      <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wide">Commission / Département</label>
-                      <select value={form.commission} onChange={e => setForm(prev => ({ ...prev, commission: e.target.value }))} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white text-gray-900">
-                        <option value="">Aucune commission</option>
+                      <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wide">Département / Commission</label>
+                      <select value={form.departement_commission} onChange={e => setForm(prev => ({ ...prev, departement_commission: e.target.value }))} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white text-gray-900">
+                        <option value="">Aucun département</option>
                         <option value="Trésorerie">Trésorerie</option>
                         <option value="Secrétariat Général">Secrétariat Général</option>
                         <option value="Communication">Communication</option>

@@ -52,7 +52,7 @@ create table if not exists members (
   interview_passed boolean default false,
   tshirt_received boolean default false,
   is_pco boolean default false,
-  commission text default '',
+  departement_commission text default '',
   avatar_url text default '',
   welcome_email_sent boolean not null default false,
   otp_code text default null,
