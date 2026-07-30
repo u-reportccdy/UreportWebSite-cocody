@@ -76,9 +76,13 @@ from .utils import (
     error_response,
     status_response,
     create_admin_token,
+    create_admin_refresh_token,
     parse_admin_token,
+    parse_admin_refresh_token,
     create_member_token,
+    create_member_refresh_token,
     parse_member_token,
+    parse_member_refresh_token,
 )
 
 _LOGIN_ATTEMPTS: dict[str, dict[str, float | int]] = {}
@@ -546,9 +550,16 @@ def portal_login(request):
 
     _LOGIN_ATTEMPTS.pop(ip, None)
     role = admin.get("role", "communication")
-    token = create_admin_token(email, role)
-    response = data_response({"role": role, "email": email})
-    return _set_session_cookie(response, ADMIN_COOKIE_NAME, token, django_settings.ADMIN_TOKEN_TTL_SECONDS)
+    access_token = create_admin_token(email, role)
+    refresh_token = create_admin_refresh_token(email, role)
+    
+    return data_response({
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+        "role": role,
+        "email": email
+    })
 
 
 @api_view(["POST"])
@@ -558,6 +569,47 @@ def admin_logout(request):
         return _clear_session_cookie(response, ADMIN_COOKIE_NAME)
     except Exception:
         return data_response("Déconnecté avec succès")
+
+
+@api_view(["POST"])
+def token_refresh(request):
+    payload = body_json(request)
+    refresh_token = payload.get("refresh_token")
+    user_type = payload.get("user_type")  # "admin" ou "member"
+
+    if not refresh_token:
+        return error_response("Refresh token is required.", 400)
+
+    if user_type == "admin":
+        data = parse_admin_refresh_token(refresh_token)
+        if not data:
+            return error_response("Invalid or expired refresh token.", 401)
+        
+        email = data.get("email")
+        role = data.get("role")
+        new_access = create_admin_token(email, role)
+        new_refresh = create_admin_refresh_token(email, role)
+        return data_response({
+            "access_token": new_access,
+            "refresh_token": new_refresh,
+            "token_type": "bearer"
+        })
+    elif user_type == "member":
+        data = parse_member_refresh_token(refresh_token)
+        if not data:
+            return error_response("Invalid or expired refresh token.", 401)
+        
+        member_id = data.get("member_id")
+        phone = data.get("phone")
+        new_access = create_member_token(member_id, phone)
+        new_refresh = create_member_refresh_token(member_id, phone)
+        return data_response({
+            "access_token": new_access,
+            "refresh_token": new_refresh,
+            "token_type": "bearer"
+        })
+    else:
+        return error_response("Invalid user type.", 400)
 
 
 @api_view(["GET"])
@@ -1099,9 +1151,15 @@ def member_login(request):
         except Exception as email_err:
             print(f"Failed to send welcome email to {email}: {email_err}")
 
-    token = create_member_token(str(match.get("id")), str(match.get("phone") or ""))
-    response = data_response({"member": _public_member_payload(match)})
-    return _set_session_cookie(response, MEMBER_COOKIE_NAME, token, django_settings.MEMBER_TOKEN_TTL_SECONDS)
+    access_token = create_member_token(str(match.get("id")), str(match.get("phone") or ""))
+    refresh_token = create_member_refresh_token(str(match.get("id")), str(match.get("phone") or ""))
+    
+    return data_response({
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+        "member": _public_member_payload(match)
+    })
 
 
 @api_view(["PATCH"])

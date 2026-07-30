@@ -59,8 +59,20 @@ def create_admin_token(email: str, role: str) -> str:
     return signer.sign(payload)
 
 
+def create_admin_refresh_token(email: str, role: str) -> str:
+    signer = signing.TimestampSigner(salt="admin-refresh")
+    payload = signing.dumps({"email": email, "role": role})
+    return signer.sign(payload)
+
+
 def create_member_token(member_id: str, phone: str) -> str:
     signer = signing.TimestampSigner(salt="member-auth")
+    payload = signing.dumps({"member_id": member_id, "phone": phone})
+    return signer.sign(payload)
+
+
+def create_member_refresh_token(member_id: str, phone: str) -> str:
+    signer = signing.TimestampSigner(salt="member-refresh")
     payload = signing.dumps({"member_id": member_id, "phone": phone})
     return signer.sign(payload)
 
@@ -75,19 +87,50 @@ def parse_admin_token(auth_header: str | None) -> dict[str, Any] | None:
         return None
     signer = signing.TimestampSigner(salt="admin-auth")
     try:
-        unsigned = signer.unsign(token, max_age=getattr(settings, "ADMIN_TOKEN_TTL_SECONDS", 3600 * 8))
+        # Token d'accès plus court (ex: 1 heure pour la prod, ou TTL configurable)
+        unsigned = signer.unsign(token, max_age=getattr(settings, "ADMIN_TOKEN_TTL_SECONDS", 3600))
+        return signing.loads(unsigned)
+    except Exception:
+        return None
+
+
+def parse_admin_refresh_token(token: str | None) -> dict[str, Any] | None:
+    if not token:
+        return None
+    signer = signing.TimestampSigner(salt="admin-refresh")
+    try:
+        # Refresh token valable 30 jours
+        unsigned = signer.unsign(token, max_age=3600 * 24 * 30)
         return signing.loads(unsigned)
     except Exception:
         return None
 
 
 def parse_member_token(request) -> dict[str, Any] | None:
-    token = (request.headers.get("X-Member-Token") or request.COOKIES.get("member_session") or "").strip()
+    auth_header = request.headers.get("Authorization") or ""
+    token = ""
+    if auth_header.startswith("Bearer "):
+        token = auth_header.split(" ", 1)[1].strip()
+    else:
+        token = (request.headers.get("X-Member-Token") or request.COOKIES.get("member_session") or "").strip()
+        
     if not token:
         return None
     signer = signing.TimestampSigner(salt="member-auth")
     try:
-        unsigned = signer.unsign(token, max_age=getattr(settings, "MEMBER_TOKEN_TTL_SECONDS", 3600 * 24 * 30))
+        # Token d'accès membre de 1 heure
+        unsigned = signer.unsign(token, max_age=getattr(settings, "MEMBER_TOKEN_TTL_SECONDS", 3600))
+        return signing.loads(unsigned)
+    except Exception:
+        return None
+
+
+def parse_member_refresh_token(token: str | None) -> dict[str, Any] | None:
+    if not token:
+        return None
+    signer = signing.TimestampSigner(salt="member-refresh")
+    try:
+        unsigned = signer.unsign(token, max_age=3600 * 24 * 30)
         return signing.loads(unsigned)
     except Exception:
         return None
@@ -140,6 +183,8 @@ def _is_admin_request(path: str, method: str) -> bool:
     if path == "/api/auth/superadmin/login":
         return False
     if path == "/api/auth/portal/login":
+        return False
+    if path == "/api/auth/token/refresh":
         return False
     # Members can update their own profile and read their own awards
     import re
