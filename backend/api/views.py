@@ -1208,8 +1208,12 @@ def member_detail(request, member_id):
         }
         if "avatar_url" in body_json(request):
             raw = body_json(request).get("avatar_url")
-            if raw is None or (isinstance(raw, str) and len(raw) < 5_000_000):
-                payload["avatar_url"] = raw
+            if raw is not None:
+                if not isinstance(raw, str):
+                    return error_response("Format d'avatar invalide.", 400)
+                if len(raw) > 50000:
+                    return error_response("La photo de profil est trop lourde (max 50 Ko après compression).", 400)
+            payload["avatar_url"] = raw
     else:
         return error_response("Accès refusé.", 403)
 
