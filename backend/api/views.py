@@ -206,8 +206,28 @@ def _phones_match(phone1: str | None, phone2: str | None) -> bool:
     return p1 == p2
 
 
-def _normalize_name(value: str | None) -> str:
-    return " ".join(str(value or "").strip().lower().split())
+def _calculate_status_from_birth_date(birth_date_str: str | None) -> str:
+    """Calcule l'âge et attribue le statut : 
+    - 15 à 18 ans -> junior
+    - 19 à 25 ans -> senior
+    - 26 ans et + -> mentor
+    - sinon -> aspirant"""
+    if not birth_date_str:
+        return "aspirant"
+    try:
+        from datetime import datetime, date
+        dob = datetime.strptime(str(birth_date_str).strip(), "%Y-%m-%d").date()
+        today = date.today()
+        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+        if 15 <= age <= 18:
+            return "junior"
+        elif 19 <= age <= 25:
+            return "senior"
+        elif age >= 26:
+            return "mentor"
+        return "aspirant"
+    except Exception:
+        return "aspirant"
 
 
 def _public_member_payload(member: dict) -> dict:
@@ -1234,6 +1254,10 @@ def member_detail(request, member_id):
             payload["avatar_url"] = raw
     else:
         return error_response("Accès refusé.", 403)
+
+    # Calcul automatique du statut basé sur la date de naissance
+    if "birth_date" in payload:
+        payload["status"] = _calculate_status_from_birth_date(payload["birth_date"])
 
     return data_response(supabase.update("members", "id", member_id, payload))
 
