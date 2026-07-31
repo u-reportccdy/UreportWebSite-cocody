@@ -53,6 +53,7 @@ create table if not exists members (
   tshirt_received boolean default false,
   is_pco boolean default false,
   departement_commission text default '',
+  commission_role text default 'membre',
   avatar_url text default '',
   welcome_email_sent boolean not null default false,
   otp_code text default null,

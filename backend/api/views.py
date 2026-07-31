@@ -459,10 +459,11 @@ def events(request):
     payload = body_json(request)
     try:
         new_event = supabase.insert("events", payload)
-        # Trigger event bus
+        event_obj = new_event[0] if isinstance(new_event, list) and new_event else new_event
+        # Trigger event bus (IA Gemini pour génération des tâches)
         try:
             from . import event_bus
-            event_bus.dispatch("event.created", new_event)
+            event_bus.dispatch("event.created", event_obj)
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"Event bus dispatch failed: {e}")

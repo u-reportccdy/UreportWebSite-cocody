@@ -50,6 +50,7 @@ export const updateMember = async (memberId: string, memberData: {
   commune: string;
   status: 'aspirant' | 'ureporter' | 'mentor';
   departement_commission?: string;
+  commission_role?: string;
 }) => {
   const response = await api.patch(`/members/${memberId}`, memberData);
   const payload = response.data.data;

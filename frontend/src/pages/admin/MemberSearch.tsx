@@ -74,6 +74,7 @@ export function MemberSearch() {
     commune: '',
     status: 'aspirant',
     departement_commission: '',
+    commission_role: 'membre',
   });
 
   useEffect(() => {
@@ -107,6 +108,7 @@ export function MemberSearch() {
       commune: member.commune || '',
       status: member.status || 'aspirant',
       departement_commission: member.departement_commission || '',
+      commission_role: member.commission_role || 'membre',
     });
     const [data, awardsData] = await Promise.all([
       fetchMemberActivities(member.id),
@@ -130,6 +132,7 @@ export function MemberSearch() {
         commune: form.commune.trim(),
         status: form.status as 'aspirant' | 'ureporter' | 'mentor',
         departement_commission: form.departement_commission.trim(),
+        commission_role: form.commission_role,
       });
       setSelected(updated);
       setMembers(prev => prev.map(m => (m.id === updated.id ? updated : m)));
@@ -263,6 +266,12 @@ export function MemberSearch() {
                           {selected.departement_commission}
                         </span>
                       )}
+                      {selected.commission_role && selected.commission_role !== 'membre' && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-purple-50 text-purple-700 border-purple-200">
+                          {selected.commission_role === 'responsable' ? 'Responsable / Coordinateur' :
+                           selected.commission_role === 'adjoint' ? 'Adjoint' : 'Coordinateur Général'}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="ml-auto">
@@ -307,6 +316,16 @@ export function MemberSearch() {
                         <option value="Logistique">Logistique</option>
                         <option value="Activités & Programmes">Activités & Programmes</option>
                         <option value="Ressources Humaines">Ressources Humaines</option>
+                      </select>
+                    </div>
+                    {/* Rôle bureau / Responsabilité */}
+                    <div className="md:col-span-2">
+                      <label className="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-wide">Responsabilité / Rôle Bureau</label>
+                      <select value={form.commission_role} onChange={e => setForm(prev => ({ ...prev, commission_role: e.target.value }))} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white text-gray-900 font-medium">
+                        <option value="membre">Membre Simple</option>
+                        <option value="responsable">Responsable / Coordinateur de Commission</option>
+                        <option value="adjoint">Responsable Adjoint</option>
+                        <option value="coordinateur_general">Coordinateur Général du Comité</option>
                       </select>
                     </div>
                     {/* Status — admin only, with explanatory label */}
