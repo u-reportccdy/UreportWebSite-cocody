@@ -1026,9 +1026,16 @@ def member_login_request(request):
         _record_failed_attempt(rate_limit_key, now_ts)
         return error_response("Aucun membre correspondant. Vérifiez le nom complet et le numéro.", 401)
 
+    # Vérification de l'appareil de confiance (Device Trust Token)
+    device_token = payload.get("device_token")
+    trusted_token = match.get("trusted_device_token")
+    if device_token and trusted_token and str(device_token).strip() == str(trusted_token).strip():
+        # Appareil reconnu ! Pas besoin d'OTP
+        return data_response({"otp_required": False, "trusted_device": True})
+
     email = (match.get("email") or "").strip()
     if not email:
-        # Option A : Pas d'email renseigné, connexion directe autorisée sans OTP
+        # Pas d'email renseigné, connexion directe autorisée
         return data_response({"otp_required": False})
 
     # Générer le code OTP
@@ -1197,12 +1204,24 @@ def member_login(request):
         except Exception as email_err:
             print(f"Failed to send welcome email to {email}: {email_err}")
 
+    # Gestion du Device Trust Token (Reconnaissance de l'appareil)
+    device_token = payload.get("device_token") or match.get("trusted_device_token")
+    if not device_token:
+        import uuid
+        device_token = str(uuid.uuid4())
+    
+    try:
+        supabase.update("members", "id", str(match.get("id")), {"trusted_device_token": device_token})
+    except Exception as e:
+        print("Failed to save trusted_device_token:", e)
+
     access_token = create_member_token(str(match.get("id")), str(match.get("phone") or ""))
     refresh_token = create_member_refresh_token(str(match.get("id")), str(match.get("phone") or ""))
     
     return data_response({
         "access_token": access_token,
         "refresh_token": refresh_token,
+        "device_token": device_token,
         "token_type": "bearer",
         "member": _public_member_payload(match)
     })
