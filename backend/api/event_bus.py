@@ -81,14 +81,27 @@ def _send_event_notifications(event_data):
     event_location = event_data.get("location", "Non défini")
     event_description = event_data.get("description", "")
     
-    # Fetch all admins' emails
+    # Fetch emails from both admins AND members assigned as responsibles / coordinators
+    recipients = set()
     try:
         admins = supabase.select("admins", "select=email,role")
-        recipient_list = list({admin["email"].strip() for admin in admins if admin.get("email")})
+        for admin in admins:
+            if admin.get("email"):
+                recipients.add(admin["email"].strip())
     except Exception as e:
         logger.error(f"Error fetching admin emails for notification: {e}")
-        recipient_list = ["comm@test.com", "logistique@test.com", "finance@test.com", "secretariat@test.com"]
-        
+
+    try:
+        members_list = supabase.select("members", "select=email,commission_role,departement_commission")
+        for m in members_list:
+            role = str(m.get("commission_role") or "").strip()
+            email = str(m.get("email") or "").strip()
+            if email and role in ("responsable", "adjoint", "coordinateur_general"):
+                recipients.add(email)
+    except Exception as e:
+        logger.error(f"Error fetching responsible member emails for notification: {e}")
+
+    recipient_list = list(recipients)
     if not recipient_list:
         return
         
