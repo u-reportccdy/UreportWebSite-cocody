@@ -87,8 +87,18 @@ const escapeHtml = (value: unknown): string => {
 // Component
 // ---------------------------------------------------------------------------
 export function MemberProfile() {
-  const session = loadMemberSession();
-  if (!session) return <Navigate to={PATHS.PUBLIC.HOME} replace />;
+  const [currentSession, setCurrentSession] = useState(() => loadMemberSession());
+
+  useEffect(() => {
+    const handleSessionChange = () => {
+      setCurrentSession(loadMemberSession());
+    };
+    window.addEventListener('member-session-changed', handleSessionChange);
+    return () => window.removeEventListener('member-session-changed', handleSessionChange);
+  }, []);
+
+  if (!currentSession) return <Navigate to={PATHS.PUBLIC.HOME} replace />;
+  const session = currentSession;
 
   const [activeTab, setActiveTab] = useState<'profile' | 'activities' | 'contributions' | 'certificat'>('profile');
   const [showWelcomeModal, setShowWelcomeModal] = useState(() => window.location.search.includes('complete=true'));

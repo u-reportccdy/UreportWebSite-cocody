@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, LogOut, User } from 'lucide-react';
 import { Link } from './Link';
 import { Button } from '../ui/Button';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { JoinModal } from './JoinModal';
 import { PATHS } from '../../routes/paths';
@@ -18,6 +18,7 @@ interface MemberSession {
 }
 
 export function Navbar() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -69,6 +70,7 @@ export function Navbar() {
     }
     clearMemberSession();
     setSession(null);
+    navigate(PATHS.PUBLIC.HOME);
   };
 
   const isActive = (href: string) => {

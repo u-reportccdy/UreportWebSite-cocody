@@ -68,6 +68,9 @@ export function AdminLayout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const role = sessionStorage.getItem('admin_role');
+  if (!role) {
+    return <Navigate to={PATHS.ADMIN.LOGIN} replace />;
+  }
   
   // Guard the routes dynamically on mount/render
   const path = location.pathname;
