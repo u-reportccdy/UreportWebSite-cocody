@@ -1026,11 +1026,13 @@ def member_login_request(request):
         _record_failed_attempt(rate_limit_key, now_ts)
         return error_response("Aucun membre correspondant. Vérifiez le nom complet et le numéro.", 401)
 
-    # Vérification de l'appareil de confiance (Device Trust Token)
-    device_token = payload.get("device_token")
-    trusted_token = match.get("trusted_device_token") or match.get("jeton_de_périphérique_de_confiance")
-    if device_token and trusted_token and str(device_token).strip() == str(trusted_token).strip():
-        # Appareil reconnu ! Pas besoin d'OTP
+    # Vérification de l'appareil de confiance (Multi-appareils)
+    device_token = (payload.get("device_token") or "").strip()
+    raw_trusted = str(match.get("trusted_device_token") or match.get("jeton_de_périphérique_de_confiance") or "").strip()
+    trusted_tokens = [t.strip() for t in raw_trusted.split(",") if t.strip()]
+    
+    if device_token and device_token in trusted_tokens:
+        # Appareil reconnu (présent dans la liste des appareils autorisés) ! Pas besoin d'OTP
         return data_response({"otp_required": False, "trusted_device": True})
 
     email = (match.get("email") or "").strip()
@@ -1119,9 +1121,10 @@ def member_login(request):
 
     # Validation OTP si le membre a un email enregistré et que l'appareil N'EST PAS de confiance
     email = (match.get("email") or "").strip()
-    device_token = payload.get("device_token")
-    trusted_token = match.get("trusted_device_token") or match.get("jeton_de_périphérique_de_confiance")
-    is_trusted = bool(device_token and trusted_token and str(device_token).strip() == str(trusted_token).strip())
+    device_token = (payload.get("device_token") or "").strip()
+    raw_trusted = str(match.get("trusted_device_token") or match.get("jeton_de_périphérique_de_confiance") or "").strip()
+    trusted_tokens = [t.strip() for t in raw_trusted.split(",") if t.strip()]
+    is_trusted = bool(device_token and device_token in trusted_tokens)
 
     if email and not is_trusted:
         db_otp_code = match.get("otp_code")
@@ -1209,18 +1212,23 @@ def member_login(request):
             print(f"Failed to send welcome email to {email}: {email_err}")
 
     # Gestion du Device Trust Token (Reconnaissance de l'appareil)
-    device_token = payload.get("device_token") or match.get("trusted_device_token") or match.get("jeton_de_périphérique_de_confiance")
     if not device_token:
         import uuid
         device_token = str(uuid.uuid4())
     
+    if device_token not in trusted_tokens:
+        trusted_tokens.append(device_token)
+    
+    # Conserver les 5 derniers appareils de confiance simultanés
+    updated_trusted_str = ",".join(trusted_tokens[-5:])
+    
     try:
-        supabase.update("members", "id", str(match.get("id")), {"trusted_device_token": device_token})
+        supabase.update("members", "id", str(match.get("id")), {"trusted_device_token": updated_trusted_str})
     except Exception:
         try:
-            supabase.update("members", "id", str(match.get("id")), {"jeton_de_périphérique_de_confiance": device_token})
+            supabase.update("members", "id", str(match.get("id")), {"jeton_de_périphérique_de_confiance": updated_trusted_str})
         except Exception as e:
-            print("Failed to save trusted_device_token:", e)
+            print("Failed to save trusted_device_token list:", e)
 
     access_token = create_member_token(str(match.get("id")), str(match.get("phone") or ""))
     refresh_token = create_member_refresh_token(str(match.get("id")), str(match.get("phone") or ""))
