@@ -6,13 +6,19 @@ export const createMember = async (memberData: any) => {
 };
 
 export const requestMemberLoginOtp = async (credentials: { full_name: string; phone: string }) => {
-  const response = await api.post('/members/login/request', credentials);
+  const device_token = typeof window !== 'undefined' ? localStorage.getItem('ureport_device_token') || undefined : undefined;
+  const response = await api.post('/members/login/request', { ...credentials, device_token });
   return response.data.data; // { otp_required: boolean, masked_email?: string, warning?: string }
 };
 
 export const loginMember = async (credentials: { full_name: string; phone: string; otp_code?: string }) => {
-  const response = await api.post('/members/login', credentials);
-  return response.data.data;
+  const device_token = typeof window !== 'undefined' ? localStorage.getItem('ureport_device_token') || undefined : undefined;
+  const response = await api.post('/members/login', { ...credentials, device_token });
+  const data = response.data.data;
+  if (data?.device_token && typeof window !== 'undefined') {
+    localStorage.setItem('ureport_device_token', data.device_token);
+  }
+  return data;
 };
 
 export const logoutMember = async () => {
