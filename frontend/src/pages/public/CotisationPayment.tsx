@@ -69,7 +69,18 @@ function printReceipt(c: any) {
 }
 
 export function CotisationPayment() {
-  const session = useMemo<MemberSession | null>(() => loadMemberSession(), []);
+  const [currentSession, setCurrentSession] = useState(() => loadMemberSession());
+
+  useEffect(() => {
+    const handleSessionChange = () => setCurrentSession(loadMemberSession());
+    window.addEventListener('member-session-changed', handleSessionChange);
+    return () => window.removeEventListener('member-session-changed', handleSessionChange);
+  }, []);
+
+  if (!currentSession) {
+    return <Navigate to={PATHS.PUBLIC.HOME} replace />;
+  }
+  const session = currentSession;
 
   // Step: 'amount' | 'method' | 'success'
   const [step, setStep] = useState<'amount' | 'method' | 'success'>('amount');

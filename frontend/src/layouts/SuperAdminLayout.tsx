@@ -1,11 +1,17 @@
 import { useState } from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate, Navigate } from 'react-router-dom';
 import { ShieldCheck, LogOut, Settings, Home, Menu, X } from 'lucide-react';
 import { logoutAdmin } from '../services/auth.service';
+import { PATHS } from '../routes/paths';
 
 export function SuperAdminLayout() {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const role = sessionStorage.getItem('admin_role');
+  if (!role || (role !== 'superadmin' && role !== 'admin' && role !== 'president')) {
+    return <Navigate to={PATHS.ADMIN.LOGIN} replace />;
+  }
 
   return (
     <div className="h-screen w-full flex bg-gray-100 text-gray-900 font-sans overflow-hidden relative">
