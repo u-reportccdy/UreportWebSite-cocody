@@ -2,7 +2,7 @@
 import logging
 import os
 import json
-import requests
+import httpx
 from django.core.mail import send_mail
 from . import supabase
 
@@ -17,7 +17,7 @@ def _generate_tasks_with_gemini(event_title, event_description):
         logger.info("GEMINI_API_KEY not found in environment. Using default static tasks.")
         return None
         
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
     prompt = f"""
     Tu es un assistant de gestion d'activités pour le comité local U-Report Cocody (Côte d'Ivoire).
     Génère une liste de tâches préparatoires recommandées pour l'événement suivant :
@@ -50,7 +50,8 @@ def _generate_tasks_with_gemini(event_title, event_description):
         }
     }
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=15)
+        with httpx.Client(timeout=15.0) as client:
+            response = client.post(url, headers=headers, json=payload)
         if response.status_code == 200:
             data = response.json()
             text_response = data["candidates"][0]["content"]["parts"][0]["text"].strip()
@@ -161,21 +162,40 @@ def handle_event_created(event_data):
             }
         ]
 
+    valid_event_id = None
+    if event_id:
+        import uuid
+        try:
+            uuid.UUID(str(event_id))
+            valid_event_id = str(event_id)
+        except ValueError:
+            valid_event_id = None
+
     # Insert tasks into Supabase
     for task_data in tasks:
         task_payload = {
-            "event_id": event_id,
+            "event_id": valid_event_id,
             "title": task_data.get("title"),
-            "description": task_data.get("description", ""),
             "department_code": task_data.get("department_code", "logistique"),
             "status": "todo",
             "due_date": due_date
         }
+        if task_data.get("description"):
+            task_payload["description"] = task_data.get("description")
+
         try:
             supabase.insert("tasks", task_payload)
             logger.info(f"Auto-generated task: '{task_payload['title']}' for department '{task_payload['department_code']}'")
         except Exception as e:
-            logger.error(f"Failed to auto-generate task for event {event_id}: {e}")
+            if "description" in task_payload:
+                task_payload.pop("description", None)
+                try:
+                    supabase.insert("tasks", task_payload)
+                    logger.info(f"Auto-generated task (without description): '{task_payload['title']}' for department '{task_payload['department_code']}'")
+                except Exception as inner_e:
+                    logger.error(f"Failed to auto-generate task for event {event_id}: {inner_e}")
+            else:
+                logger.error(f"Failed to auto-generate task for event {event_id}: {e}")
 
     # 3. Send email notifications
     _send_event_notifications(event_data)
