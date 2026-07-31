@@ -38,12 +38,29 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     firstname: '',
     fullName: '', // Used for connection mode
     email: '',
-    phone: '',
+    phone: '+225 ',
     sex: 'non_precise' as 'homme' | 'femme' | 'non_precise',
     birthDate: '',
     neighborhood: '',
     motivation: '',
   });
+
+  const handlePhoneInputChange = (val: string) => {
+    let raw = val.trim();
+    if (!raw) {
+      setFormData(prev => ({ ...prev, phone: '+225 ' }));
+      return;
+    }
+    // Si l'utilisateur efface tout l'indicatif, on garde au moins +225
+    if (!raw.startsWith('+')) {
+      if (raw.startsWith('225')) {
+        raw = '+' + raw;
+      } else {
+        raw = '+225 ' + raw.replace(/^0+/, '');
+      }
+    }
+    setFormData(prev => ({ ...prev, phone: raw }));
+  };
 
   // Cooldown timer for resending OTP
   useEffect(() => {
@@ -356,7 +373,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                             placeholder="Ex: +225 0707..."
                             inputClassName="pl-10"
                             value={formData.phone}
-                            onChange={e => setFormData({...formData, phone: e.target.value.replace(/[^\d+()\s-]/g, '')})}
+                            onChange={e => handlePhoneInputChange(e.target.value)}
                           />
                         </div>
                       </>
@@ -423,7 +440,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                           placeholder="Ex: +225 07..."
                           inputClassName="pl-10"
                           value={formData.phone}
-                          onChange={e => setFormData({...formData, phone: e.target.value.replace(/[^\d+()\s-]/g, '')})}
+                          onChange={e => handlePhoneInputChange(e.target.value)}
                         />
                       </div>
                     </div>
