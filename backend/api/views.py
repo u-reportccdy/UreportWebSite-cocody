@@ -957,7 +957,7 @@ def superadmin_logs(request):
 @api_view(["GET", "POST"])
 def members(request):
     if request.method == "GET":
-        rows = supabase.select("members", "select=*&order=created_at.desc")
+        rows = supabase.select("members", "select=*&order=date_adhesion.desc")
         q = (request.GET.get("q") or "").strip().lower()
         if not q:
             return data_response(rows)
@@ -980,7 +980,7 @@ def members(request):
     if not payload["full_name"] or not _normalize_phone(payload["phone"]):
         return error_response("Nom complet et numéro de téléphone requis.", 422)
 
-    existing = supabase.select("members", "select=*&order=created_at.desc")
+    existing = supabase.select("members", "select=*&order=date_adhesion.desc")
     duplicate = next((member for member in existing if _phones_match(member.get("phone"), payload["phone"])), None)
     if duplicate:
         return error_response("Ce numéro de téléphone est déjà enregistré. Veuillez vous connecter.", 409)
@@ -988,8 +988,13 @@ def members(request):
     created = supabase.insert("members", payload)
     member = created[0] if isinstance(created, list) and created else created
     token = create_member_token(str(member.get("id")), str(member.get("phone") or ""))
-    response = data_response({"member": _public_member_payload(member)}, 201)
-    return _set_session_cookie(response, MEMBER_COOKIE_NAME, token, django_settings.MEMBER_TOKEN_TTL_SECONDS)
+    refresh_token = create_member_refresh_token(str(member.get("id")), str(member.get("phone") or ""))
+    return data_response({
+        "access_token": token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+        "member": _public_member_payload(member)
+    })
 
 
 @api_view(["POST"])
@@ -1014,11 +1019,15 @@ def member_login_request(request):
     # Requête filtrée à la source sur Supabase
     members_rows = supabase.select("members", f"select=*&phone=ilike.*{last_9}")
     
+    user_words = set(full_name.split())
     match = next(
         (
             row
             for row in members_rows
-            if _phones_match(row.get("phone"), phone) and set(_normalize_name(row.get("full_name")).split()) == set(full_name.split())
+            if _phones_match(row.get("phone"), phone) and (
+                user_words.issubset(set(_normalize_name(row.get("full_name")).split())) or
+                set(_normalize_name(row.get("full_name")).split()).issubset(user_words)
+            )
         ),
         None,
     )
@@ -1107,11 +1116,15 @@ def member_login(request):
     # Requête filtrée à la source sur Supabase
     members_rows = supabase.select("members", f"select=*&phone=ilike.*{last_9}")
     
+    user_words = set(full_name.split())
     match = next(
         (
             row
             for row in members_rows
-            if _phones_match(row.get("phone"), phone) and set(_normalize_name(row.get("full_name")).split()) == set(full_name.split())
+            if _phones_match(row.get("phone"), phone) and (
+                user_words.issubset(set(_normalize_name(row.get("full_name")).split())) or
+                set(_normalize_name(row.get("full_name")).split()).issubset(user_words)
+            )
         ),
         None,
     )
