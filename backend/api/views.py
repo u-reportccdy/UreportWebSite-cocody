@@ -1028,7 +1028,7 @@ def member_login_request(request):
 
     # Vérification de l'appareil de confiance (Device Trust Token)
     device_token = payload.get("device_token")
-    trusted_token = match.get("trusted_device_token")
+    trusted_token = match.get("trusted_device_token") or match.get("jeton_de_périphérique_de_confiance")
     if device_token and trusted_token and str(device_token).strip() == str(trusted_token).strip():
         # Appareil reconnu ! Pas besoin d'OTP
         return data_response({"otp_required": False, "trusted_device": True})
@@ -1117,9 +1117,13 @@ def member_login(request):
         _record_failed_attempt(rate_limit_key, now_ts)
         return error_response("Aucun membre correspondant. Vérifiez le nom complet et le numéro.", 401)
 
-    # Validation OTP si le membre a un email enregistré
+    # Validation OTP si le membre a un email enregistré et que l'appareil N'EST PAS de confiance
     email = (match.get("email") or "").strip()
-    if email:
+    device_token = payload.get("device_token")
+    trusted_token = match.get("trusted_device_token") or match.get("jeton_de_périphérique_de_confiance")
+    is_trusted = bool(device_token and trusted_token and str(device_token).strip() == str(trusted_token).strip())
+
+    if email and not is_trusted:
         db_otp_code = match.get("otp_code")
         db_otp_expires = match.get("otp_expires_at")
         
@@ -1205,15 +1209,18 @@ def member_login(request):
             print(f"Failed to send welcome email to {email}: {email_err}")
 
     # Gestion du Device Trust Token (Reconnaissance de l'appareil)
-    device_token = payload.get("device_token") or match.get("trusted_device_token")
+    device_token = payload.get("device_token") or match.get("trusted_device_token") or match.get("jeton_de_périphérique_de_confiance")
     if not device_token:
         import uuid
         device_token = str(uuid.uuid4())
     
     try:
         supabase.update("members", "id", str(match.get("id")), {"trusted_device_token": device_token})
-    except Exception as e:
-        print("Failed to save trusted_device_token:", e)
+    except Exception:
+        try:
+            supabase.update("members", "id", str(match.get("id")), {"jeton_de_périphérique_de_confiance": device_token})
+        except Exception as e:
+            print("Failed to save trusted_device_token:", e)
 
     access_token = create_member_token(str(match.get("id")), str(match.get("phone") or ""))
     refresh_token = create_member_refresh_token(str(match.get("id")), str(match.get("phone") or ""))
