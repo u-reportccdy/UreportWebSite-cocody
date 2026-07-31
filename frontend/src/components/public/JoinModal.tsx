@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { XIcon, User, Mail, Phone, MapPin, AlertCircle } from 'lucide-react';
+import { XIcon, User, Mail, Phone, MapPin, AlertCircle, ArrowRight } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { createMember, loginMember, requestMemberLoginOtp } from '../../services/member.service';
@@ -26,13 +26,13 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
   const [error, setError] = useState('');
   const [siteSettings, setSiteSettings] = useState<any>(null);
   const [whatsAppPayload, setWhatsAppPayload] = useState<{ url: string; title: string; message: string; buttonLabel: string } | null>(null);
-  
+
   // OTP Verification States
   const [otpRequired, setOtpRequired] = useState(false);
   const [maskedEmail, setMaskedEmail] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [resendCooldown, setResendCooldown] = useState(0);
-  
+
   const [formData, setFormData] = useState({
     name: '',
     firstname: '',
@@ -177,7 +177,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
             full_name: formData.fullName.trim(),
             phone: formData.phone.trim(),
           });
-          
+
           if (res.otp_required) {
             setOtpRequired(true);
             setMaskedEmail(res.masked_email || '');
@@ -188,14 +188,14 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
             return; // On arrête là, on affiche le formulaire OTP
           }
         }
-        
+
         // Étape 2 (ou direct si pas d'email/secours) : Valider la connexion
         const auth = await loginMember({
           full_name: formData.fullName.trim(),
           phone: formData.phone.trim(),
           otp_code: otpRequired ? otpCode.trim() : undefined
         });
-        
+
         if (auth.access_token) {
           localStorage.setItem('member_access_token', auth.access_token);
         }
@@ -208,7 +208,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
           onSuccess(auth.member);
         }
         onClose();
-        
+
         // Redirect to profile page if email, sex or birth date is missing/default
         const member = auth.member;
         const hasMissingFields = !member.email || member.sex === 'non_precise' || !member.birth_date;
@@ -272,10 +272,10 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
     <AnimatePresence>
       {isOpen && (
         <div key="join-modal-content" className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-md">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 30 }} 
-            animate={{ opacity: 1, scale: 1, y: 0 }} 
-            exit={{ opacity: 0, scale: 0.9, y: 30 }} 
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 30 }}
             className="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-x-hidden overflow-y-hidden relative"
           >
             <div className="relative h-28 sm:h-32 bg-gradient-to-r from-ureport-blue to-[#007bb5] flex items-center justify-center text-white">
@@ -287,20 +287,32 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                   {mode === 'login' ? 'Accédez rapidement à votre espace membre' : 'Devenez acteur du changement à Cocody !'}
                 </p>
               </div>
-              <button 
-                onClick={onClose} 
+              <button
+                onClick={onClose}
                 className="absolute top-4 right-4 p-2 text-white/60 hover:text-white rounded-full hover:bg-white/10 transition-colors"
               >
                 <XIcon className="w-6 h-6" />
               </button>
             </div>
-            
+
             <div className="p-5 sm:p-8 max-h-[76vh] sm:max-h-[70vh] overflow-y-auto overflow-x-hidden custom-scrollbar">
               <form onSubmit={handleSubmit} className="space-y-6">
                 {error && (
-                  <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-600 flex items-start gap-2.5">
-                    <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                    <span>{error}</span>
+                  <div className="rounded-xl border border-red-100 bg-red-50 p-4 text-sm font-semibold text-red-600 flex flex-col gap-2.5">
+                    <div className="flex items-start gap-2.5">
+                      <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                      <span>{error}</span>
+                    </div>
+                    {mode === 'register' && (error.includes('connecter') || error.includes('déjà')) && (
+                      <button
+                        type="button"
+                        onClick={handleSwitchToLogin}
+                        className="mt-1 w-full py-2 px-4 bg-[#0099DC] text-white rounded-xl font-bold text-xs shadow hover:bg-[#007cb0] transition-all flex items-center justify-center gap-1.5"
+                      >
+                        <span>Veuillez vous connectez</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
                 )}
 
@@ -313,9 +325,9 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                           Un code de validation à 6 chiffres a été envoyé par email à l'adresse <strong>{maskedEmail}</strong>. Veuillez le saisir ci-dessous.
                         </div>
                         <div className="relative">
-                          <Input 
-                            label="Code de validation (OTP)" 
-                            required 
+                          <Input
+                            label="Code de validation (OTP)"
+                            required
                             placeholder="Ex: 123456"
                             value={otpCode}
                             onChange={e => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
@@ -327,17 +339,16 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                             type="button"
                             disabled={resendCooldown > 0 || isSubmitting}
                             onClick={handleResendOtp}
-                            className={`text-sm font-bold transition-all ${
-                              resendCooldown > 0 
-                                ? 'text-gray-400 cursor-not-allowed' 
-                                : 'text-ureport-blue hover:underline'
-                            }`}
+                            className={`text-sm font-bold transition-all ${resendCooldown > 0
+                              ? 'text-gray-400 cursor-not-allowed'
+                              : 'text-ureport-blue hover:underline'
+                              }`}
                           >
-                            {resendCooldown > 0 
-                              ? `Renvoyer le code (dans ${resendCooldown}s)` 
+                            {resendCooldown > 0
+                              ? `Renvoyer le code (dans ${resendCooldown}s)`
                               : "Je n'ai pas reçu de code ? Renvoyer"}
                           </button>
-                          
+
                           <button
                             type="button"
                             onClick={() => {
@@ -355,21 +366,21 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                       <>
                         <div className="relative">
                           <User className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
-                          <Input 
-                            label="Nom Complet" 
-                            required 
+                          <Input
+                            label="Nom Complet"
+                            required
                             placeholder="Ex: Konan Koffi"
                             inputClassName="pl-10"
                             value={formData.fullName}
-                            onChange={e => setFormData({...formData, fullName: e.target.value, name: e.target.value})}
+                            onChange={e => setFormData({ ...formData, fullName: e.target.value, name: e.target.value })}
                           />
                         </div>
                         <div className="relative">
                           <Phone className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
-                          <Input 
-                            label="Numéro de Téléphone" 
-                            type="tel" 
-                            required 
+                          <Input
+                            label="Numéro de Téléphone"
+                            type="tel"
+                            required
                             placeholder="Ex: +225 0707..."
                             inputClassName="pl-10"
                             value={formData.phone}
@@ -385,22 +396,22 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="relative">
                         <User className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
-                        <Input 
-                          label="Nom de famille" 
-                          required 
+                        <Input
+                          label="Nom de famille"
+                          required
                           placeholder="Ex: Konan"
                           inputClassName="pl-10"
                           value={formData.name}
-                          onChange={e => setFormData({...formData, name: e.target.value})}
+                          onChange={e => setFormData({ ...formData, name: e.target.value })}
                         />
                       </div>
                       <div className="relative">
-                        <Input 
-                          label="Prénom" 
-                          required 
+                        <Input
+                          label="Prénom"
+                          required
                           placeholder="Ex: Koffi"
                           value={formData.firstname}
-                          onChange={e => setFormData({...formData, firstname: e.target.value})}
+                          onChange={e => setFormData({ ...formData, firstname: e.target.value })}
                         />
                       </div>
                     </div>
@@ -409,7 +420,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                       <select
                         required
                         value={formData.sex}
-                        onChange={e => setFormData({...formData, sex: e.target.value as any})}
+                        onChange={e => setFormData({ ...formData, sex: e.target.value as any })}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent transition-all bg-white"
                       >
                         <option value="non_precise">Préfère ne pas préciser</option>
@@ -421,22 +432,22 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="relative">
                         <Mail className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
-                        <Input 
-                          label="Adresse Email" 
-                          type="email" 
-                          required 
+                        <Input
+                          label="Adresse Email"
+                          type="email"
+                          required
                           placeholder="Ex: nom@domaine.com"
                           inputClassName="pl-10"
                           value={formData.email}
-                          onChange={e => setFormData({...formData, email: e.target.value})}
+                          onChange={e => setFormData({ ...formData, email: e.target.value })}
                         />
                       </div>
                       <div className="relative">
                         <Phone className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
-                        <Input 
-                          label="Numéro de Téléphone" 
-                          type="tel" 
-                          required 
+                        <Input
+                          label="Numéro de Téléphone"
+                          type="tel"
+                          required
                           placeholder="Ex: +225 07..."
                           inputClassName="pl-10"
                           value={formData.phone}
@@ -459,13 +470,13 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
 
                     <div className="relative">
                       <MapPin className="absolute left-3 top-[38px] w-5 h-5 text-gray-400" />
-                      <Input 
-                        label="Quartier (Cocody)" 
-                        required 
+                      <Input
+                        label="Quartier (Cocody)"
+                        required
                         placeholder="Ex: Angré, Riviera 2, Deux Plateaux..."
                         inputClassName="pl-10"
                         value={formData.neighborhood}
-                        onChange={e => setFormData({...formData, neighborhood: e.target.value})}
+                        onChange={e => setFormData({ ...formData, neighborhood: e.target.value })}
                       />
                     </div>
 
@@ -483,7 +494,7 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-ureport-blue focus:border-transparent transition-all text-sm resize-none"
                         placeholder="Qu'est-ce qui vous motive à rejoindre U-Report ?"
                         value={formData.motivation}
-                        onChange={e => setFormData({...formData, motivation: e.target.value})}
+                        onChange={e => setFormData({ ...formData, motivation: e.target.value })}
                       />
                     </div>
                   </div>
@@ -497,8 +508,8 @@ export function JoinModal({ isOpen, onClose, initialMode = 'login', onSuccess }:
                     loading={isSubmitting}
                     className="h-14 text-lg font-bold"
                   >
-                    {mode === 'login' 
-                      ? (otpRequired ? 'Valider le code de connexion' : 'Se connecter') 
+                    {mode === 'login'
+                      ? (otpRequired ? 'Valider le code de connexion' : 'Se connecter')
                       : "Valider mon inscription"}
                   </Button>
                 </div>

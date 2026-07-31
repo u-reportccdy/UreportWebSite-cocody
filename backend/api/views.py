@@ -981,9 +981,36 @@ def members(request):
         return error_response("Nom complet et numéro de téléphone requis.", 422)
 
     existing = supabase.select("members", "select=*&order=date_adhesion.desc")
-    duplicate = next((member for member in existing if _phones_match(member.get("phone"), payload["phone"])), None)
+    email = payload.get("email")
+    phone = payload["phone"]
+    full_name = payload["full_name"]
+    user_words = set(_normalize_name(full_name).split())
+
+    duplicate = next(
+        (
+            member for member in existing
+            if _phones_match(member.get("phone"), phone)
+            or (email and _normalize_email(member.get("email")) == _normalize_email(email))
+            or (_phones_match(member.get("phone"), phone) and (
+                user_words.issubset(set(_normalize_name(member.get("full_name")).split())) or
+                set(_normalize_name(member.get("full_name")).split()).issubset(user_words)
+            ))
+        ),
+        None
+    )
+
     if duplicate:
-        return error_response("Ce numéro de téléphone est déjà enregistré. Veuillez vous connecter.", 409)
+        dup_phone_matches = _phones_match(duplicate.get("phone"), phone)
+        dup_email_matches = email and _normalize_email(duplicate.get("email")) == _normalize_email(email)
+        
+        if dup_phone_matches:
+            msg = "Ce numéro de téléphone est déjà inscrit dans la communauté. Veuillez vous connecter."
+        elif dup_email_matches:
+            msg = "Cette adresse email est déjà associée à un compte U-Report. Veuillez vous connecter."
+        else:
+            msg = "Un compte existe déjà à votre nom. Veuillez vous connecter à votre espace."
+
+        return error_response(msg, 409)
 
     created = supabase.insert("members", payload)
     member = created[0] if isinstance(created, list) and created else created
