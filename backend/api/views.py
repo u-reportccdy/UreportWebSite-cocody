@@ -1364,7 +1364,16 @@ def member_detail(request, member_id):
     if payload.get("birth_date"):
         payload["status"] = _calculate_status_from_birth_date(payload["birth_date"])
 
-    return data_response(supabase.update("members", "id", member_id, payload))
+    try:
+        updated = supabase.update("members", "id", member_id, payload)
+    except Exception as e:
+        if "commission_role" in payload:
+            payload.pop("commission_role", None)
+            updated = supabase.update("members", "id", member_id, payload)
+        else:
+            raise e
+
+    return data_response(updated)
 
 
 @api_view(["GET"])
