@@ -1356,8 +1356,12 @@ def member_detail(request, member_id):
     else:
         return error_response("Accès refusé.", 403)
 
-    # Calcul automatique du statut basé sur la date de naissance
-    if "birth_date" in payload:
+    # Nettoyage de birth_date si chaîne vide
+    if "birth_date" in payload and not payload["birth_date"]:
+        payload["birth_date"] = None
+
+    # Calcul automatique du statut basé sur la date de naissance (si présente)
+    if payload.get("birth_date"):
         payload["status"] = _calculate_status_from_birth_date(payload["birth_date"])
 
     return data_response(supabase.update("members", "id", member_id, payload))

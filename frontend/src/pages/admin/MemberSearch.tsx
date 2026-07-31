@@ -269,7 +269,7 @@ export function MemberSearch() {
                       {selected.commission_role && selected.commission_role !== 'membre' && (
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-purple-50 text-purple-700 border-purple-200">
                           {selected.commission_role === 'responsable' ? 'Responsable / Coordinateur' :
-                           selected.commission_role === 'adjoint' ? 'Adjoint' : 'Coordinateur Général'}
+                           selected.commission_role === 'adjoint' ? 'Adjoint' : 'Coordinateur Général de la Communauté'}
                         </span>
                       )}
                     </div>
@@ -325,7 +325,7 @@ export function MemberSearch() {
                         <option value="membre">Membre Simple</option>
                         <option value="responsable">Responsable / Coordinateur de Commission</option>
                         <option value="adjoint">Responsable Adjoint</option>
-                        <option value="coordinateur_general">Coordinateur Général du Comité</option>
+                        <option value="coordinateur_general">Coordinateur Général de la Communauté</option>
                       </select>
                     </div>
                     {/* Status — admin only, with explanatory label */}
