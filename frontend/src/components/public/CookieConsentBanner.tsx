@@ -43,7 +43,7 @@ export const CookieConsentBanner: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
         transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-        className="fixed bottom-4 left-4 right-4 sm:left-6 sm:max-w-lg z-[9998] bg-slate-900/95 backdrop-blur-md text-white rounded-3xl shadow-2xl p-5 border border-slate-700/80"
+        className="fixed bottom-4 left-4 right-20 sm:right-auto sm:left-6 sm:max-w-md z-[9998] bg-slate-900/95 backdrop-blur-md text-white rounded-3xl shadow-2xl p-5 border border-slate-700/80"
       >
         <div className="flex items-start gap-3.5">
           <div className="w-10 h-10 rounded-2xl bg-ureport-blue/20 text-ureport-blue flex items-center justify-center shrink-0 mt-0.5">

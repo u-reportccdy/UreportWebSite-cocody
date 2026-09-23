@@ -96,11 +96,11 @@ export const PWAInstallPrompt: React.FC = () => {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: 100, scale: 0.95 }}
+        initial={{ opacity: 0, y: -50, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 100, scale: 0.95 }}
+        exit={{ opacity: 0, y: -50, scale: 0.95 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-        className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-[9999] bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-ureport-blue/20 p-5 overflow-hidden"
+        className="fixed top-24 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-[9999] bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-ureport-blue/20 p-5 overflow-hidden"
       >
         {/* Motif d'arrière-plan décoratif */}
         <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-ureport-blue/10 rounded-full blur-xl pointer-events-none" />
