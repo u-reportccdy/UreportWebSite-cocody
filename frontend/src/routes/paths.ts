@@ -9,7 +9,12 @@ export const PATHS = {
     PARTNERS: '/partners',
     TESTIMONIALS: '/testimonials',
     ABOUT: '/about',
-    CONTACT: '/contact'
+    CONTACT: '/contact',
+    PRIVACY: '/politique-de-confidentialite',
+    TERMS: '/cgu',
+    COOKIES: '/politique-des-cookies',
+    LEGAL: '/mentions-legales',
+    REFUND: '/politique-de-remboursement'
   },
   ADMIN: {
     LOGIN: '/portal',
