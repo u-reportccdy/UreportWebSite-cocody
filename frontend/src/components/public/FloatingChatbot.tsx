@@ -45,7 +45,7 @@ export const FloatingChatbot: React.FC = () => {
     }
   }, [messages, isOpen]);
 
-  const handleSendMessage = (textToSend?: string) => {
+  const handleSendMessage = async (textToSend?: string) => {
     const text = (textToSend || inputMessage).trim();
     if (!text) return;
 
@@ -60,85 +60,35 @@ export const FloatingChatbot: React.FC = () => {
     if (!textToSend) setInputMessage('');
     setIsTyping(true);
 
-    // Simulation de réponse intelligente du bot
-    setTimeout(() => {
-      const botResponse = generateBotResponse(text);
-      setMessages((prev) => [...prev, botResponse]);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || '/api';
+      const res = await fetch(`${apiUrl}/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text }),
+      });
+      const data = await res.json();
+      const botMsg: Message = {
+        id: Date.now().toString(),
+        sender: 'bot',
+        text: data.reply || "Je n'ai pas pu traiter votre demande. Réessayez !",
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    } catch {
+      setMessages((prev) => [...prev, {
+        id: Date.now().toString(),
+        sender: 'bot',
+        text: "Je suis momentanément hors ligne. Contactez-nous à ureportcocody01@hotmail.com ! 😊",
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      }]);
+    } finally {
       setIsTyping(false);
-    }, 900);
+    }
   };
 
-  const handleQuickReply = (action: string, label: string) => {
+  const handleQuickReply = (_action: string, label: string) => {
     handleSendMessage(label);
-  };
-
-  const generateBotResponse = (userText: string): Message => {
-    const lower = userText.toLowerCase();
-    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    if (lower.includes('inscr') || lower.includes('rejoind') || lower.includes('adhér') || lower.includes('membre')) {
-      return {
-        id: Date.now().toString(),
-        sender: 'bot',
-        text: "Pour rejoindre la communauté U-Report Cocody, c'est simple ! Cliquez sur le bouton 'REJOINDRE' en haut du site. Vous devez simplement indiquer votre Nom, Numéro de Téléphone et Commune. Votre statut (Junior, Senior ou Mentor) sera calculé selon votre date de naissance ! 🚀",
-        timestamp: time,
-        quickReplies: [
-          { label: "📅 Voir les événements", action: 'events_info' },
-          { label: "💳 Cotisations", action: 'cotisation_info' },
-        ],
-      };
-    }
-
-    if (lower.includes('événement') || lower.includes('event') || lower.includes('activité') || lower.includes('programme')) {
-      return {
-        id: Date.now().toString(),
-        sender: 'bot',
-        text: "Nos activités et événements communautaires (sensibilisations, caravanes, formations numériques) sont régulièrement publiés dans l'onglet 'Événements'. Vous pouvez vous y inscrire directement en 1 clic !",
-        timestamp: time,
-        quickReplies: [
-          { label: " Comment s'inscrire ?", action: 'how_to_join' },
-          { label: "📞 Nous contacter", action: 'contact_info' },
-        ],
-      };
-    }
-
-    if (lower.includes('cotis') || lower.includes('payer') || lower.includes('argent') || lower.includes('don') || lower.includes('wave') || lower.includes('orange')) {
-      return {
-        id: Date.now().toString(),
-        sender: 'bot',
-        text: "Vous pouvez payer votre cotisation annuelle ou faire une contribution solidaire depuis l'onglet 'Paiement Cotisation'. Nous acceptons Wave, Orange Money, MTN MoMo et MoMo Moov en toute sécurité !",
-        timestamp: time,
-        quickReplies: [
-          { label: " Comment s'inscrire ?", action: 'how_to_join' },
-          { label: "📞 Nous contacter", action: 'contact_info' },
-        ],
-      };
-    }
-
-    if (lower.includes('contact') || lower.includes('numéro') || lower.includes('email') || lower.includes('adresse') || lower.includes('écrire')) {
-      return {
-        id: Date.now().toString(),
-        sender: 'bot',
-        text: "Vous pouvez nous contacter directement par email à ureportcocody01@hotmail.com ou via la page 'Contact'. Notre équipe vous répond sous 24 à 48 heures !",
-        timestamp: time,
-        quickReplies: [
-          { label: " Comment s'inscrire ?", action: 'how_to_join' },
-        ],
-      };
-    }
-
-    // Réponse par défaut
-    return {
-      id: Date.now().toString(),
-      sender: 'bot',
-      text: "Merci pour votre message ! Je suis là pour vous guider. Souhaitez-vous en savoir plus sur l'inscription, nos événements ou le paiement des cotisations ?",
-      timestamp: time,
-      quickReplies: [
-        { label: " Comment s'inscrire ?", action: 'how_to_join' },
-        { label: "📅 Prochains événements", action: 'events_info' },
-        { label: "💳 Payer ma cotisation", action: 'cotisation_info' },
-      ],
-    };
   };
 
   return (

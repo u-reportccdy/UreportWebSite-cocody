@@ -2371,3 +2371,77 @@ def member_award_detail(request, member_id, award_id):
         return status_response("Prix ou certificat supprimé.", 200)
     except Exception as e:
         return error_response(f"Suppression impossible: {str(e)}", 400)
+
+
+def chat(request):
+    """
+    Endpoint public pour le chatbot IA flottant.
+    Utilise Gemini 1.5 Flash comme moteur de réponse.
+    POST /api/chat/ — Body: { "message": "..." }
+    """
+    if request.method != "POST":
+        return error_response("Méthode non autorisée.", 405)
+
+    try:
+        body = json.loads(request.body)
+        user_message = body.get("message", "").strip()
+    except Exception:
+        return error_response("Corps de requête invalide.", 400)
+
+    if not user_message:
+        return error_response("Le message ne peut pas être vide.", 400)
+
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return JsonResponse({
+            "reply": "Je suis temporairement indisponible. Veuillez nous contacter directement à ureportcocody01@hotmail.com."
+        })
+
+    system_prompt = """Tu es l'Assistant Virtuel officiel de U-Report Cocody, une initiative communautaire de jeunesse basée à Cocody, Abidjan, Côte d'Ivoire. 
+
+Ton rôle est d'aider les jeunes et visiteurs du site à :
+- Comprendre comment rejoindre la communauté U-Report Cocody
+- Connaître les prochains événements, activités et sensibilisations
+- Savoir comment payer leur cotisation annuelle (Wave, Orange Money, MTN MoMo, Moov Money)
+- Avoir des informations sur les départements et la structure de la communauté
+- Nous contacter (email: ureportcocody01@hotmail.com)
+
+Informations clés à connaître :
+- Les membres sont classés par âge : Junior (15-18 ans), Senior (19-25 ans), Mentor (26 ans et plus)
+- La plateforme s'appelle U-Report Cocody et est accessible sur ureport-cocody.vercel.app
+- L'inscription se fait directement sur le site : Nom, Téléphone, Commune, Date de naissance
+
+Règles importantes :
+- Réponds TOUJOURS en français
+- Sois chaleureux, enthousiaste, et encourageant
+- Garde des réponses courtes (2-4 phrases max)
+- Si tu ne sais pas quelque chose, dirige vers l'email de contact
+- Ne parle jamais de sujets non liés à U-Report Cocody"""
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    payload = {
+        "system_instruction": {"parts": [{"text": system_prompt}]},
+        "contents": [{"parts": [{"text": user_message}]}],
+        "generationConfig": {
+            "maxOutputTokens": 256,
+            "temperature": 0.7,
+        }
+    }
+
+    try:
+        with httpx.Client(timeout=10.0) as client:
+            response = client.post(url, json=payload)
+
+        if response.status_code == 200:
+            data = response.json()
+            reply = data["candidates"][0]["content"]["parts"][0]["text"]
+            return JsonResponse({"reply": reply.strip()})
+        else:
+            return JsonResponse({
+                "reply": "Je rencontre une difficulté technique. Contactez-nous à ureportcocody01@hotmail.com."
+            })
+    except Exception as e:
+        return JsonResponse({
+            "reply": "Je suis momentanément hors ligne. Réessayez dans quelques instants !"
+        })
+

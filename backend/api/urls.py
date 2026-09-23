@@ -62,4 +62,5 @@ urlpatterns = [
     path("stats/report", views.stats_report),
     path("members/<uuid:member_id>/awards", views.member_awards),
     path("members/<uuid:member_id>/awards/<uuid:award_id>", views.member_award_detail),
+    path("chat", views.chat),
 ]
