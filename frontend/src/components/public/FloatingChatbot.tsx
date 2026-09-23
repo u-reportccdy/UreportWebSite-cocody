@@ -62,7 +62,7 @@ export const FloatingChatbot: React.FC = () => {
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || '/api';
-      const res = await fetch(`${apiUrl}/chat`, {
+      const res = await fetch(`${apiUrl}/chat/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text }),
@@ -159,8 +159,8 @@ export const FloatingChatbot: React.FC = () => {
                 >
                   <div
                     className={`max-w-[85%] rounded-2xl p-3.5 text-xs leading-relaxed ${msg.sender === 'user'
-                        ? 'bg-[#0099DC] text-white rounded-br-none shadow-md shadow-ureport-blue/20'
-                        : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/80 dark:border-slate-700/80 rounded-bl-none shadow-sm'
+                      ? 'bg-[#0099DC] text-white rounded-br-none shadow-md shadow-ureport-blue/20'
+                      : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/80 dark:border-slate-700/80 rounded-bl-none shadow-sm'
                       }`}
                   >
                     <p>{msg.text}</p>
