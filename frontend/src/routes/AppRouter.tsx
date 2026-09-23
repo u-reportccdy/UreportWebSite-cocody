@@ -17,6 +17,11 @@ import { CotisationPayment } from '../pages/public/CotisationPayment';
 import { MemberProfile } from '../pages/public/MemberProfile';
 import { EventCheckIn } from '../pages/public/EventCheckIn';
 import { Contact } from '../pages/public/Contact';
+import { PrivacyPolicy } from '../pages/public/PrivacyPolicy';
+import { TermsOfService } from '../pages/public/TermsOfService';
+import { CookiePolicy } from '../pages/public/CookiePolicy';
+import { LegalNotice } from '../pages/public/LegalNotice';
+import { RefundPolicy } from '../pages/public/RefundPolicy';
 
 // Pages Admin
 import { Dashboard } from '../pages/admin/Dashboard';
@@ -57,6 +62,11 @@ const router = createBrowserRouter([
       { path: '/events/:id', element: <EventDetail /> },
       { path: '/events/:id/checkin', element: <EventCheckIn /> },
       { path: PATHS.PUBLIC.CONTACT, element: <Contact /> },
+      { path: PATHS.PUBLIC.PRIVACY, element: <PrivacyPolicy /> },
+      { path: PATHS.PUBLIC.TERMS, element: <TermsOfService /> },
+      { path: PATHS.PUBLIC.COOKIES, element: <CookiePolicy /> },
+      { path: PATHS.PUBLIC.LEGAL, element: <LegalNotice /> },
+      { path: PATHS.PUBLIC.REFUND, element: <RefundPolicy /> },
     ]
   },
   {

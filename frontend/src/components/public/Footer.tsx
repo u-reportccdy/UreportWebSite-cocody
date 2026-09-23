@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { fetchSiteSettings } from '../../services/content.service';
 import { Link } from './Link';
 import { DEFAULT_SITE_CONTACT } from '../../constants/site';
+import { PATHS } from '../../routes/paths';
 
 export function Footer() {
   const location = useLocation();
@@ -130,10 +131,13 @@ export function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <p className="text-center text-sm text-slate-400 md:text-left">© {new Date().getFullYear()} U-Report Cocody. Tous droits réservés. Une initiative soutenue par l&apos;UNICEF.</p>
-          <div className="flex justify-center gap-5 text-sm text-slate-400 md:justify-end">
-            <a href="#" className="hover:text-white transition-colors">Mentions légales</a>
-            <a href="#" className="hover:text-white transition-colors">Confidentialité</a>
+          <p className="text-center text-xs text-slate-400 md:text-left">© {new Date().getFullYear()} U-Report Cocody. Tous droits réservés. Initiative citoyenne de jeunesse.</p>
+          <div className="flex flex-wrap justify-center gap-4 text-xs text-slate-400 md:justify-end">
+            <Link href={PATHS.PUBLIC.PRIVACY} className="hover:text-white transition-colors">Confidentialité</Link>
+            <Link href={PATHS.PUBLIC.TERMS} className="hover:text-white transition-colors">CGU</Link>
+            <Link href={PATHS.PUBLIC.COOKIES} className="hover:text-white transition-colors">Cookies</Link>
+            <Link href={PATHS.PUBLIC.LEGAL} className="hover:text-white transition-colors">Mentions Légales</Link>
+            <Link href={PATHS.PUBLIC.REFUND} className="hover:text-white transition-colors">Cotisations & Remboursements</Link>
           </div>
         </div>
       </div>
