@@ -172,6 +172,8 @@ def _is_admin_request(path: str, method: str) -> bool:
         return False
     if path == "/api/members/login" and method == "POST":
         return False
+    if (path == "/api/chat" or path == "/api/chat/") and method == "POST":
+        return False
     if path == "/api/members/logout" and method == "POST":
         return False
     if path == "/api/contributions/initiate" and method == "POST":
@@ -262,6 +264,7 @@ def _is_maintenance_blocked(path: str, method: str, token_data: dict[str, Any] |
         return False, ""
     allowed_public = (
         (path.startswith("/api/settings") and method == "GET")
+        or (path in {"/api/chat", "/api/chat/", "/chat", "/chat/"} and method == "POST")
         or (path.startswith("/api/auth/superadmin/login"))
         or (path.startswith("/api/auth/portal/login"))
         or (path.startswith("/api/health"))
