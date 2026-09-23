@@ -106,9 +106,9 @@ export const FloatingChatbot: React.FC = () => {
         >
           {/* Onde d'impulsion lumineuse */}
           <span className="absolute inset-0 rounded-full bg-[#0099DC] animate-ping opacity-25 pointer-events-none" />
-          
+
           <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8" />
-          
+
           {/* Badge "En Ligne" */}
           <span className="absolute top-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full" />
         </motion.button>
@@ -133,7 +133,7 @@ export const FloatingChatbot: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-sm leading-tight flex items-center gap-1.5">
-                    Assistant U-Report
+                    Suspendus
                     <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                   </h3>
                   <p className="text-[11px] text-blue-100 font-medium">
@@ -158,17 +158,15 @@ export const FloatingChatbot: React.FC = () => {
                   className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl p-3.5 text-xs leading-relaxed ${
-                      msg.sender === 'user'
+                    className={`max-w-[85%] rounded-2xl p-3.5 text-xs leading-relaxed ${msg.sender === 'user'
                         ? 'bg-[#0099DC] text-white rounded-br-none shadow-md shadow-ureport-blue/20'
                         : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/80 dark:border-slate-700/80 rounded-bl-none shadow-sm'
-                    }`}
+                      }`}
                   >
                     <p>{msg.text}</p>
                     <span
-                      className={`block text-[10px] mt-1 text-right ${
-                        msg.sender === 'user' ? 'text-blue-100' : 'text-slate-400'
-                      }`}
+                      className={`block text-[10px] mt-1 text-right ${msg.sender === 'user' ? 'text-blue-100' : 'text-slate-400'
+                        }`}
                     >
                       {msg.timestamp}
                     </span>
