@@ -2,7 +2,6 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
@@ -13,13 +12,16 @@ ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "localhost,
 INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.staticfiles",
+    "corsheaders",  # 1. Ajout de l'application CORS ici
     "api",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # Doit impérativement être tout en haut
     "django.middleware.security.SecurityMiddleware",
-    "api.middleware.SimpleCorsMiddleware",
+    # "api.middleware.SimpleCorsMiddleware",  <-- Mettez celle-ci en commentaire ou supprimez-la
 ]
+
 
 ROOT_URLCONF = "ureport_backend.urls"
 WSGI_APPLICATION = "ureport_backend.wsgi.application"
@@ -43,6 +45,8 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 ADMIN_TOKEN_TTL_SECONDS = int(os.getenv("ADMIN_TOKEN_TTL_SECONDS", "28800"))
 MEMBER_TOKEN_TTL_SECONDS = int(os.getenv("MEMBER_TOKEN_TTL_SECONDS", "2592000"))
+
+# Récupère automatiquement vos domaines autorisés depuis votre fichier .env
 CORS_ALLOWED_ORIGINS = [origin.strip() for origin in os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if origin.strip()]
 
 # Permettre l'envoi de payloads JSON volumineux (ex: images en base64)
@@ -56,3 +60,4 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() == "true"
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
+CORS_ALLOW_ALL_ORIGINS = False
