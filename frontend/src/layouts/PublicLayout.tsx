@@ -5,6 +5,9 @@ import { RefreshCw, ShieldAlert } from 'lucide-react';
 import { Navbar } from '../components/public/Navbar';
 import { Footer } from '../components/public/Footer';
 import { fetchSiteSettings } from '../services/content.service';
+import { PWAInstallPrompt } from '../components/public/PWAInstallPrompt';
+import { CookieConsentBanner } from '../components/public/CookieConsentBanner';
+import { FloatingChatbot } from '../components/public/FloatingChatbot';
 
 type MaintenanceState = {
   loading: boolean;
@@ -213,6 +216,9 @@ export function PublicLayout() {
         <Outlet />
       </main>
       <Footer />
+      <PWAInstallPrompt />
+      <CookieConsentBanner />
+      <FloatingChatbot />
     </div>
   );
 }
